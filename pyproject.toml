@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "rcqasyn"
+version = "0.1.0"
+description = "Risk-calibrated quality-aware synthetic dataset construction foundation"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+dependencies = ["pydantic>=2", "PyYAML", "typer", "rich"]
+
+[project.optional-dependencies]
+dev = ["pytest", "pytest-cov", "ruff", "pyright"]
+
+[project.scripts]
+rcqasyn = "rcqasyn.cli.app:app"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.pyright]
+include = ["src"]
+pythonVersion = "3.12"
+typeCheckingMode = "standard"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

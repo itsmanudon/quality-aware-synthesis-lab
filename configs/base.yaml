@@ -1,0 +1,8 @@
+project:
+  name: quality-aware-synthesis-lab
+  seed: 42
+artifacts:
+  root: artifacts
+literature:
+  papers_dir: literature/papers
+  notes_dir: literature/notes
