@@ -1,0 +1,19 @@
+dataset_id: dev-small
+display_name: RC-QASyn tracked development fixture (not KEEL)
+raw_path: tests/fixtures/dev-small.csv
+accepted_filenames: [dev-small.csv]
+format: csv
+target_column: label
+feature_columns: [age, score, color]
+categorical_columns: [color]
+numerical_columns: [age, score]
+missing_policy: preserve_as_null
+minority_label: "yes"
+task_type: classification
+source_url: null
+source_page: tracked non-sensitive development fixture
+preprocessing: [none_declared]
+split:
+  test_size: 0.25
+  seed_offset: 0
+  stratify: true

@@ -1,0 +1,34 @@
+experiment_name: m1-offline-replay-no-examples
+run_id: m1-offline-replay-no-examples
+dataset:
+  dataset_id: dev-small
+  root_seed: 7
+  reference_example_count: 0
+  reference_examples_enabled: false
+generation:
+  requested_count: 6
+  class_strategy: preserve_reference
+  class_quotas: {}
+  batch_size: 5
+  objective: data_emulation
+  generator_id: replay-generator
+  generator_version: "1"
+  prompt_version: v1
+  temperature: 0.0
+  max_tokens: 256
+  provider_seed: 7
+generator:
+  kind: replay
+  fixture: tests/fixtures/replay_fixture.json
+  model: replay-fixture
+judge:
+  provider:
+    kind: replay
+    fixture: tests/fixtures/replay_fixture.json
+    model: replay-judge-fixture
+  judge_id: single-judge
+  judge_version: "1"
+  prompt_version: v1
+  threshold: 0.7
+  malformed_policy: reject
+artifact_root: artifacts

@@ -1,0 +1,23 @@
+{
+  "generation": [
+    {
+      "call_id": "generation-0",
+      "source_id": "fixture-generation-0",
+      "response": "[{\"age\":30,\"score\":1.0,\"color\":\"red\",\"label\":\"no\"},{\"age\":31,\"score\":1.1,\"color\":\"purple\",\"label\":\"no\"},{\"age\":32,\"color\":\"blue\",\"label\":\"yes\"},{\"age\":33,\"score\":99.0,\"color\":\"green\",\"label\":\"yes\"},{\"age\":30,\"score\":1.0,\"color\":\"red\",\"label\":\"no\"}]",
+      "usage": {"input_tokens": 100, "output_tokens": 80, "total_tokens": 180}
+    },
+    {
+      "call_id": "generation-1",
+      "source_id": "fixture-generation-malformed",
+      "response": "[{malformed",
+      "usage": {"input_tokens": 20, "output_tokens": 4, "total_tokens": 24}
+    }
+  ],
+  "judge": [
+    {"call_id": "judge-0", "source_id": "fixture-judge-0", "response": "{\"score\":0.95,\"verdict\":\"pass\",\"reasons\":[\"schema and profile plausible\"],\"affected_fields\":[],\"self_confidence\":0.8}"},
+    {"call_id": "judge-1", "source_id": "fixture-judge-1", "response": "{\"score\":0.2,\"verdict\":\"fail\",\"reasons\":[\"unknown category\"],\"affected_fields\":[\"color\"]}"},
+    {"call_id": "judge-2", "source_id": "fixture-judge-malformed", "response": "not-json"},
+    {"call_id": "judge-3", "source_id": "fixture-judge-3", "response": "{\"score\":0.8,\"verdict\":\"pass\",\"reasons\":[\"structurally plausible\"],\"affected_fields\":[]}"},
+    {"call_id": "judge-4", "source_id": "fixture-judge-4", "response": "{\"score\":0.1,\"verdict\":\"fail\",\"reasons\":[\"duplicate candidate\"],\"affected_fields\":[]}"}
+  ]
+}

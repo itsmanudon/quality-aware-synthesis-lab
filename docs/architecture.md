@@ -28,5 +28,9 @@ from different dimensions or scopes are not presumed comparable.
 Evidence and assessments must state the evaluated scope; field, record, subgroup, and
 dataset measurements are not silently pooled or treated as comparable scores.
 
-M0.1 implements contracts and foundation services only. Future milestones add each
-runtime stage behind the contracts and retain the full version/provenance chain.
+M1 implements the executable prefix `Specification → Generation → Independent
+Validators → Baseline Decisions → Audit Metrics → Downstream Utility` for three paired
+baselines. All three branches consume one persisted raw candidate pool. The profile,
+prompt, filter, judge, classifier, and metric stages use TRAIN only; the REAL TEST split
+is reserved for final utility evaluation. Evidence fusion, repair/regeneration,
+calibration, retrieval/factual verification, and learned control remain future stages.

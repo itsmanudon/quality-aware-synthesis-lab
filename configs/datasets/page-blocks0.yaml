@@ -1,0 +1,24 @@
+dataset_id: page-blocks0
+display_name: KEEL page-blocks0
+raw_path: data/raw/page-blocks0/page-blocks0.dat
+accepted_filenames: [page-blocks0.dat]
+format: keel_dat
+target_column: class
+feature_columns: [height, length, area, eccen, p_black, p_and, mean_tr, blackpix, blackand, wb_trans]
+categorical_columns: []
+numerical_columns: [height, length, area, eccen, p_black, p_and, mean_tr, blackpix, blackand, wb_trans]
+missing_policy: preserve_as_null
+minority_label: null
+task_type: classification
+source_url: https://sci2s.ugr.es/keel/category.php?cat=imb&order=insR
+source_page: KEEL imbalanced classification listing
+preprocessing: [none_declared]
+metadata:
+  identity_provenance: verified KEEL dataset identity from the local implementation manifest
+  schema_provenance: expected KEEL declaration; validated against the placed file before use
+  label_provenance: not asserted until the local KEEL file is placed and inspected
+  statistics_provenance: none; no local data is bundled
+split:
+  test_size: 0.2
+  seed_offset: 0
+  stratify: true

@@ -1,8 +1,12 @@
 # Literature note
 
 - Source PDF: `literature/papers/qa13-constrained-tabular-generative-models-2024.pdf`
-- Verified title/year: 
-- Claims and evidence: 
-- Methods/assumptions: 
-- Limitations: 
-- Relevance to RC-QASyn: 
+- Verified bibliography: Mihaela Cătălina Stoian, Salijona Dyrmishi, Maxime Cordy, Thomas Lukasiewicz, and Eleonora Giunchiglia. “How Realistic Is Your Synthetic Data? Constraining Deep Generative Models for Tabular Data.” ICLR 2024. Primary: https://proceedings.iclr.cc/paper_files/paper/2024/hash/887932131fddf943e8fe3310b62c0147-Abstract-Conference.html (PDF: https://proceedings.iclr.cc/paper_files/paper/2024/file/887932131fddf943e8fe3310b62c0147-Paper-Conference.pdf).
+- Central idea: constraints expressing background knowledge as linear inequalities can be parsed into a Constraint Layer for deep generative models. Standard models may violate constraints heavily; constrained models guarantee compliance with the stated constraints, with a post-hoc/inference guardrail as a weaker deployment option (abstract and pp. 1–3).
+- Datasets / metrics: six tabular tasks with up to 31 constraints over up to 17 features, including URL, WiDS, LCLD, Heloc, FSP, and News. Evaluation includes utility (F1, weighted F1, AUROC; regression XV/MAE) and detection/distribution metrics; Wasserstein distance and Jensen–Shannon divergence are reported in appendix tables (pp. 2, 30–33).
+- Limitations: the guarantee applies to the declared linear-inequality constraint language; guardrails at inference can improve results but are not equivalent to training-time constrained models (appendix Sec. C.5, pp. 30–31). Constraint availability and model/domain assumptions limit generality.
+- Pipeline stage: deterministic constraint specification/validation and generation guardrails.
+- M1 relevance: implement independent Schema, categorical-domain, missing-value, target-condition, and observed-range validators; represent range checks as WARN diagnostics by default and record severity-based acceptance explicitly. Do not mutate candidates or claim generation guarantees.
+- Useful pages / figures: abstract and Fig. 1 (p. 1); constraint definition (pp. 2–3); appendix Tables 11–15 (pp. 29–31) for Wasserstein/JSD/ordering evidence; Sec. C.5 (pp. 30–31).
+- Baseline implication: B2 is deterministic filtering over the exact raw pool, distinct from the generator and without learned fusion or post-hoc repair; observed ranges are diagnostics unless config rejects them.
+- What this changes in our repo: validators emit versioned Evidence with dimensions/severity/fields; B2 rejects only configured severities (HIGH/CRITICAL by default) and preserves WARN evidence.

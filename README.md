@@ -15,10 +15,16 @@ novelty claim.
 
 ## Current scope
 
-Milestone 0.1 provides typed contracts, protocol interfaces, configuration, storage,
-literature inventory, reproducibility metadata, tests, and a small CLI. It contains no
-real ML/LLM pipeline, API calls, RAG, generation, evidence-fusion implementation,
-repair, learned controller, dataset download, web/API/server, or fake validator.
+Milestone 1 adds a configuration-driven local dataset registry, TRAIN-only profiles and
+stratified splits, versioned prompts, replay and OpenAI-compatible provider adapters,
+and three strictly paired baselines. B1 accepts every parseable raw candidate; B2 uses
+independent deterministic validators; B3 uses exactly one judge with a static threshold,
+no calibration, and no rule/judge evidence fusion. The offline replay is a real run of
+the same architecture and never makes a network or paid call.
+
+The development fixture is non-sensitive and is not KEEL data or scientific evidence.
+The registry does not download the planned KEEL datasets. See [docs/datasets.md](docs/datasets.md),
+[docs/generation-protocol.md](docs/generation-protocol.md), and [docs/baselines.md](docs/baselines.md).
 
 ## Separation from imbalance-synthesis-lab
 
@@ -64,6 +70,9 @@ The package targets Python `>=3.12,<3.13` and uses a standard setuptools src lay
 rcqasyn --help
 rcqasyn doctor
 rcqasyn papers index
+rcqasyn datasets list
+rcqasyn datasets inspect dev-small
+rcqasyn baselines replay --config configs/experiments/replay.yaml
 python -m rcqasyn --help
 ```
 
@@ -76,7 +85,7 @@ The index is deterministic and records filename, relative POSIX path, SHA-256, a
 - `src/rcqasyn/interfaces`: Protocol-only extension points.
 - `src/rcqasyn/config`, `storage`, `literature`, `utils`, and `cli`: foundation services.
 - `configs/base.yaml` and `configs/{datasets,generators,validators,experiments}`:
-  typed baseline configuration and future configuration notes.
+  typed registry and experiment configurations.
 - `literature/papers`, `literature/notes`, and `literature/paper_inventory.csv`: local
   research memory and deterministic inventory; supplied PDFs are locally preserved and
   ignored by Git by default for licensing/repository-size reasons.
@@ -85,8 +94,10 @@ The index is deterministic and records filename, relative POSIX path, SHA-256, a
 
 ## Milestone status
 
-M0.1 is the foundation milestone. It establishes infrastructure and research contracts
-only; planned M1–M9 work and baselines are documented but not implemented.
+M0.1 foundation behavior remains supported. M1 baseline generation/evaluation is
+implemented and executable offline. Advanced calibrated fusion, repair/regeneration,
+RAG/factual verification, embeddings, privacy/fairness validation, and alpha/beta
+metrics remain explicitly deferred.
 
 ## Reproducibility
 

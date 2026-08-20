@@ -67,3 +67,10 @@ class SourceType(StrEnum):
     USER = "user"
     SYSTEM = "system"
     OTHER = "other"
+
+
+class GenerationObjective(StrEnum):
+    """Supported generation objectives; only data emulation runs in M1."""
+
+    DATA_EMULATION = "data_emulation"
+    MINORITY_AUGMENTATION = "minority_augmentation"

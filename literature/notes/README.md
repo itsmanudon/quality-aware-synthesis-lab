@@ -1,5 +1,6 @@
 # Literature notes
 
-Each note maps only to its filename and is a blank template. Record source-supported
-claims, methods, limitations, and relevance after reading the corresponding PDF; do not
-infer title, venue, year, or results from a filename.
+Each note maps to a local primary PDF and records only source-supported bibliography,
+claims, methods, datasets, metrics, limitations, and implementation implications. Do
+not infer title, venue, year, or results from a filename; update notes only after reading
+the corresponding local PDF.

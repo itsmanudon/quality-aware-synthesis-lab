@@ -1,8 +1,12 @@
 # Literature note
 
 - Source PDF: `literature/papers/qa27-llm-as-a-judge-mtbench-2023.pdf`
-- Verified title/year: 
-- Claims and evidence: 
-- Methods/assumptions: 
-- Limitations: 
-- Relevance to RC-QASyn: 
+- Verified bibliography: Lianmin Zheng, Wei-Lin Chiang, Ying Sheng, Siyuan Zhuang, Zhanghao Wu, Yonghao Zhuang, Zi Lin, Zhuohan Li, Dacheng Li, Eric P. Xing, Hao Zhang, Joseph E. Gonzalez, and Ion Stoica. “Judging LLM-as-a-Judge with MT-Bench and Chatbot Arena.” NeurIPS 2023 Track on Datasets and Benchmarks. Primary: https://proceedings.neurips.cc/paper_files/paper/2023/hash/91f18a1287b398d378ef22505bf41832-Abstract-Datasets_and_Benchmarks.html (PDF: https://proceedings.neurips.cc/paper_files/paper/2023/file/91f18a1287b398d378ef22505bf41832-Paper-Datasets_and_Benchmarks.pdf).
+- Central idea: LLM-as-a-judge can scale open-ended evaluation, with pairwise comparison, single-answer grading, and reference-guided grading. GPT-4 agreement with human preferences exceeded 80% in their MT-Bench/Chatbot Arena study, but absolute single-answer grades can be unstable (pp. 3–5, 9–10).
+- Datasets / metrics: MT-Bench contains 80 multi-turn questions across writing, roleplay, extraction, reasoning, math, coding, and knowledge; the paper also analyzes thousands of expert/crowd votes. Main metrics are human agreement, consistency, bias, and 1–10 judge scores (pp. 3–5).
+- Limitations: position, verbosity, and self-enhancement biases; limited reasoning; safety/honesty largely neglected; score dimensions are combined; model/service costs can be significant (pp. 4–5, 9–10 and appendices). The paper's agreement result is not a guarantee for tabular structural validity.
+- Pipeline stage: narrow semantic/rubric judge.
+- M1 relevance: B3 deliberately uses exactly one judge per parseable candidate, a narrow structural/semantic rubric, strict JSON parsing, a static threshold, and optional explicitly uncalibrated self-confidence. It must report malformed judge outputs and never claim factual verification.
+- Useful pages / figures: Fig. 1 (p. 2); judge variants and limitations Sec. 3 (pp. 4–6); single-answer prompt Fig. 6 (appendix p. 25); conclusion/limitations (pp. 9–10).
+- Baseline implication: preserve raw judge output, model/config/prompt hash, verdict/reasons/fields, and malformed decisions; no calibration, ensemble, pairwise comparison, evidence fusion, or adaptive repair in M1.
+- What this changes in our repo: the judge provider shares the trace abstraction with generation, but B3's static threshold and uncalibrated confidence remain explicit policy fields in config/artifacts.

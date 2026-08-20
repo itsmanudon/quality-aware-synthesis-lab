@@ -8,7 +8,7 @@ version = "0.1.0"
 description = "Risk-calibrated quality-aware synthetic dataset construction foundation"
 readme = "README.md"
 requires-python = ">=3.12,<3.13"
-dependencies = ["pydantic>=2", "PyYAML", "typer", "rich"]
+dependencies = ["pydantic>=2", "PyYAML", "typer", "rich", "numpy", "scipy", "pandas", "scikit-learn"]
 
 [project.optional-dependencies]
 dev = ["pytest", "pytest-cov", "ruff", "pyright"]

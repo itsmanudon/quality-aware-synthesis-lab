@@ -1,8 +1,12 @@
 # Literature note
 
 - Source PDF: `literature/papers/qa12-epic-llm-imbalanced-tabular-synthesis-2024.pdf`
-- Verified title/year: 
-- Claims and evidence: 
-- Methods/assumptions: 
-- Limitations: 
-- Relevance to RC-QASyn: 
+- Verified bibliography: Jinhee Kim, Taesung Kim, and Jaegul Choo. “EPIC: Effective Prompting for Imbalanced-Class Data Synthesis in Tabular Data Classification via Large Language Models.” 38th Conference on Neural Information Processing Systems (NeurIPS 2024). Primary: https://proceedings.neurips.cc/paper_files/paper/2024/hash/37f2f382b1e1f1e887d610e7ea047086-Abstract-Conference.html (PDF: https://proceedings.neurips.cc/paper_files/paper/2024/file/37f2f382b1e1f1e887d610e7ea047086-Paper-Conference.pdf).
+- Central idea: EPIC uses class-balanced, grouped in-context examples, consistent formatting, and unique variable mapping to improve LLM tabular synthesis under class imbalance. The paper emphasizes class boundaries, correlations, ranges, numerical–categorical relations, and coverage (abstract, Fig. 1, pp. 1–3).
+- Datasets / metrics: experiments include a toy imbalanced dataset plus six real-world classification datasets (Travel, Income, Sick, Thyroid, HELOC, and Diabetes; appendix pp. 35–37). They evaluate synthetic data with downstream classification, including F1 and balanced accuracy, alongside distribution/relationship analyses.
+- Limitations: the authors discuss malicious use, quality/security/ethical risks, limited direct access to verify models, and scope tied to their selected datasets/prompts; results are empirical and do not guarantee arbitrary tabular domains (appendix pp. 34–37).
+- Pipeline stage: class-aware prompting and synthetic tabular generation.
+- M1 relevance: make class quotas/strategy explicit, provide deterministic train-only class-aware references, keep observed support separate from hard constraints, and reserve MINORITY_AUGMENTATION as planned but not executable until explicitly implemented.
+- Useful pages / figures: Fig. 1 (p. 1); prompt design discussion and Tables 1–3 (pp. 3–8); appendix Sec. C.5 and Tables 13–18 (pp. 35–38); dataset/class details Fig. 13 (p. 34).
+- Baseline implication: deterministic class conditioning belongs in the generation plan and prompt; no silent balancing, no use of test class counts, and no post-hoc category/range repair.
+- What this changes in our repo: generation plans require explicit class strategy/quota and profile references are sampled from TRAIN only; configs expose a future objective without making minority augmentation executable.

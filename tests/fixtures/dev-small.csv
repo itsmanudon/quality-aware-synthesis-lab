@@ -1,0 +1,17 @@
+age,score,color,label
+20,0.10,red,no
+21,0.20,blue,no
+22,0.30,green,no
+23,0.40,red,no
+24,0.50,blue,no
+25,0.60,green,no
+26,0.70,red,no
+27,0.80,blue,no
+28,0.90,green,no
+29,1.00,red,no
+30,1.10,blue,no
+31,1.20,green,no
+32,1.30,red,yes
+33,1.40,blue,yes
+34,1.50,green,yes
+35,1.60,red,yes

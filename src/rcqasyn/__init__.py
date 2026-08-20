@@ -1,4 +1,4 @@
-"""RC-QASyn research foundation (Milestone 0.1)."""
+"""RC-QASyn strict contracts and paired synthetic-data baseline harness."""
 
 __version__ = "0.1.0"
 
@@ -11,6 +11,8 @@ from rcqasyn.contracts import (  # noqa: F401
     Defect,
     Evidence,
     GenerationContext,
+    GenerationObjective,
+    GenerationPlan,
     GenerationRequest,
     ProvenanceSource,
     QualityDimension,
