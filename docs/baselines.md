@@ -31,6 +31,15 @@ Alpha/beta precision/recall, embeddings, privacy/fairness validation, calibratio
 RAG, and adaptive controllers are future work.
 
 `configs/experiments/dev_page_blocks0_b1_b3.yaml`, `dev_ecoli4_b1_b3.yaml`, and
-`dev_abalone19_b1_b3.yaml` are editable OpenAI-compatible examples. They use a loopback
-base URL and require a locally configured model/key; they do not make calls until the
-user supplies a local provider and places the corresponding KEEL file.
+`dev_abalone19_b1_b3.yaml` are small editable examples. The bounded P0 configurations
+under `configs/experiments/pilot/` request exactly 20 records per authoritative class,
+batch five, use four TRAIN-only reference examples, share one persisted raw pool, and
+use the same OpenAI-compatible generator/judge configuration shape across datasets.
+They use a loopback base URL as a visible placeholder. The runner performs a provider
+readiness gate and makes no calls until the user supplies a reachable endpoint, model,
+and configured key environment variable. A P0 run also writes `human_review.csv` with
+empty adjudication fields, a machine-only failure report, and leaves B3 false-accept /
+false-reject analysis not-evaluable until a human fills those fields.
+
+After sequential runs, combine their machine-only comparisons with
+`rcqasyn baselines compare artifacts/runs/<page-run> artifacts/runs/<ecoli-run> artifacts/runs/<abalone-run>`.

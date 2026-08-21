@@ -23,7 +23,8 @@ no calibration, and no rule/judge evidence fusion. The offline replay is a real 
 the same architecture and never makes a network or paid call.
 
 The development fixture is non-sensitive and is not KEEL data or scientific evidence.
-The registry does not download the planned KEEL datasets. See [docs/datasets.md](docs/datasets.md),
+M1.1 official KEEL raw archives remain ignored; their source and hashes are recorded in
+`data/manifests/<id>/source.json` locally. See [docs/datasets.md](docs/datasets.md),
 [docs/generation-protocol.md](docs/generation-protocol.md), and [docs/baselines.md](docs/baselines.md).
 
 ## Separation from imbalance-synthesis-lab

@@ -16,6 +16,9 @@ class DatasetRunConfig(ContractModel):
     dataset_id: NonEmptyStr
     root_seed: NonNegativeInt
     reference_example_count: NonNegativeInt = 3
+    # When configured, this takes precedence over the legacy total-count
+    # policy and selects this many deterministic TRAIN examples per class.
+    reference_examples_per_class: NonNegativeInt | None = None
     reference_examples_enabled: bool = True
 
 

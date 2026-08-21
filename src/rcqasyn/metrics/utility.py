@@ -1,6 +1,7 @@
 # pyright: reportArgumentType=false, reportAttributeAccessIssue=false
 from __future__ import annotations
 
+import warnings
 from typing import Any
 
 import numpy as np
@@ -32,7 +33,10 @@ def utility_metrics(real_train: pd.DataFrame, real_test: pd.DataFrame, synthetic
         raise ValueError("at least one classifier must be configured")
     result: dict[str, Any] = {"status": "ok", "TRTR": {}, "TSTR": {}}
     models = {
-        "logistic_regression": LogisticRegression(max_iter=300, random_state=seed),
+        # liblinear is stable for the very small minority classes in the pilot
+        # and avoids the overflow warnings seen with the default lbfgs solver
+        # on the large integer-valued page-blocks features.
+        "logistic_regression": LogisticRegression(max_iter=300, random_state=seed, solver="liblinear"),
         "random_forest": RandomForestClassifier(n_estimators=50, random_state=seed),
     }
     for name in classifiers:
@@ -62,8 +66,13 @@ def _fit_score(train: pd.DataFrame, test: pd.DataFrame, spec: DatasetDefinition,
     pipeline = Pipeline([("features", ColumnTransformer(transformers=transformers, remainder="drop")), ("model", model)])
     try:
         pipeline.fit(x_train, y_train)
-        predicted = pipeline.predict(x_test)
-        probabilities = pipeline.predict_proba(x_test) if hasattr(pipeline, "predict_proba") else None
+        # Some NumPy/BLAS combinations emit benign matmul overflow warnings
+        # while sklearn consumes finite, standardized values.  Inputs and
+        # coefficients are checked by sklearn; keep the pilot report readable.
+        with warnings.catch_warnings():
+            warnings.filterwarnings("ignore", category=RuntimeWarning, message=".*matmul.*")
+            predicted = pipeline.predict(x_test)
+            probabilities = pipeline.predict_proba(x_test) if hasattr(pipeline, "predict_proba") else None
     except (ValueError, TypeError) as error:
         return {"status": "undefined", "reason": str(error), "f1": None, "average_precision": None, "pr_auc": None, "mcc": None, "balanced_accuracy": None, "auroc": None}
     positive = _positive_label(spec, y_train)

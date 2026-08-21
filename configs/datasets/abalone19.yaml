@@ -8,16 +8,16 @@ feature_columns: [sex, length, diameter, height, whole_weight, shucked_weight, v
 categorical_columns: [sex]
 numerical_columns: [length, diameter, height, whole_weight, shucked_weight, viscera_weight, shell_weight]
 missing_policy: preserve_as_null
-minority_label: null
+minority_label: positive
 task_type: classification
-source_url: https://sci2s.ugr.es/keel/dataset.php?cod=115
-source_page: KEEL Abalone19 dataset page
+source_url: https://sci2s.ugr.es/keel/dataset/data/imbalanced/abalone19.zip
+source_page: https://sci2s.ugr.es/keel/dataset.php?cod=115
 preprocessing: [none_declared]
 metadata:
-  identity_provenance: verified KEEL dataset identity from the local implementation manifest
-  schema_provenance: expected KEEL declaration; validated against the placed file before use
-  label_provenance: not asserted until the local KEEL file is placed and inspected
-  statistics_provenance: none; no local data is bundled
+  identity_provenance: verified official KEEL Abalone19 archive and dataset page (cod=115)
+  schema_provenance: authoritative KEEL declaration from abalone19.dat; raw file inspected and reconciled
+  label_provenance: authoritative KEEL class declaration in abalone19.dat
+  statistics_provenance: authoritative raw file inspection recorded in data/manifests/Abalone19
 split:
   test_size: 0.2
   seed_offset: 0

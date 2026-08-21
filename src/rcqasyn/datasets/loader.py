@@ -21,6 +21,32 @@ class LoadedDataset:
     missing_count: int
 
 
+@dataclass(frozen=True)
+class KeelAttribute:
+    name: str
+    declaration: str
+    kind: str
+    categories: tuple[str, ...] = ()
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "name": self.name,
+            "declaration": self.declaration,
+            "kind": self.kind,
+            "categories": list(self.categories),
+        }
+
+
+@dataclass(frozen=True)
+class KeelSchema:
+    relation: str | None
+    attributes: tuple[KeelAttribute, ...]
+    inputs: tuple[str, ...]
+    outputs: tuple[str, ...]
+    frame: pd.DataFrame
+    missing_representation: str
+
+
 def load_dataset(spec: DatasetDefinition, registry: DatasetRegistry | None = None) -> LoadedDataset:
     root = registry or DatasetRegistry()
     path = root.resolve_path(spec)
@@ -58,8 +84,18 @@ def _align_declared_columns(frame: pd.DataFrame, columns: list[str]) -> pd.DataF
 
 
 def _read_keel(path: Path) -> pd.DataFrame:
+    return inspect_keel(path).frame
+
+
+def inspect_keel(path: Path) -> KeelSchema:
+    """Parse KEEL declarations and data, retaining metadata for audit reports."""
+
     attributes: list[tuple[str, list[str] | None]] = []
+    declarations: list[str] = []
     rows: list[list[Any]] = []
+    relation: str | None = None
+    inputs: tuple[str, ...] = ()
+    outputs: tuple[str, ...] = ()
     in_data = False
     with path.open("r", encoding="utf-8", errors="replace") as stream:
         for raw_line in stream:
@@ -67,12 +103,21 @@ def _read_keel(path: Path) -> pd.DataFrame:
             if not line or line.startswith("%"):
                 continue
             lower = line.lower()
-            if lower.startswith("@attribute"):
+            if lower.startswith("@relation"):
+                bits = line.split(None, 1)
+                if len(bits) == 2:
+                    relation = bits[1].strip().strip("'\"")
+            elif lower.startswith("@inputs"):
+                inputs = _parse_name_list(line)
+            elif lower.startswith("@outputs"):
+                outputs = _parse_name_list(line)
+            elif lower.startswith("@attribute"):
                 bits = line.split(None, 2)
                 if len(bits) < 3:
                     raise ValueError(f"malformed KEEL @attribute line in {path}: {line}")
                 name = bits[1].strip("'\"")
                 declaration = bits[2].strip()
+                declarations.append(declaration)
                 categories: list[str] | None = None
                 if declaration.startswith("{") and declaration.endswith("}"):
                     categories = [item.strip().strip("'\"") for item in declaration[1:-1].split(",")]
@@ -87,14 +132,36 @@ def _read_keel(path: Path) -> pd.DataFrame:
     if not attributes or not in_data:
         raise ValueError(f"KEEL file {path} needs @attribute declarations and @data")
     frame = pd.DataFrame(rows, columns=[name for name, _ in attributes])
-    for name, categories in attributes:
+    parsed_attributes: list[KeelAttribute] = []
+    for (name, categories), declaration in zip(attributes, declarations):
+        lower_declaration = declaration.lower()
+        kind = "nominal" if categories is not None else "numerical" if any(
+            token in lower_declaration for token in ("integer", "real", "numeric")
+        ) else "declared"
+        parsed_attributes.append(KeelAttribute(name, declaration, kind, tuple(categories or ())))
         if categories is None:
-            numeric = pd.to_numeric(frame[name].replace("?", pd.NA), errors="coerce")
-            if numeric.notna().sum() == frame[name].notna().sum():
+            raw_values = frame[name].replace("?", pd.NA)
+            numeric = pd.to_numeric(raw_values, errors="coerce")
+            if numeric.notna().sum() == raw_values.notna().sum():
                 frame[name] = numeric
+            else:
+                frame[name] = raw_values
         else:
             frame[name] = frame[name].replace("?", pd.NA)
-    return frame
+    return KeelSchema(
+        relation=relation,
+        attributes=tuple(parsed_attributes),
+        inputs=inputs,
+        outputs=outputs,
+        frame=frame,
+        missing_representation="?",
+    )
+
+
+def _parse_name_list(line: str) -> tuple[str, ...]:
+    bits = line.split(None, 1)
+    values = bits[1] if len(bits) == 2 else ""
+    return tuple(item.strip().strip("'\"") for item in values.split(",") if item.strip())
 
 
 def _normalize(frame: pd.DataFrame, spec: DatasetDefinition) -> pd.DataFrame:

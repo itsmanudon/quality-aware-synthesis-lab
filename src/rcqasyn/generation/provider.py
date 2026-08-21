@@ -29,6 +29,46 @@ class ProviderResponse:
     created_at: datetime = field(default_factory=lambda: datetime.now(UTC))
 
 
+@dataclass(frozen=True)
+class ProviderReadiness:
+    ready: bool
+    reason: str
+
+
+def provider_readiness(config: Any) -> ProviderReadiness:
+    """Validate provider configuration without making a provider request.
+
+    Loopback/local-model examples are intentionally treated as placeholders.
+    A real local deployment can opt in only after replacing the placeholder
+    model/base URL and supplying the configured key environment variable.
+    """
+
+    kind = str(getattr(config, "kind", "")).lower()
+    if kind in {"replay", "fixture"}:
+        return ProviderReadiness(True, "replay provider; no network call")
+    if kind not in {"openai", "openai_compatible"}:
+        return ProviderReadiness(False, f"unsupported provider kind {kind!r}")
+    base_url = str(getattr(config, "base_url", "") or "").strip()
+    model = str(getattr(config, "model", "") or "").strip()
+    api_key_env = getattr(config, "api_key_env", None)
+    if not base_url:
+        return ProviderReadiness(False, "base_url is missing")
+    if not model:
+        return ProviderReadiness(False, "model is missing")
+    parsed = urlsplit(base_url)
+    if parsed.scheme not in {"http", "https"} or not parsed.hostname:
+        return ProviderReadiness(False, "base_url must be an absolute HTTP(S) URL")
+    local_host = parsed.hostname.lower() in {"127.0.0.1", "localhost", "::1"} or parsed.hostname.endswith(".local")
+    placeholder_model = model.lower() in {"local-model", "local-judge-model", "replay", "placeholder"}
+    if local_host and placeholder_model:
+        return ProviderReadiness(False, "loopback endpoint and placeholder model are not real provider configuration")
+    if not api_key_env:
+        return ProviderReadiness(False, "api_key_env is missing")
+    if not os.environ.get(str(api_key_env)):
+        return ProviderReadiness(False, f"configured API key environment variable is missing: {api_key_env}")
+    return ProviderReadiness(True, "base URL, model, and configured key environment variable are present")
+
+
 class ReplayProvider:
     def __init__(self, fixture_path: Path, *, model: str = "replay", provider: str = "replay") -> None:
         self.fixture_path = Path(fixture_path)

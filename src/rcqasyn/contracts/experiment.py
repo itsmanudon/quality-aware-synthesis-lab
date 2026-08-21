@@ -33,7 +33,9 @@ class GenerationPlan(ContractModel):
     class_strategy: NonEmptyStr
     class_quotas: tuple[ClassQuota, ...] = ()
     reference_example_count: NonNegativeInt = 0
+    reference_examples_per_class: NonNegativeInt | None = None
     reference_examples_enabled: bool = True
+    reference_policy: NonEmptyStr = "total_count"
     source_profile_id: NonEmptyStr
     source_profile_hash: NonEmptyStr
     generator_id: NonEmptyStr
@@ -130,12 +132,21 @@ class JudgeResult(ContractModel):
 
 class FailureAggregate(ContractModel):
     parse_failure: NonNegativeInt = 0
+    schema_failure: NonNegativeInt = 0
+    schema_failures: NonNegativeInt = 0
     missing_field: NonNegativeInt = 0
     category_invalid: NonNegativeInt = 0
+    invalid_category: NonNegativeInt = 0
     target_wrong: NonNegativeInt = 0
+    target_mismatch: NonNegativeInt = 0
+    range_warning: NonNegativeInt = 0
+    range_warnings: NonNegativeInt = 0
     duplicate: NonNegativeInt = 0
+    b2_rejection: NonNegativeInt = 0
+    b2_rejections: NonNegativeInt = 0
     deterministic_structural_rejection: NonNegativeInt = 0
     judge_rejection: NonNegativeInt = 0
+    judge_rejections: NonNegativeInt = 0
     judge_malformed: NonNegativeInt = 0
     judge_provider_failure: NonNegativeInt = 0
 

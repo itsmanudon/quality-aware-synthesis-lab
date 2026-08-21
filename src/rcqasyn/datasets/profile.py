@@ -34,6 +34,9 @@ class DatasetProfile(ContractModel):
     reference_examples: tuple[dict[str, JsonValue], ...] = ()
     reference_indices: tuple[NonNegativeInt, ...] = ()
     reference_enabled: bool = True
+    reference_policy: NonEmptyStr = "total_count"
+    reference_example_count: NonNegativeInt = 0
+    reference_examples_per_class: NonNegativeInt | None = None
     config_version: NonEmptyStr = "profile-v1"
     metadata: Metadata = Field(default_factory=dict)
 
@@ -43,6 +46,7 @@ def build_profile(
     split: SplitManifest,
     *,
     reference_example_count: int = 3,
+    reference_examples_per_class: int | None = None,
     seed: int = 0,
     enabled: bool = True,
 ) -> DatasetProfile:
@@ -67,21 +71,32 @@ def build_profile(
     total = len(target)
     class_proportions = {label: count / total for label, count in class_counts.items()} if total else {}
     reference_indices: list[int] = []
-    if enabled and reference_example_count > 0:
-        for label in sorted(class_counts):
-            candidates = [i for i in split.train_indices if str(target.loc[i]) == label]
-            candidates.sort(key=lambda i: hashlib.sha256(f"{seed}:{label}:{i}".encode()).hexdigest())
-            if candidates:
-                reference_indices.append(candidates[0])
-        remaining = [i for i in split.train_indices if i not in reference_indices]
-        remaining.sort(key=lambda i: hashlib.sha256(f"{seed}:reference:{i}".encode()).hexdigest())
-        reference_indices.extend(remaining)
-        reference_indices = reference_indices[:reference_example_count]
+    policy = "per_class" if reference_examples_per_class is not None else "total_count"
+    if enabled and (reference_examples_per_class or reference_example_count) > 0:
+        if reference_examples_per_class is not None:
+            for label in sorted(class_counts):
+                candidates = [i for i in split.train_indices if str(target.loc[i]) == label]
+                candidates.sort(key=lambda i: hashlib.sha256(f"{seed}:{label}:{i}".encode()).hexdigest())
+                reference_indices.extend(candidates[:reference_examples_per_class])
+        else:
+            # Legacy behavior is retained for old configs: ensure class
+            # coverage first, then fill the requested total deterministically.
+            for label in sorted(class_counts):
+                candidates = [i for i in split.train_indices if str(target.loc[i]) == label]
+                candidates.sort(key=lambda i: hashlib.sha256(f"{seed}:{label}:{i}".encode()).hexdigest())
+                if candidates:
+                    reference_indices.append(candidates[0])
+            remaining = [i for i in split.train_indices if i not in reference_indices]
+            remaining.sort(key=lambda i: hashlib.sha256(f"{seed}:reference:{i}".encode()).hexdigest())
+            reference_indices.extend(remaining)
+            reference_indices = reference_indices[:reference_example_count]
     examples = tuple(_json_record(dataset.frame.loc[index].to_dict()) for index in reference_indices)
     profile_payload = {
         "dataset_id": spec.dataset_id, "dataset_fingerprint": dataset.fingerprint,
         "split_fingerprint": split.to_dict()["split_fingerprint"], "train_indices": list(split.train_indices),
         "reference_indices": reference_indices, "reference_enabled": enabled,
+        "reference_policy": policy, "reference_example_count": len(reference_indices),
+        "reference_examples_per_class": reference_examples_per_class,
         "config_version": "profile-v1",
     }
     profile_id = "profile-" + hashlib.sha256(json.dumps(profile_payload, sort_keys=True).encode()).hexdigest()[:16]
@@ -104,6 +119,9 @@ def build_profile(
         reference_examples=examples,
         reference_indices=tuple(reference_indices),
         reference_enabled=enabled,
+        reference_policy=policy,
+        reference_example_count=len(reference_indices),
+        reference_examples_per_class=reference_examples_per_class,
     )
 
 

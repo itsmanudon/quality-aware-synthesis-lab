@@ -10,9 +10,21 @@ from pydantic import BaseModel
 
 from rcqasyn.config import discover_project_root, load_config
 from rcqasyn.config.experiment import load_experiment_config
-from rcqasyn.datasets import DatasetRegistry, build_profile, load_dataset, make_split
-from rcqasyn.experiments import run_experiment
+from rcqasyn.datasets import (
+    DatasetRegistry,
+    assert_no_test_leakage,
+    build_dataset_report,
+    build_profile,
+    inspect_dataset_schema,
+    load_dataset,
+    make_split,
+    reconcile_schema,
+    record_acquisition,
+    write_acquisition,
+)
+from rcqasyn.experiments import cross_dataset_comparison, run_experiment
 from rcqasyn.literature import build_inventory
+from rcqasyn.metrics import utility_metrics
 from rcqasyn.storage.artifacts import read_json, write_json
 
 app = typer.Typer(help="RC-QASyn research foundation CLI.")
@@ -120,6 +132,16 @@ def datasets_inspect(dataset_id: str, root: Path | None = typer.Option(None, "--
         return
     dataset = load_dataset(spec, registry)
     split = make_split(dataset, 42)
+    if spec.format.lower() in {"keel_dat", "dat"}:
+        try:
+            raw_report = inspect_dataset_schema(path, spec)
+            print(f"Relation: {raw_report['relation'] or '<undeclared>'}")
+            print(f"Raw declarations: attributes={len(raw_report['attributes'])}, inputs={len(raw_report['inputs'])}, outputs={len(raw_report['outputs'])}")
+            print(f"Raw missing: representation={raw_report['missing_representation']}; cells={raw_report['missing_count']}")
+            reconcile_schema(path, spec)
+            print("Schema reconciliation: OK")
+        except ValueError as error:
+            print(f"Schema reconciliation: ERROR ({error})")
     print(f"Fingerprint: {dataset.fingerprint}")
     print(f"Rows: {len(dataset.frame)}; missing cells: {dataset.missing_count}")
     print(f"Classes: {dataset.frame[spec.target_column].astype(str).value_counts().sort_index().to_dict()}")
@@ -134,8 +156,24 @@ def datasets_prepare(dataset_id: str, root: Path | None = typer.Option(None, "--
     try:
         spec = registry.get(dataset_id)
         dataset = load_dataset(spec, registry)
+        raw_schema = None
+        if spec.format.lower() in {"keel_dat", "dat"}:
+            raw_schema = inspect_dataset_schema(dataset.path, spec)
+            reconcile_schema(dataset.path, spec)
         split = make_split(dataset, seed)
         profile = build_profile(dataset, split, seed=seed)
+        assert_no_test_leakage(dataset, split, profile)
+        acquisition_path = project_root / "data" / "manifests" / dataset_id / "source.json"
+        legacy_acquisition_path = project_root / "data" / "manifests" / dataset_id / "acquisition.json"
+        acquisition = None
+        if acquisition_path.is_file():
+            import json
+
+            acquisition = json.loads(acquisition_path.read_text(encoding="utf-8"))
+        elif legacy_acquisition_path.is_file():
+            import json
+
+            acquisition = json.loads(legacy_acquisition_path.read_text(encoding="utf-8"))
         destination = project_root / "data" / "manifests" / dataset_id
         destination.mkdir(parents=True, exist_ok=True)
         _write_reusable_manifest(destination / "dataset_manifest.json", {
@@ -157,6 +195,20 @@ def datasets_prepare(dataset_id: str, root: Path | None = typer.Option(None, "--
         })
         _write_reusable_manifest(destination / "split_manifest.json", split.to_dict())
         _write_reusable_manifest(destination / "profile.json", profile.model_dump(mode="json"))
+        if raw_schema is not None:
+            _write_reusable_manifest(destination / "raw_schema.json", raw_schema)
+        report = build_dataset_report(dataset, split)
+        if acquisition:
+            report["acquisition"] = acquisition
+            report["archive_sha256"] = acquisition.get("sha256")
+            report["extracted_dataset_sha256"] = acquisition.get("extracted_sha256")
+        _write_reusable_manifest(destination / "dataset_report.json", report)
+        _write_reusable_manifest(destination / "leakage_assertions.json", {
+            "train_test_disjoint": True,
+            "train_test_cover_all_rows": True,
+            "profile_train_only": True,
+            "reference_train_only": True,
+        })
     except (OSError, ValueError, KeyError) as error:
         typer.echo(f"error: {error}", err=True)
         raise typer.Exit(code=1) from error
@@ -168,8 +220,106 @@ def _write_reusable_manifest(path: Path, value: object | BaseModel) -> None:
         expected = value.model_dump(mode="json") if isinstance(value, BaseModel) else value
         if read_json(path) == expected:
             return
+        # Profiles are deterministic artifacts produced by this CLI.  Permit
+        # the schema-auditing fields added in M1.1 to refresh an earlier
+        # profile-v1 artifact, while continuing to refuse arbitrary manifest
+        # overwrites.
+        existing = read_json(path)
+        generated_profile = path.name == "profile.json" and isinstance(existing, dict) and str(existing.get("profile_id", "")).startswith("profile-")
+        generated_trtr = path.parent.name == "reports" and path.name.startswith("trtr-") and isinstance(existing, dict) and "TRTR" in existing and "seed" in existing
+        generated_cross_dataset = path.parent.name == "reports" and path.name == "cross-dataset-comparison.json" and isinstance(existing, dict) and str(existing.get("schema_version", "")).startswith("m1-cross-dataset-")
+        if generated_profile or generated_trtr or generated_cross_dataset:
+            write_json(path, value, overwrite=True)
+            return
         raise FileExistsError(f"existing manifest is incompatible; refusing overwrite: {path}")
     write_json(path, value)
+
+
+@datasets_app.command("record-acquisition")
+def datasets_record_acquisition(
+    dataset_id: str,
+    root: Path | None = typer.Option(None, "--root", help="Project root."),  # noqa: B008
+    source_url: str | None = typer.Option(None, "--source-url", help="Exact authoritative source URL."),
+    overwrite: bool = typer.Option(False, "--overwrite", help="Replace a manifest generated by this task."),
+) -> None:
+    """Record size, SHA-256, and UTC acquisition time for an already acquired raw file."""
+
+    project_root = _root_option(root)
+    registry = DatasetRegistry(project_root=project_root)
+    try:
+        spec = registry.get(dataset_id)
+        raw_path = registry.resolve_path(spec)
+        record = record_acquisition(spec, raw_path, source_url=source_url)
+        destination = project_root / "data" / "manifests" / dataset_id / "source.json"
+        write_acquisition(destination, record, overwrite=overwrite)
+    except (OSError, ValueError, KeyError) as error:
+        typer.echo(f"error: {error}", err=True)
+        raise typer.Exit(code=1) from error
+    print(f"Recorded acquisition for {dataset_id}: {destination}")
+
+
+@baselines_app.command("trtr")
+def baselines_trtr(
+    dataset_id: str,
+    root: Path | None = typer.Option(None, "--root", help="Project root."),  # noqa: B008
+    seed: int = typer.Option(42, "--seed"),
+    output: Path | None = typer.Option(None, "--output", help="JSON report path."),  # noqa: B008
+) -> None:
+    """Run the real-train/real-test pilot for both configured classifiers."""
+
+    project_root = _root_option(root)
+    registry = DatasetRegistry(project_root=project_root)
+    try:
+        spec = registry.get(dataset_id)
+        dataset = load_dataset(spec, registry)
+        split = make_split(dataset, seed)
+        profile = build_profile(dataset, split, seed=seed)
+        assert_no_test_leakage(dataset, split, profile)
+        train = dataset.frame.loc[list(split.train_indices)]
+        test = dataset.frame.loc[list(split.test_indices)]
+        result = utility_metrics(train, test, train.copy(), spec, seed=seed)["TRTR"]
+        report = build_dataset_report(dataset, split)
+        report.update({"seed": seed, "TRTR": result})
+        destination = output or project_root / "artifacts" / "reports" / f"trtr-{dataset_id}-{seed}.json"
+        if not destination.is_absolute():
+            destination = project_root / destination
+        _write_reusable_manifest(destination, report)
+    except (OSError, ValueError, KeyError) as error:
+        typer.echo(f"error: {error}", err=True)
+        raise typer.Exit(code=1) from error
+    print(f"TRTR report: {destination}")
+    for classifier, metrics in result.items():
+        print(f"{classifier}: {metrics}")
+
+
+@baselines_app.command("compare")
+def baselines_compare(
+    run_dirs: list[Path] = typer.Argument(..., help="Completed run directories to compare."),  # noqa: B008
+    root: Path | None = typer.Option(None, "--root", help="Project root."),  # noqa: B008
+    output: Path | None = typer.Option(None, "--output", help="JSON report path."),  # noqa: B008
+) -> None:
+    """Write a machine-only cross-dataset comparison for completed runs."""
+
+    project_root = _root_option(root)
+    try:
+        comparisons = []
+        for run_dir in run_dirs:
+            path = run_dir if run_dir.is_absolute() else project_root / run_dir
+            import json
+
+            value = json.loads((path / "comparison.json").read_text(encoding="utf-8"))
+            if not isinstance(value, dict):
+                raise TypeError(f"comparison must be a JSON object: {path / 'comparison.json'}")
+            comparisons.append(value)
+        report = cross_dataset_comparison(comparisons)
+        destination = output or project_root / "artifacts" / "reports" / "cross-dataset-comparison.json"
+        if not destination.is_absolute():
+            destination = project_root / destination
+        _write_reusable_manifest(destination, report)
+    except (OSError, TypeError, ValueError) as error:
+        typer.echo(f"error: {error}", err=True)
+        raise typer.Exit(code=1) from error
+    print(f"Cross-dataset report: {destination}")
 
 
 @baselines_app.command("run")

@@ -4,20 +4,20 @@ raw_path: data/raw/page-blocks0/page-blocks0.dat
 accepted_filenames: [page-blocks0.dat]
 format: keel_dat
 target_column: class
-feature_columns: [height, length, area, eccen, p_black, p_and, mean_tr, blackpix, blackand, wb_trans]
+feature_columns: [height, Lenght, area, eccen, p_black, p_and, mean_tr, blackpix, blackand, wb_trans]
 categorical_columns: []
-numerical_columns: [height, length, area, eccen, p_black, p_and, mean_tr, blackpix, blackand, wb_trans]
+numerical_columns: [height, Lenght, area, eccen, p_black, p_and, mean_tr, blackpix, blackand, wb_trans]
 missing_policy: preserve_as_null
-minority_label: null
+minority_label: positive
 task_type: classification
-source_url: https://sci2s.ugr.es/keel/category.php?cat=imb&order=insR
-source_page: KEEL imbalanced classification listing
+source_url: https://sci2s.ugr.es/keel/dataset/data/imbalanced/page-blocks0.zip
+source_page: https://sci2s.ugr.es/keel/dataset.php?cod=147
 preprocessing: [none_declared]
 metadata:
-  identity_provenance: verified KEEL dataset identity from the local implementation manifest
-  schema_provenance: expected KEEL declaration; validated against the placed file before use
-  label_provenance: not asserted until the local KEEL file is placed and inspected
-  statistics_provenance: none; no local data is bundled
+  identity_provenance: verified official KEEL page-blocks0 archive and dataset page (cod=147)
+  schema_provenance: authoritative KEEL declaration from page-blocks0.dat; raw file inspected and reconciled
+  label_provenance: authoritative KEEL class declaration in page-blocks0.dat
+  statistics_provenance: authoritative raw file inspection recorded in data/manifests/page-blocks0
 split:
   test_size: 0.2
   seed_offset: 0
