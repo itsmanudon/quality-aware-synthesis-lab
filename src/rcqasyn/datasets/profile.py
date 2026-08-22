@@ -40,6 +40,33 @@ class DatasetProfile(ContractModel):
     config_version: NonEmptyStr = "profile-v1"
     metadata: Metadata = Field(default_factory=dict)
 
+    def to_generation_context(self) -> dict[str, Any]:
+        """Return the bounded TRAIN-only view intended for provider prompts.
+
+        The full profile remains the authoritative artifact and retains split
+        indices/fingerprints for lineage.  Generation does not need those
+        implementation details: serializing them scales prompt size with the
+        number of TRAIN rows and consumes the model's output budget.
+        """
+
+        fields = {
+            column: {
+                "type": self.column_types.get(column, "unknown"),
+                "missing_rate": self.missing_rates.get(column, 0.0),
+            }
+            for column in self.feature_columns
+        }
+        return {
+            "dataset_id": self.dataset_id,
+            "fields": fields,
+            "target_column": self.target_column,
+            "categorical_domains": self.domains,
+            "numeric_summary": self.numeric_summary,
+            "class_counts": self.class_counts,
+            "class_proportions": self.class_proportions,
+            "reference_examples": self.reference_examples,
+        }
+
 
 def build_profile(
     dataset: LoadedDataset,

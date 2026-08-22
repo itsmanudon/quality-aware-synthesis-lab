@@ -37,10 +37,12 @@ class SingleLLMJudge:
         self.malformed_policy = malformed_policy
 
     def evaluate(self, *, prompt: str, run_id: str, candidate_id: str, request_index: int,
-                 seed: int | None, max_tokens: int) -> JudgeEvaluation:
+                 seed: int | None, max_tokens: int, response_format: dict[str, object] | None = None,
+                 reasoning_effort: str | None = None) -> JudgeEvaluation:
         response = self.provider.call(
             role="judge", prompt=prompt, request_index=request_index,
             temperature=0.0, seed=seed, max_tokens=max_tokens,
+            response_format=response_format, reasoning_effort=reasoning_effort,
         )
         call_id = response.call_id or f"judge-{request_index}"
         try:

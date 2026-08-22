@@ -2,6 +2,7 @@ from .analysis import (
     HUMAN_FAILURE_TAXONOMY,
     analyze_human_review,
     cross_dataset_comparison,
+    export_disagreements,
     export_human_review,
     machine_failure_report,
 )
@@ -12,6 +13,7 @@ __all__ = [
     "BaselineRunResult",
     "analyze_human_review",
     "cross_dataset_comparison",
+    "export_disagreements",
     "export_human_review",
     "machine_failure_report",
     "run_experiment",

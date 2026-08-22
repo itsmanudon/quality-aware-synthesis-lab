@@ -17,31 +17,39 @@ class ParsedCandidates:
 
 def parse_generation_response(raw: str, *, run_id: str, call_id: str, generator_id: str, generator_version: str,
                               prompt_version: str | None, seed: int | None,
-                              requested_class: str | None = None) -> ParsedCandidates:
+                              requested_class: str | None = None,
+                              requested_count: int | None = None,
+                              transport_version: str = "v1") -> ParsedCandidates:
     now = datetime.now(UTC)
     try:
         parsed = _decode_json(raw)
     except ValueError as error:
-        return ParsedCandidates((), (_failure(run_id, call_id, raw, str(error), False, None, now),))
+        return ParsedCandidates((), (_failure(run_id, call_id, raw, str(error), False, None, now, requested_class, requested_count, transport_version),))
+    if isinstance(parsed, dict) and isinstance(parsed.get("records"), list):
+        parsed = parsed["records"]
     if not isinstance(parsed, list):
-        return ParsedCandidates((), (_failure(run_id, call_id, raw, "expected a JSON array", False, None, now),))
+        expected = "JSON object with a records array" if transport_version == "v2" else "JSON array"
+        return ParsedCandidates((), (_failure(run_id, call_id, raw, f"expected {expected}", False, None, now, requested_class, requested_count, transport_version),))
     candidates: list[CandidateRecord] = []
     failures: list[ParseFailureEvent] = []
     for index, item in enumerate(parsed):
         if not isinstance(item, dict):
-            failures.append(_failure(run_id, call_id, raw, "array item must be an object", True, index, now))
+            failures.append(_failure(run_id, call_id, raw, "array item must be an object", True, index, now, requested_class, requested_count, transport_version))
             continue
         try:
             candidates.append(CandidateRecord(
                 record_id=f"{call_id}-item-{index}", version=1, data=_jsonable(item), raw_output=raw,
                 generator_id=generator_id, generator_version=generator_version, prompt_version=prompt_version,
                 seed=seed, created_at=now,
-                metadata={"provider_call_id": call_id, "item_index": index, **(
-                    {"requested_class": requested_class} if requested_class is not None else {}
-                )},
+                metadata={
+                    "provider_call_id": call_id,
+                    "item_index": index,
+                    **({"requested_class": requested_class} if requested_class is not None else {}),
+                    **({"requested_count": requested_count} if requested_count is not None else {}),
+                },
             ))
         except (TypeError, ValueError) as error:
-            failures.append(_failure(run_id, call_id, raw, f"candidate contract error: {error}", True, index, now))
+            failures.append(_failure(run_id, call_id, raw, f"candidate contract error: {error}", True, index, now, requested_class, requested_count, transport_version))
     return ParsedCandidates(tuple(candidates), tuple(failures))
 
 
@@ -89,11 +97,16 @@ def _decode_json(raw: str) -> Any:
         raise ValueError(f"malformed JSON: {error.msg}") from error
 
 
-def _failure(run_id: str, call_id: str, raw: str, error: str, recoverable: bool, item_index: int | None, now: datetime) -> ParseFailureEvent:
+def _failure(run_id: str, call_id: str, raw: str, error: str, recoverable: bool, item_index: int | None, now: datetime,
+             requested_class: str | None = None, requested_count: int | None = None, transport_version: str = "v1") -> ParseFailureEvent:
     suffix = f"-{item_index}" if item_index is not None else ""
     return ParseFailureEvent(
-        event_id=f"parse-{call_id}{suffix}", run_id=run_id, call_id=call_id, parser_version="json-array-v1",
+        event_id=f"parse-{call_id}{suffix}", run_id=run_id, call_id=call_id,
+        parser_version="json-wrapper-v2" if transport_version == "v2" else "json-array-v1",
         raw_output=raw, error=error, recoverable=recoverable, item_index=item_index, created_at=now,
+        metadata={key: value for key, value in (
+            ("requested_class", requested_class), ("requested_count", requested_count)
+        ) if value is not None},
     )
 
 

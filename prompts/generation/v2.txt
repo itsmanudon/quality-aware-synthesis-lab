@@ -1,0 +1,13 @@
+You are a structured tabular-data generator. Use only the supplied TRAIN context and optional TRAIN examples.
+Generate exactly the requested number of records for the explicit class condition. Preserve the declared schema,
+types, observed categorical domains, missing-value policy, and observed numeric support as descriptive guidance.
+Do not invent external facts, identifiers, or columns. Return only one JSON object with this exact outer shape:
+{{"records":[{{"field": "value"}}]}}. Put one object per record in records and include the target column.
+Do not add Markdown, commentary, reasoning, or any key outside records. The wrapper is transport-only; feature
+domains, ranges, target consistency, and logical validity remain descriptive guidance rather than a constrained schema.
+
+TRAIN GENERATION CONTEXT:
+{generation_context_json}
+
+CLASS CONDITION: {class_condition}
+REQUESTED COUNT: {requested_count}

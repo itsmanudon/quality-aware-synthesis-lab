@@ -69,6 +69,24 @@ REVIEW_CATEGORIES = (
     "B2 rejected+B3 accepted",
 )
 
+# This export is intentionally machine-only.  It contains every parseable
+# candidate for which deterministic B2 and single-judge B3 disagree, without
+# adjudication or an inferred validity label.
+DISAGREEMENT_COLUMNS = (
+    "run_id",
+    "dataset_id",
+    "record_id",
+    "candidate_version",
+    "target_class",
+    "b2_status",
+    "b2_reasons",
+    "b3_status",
+    "b3_score",
+    "b3_reasons",
+    "candidate_json",
+    "raw_output",
+)
+
 
 def export_human_review(run_dir: Path, *, overwrite: bool = False, seed: int = 42, cap_per_category: int = 5) -> Path:
     """Export a deterministic, bounded review sample for each available category."""
@@ -147,6 +165,54 @@ def export_human_review(run_dir: Path, *, overwrite: bool = False, seed: int = 4
     return destination
 
 
+def export_disagreements(run_dir: Path, *, overwrite: bool = False) -> Path:
+    """Export all B2/B3 status disagreements without adjudication."""
+
+    run_dir = Path(run_dir)
+    manifest = _read_json(run_dir / "manifest.json")
+    raw = _read_jsonl(run_dir / "candidates_raw.jsonl")
+    b2 = {item["candidate_id"]: item for item in _read_jsonl(run_dir / "baselines" / "b2" / "decisions.jsonl")}
+    b3 = {item["candidate_id"]: item for item in _read_jsonl(run_dir / "baselines" / "b3" / "decisions.jsonl")}
+    evidence_by_candidate: dict[str, list[dict[str, Any]]] = {}
+    for item in _read_jsonl(run_dir / "baselines" / "b2" / "evidence.jsonl"):
+        evidence_by_candidate.setdefault(str(item.get("candidate_id", "")), []).append(item)
+    judge_results = {str(item.get("candidate_id", "")): item for item in _read_jsonl(run_dir / "baselines" / "b3" / "judge_results.jsonl")}
+    rows: list[dict[str, str]] = []
+    for candidate in raw:
+        candidate_id = str(candidate["record_id"])
+        b2_decision = b2.get(candidate_id, {"accepted": False, "reason": "missing decision"})
+        b3_decision = b3.get(candidate_id, {"accepted": False, "reason": "missing decision"})
+        b2_ok = bool(b2_decision.get("accepted"))
+        b3_ok = bool(b3_decision.get("accepted"))
+        if b2_ok == b3_ok:
+            continue
+        judge_result = judge_results.get(candidate_id, {})
+        rows.append({
+            "run_id": str(manifest.get("run_id", run_dir.name)),
+            "dataset_id": str(manifest.get("dataset_id", "")),
+            "record_id": candidate_id,
+            "candidate_version": str(candidate.get("version", "")),
+            "target_class": _target_class(candidate.get("data", {})),
+            "b2_status": "accepted" if b2_ok else "rejected",
+            "b2_reasons": _b2_reasons(evidence_by_candidate.get(candidate_id, []), str(b2_decision.get("reason", ""))),
+            "b3_status": "accepted" if b3_ok else "rejected",
+            "b3_score": "" if judge_result.get("score") is None else str(judge_result.get("score")),
+            "b3_reasons": _join_reasons(judge_result.get("reasons")) or str(b3_decision.get("reason", "")),
+            "candidate_json": json.dumps(candidate.get("data", {}), sort_keys=True, separators=(",", ":")),
+            "raw_output": str(candidate.get("raw_output") or ""),
+        })
+    rows.sort(key=lambda row: row["record_id"])
+    destination = run_dir / "b2_b3_disagreements.csv"
+    if destination.exists() and not overwrite:
+        raise FileExistsError(f"refusing to overwrite existing artifact: {destination}")
+    destination.parent.mkdir(parents=True, exist_ok=True)
+    with destination.open("w", encoding="utf-8", newline="") as stream:
+        writer = csv.DictWriter(stream, fieldnames=list(DISAGREEMENT_COLUMNS))
+        writer.writeheader()
+        writer.writerows(rows)
+    return destination
+
+
 def analyze_human_review(path: Path) -> dict[str, Any]:
     """Compute B3 false accepts/rejects only from populated human fields."""
 
@@ -206,6 +272,9 @@ def machine_failure_report(comparison: dict[str, Any]) -> dict[str, Any]:
         "failure_aggregation": comparison.get("failure_aggregation", {}),
         "failure_matrix": comparison.get("failure_aggregation", {}),
         "minority_analysis": comparison.get("minority_analysis", {}),
+        "metadata": comparison.get("metadata", {}),
+        "failure_categories": comparison.get("failure_categories", ()),
+        "baseline_comparison": comparison.get("baseline_comparison", []),
         "baselines": {
             name: {
                 "requested": value.get("requested"),
@@ -223,8 +292,15 @@ def cross_dataset_comparison(comparisons: Iterable[dict[str, Any]]) -> dict[str,
     """Build a machine-only comparison table from completed run comparisons."""
 
     rows: list[dict[str, Any]] = []
+    failure_matrix: dict[str, dict[str, Any]] = {}
+    baseline_tables: dict[str, list[dict[str, Any]]] = {}
+    categories = (
+        "PARSE", "SCHEMA", "MISSING_FIELD", "INVALID_CATEGORY", "TARGET_MISMATCH",
+        "OBSERVED_RANGE_WARNING", "EXACT_DUPLICATE", "B2_REJECTED", "B3_REJECTED",
+        "B3_MALFORMED", "PROVIDER_ERROR",
+    )
     for comparison in comparisons:
-        failure_matrix = comparison.get("failure_aggregation", {})
+        row_failure_matrix = comparison.get("failure_aggregation", {})
         tstr_pr_auc = {
             name: {
                 classifier: {
@@ -241,7 +317,7 @@ def cross_dataset_comparison(comparisons: Iterable[dict[str, Any]]) -> dict[str,
             "raw_pool_count": comparison.get("raw_pool_count"),
             "parse_success_rate": comparison.get("parse_success_rate"),
             "failure_aggregation": comparison.get("failure_aggregation", {}),
-            "failure_matrix": failure_matrix,
+            "failure_matrix": row_failure_matrix,
             "tstr_pr_auc": tstr_pr_auc,
             "minority_analysis": comparison.get("minority_analysis", {}),
             "baselines": {
@@ -250,8 +326,35 @@ def cross_dataset_comparison(comparisons: Iterable[dict[str, Any]]) -> dict[str,
             },
             "human_review": "separate/not_evaluable_until_adjudicated",
         })
+        dataset_id = str(comparison.get("dataset_id", ""))
+        aggregation = comparison.get("failure_aggregation", {})
+        global_failures = aggregation.get("global", {})
+        if not global_failures:
+            aliases = {
+                "PARSE": "parse_failure", "SCHEMA": "schema_failure", "MISSING_FIELD": "missing_field",
+                "INVALID_CATEGORY": "invalid_category", "TARGET_MISMATCH": "target_mismatch",
+                "OBSERVED_RANGE_WARNING": "range_warning", "EXACT_DUPLICATE": "duplicate",
+                "B2_REJECTED": "b2_rejection", "B3_REJECTED": "judge_rejection",
+                "B3_MALFORMED": "judge_malformed", "PROVIDER_ERROR": "judge_provider_failure",
+            }
+            global_failures = {
+                category: {
+                    "occurrences": int(aggregation.get(alias, 0)),
+                    "unique_affected_record_count": int(aggregation.get(alias, 0)),
+                    "denominator": comparison.get("requested"),
+                    "rate": (int(aggregation.get(alias, 0)) / comparison["requested"] if comparison.get("requested") else None),
+                }
+                for category, alias in aliases.items()
+            }
+        for category in categories:
+            failure_matrix.setdefault(category, {})[dataset_id] = global_failures.get(category, {})
+        baseline_tables[dataset_id] = comparison.get("baseline_comparison", [])
     rows.sort(key=lambda row: str(row.get("dataset_id", "")))
-    return {"schema_version": "m1-cross-dataset-v1", "status": "machine_only", "no_significance_claim": True, "datasets": rows}
+    return {
+        "schema_version": "m1-cross-dataset-v1", "status": "machine_only", "no_significance_claim": True,
+        "failure_categories": list(categories), "failure_matrix": failure_matrix,
+        "baseline_comparison_tables": baseline_tables, "datasets": rows,
+    }
 
 
 def _b2_reasons(evidence: list[dict[str, Any]], fallback: str) -> str:

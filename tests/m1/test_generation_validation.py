@@ -1,5 +1,6 @@
 from datetime import UTC, datetime
 from pathlib import Path
+from typing import Self
 
 import pytest
 
@@ -16,7 +17,12 @@ from rcqasyn.config.experiment import JudgeConfig
 from rcqasyn.contracts import CandidateRecord, Severity, Verdict
 from rcqasyn.datasets import DatasetRegistry, build_profile, load_dataset, make_split
 from rcqasyn.generation.parser import parse_generation_response
-from rcqasyn.generation.provider import ProviderResponse, ReplayGenerator, _sanitized_endpoint
+from rcqasyn.generation.provider import (
+    OpenAICompatibleProvider,
+    ProviderResponse,
+    ReplayGenerator,
+    _sanitized_endpoint,
+)
 
 
 def _profile() -> tuple[object, object]:
@@ -73,6 +79,68 @@ def test_parser_handles_valid_malformed_wrong_shape_partial_and_raw_retention() 
     )
     assert len(partial.candidates) == 1 and partial.failures[0].item_index == 1
     assert partial.candidates[0].raw_output == '[{"x": 1}, 5]'
+    wrapped = parse_generation_response(
+        '{"records":[{"x": 1}]}', run_id="r", call_id="c5", generator_id="g", generator_version="2",
+        prompt_version="generation-v2", seed=1, requested_class="yes", requested_count=1,
+        transport_version="v2",
+    )
+    assert len(wrapped.candidates) == 1
+    assert wrapped.candidates[0].metadata["requested_count"] == 1
+
+
+def test_compact_generation_context_does_not_scale_with_train_indices() -> None:
+    registry = DatasetRegistry(project_root=Path.cwd())
+    dataset = load_dataset(registry.get("dev-small"), registry)
+    split = make_split(dataset, 42)
+    profile = build_profile(dataset, split, reference_examples_per_class=2, seed=42)
+    small = profile.model_copy(update={"train_indices": tuple(range(300)), "train_row_count": 300})
+    large = profile.model_copy(update={"train_indices": tuple(range(5000)), "train_row_count": 5000})
+    import json
+    small_size = len(json.dumps(small.to_generation_context(), sort_keys=True, separators=(",", ":")))
+    large_size = len(json.dumps(large.to_generation_context(), sort_keys=True, separators=(",", ":")))
+    assert small_size == large_size
+    assert "train_indices" not in small.to_generation_context()
+    assert "reference_examples" in small.to_generation_context()
+
+
+def test_openai_compatible_transport_fields_are_propagated_without_network(monkeypatch: pytest.MonkeyPatch) -> None:
+    import json
+    import urllib.request
+
+    captured: dict[str, object] = {}
+
+    class FakeResponse:
+        def __enter__(self) -> Self:
+            return self
+
+        def __exit__(self, *args: object) -> None:
+            return None
+
+        def read(self) -> bytes:
+            return json.dumps({
+                "id": "call", "choices": [{"index": 0, "finish_reason": "stop", "message": {"role": "assistant", "content": '{"records":[]}'}}],
+                "usage": {"prompt_tokens": 10, "completion_tokens": 2, "total_tokens": 12},
+            }).encode()
+
+    def fake_urlopen(request: urllib.request.Request, *, timeout: float) -> FakeResponse:
+        captured["timeout"] = timeout
+        captured["payload"] = json.loads(request.data.decode() if request.data else "{}")
+        return FakeResponse()
+
+    monkeypatch.setattr(urllib.request, "urlopen", fake_urlopen)
+    provider = OpenAICompatibleProvider(base_url="http://127.0.0.1:11434/v1", model="gemma4:e4b", timeout=120)
+    response = provider.call(
+        role="generation", prompt="compact", temperature=0.7, seed=42, max_tokens=2048,
+        response_format={"type": "json_object"}, reasoning_effort="none",
+    )
+    payload = captured["payload"]
+    assert captured["timeout"] == 120
+    assert isinstance(payload, dict)
+    assert payload["max_tokens"] == 2048
+    assert payload["response_format"] == {"type": "json_object"}
+    assert payload["reasoning_effort"] == "none"
+    assert response.finish_reason == "stop"
+    assert response.input_tokens == 10 and response.total_tokens == 12
 
 
 def test_public_validators_emit_expected_evidence_and_range_is_warn() -> None:

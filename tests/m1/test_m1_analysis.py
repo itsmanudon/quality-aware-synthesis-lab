@@ -1,17 +1,22 @@
 import csv
 import json
+from datetime import UTC, datetime
 from pathlib import Path
+from types import SimpleNamespace
 
 from rcqasyn.config import load_experiment_config
+from rcqasyn.contracts import ClassQuota, ParseFailureEvent
 from rcqasyn.datasets import DatasetRegistry, build_profile, load_dataset, make_split
 from rcqasyn.experiments.analysis import (
     HUMAN_COLUMNS,
     REVIEW_CATEGORIES,
     analyze_human_review,
     cross_dataset_comparison,
+    export_disagreements,
     export_human_review,
 )
-from rcqasyn.experiments.runner import _comparison
+from rcqasyn.experiments.runner import _aggregate_failures, _comparison
+from rcqasyn.generation.parser import parse_generation_response
 
 
 def test_profile_per_class_references_are_deterministic_and_train_only() -> None:
@@ -61,6 +66,7 @@ def test_human_review_is_bounded_deterministic_and_machine_only(tmp_path: Path) 
     run_dir = tmp_path / "run"
     _write_run_fixture(run_dir)
     output = export_human_review(run_dir, cap_per_category=1)
+    disagreement = export_disagreements(run_dir)
     with output.open(newline="", encoding="utf-8") as stream:
         rows = list(csv.DictReader(stream))
     assert {row["category"] for row in rows} == set(REVIEW_CATEGORIES)
@@ -68,6 +74,11 @@ def test_human_review_is_bounded_deterministic_and_machine_only(tmp_path: Path) 
     assert all(column in rows[0] for column in ("record_id", "candidate_version", "target_class", "b2_reasons", "b3_score", "b3_reasons"))
     assert len({(row["record_id"], row["category"]) for row in rows}) == len(rows)
     assert analyze_human_review(output)["status"] == "not_evaluable"
+    with disagreement.open(newline="", encoding="utf-8") as stream:
+        disagreement_rows = list(csv.DictReader(stream))
+    assert {row["record_id"] for row in disagreement_rows} == {"r1", "r2", "r3"}
+    assert all(row["b2_status"] != row["b3_status"] for row in disagreement_rows)
+    assert all(row["candidate_json"] and "raw_output" in row for row in disagreement_rows)
     rows[0]["human_notes"] = "reviewed but not adjudicated"
     with output.open("w", newline="", encoding="utf-8") as stream:
         writer = csv.DictWriter(stream, fieldnames=rows[0].keys())
@@ -99,6 +110,7 @@ def test_cross_dataset_exposes_failure_matrix_and_both_tstr_classifiers() -> Non
     assert row["tstr_pr_auc"]["b3"]["random_forest"]["pr_auc"] == 0.3
     assert row["minority_analysis"]["requested_minority_label"] == "yes"
     assert report["no_significance_claim"] is True
+    assert report["failure_matrix"]["SCHEMA"]["dev-small"]["occurrences"] == 1
 
 
 def test_smoke_usage_is_included_in_comparison_totals() -> None:
@@ -113,3 +125,75 @@ def test_smoke_usage_is_included_in_comparison_totals() -> None:
     assert result["total_tokens"] == 18
     assert result["latency_ms"] == 3.5
     assert result["cost_usd"] == 0.30000000000000004
+
+
+def test_real_pilot_persists_same_model_bias_metadata() -> None:
+    config, _ = load_experiment_config(Path("configs/experiments/pilot/page-blocks0.yaml"))
+    assert config.generator_judge_same_model is True
+    assert config.generator.model == config.judge.provider.model == "gemma4:e4b"
+    assert config.generator.api_key_env == config.judge.provider.api_key_env == "OLLAMA_API_KEY"
+
+
+def _failure(event_id: str, parser_version: str, requested_class: str | None = None, requested_count: int | None = None) -> ParseFailureEvent:
+    metadata = {
+        key: value for key, value in (
+            ("requested_class", requested_class), ("requested_count", requested_count)
+        ) if value is not None
+    }
+    return ParseFailureEvent(
+        event_id=event_id, run_id="run", call_id=event_id, parser_version=parser_version,
+        error="test failure", recoverable=False, created_at=datetime.now(UTC), metadata=metadata,
+    )
+
+
+def test_generation_parse_failure_persists_requested_batch_metadata() -> None:
+    parsed = parse_generation_response(
+        "not-json", run_id="run", call_id="generation-0", generator_id="generator",
+        generator_version="v1", prompt_version="v1", seed=42,
+        requested_class="negative", requested_count=5,
+    )
+    assert parsed.failures[0].metadata == {"requested_class": "negative", "requested_count": 5}
+
+
+def test_failure_aggregation_expands_generation_batch_slots_and_separates_judge() -> None:
+    plan = SimpleNamespace(
+        requested_count=40,
+        class_quotas=(ClassQuota(label="negative", count=20), ClassQuota(label="positive", count=20)),
+    )
+    spec = SimpleNamespace(minority_label="positive")
+    failures = [
+        _failure("parse-negative", "json-array-v1", "negative", 5),
+        _failure("provider-negative", "provider-v1", "negative", 5),
+        *[_failure(f"parse-positive-{index}", "json-array-v1", "positive", 5) for index in range(4)],
+        _failure("judge-provider-candidate", "provider-v1"),
+    ]
+    result = _aggregate_failures(failures, {}, {}, {}, plan=plan, spec=spec)
+    assert result["global"]["PARSE"] == {
+        "occurrences": 25, "unique_affected_record_count": 25,
+        "failed_response_count": 5, "denominator": 40, "rate": 25 / 40,
+    }
+    assert result["by_requested_class"]["negative"]["failures"]["PARSE"]["unique_affected_record_count"] == 5
+    assert result["by_requested_class"]["positive"]["failures"]["PARSE"]["unique_affected_record_count"] == 20
+    assert result["majority_vs_minority"]["majority"]["failures"]["PROVIDER_ERROR"]["unique_affected_record_count"] == 5
+    assert result["majority_vs_minority"]["minority"]["failures"]["PARSE"]["unique_affected_record_count"] == 20
+    assert result["provider_error_breakdown"] == {
+        "generation": {"failed_response_count": 1, "affected_requested_record_count": 5},
+        "judge": {"failed_response_count": 1, "affected_record_count": 1},
+    }
+
+
+def test_baseline_comparison_exposes_not_evaluable_metrics_and_partial_usage() -> None:
+    config, _ = load_experiment_config(Path("configs/experiments/replay.yaml"))
+    plan = type("Plan", (), {"dataset_id": "dev-small", "requested_count": 1})()
+    empty = {"requested": 1, "raw_pool_count": 0, "accepted": 0, "acceptance_rate": None, "intrinsic": {}, "utility": {}}
+    result = _comparison(
+        config, plan, [], [], [], 1, 0, empty, empty, {**empty, "judge_attempted_calls": 0, "judge_successful_calls": 0},
+        smoke_report={"status": "ok", "call_count": 1, "input_tokens": 3, "output_tokens": 2, "total_tokens": 5, "latency_ms": 1.0},
+    )
+    rows = {row["baseline"]: row for row in result["baseline_comparison"]}
+    assert rows["b1"]["parse_validity"]["status"] == "not_evaluable"
+    assert rows["b1"]["average_wasserstein"]["status"] == "not_evaluable"
+    assert rows["b1"]["correlation_error"]["status"] == "not_evaluable"
+    assert rows["b1"]["calls"]["generation"]["shared_generation_pool"] is True
+    assert rows["b1"]["tokens"]["generation_usage_complete"] is False
+    assert rows["b1"]["smoke"]["total_tokens"] == 5

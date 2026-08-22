@@ -34,6 +34,9 @@ class GenerationConfig(ContractModel):
     temperature: NonNegativeFloat = 0.0
     max_tokens: NonNegativeInt = Field(default=2048, gt=0)
     provider_seed: NonNegativeInt | None = None
+    transport_version: NonEmptyStr = "v1"
+    response_format: NonEmptyStr | None = None
+    reasoning_effort: NonEmptyStr | None = None
 
     @field_validator("objective", mode="before")
     @classmethod
@@ -62,6 +65,8 @@ class JudgeConfig(ContractModel):
     prompt_version: NonEmptyStr = "v1"
     threshold: float = Field(ge=0.0, le=1.0)
     malformed_policy: NonEmptyStr = "reject"
+    response_format: NonEmptyStr | None = None
+    reasoning_effort: NonEmptyStr | None = None
 
     @field_validator("malformed_policy")
     @classmethod
@@ -116,6 +121,10 @@ class ExperimentConfig(ContractModel):
     generation: GenerationConfig
     generator: ProviderConfig
     judge: JudgeConfig
+    # M1.2 intentionally permits one exact local model to serve both roles.
+    # Persist this explicitly so reports can call out correlated-error and
+    # self-evaluation bias rather than implying independent judging.
+    generator_judge_same_model: bool = False
     baselines: BaselineConfig = BaselineConfig()
     metrics: MetricsConfig = MetricsConfig()
     artifact_root: Path = Path("artifacts")

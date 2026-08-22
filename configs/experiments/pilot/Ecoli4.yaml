@@ -1,5 +1,5 @@
 experiment_name: m1-p0-Ecoli4
-run_id: null
+run_id: m1-p0-real-Ecoli4-gemma4-e4b-20260821
 dataset:
   dataset_id: Ecoli4
   root_seed: 42
@@ -15,21 +15,21 @@ generation:
   generator_id: openai-compatible-generator
   generator_version: "1"
   prompt_version: v1
-  temperature: 0.0
+  temperature: 0.7
   max_tokens: 512
   provider_seed: 42
 generator:
   kind: openai_compatible
-  base_url: http://127.0.0.1:8000/v1
-  model: local-model
-  api_key_env: RCQASYN_API_KEY
+  base_url: http://127.0.0.1:11434/v1
+  model: gemma4:e4b
+  api_key_env: OLLAMA_API_KEY
   timeout_seconds: 30
 judge:
   provider:
     kind: openai_compatible
-    base_url: http://127.0.0.1:8000/v1
-    model: local-model
-    api_key_env: RCQASYN_API_KEY
+    base_url: http://127.0.0.1:11434/v1
+    model: gemma4:e4b
+    api_key_env: OLLAMA_API_KEY
     timeout_seconds: 30
   judge_id: single-judge
   judge_version: "1"
@@ -42,3 +42,4 @@ baselines:
 metrics:
   classifiers: [logistic_regression, random_forest]
 artifact_root: artifacts
+generator_judge_same_model: true

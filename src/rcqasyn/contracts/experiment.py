@@ -76,6 +76,13 @@ class ProviderCallTrace(ContractModel):
     total_tokens: NonNegativeInt | None = None
     cost_usd: NonNegativeFloat | None = None
     latency_ms: NonNegativeFloat | None = None
+    finish_reason: NonEmptyStr | None = None
+    response_format: Metadata = Field(default_factory=dict)
+    reasoning_effort: NonEmptyStr | None = None
+    reasoning_fields_present: tuple[NonEmptyStr, ...] = ()
+    transport_version: NonEmptyStr | None = None
+    prompt_chars: NonNegativeInt | None = None
+    prompt_tokens_approx: NonNegativeInt | None = None
     created_at: datetime
     replay_source_id: NonEmptyStr | None = None
     metadata: Metadata = Field(default_factory=dict)

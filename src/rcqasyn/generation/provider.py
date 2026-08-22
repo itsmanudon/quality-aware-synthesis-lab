@@ -26,6 +26,10 @@ class ProviderResponse:
     replay_source_id: str | None = None
     cost_usd: float | None = None
     call_id: str | None = None
+    finish_reason: str | None = None
+    response_format: dict[str, Any] | None = None
+    reasoning_effort: str | None = None
+    reasoning_fields_present: tuple[str, ...] = ()
     created_at: datetime = field(default_factory=lambda: datetime.now(UTC))
 
 
@@ -134,7 +138,11 @@ class OpenAICompatibleProvider:
         self.api_key_env = api_key_env
         self.timeout = timeout
 
-    def call(self, *, role: str, prompt: str, temperature: float = 0.0, seed: int | None = None, max_tokens: int = 2048, **_: object) -> ProviderResponse:
+    def call(
+        self, *, role: str, prompt: str, temperature: float = 0.0, seed: int | None = None,
+        max_tokens: int = 2048, response_format: dict[str, Any] | None = None,
+        reasoning_effort: str | None = None, **_: object,
+    ) -> ProviderResponse:
         key = os.environ.get(self.api_key_env) if self.api_key_env else None
         if self.api_key_env and not key:
             raise RuntimeError(f"provider API key environment variable is missing: {self.api_key_env}")
@@ -146,6 +154,10 @@ class OpenAICompatibleProvider:
         }
         if seed is not None:
             payload["seed"] = seed
+        if response_format is not None:
+            payload["response_format"] = response_format
+        if reasoning_effort is not None:
+            payload["reasoning_effort"] = reasoning_effort
         request = urllib.request.Request(
             f"{self.base_url}/chat/completions",
             data=json.dumps(payload).encode("utf-8"),
@@ -164,11 +176,19 @@ class OpenAICompatibleProvider:
         except (KeyError, IndexError, TypeError) as error:
             raise RuntimeError("provider response had no choices[0].message.content") from error
         usage = body.get("usage") if isinstance(body.get("usage"), dict) else {}
+        choice = body["choices"][0]
+        message = choice["message"]
+        reasoning_fields = tuple(
+            field for field in ("reasoning", "reasoning_content", "thinking")
+            if field in message
+        )
         return ProviderResponse(
             response=str(text), provider="openai_compatible", model=self.model, endpoint=_sanitized_endpoint(self.base_url),
             input_tokens=_int_or_none(usage.get("prompt_tokens")), output_tokens=_int_or_none(usage.get("completion_tokens")),
             total_tokens=_int_or_none(usage.get("total_tokens")), latency_ms=latency,
-            call_id=str(body.get("id", "provider-call")), created_at=datetime.now(UTC),
+            call_id=str(body.get("id", "provider-call")), finish_reason=str(choice.get("finish_reason")) if choice.get("finish_reason") is not None else None,
+            response_format=response_format, reasoning_effort=reasoning_effort,
+            reasoning_fields_present=reasoning_fields, created_at=datetime.now(UTC),
         )
 
 

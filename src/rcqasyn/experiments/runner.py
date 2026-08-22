@@ -5,10 +5,12 @@ import json
 import platform
 import subprocess
 import sys
+import time
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from pathlib import Path
 from typing import Any
+from urllib.parse import urlsplit, urlunsplit
 
 import pandas as pd
 import yaml
@@ -27,7 +29,11 @@ from rcqasyn.contracts import (
     Verdict,
 )
 from rcqasyn.datasets import DatasetRegistry, build_profile, load_dataset, make_split
-from rcqasyn.experiments.analysis import export_human_review, machine_failure_report
+from rcqasyn.experiments.analysis import (
+    export_disagreements,
+    export_human_review,
+    machine_failure_report,
+)
 from rcqasyn.generation.parser import parse_generation_response
 from rcqasyn.generation.prompts import load_prompt
 from rcqasyn.generation.provider import (
@@ -50,6 +56,7 @@ class BaselineRunResult:
 
 
 def run_experiment(config: ExperimentConfig, *, project_root: Path | None = None, replay: bool = False) -> BaselineRunResult:
+    started_perf = time.perf_counter()
     root = (project_root or Path.cwd()).resolve()
     if config.generation.objective != "data_emulation":
         raise ValueError("M1 execution supports objective=data_emulation only; minority_augmentation is planned")
@@ -79,6 +86,22 @@ def run_experiment(config: ExperimentConfig, *, project_root: Path | None = None
         "schema_version": "m1-run-v1", "run_id": run_id, "experiment_name": config.experiment_name,
         "status": "running", "started_at": datetime.now(UTC).isoformat(), "root_seed": config.dataset.root_seed,
         "dataset_id": spec.dataset_id, "dataset_fingerprint": dataset.fingerprint, "config_hash": config.canonical_hash(),
+        "split_fingerprint": split.to_dict()["split_fingerprint"],
+        "generator_model": config.generator.model,
+        "judge_model": config.judge.provider.model,
+        "generator_endpoint": _sanitized_endpoint(config.generator.base_url),
+        "judge_endpoint": _sanitized_endpoint(config.judge.provider.base_url),
+        "generator_judge_same_model": config.generator_judge_same_model,
+        "generation_transport_version": config.generation.transport_version,
+        "generation_response_format": config.generation.response_format,
+        "generation_reasoning_effort": config.generation.reasoning_effort,
+        "generation_max_tokens": config.generation.max_tokens,
+        "generation_timeout_seconds": config.generator.timeout_seconds,
+        "correlated_error_self_evaluation_bias": (
+            "generator and judge share one model; scores may inherit correlated errors and self-evaluation bias"
+            if config.generator_judge_same_model else None
+        ),
+        "class_quotas": {quota.label: quota.count for quota in plan.class_quotas},
         "replay": replay, "no_test_leakage": True, "python_version": sys.version.split()[0],
         "platform": platform.platform(), "git_commit": _git_commit(root), "git_dirty": _git_dirty(root),
     })
@@ -113,10 +136,15 @@ def run_experiment(config: ExperimentConfig, *, project_root: Path | None = None
     b2 = _run_b2(raw_candidates, dataset.frame, split.train_indices, split.test_indices, spec, profile, config, run_dir)
     b3 = _run_b3(raw_candidates, dataset.frame, split.train_indices, split.test_indices, spec, profile, config, judge_prompt.text, judge_prompt.sha256, judge_prompt.version, run_dir, judge_provider)
     judge_calls = b3["judge_calls"]
-    comparison = _comparison(config, plan, raw_candidates, parse_failures, traces, requested_calls, judge_calls, b1, b2, b3, spec=spec, smoke_report=smoke_report)
+    comparison = _comparison(
+        config, plan, raw_candidates, parse_failures, traces, requested_calls, judge_calls, b1, b2, b3,
+        spec=spec, smoke_report=smoke_report, split_fingerprint=split.to_dict()["split_fingerprint"],
+        wall_time_ms=(time.perf_counter() - started_perf) * 1000,
+    )
     comparison["completed_at"] = datetime.now(UTC).isoformat()
     _write_json(run_dir / "comparison.json", comparison)
     export_human_review(run_dir)
+    export_disagreements(run_dir)
     _write_json(run_dir / "machine_failure_report.json", machine_failure_report(comparison))
     manifest = _read_json(run_dir / "manifest.json")
     manifest.update({"status": "completed", "completed_at": comparison["completed_at"], "provider_call_count": requested_calls + judge_calls + (1 if smoke_trace else 0)})
@@ -146,6 +174,7 @@ def _provider_smoke(provider: Any, run_id: str, config: ExperimentConfig, plan: 
     """Make one bounded, parse-checked provider call before pilot generation."""
 
     prompt = 'Return exactly this JSON object and no other text: {"ok":true}'
+    response_format = {"type": config.generation.response_format} if config.generation.response_format else None
     response = provider.call(
         role="generation",
         prompt=prompt,
@@ -153,6 +182,8 @@ def _provider_smoke(provider: Any, run_id: str, config: ExperimentConfig, plan: 
         temperature=0.0,
         seed=config.generation.provider_seed,
         max_tokens=min(config.generation.max_tokens, 64),
+        response_format=response_format,
+        reasoning_effort=config.generation.reasoning_effort,
     )
     trace = _trace(
         run_id,
@@ -165,6 +196,9 @@ def _provider_smoke(provider: Any, run_id: str, config: ExperimentConfig, plan: 
         prompt=prompt,
         temperature=0.0,
         max_tokens=min(config.generation.max_tokens, 64),
+        response_format=response_format,
+        reasoning_effort=config.generation.reasoning_effort,
+        transport_version=f"{config.generation.transport_version}-smoke",
     )
     usage = {
         "call_count": 1,
@@ -250,17 +284,31 @@ def _generate_pool(config: ExperimentConfig, run_id: str, plan: GenerationPlan, 
             requests.append((quota.label, count))
             remaining -= count
     requested_calls = len(requests)
+    generation_context_json = json.dumps(profile.to_generation_context(), sort_keys=True) if hasattr(profile, "to_generation_context") else json.dumps(profile.model_dump(mode="json"), sort_keys=True)
+    response_format = {"type": config.generation.response_format} if config.generation.response_format else None
     for call_index, (requested_class, count) in enumerate(requests):
-        prompt = prompt_text.format(profile_json=json.dumps(profile.model_dump(mode="json"), sort_keys=True), class_condition=requested_class, requested_count=count, reference_examples=json.dumps(profile.reference_examples, sort_keys=True))
+        prompt = prompt_text.format(
+            profile_json=json.dumps(profile.model_dump(mode="json"), sort_keys=True),
+            generation_context_json=generation_context_json, class_condition=requested_class,
+            requested_count=count, reference_examples=json.dumps(profile.reference_examples, sort_keys=True),
+        )
         call_id = f"generation-{call_index}"
         try:
-            response = provider.call(role="generation", prompt=prompt, request_index=call_index, temperature=config.generation.temperature, seed=config.generation.provider_seed, max_tokens=config.generation.max_tokens)
+            response = provider.call(
+                role="generation", prompt=prompt, request_index=call_index,
+                temperature=config.generation.temperature, seed=config.generation.provider_seed,
+                max_tokens=config.generation.max_tokens, response_format=response_format,
+                reasoning_effort=config.generation.reasoning_effort,
+            )
         except (OSError, RuntimeError, TypeError, ValueError) as error:
             failures.append(ParseFailureEvent(
                 event_id=f"provider-generation-{call_index}", run_id=run_id, call_id=call_id,
                 parser_version="provider-v1", error=f"provider failure: {error}", recoverable=False,
                 created_at=datetime.now(UTC), metadata={"requested_class": requested_class, "requested_count": count,
-                                                       "temperature": config.generation.temperature, "max_tokens": config.generation.max_tokens},
+                                                       "temperature": config.generation.temperature, "max_tokens": config.generation.max_tokens,
+                                                       "transport_version": config.generation.transport_version,
+                                                       "response_format": config.generation.response_format,
+                                                       "reasoning_effort": config.generation.reasoning_effort},
             ))
             continue
         call_id = response.call_id or call_id
@@ -268,14 +316,21 @@ def _generate_pool(config: ExperimentConfig, run_id: str, plan: GenerationPlan, 
             run_id, "generation", response, config.generation.prompt_version, plan.prompt_hash, count,
             config.generation.provider_seed, requested_class, prompt=prompt,
             temperature=config.generation.temperature, max_tokens=config.generation.max_tokens,
+            response_format=response_format, reasoning_effort=config.generation.reasoning_effort,
+            transport_version=config.generation.transport_version,
         ))
-        parsed = parse_generation_response(response.response, run_id=run_id, call_id=call_id, generator_id=plan.generator_id, generator_version=plan.generator_version, prompt_version=plan.prompt_version, seed=config.generation.provider_seed, requested_class=requested_class)
+        parsed = parse_generation_response(
+            response.response, run_id=run_id, call_id=call_id, generator_id=plan.generator_id,
+            generator_version=plan.generator_version, prompt_version=plan.prompt_version,
+            seed=config.generation.provider_seed, requested_class=requested_class,
+            requested_count=count, transport_version=config.generation.transport_version,
+        )
         candidates.extend(parsed.candidates)
         failures.extend(parsed.failures)
     return candidates, traces, failures, requested_calls
 
 
-def _trace(run_id: str, role: str, response: ProviderResponse, prompt_version: str | None, prompt_hash: str | None, requested_count: int | None, seed: int | None, requested_class: str | None = None, *, prompt: str | None = None, temperature: float | None = None, max_tokens: int | None = None) -> ProviderCallTrace:
+def _trace(run_id: str, role: str, response: ProviderResponse, prompt_version: str | None, prompt_hash: str | None, requested_count: int | None, seed: int | None, requested_class: str | None = None, *, prompt: str | None = None, temperature: float | None = None, max_tokens: int | None = None, response_format: dict[str, Any] | None = None, reasoning_effort: str | None = None, transport_version: str | None = None) -> ProviderCallTrace:
     return ProviderCallTrace(
         call_id=response.call_id or f"call-{sha256_text(response.response)[:12]}", run_id=run_id, role=role,
         provider=response.provider, model=response.model, endpoint=response.endpoint, prompt_version=prompt_version,
@@ -283,7 +338,14 @@ def _trace(run_id: str, role: str, response: ProviderResponse, prompt_version: s
         requested_class=requested_class, requested_count=requested_count, max_tokens=max_tokens,
         temperature=temperature, seed=seed, input_tokens=response.input_tokens,
         output_tokens=response.output_tokens, total_tokens=response.total_tokens, cost_usd=response.cost_usd,
-        latency_ms=response.latency_ms, created_at=response.created_at, replay_source_id=response.replay_source_id,
+        latency_ms=response.latency_ms, finish_reason=response.finish_reason,
+        response_format=response.response_format or response_format or {},
+        reasoning_effort=response.reasoning_effort or reasoning_effort,
+        reasoning_fields_present=response.reasoning_fields_present,
+        transport_version=transport_version,
+        prompt_chars=len(prompt) if prompt is not None else None,
+        prompt_tokens_approx=((len(prompt) + 3) // 4) if prompt is not None else None,
+        created_at=response.created_at, replay_source_id=response.replay_source_id,
     )
 
 
@@ -334,6 +396,14 @@ def _run_b2(candidates: list[CandidateRecord], frame: pd.DataFrame, train_idx: t
         "b2_rejections": result["deterministic_rejections"],
         "deterministic_structural_rejection": result["deterministic_rejections"],
     }
+    result["failure_record_ids"] = {
+        "SCHEMA": sorted(schema_candidates),
+        "MISSING_FIELD": sorted(missing_candidates),
+        "INVALID_CATEGORY": sorted(category_candidates),
+        "TARGET_MISMATCH": sorted(target_candidates),
+        "OBSERVED_RANGE_WARNING": sorted(range_candidates),
+        "B2_REJECTED": sorted(decision.candidate_id for decision in decisions if not decision.accepted),
+    }
     result["deterministic_violations"] = len({item.candidate_id for item in all_evidence if item.verdict == Verdict.FAIL})
     result["deterministic_rejection_rate"] = result["deterministic_rejections"] / len(candidates) if candidates else None
     result["deterministic_violation_rate"] = result["deterministic_violations"] / len(candidates) if candidates else None
@@ -348,18 +418,23 @@ def _run_b3(candidates: list[CandidateRecord], frame: pd.DataFrame, train_idx: t
     failures: list[ParseFailureEvent] = []
     traces: list[ProviderCallTrace] = []
     provider_failures = 0
+    response_format = {"type": config.judge.response_format} if config.judge.response_format else None
+    judge_profile = profile.to_generation_context() if config.generation.transport_version == "v2" and hasattr(profile, "to_generation_context") else profile.model_dump(mode="json")
     for index, candidate in enumerate(candidates):
-        prompt = judge_text.format(profile_json=json.dumps(profile.model_dump(mode="json"), sort_keys=True), candidate_json=json.dumps(candidate.data, sort_keys=True))
+        prompt = judge_text.format(profile_json=json.dumps(judge_profile, sort_keys=True), candidate_json=json.dumps(candidate.data, sort_keys=True))
         try:
             evaluation = judge.evaluate(
                 prompt=prompt, run_id=run_dir.name, candidate_id=candidate.record_id,
                 request_index=index, seed=config.generation.provider_seed, max_tokens=config.generation.max_tokens,
+                response_format=response_format, reasoning_effort=config.judge.reasoning_effort,
             )
             response = evaluation.response
             call_id = response.call_id or f"judge-{index}"
             traces.append(_trace(
                 run_dir.name, "judge", response, f"judge-{judge_version}", judge_hash, None,
                 config.generation.provider_seed, prompt=prompt, temperature=0.0, max_tokens=config.generation.max_tokens,
+                response_format=response_format, reasoning_effort=config.judge.reasoning_effort,
+                transport_version="judge-v2" if response_format else "judge-v1",
             ))
             if evaluation.error is not None:
                 failures.append(ParseFailureEvent(event_id=f"judge-parse-{candidate.record_id}", run_id=run_dir.name, call_id=call_id, parser_version="judge-json-v1", raw_output=response.response, error=evaluation.error, recoverable=False, created_at=datetime.now(UTC)))
@@ -404,6 +479,22 @@ def _run_b3(candidates: list[CandidateRecord], frame: pd.DataFrame, train_idx: t
         "judge_provider_failure": result["judge_provider_failures"],
         "duplicate": _duplicate_count(candidates),
     }
+    malformed_ids = {
+        failure.event_id.removeprefix("judge-parse-")
+        for failure in failures if failure.parser_version == "judge-json-v1"
+    }
+    provider_ids = {
+        failure.event_id.removeprefix("judge-provider-")
+        for failure in failures if failure.parser_version == "provider-v1"
+    }
+    result["failure_record_ids"] = {
+        "B3_REJECTED": sorted(
+            decision.candidate_id for decision in decisions
+            if not decision.accepted and decision.candidate_id not in malformed_ids and decision.candidate_id not in provider_ids
+        ),
+        "B3_MALFORMED": sorted(malformed_ids),
+        "PROVIDER_ERROR": sorted(provider_ids),
+    }
     return result
 
 
@@ -420,10 +511,21 @@ def _persist_baseline(name: str, accepted: list[CandidateRecord], all_candidates
     synthetic = pd.DataFrame([candidate.data for candidate in accepted], columns=[*spec.feature_columns, spec.target_column])
     intrinsic = intrinsic_metrics(train, synthetic, spec)
     utility = utility_metrics(train, test, synthetic, spec, seed=config.dataset.root_seed, classifiers=config.metrics.classifiers)
+    if synthetic.empty:
+        # Preserve every metric's null/empty detail while making the global
+        # state explicit for report readers and downstream evaluability checks.
+        intrinsic["status"] = "empty"
     _write_json(directory / "metrics.json", intrinsic)
     _write_json(directory / "classifier_metrics.json", utility)
     duplicate_hashes = [_canonical_hash(candidate) for candidate in all_candidates]
     duplicates = len(duplicate_hashes) - len(set(duplicate_hashes))
+    duplicate_by_class = _duplicate_counts_by_class(all_candidates, spec.target_column)
+    train_hashes = {
+        _canonical_data_hash({column: row[column] for column in [*spec.feature_columns, spec.target_column]})
+        for _, row in frame.loc[list(train_idx), [*spec.feature_columns, spec.target_column]].iterrows()
+    }
+    train_match_ids = [candidate.record_id for candidate in all_candidates if _canonical_hash(candidate) in train_hashes]
+    train_matches_by_class = _count_ids_by_class(all_candidates, train_match_ids, spec.target_column)
     raw_pool_count = len(all_candidates)
     accepted_generated_ratio = len(accepted) / raw_pool_count if raw_pool_count else None
     return {
@@ -436,6 +538,12 @@ def _persist_baseline(name: str, accepted: list[CandidateRecord], all_candidates
         "exact_duplicate_count": duplicates,
         "exact_duplicate_rate": duplicates / raw_pool_count if raw_pool_count else None,
         "unique_count": len(set(duplicate_hashes)),
+        "exact_duplicate_by_class": duplicate_by_class,
+        "exact_train_match_count": len(train_match_ids),
+        "exact_train_match_rate": len(train_match_ids) / raw_pool_count if raw_pool_count else None,
+        "exact_train_match_by_class": train_matches_by_class,
+        "exact_train_match_ids": train_match_ids,
+        "exact_train_match_interpretation": "exact canonical equality with a TRAIN row only; no privacy claim",
         "accepted_record_ids": [candidate.record_id for candidate in accepted],
         "calls": 0,
         "cost_usd": None,
@@ -444,28 +552,81 @@ def _persist_baseline(name: str, accepted: list[CandidateRecord], all_candidates
     }
 
 
-def _comparison(config: ExperimentConfig, plan: GenerationPlan, candidates: list[CandidateRecord], failures: list[ParseFailureEvent], traces: list[ProviderCallTrace], requested_calls: int, judge_calls: int, b1: dict[str, Any], b2: dict[str, Any], b3: dict[str, Any], *, spec: Any | None = None, smoke_report: dict[str, Any] | None = None) -> dict[str, Any]:
-    generation_input_tokens = _sum_nullable([trace.input_tokens for trace in traces]) if requested_calls == len(traces) else None
-    generation_output_tokens = _sum_nullable([trace.output_tokens for trace in traces]) if requested_calls == len(traces) else None
-    generation_total_tokens = _sum_nullable([trace.total_tokens for trace in traces]) if requested_calls == len(traces) else None
+def _comparison(config: ExperimentConfig, plan: GenerationPlan, candidates: list[CandidateRecord], failures: list[ParseFailureEvent], traces: list[ProviderCallTrace], requested_calls: int, judge_calls: int, b1: dict[str, Any], b2: dict[str, Any], b3: dict[str, Any], *, spec: Any | None = None, smoke_report: dict[str, Any] | None = None, split_fingerprint: str | None = None, wall_time_ms: float | None = None) -> dict[str, Any]:
+    known_generation_input_tokens = _sum_nullable([trace.input_tokens for trace in traces]) if traces else None
+    known_generation_output_tokens = _sum_nullable([trace.output_tokens for trace in traces]) if traces else None
+    known_generation_total_tokens = _sum_nullable([trace.total_tokens for trace in traces]) if traces else None
+    generation_usage_complete = requested_calls == len(traces) and all(
+        value is not None for trace in traces for value in (trace.input_tokens, trace.output_tokens, trace.total_tokens)
+    ) and (
+        # v2 traces explicitly persist finish_reason, so do not present an
+        # aggregate as complete when the provider envelope omitted it.  The
+        # historical v1/replay contract predates that field and retains its
+        # token aggregation semantics for backwards-compatible replays.
+        config.generation.transport_version != "v2"
+        or all(trace.finish_reason is not None for trace in traces)
+    )
+    generation_input_tokens = known_generation_input_tokens if generation_usage_complete else None
+    generation_output_tokens = known_generation_output_tokens if generation_usage_complete else None
+    generation_total_tokens = known_generation_total_tokens if generation_usage_complete else None
     judge_input_tokens = b3.get("judge_input_tokens")
     judge_output_tokens = b3.get("judge_output_tokens")
     judge_total_tokens = b3.get("judge_total_tokens")
     smoke_input_tokens = _nullable_number(smoke_report, "input_tokens")
     smoke_output_tokens = _nullable_number(smoke_report, "output_tokens")
     smoke_total_tokens = _nullable_number(smoke_report, "total_tokens")
-    input_tokens = _sum_nullable([generation_input_tokens, judge_input_tokens, smoke_input_tokens])
-    output_tokens = _sum_nullable([generation_output_tokens, judge_output_tokens, smoke_output_tokens])
-    total_tokens = _sum_nullable([generation_total_tokens, judge_total_tokens, smoke_total_tokens])
-    generation_latency = None if requested_calls != len(traces) or any(trace.latency_ms is None for trace in traces) else sum(trace.latency_ms or 0.0 for trace in traces)
+    # No generation calls is a known zero contribution; an incomplete
+    # generation run remains null so aggregate totals cannot imply complete
+    # provider usage.
+    generation_input_component = 0 if requested_calls == 0 else generation_input_tokens
+    generation_output_component = 0 if requested_calls == 0 else generation_output_tokens
+    generation_total_component = 0 if requested_calls == 0 else generation_total_tokens
+    input_tokens = _sum_nullable([generation_input_component, judge_input_tokens, smoke_input_tokens])
+    output_tokens = _sum_nullable([generation_output_component, judge_output_tokens, smoke_output_tokens])
+    total_tokens = _sum_nullable([generation_total_component, judge_total_tokens, smoke_total_tokens])
+    generation_recorded_latency = (
+        0.0 if not traces and requested_calls == 0
+        else sum(trace.latency_ms or 0.0 for trace in traces) if traces and all(trace.latency_ms is not None for trace in traces)
+        else None
+    )
+    generation_latency = generation_recorded_latency if generation_usage_complete else None
     judge_latency = b3.get("judge_latency_ms")
     smoke_latency = _nullable_number(smoke_report, "latency_ms")
     latency_ms = _sum_float_nullable([generation_latency, judge_latency, smoke_latency])
     generation_cost = _sum_cost_nullable([trace.cost_usd for trace in traces]) if requested_calls == len(traces) else None
     judge_cost = b3.get("judge_cost_usd")
     smoke_cost = _nullable_number(smoke_report, "cost_usd")
-    cost_usd = _sum_cost_nullable([generation_cost, judge_cost, smoke_cost])
+    cost_usd = _sum_cost_nullable([0.0 if requested_calls == 0 else generation_cost, judge_cost, smoke_cost])
+    failure_aggregation = _aggregate_failures(failures, b1, b2, b3, candidates=candidates, plan=plan, spec=spec)
     minority = _minority_analysis(spec, plan, candidates, b1, b2, b3) if spec is not None else {}
+    endpoint = _sanitized_endpoint(config.generator.base_url)
+    judge_endpoint = _sanitized_endpoint(config.judge.provider.base_url)
+    same_model_note = (
+        "generator and judge share one model; scores may inherit correlated errors and self-evaluation bias"
+        if config.generator_judge_same_model else None
+    )
+    baseline_comparison = _baseline_comparison(
+        config, b1, b2, b3,
+        generation_attempted_calls=requested_calls,
+        generation_successful_calls=len(traces),
+        generation_known_input_tokens=known_generation_input_tokens,
+        generation_known_output_tokens=known_generation_output_tokens,
+        generation_known_total_tokens=known_generation_total_tokens,
+        generation_usage_complete=generation_usage_complete,
+        generation_recorded_latency_ms=generation_recorded_latency,
+        judge_attempted_calls=int(b3.get("judge_attempted_calls", judge_calls)),
+        judge_successful_calls=int(b3.get("judge_successful_calls", judge_calls)),
+        judge_input_tokens=judge_input_tokens,
+        judge_output_tokens=judge_output_tokens,
+        judge_total_tokens=judge_total_tokens,
+        judge_recorded_latency_ms=judge_latency,
+        smoke_report=smoke_report,
+    )
+    failure_categories = [
+        "PARSE", "SCHEMA", "MISSING_FIELD", "INVALID_CATEGORY", "TARGET_MISMATCH",
+        "OBSERVED_RANGE_WARNING", "EXACT_DUPLICATE", "B2_REJECTED", "B3_REJECTED",
+        "B3_MALFORMED", "PROVIDER_ERROR",
+    ]
     return {
         "schema_version": "m1-comparison-v1", "dataset_id": plan.dataset_id, "requested": plan.requested_count, "experiment_requested": plan.requested_count,
         "generation_attempted_calls": requested_calls, "generation_successful_calls": len(traces),
@@ -476,13 +637,23 @@ def _comparison(config: ExperimentConfig, plan: GenerationPlan, candidates: list
         "provider_smoke": smoke_report or {"status": "not_run"},
         "raw_pool_count": len(candidates), "parseable_record_count": len(candidates),
         "parse_success": len(candidates), "parse_success_rate": len(candidates) / plan.requested_count if plan.requested_count else None,
-        "parse_failures": len(failures), "failure_aggregation": _aggregate_failures(failures, b1, b2, b3), "baselines": {"b1": b1, "b2": b2, "b3": b3},
+        "parse_failures": len(failures), "parse_failure_event_count": len(failures),
+        "parse_affected_requested_record_count": failure_aggregation["global"]["PARSE"]["unique_affected_record_count"],
+        "unparseable_requested_record_count": failure_aggregation["unparseable_requested_record_count"],
+        "unparseable_rate": failure_aggregation["unparseable_rate"],
+        "failure_categories": failure_categories,
+        "failure_aggregation": failure_aggregation, "baselines": {"b1": b1, "b2": b2, "b3": b3},
         "deterministic_violation_rate": b2.get("deterministic_violation_rate"),
         "deterministic_rejection_rate": b2.get("deterministic_rejection_rate"),
         "judge_rejection_rate": b3.get("judge_rejection_rate"),
         "generation_input_tokens": generation_input_tokens, "generation_output_tokens": generation_output_tokens,
         "generation_total_tokens": generation_total_tokens, "judge_input_tokens": judge_input_tokens,
         "judge_output_tokens": judge_output_tokens, "judge_total_tokens": judge_total_tokens,
+        "generation_successful_input_tokens": known_generation_input_tokens,
+        "generation_successful_output_tokens": known_generation_output_tokens,
+        "generation_successful_total_tokens": known_generation_total_tokens,
+        "generation_usage_complete": generation_usage_complete,
+        "generation_recorded_latency_ms": generation_recorded_latency,
         "generation_latency_ms": generation_latency, "judge_latency_ms": judge_latency,
         "generation_cost_usd": generation_cost, "judge_cost_usd": judge_cost,
         "smoke_input_tokens": smoke_input_tokens, "smoke_output_tokens": smoke_output_tokens,
@@ -491,8 +662,144 @@ def _comparison(config: ExperimentConfig, plan: GenerationPlan, candidates: list
         "input_tokens": input_tokens, "output_tokens": output_tokens, "total_tokens": total_tokens,
         "latency_ms": latency_ms, "cost_usd": cost_usd,
         "minority_analysis": minority,
+        "baseline_comparison": baseline_comparison,
+        "metadata": {
+            "generator_model": config.generator.model,
+            "judge_model": config.judge.provider.model,
+            "generator_endpoint": endpoint,
+            "judge_endpoint": judge_endpoint,
+            "split_fingerprint": split_fingerprint,
+            "class_quotas": {quota.label: quota.count for quota in getattr(plan, "class_quotas", ())},
+            "generator_judge_same_model": config.generator_judge_same_model,
+            "generation_transport_version": config.generation.transport_version,
+            "generation_response_format": config.generation.response_format,
+            "generation_reasoning_effort": config.generation.reasoning_effort,
+            "generation_max_tokens": config.generation.max_tokens,
+            "generation_timeout_seconds": config.generator.timeout_seconds,
+            "correlated_error_self_evaluation_bias": same_model_note,
+            "cost_policy": "null unless provider reports meaningful monetary cost",
+            "exact_train_match_policy": "exact canonical equality only; no privacy claim",
+        },
+        "recorded_latency_ms": latency_ms,
+        "wall_time_ms": wall_time_ms,
         "no_significance_claim": True, "policy": {"b1": "accept all parseable", "b2": "configured deterministic severity filtering", "b3": "one judge + static threshold + no calibration"},
     }
+
+
+def _baseline_comparison(
+    config: ExperimentConfig, b1: dict[str, Any], b2: dict[str, Any], b3: dict[str, Any], *,
+    generation_attempted_calls: int | None = None,
+    generation_successful_calls: int | None = None,
+    generation_known_input_tokens: int | None = None,
+    generation_known_output_tokens: int | None = None,
+    generation_known_total_tokens: int | None = None,
+    generation_usage_complete: bool | None = None,
+    generation_recorded_latency_ms: float | None = None,
+    judge_attempted_calls: int | None = None,
+    judge_successful_calls: int | None = None,
+    judge_input_tokens: int | None = None,
+    judge_output_tokens: int | None = None,
+    judge_total_tokens: int | None = None,
+    judge_recorded_latency_ms: float | None = None,
+    smoke_report: dict[str, Any] | None = None,
+) -> list[dict[str, Any]]:
+    """Build comparable baseline rows without filling unavailable metrics."""
+
+    def metric_average_wasserstein(summary: dict[str, Any]) -> dict[str, Any]:
+        values = [
+            float(metric.get("wasserstein"))
+            for metric in summary.get("intrinsic", {}).get("numeric", {}).values()
+            if isinstance(metric, dict) and isinstance(metric.get("wasserstein"), (int, float))
+        ]
+        return {
+            "value": sum(values) / len(values) if values else None,
+            "status": "ok" if values else "not_evaluable",
+            "observed_count": len(values),
+        }
+
+    def metric_correlation_error(summary: dict[str, Any]) -> dict[str, Any]:
+        correlations = summary.get("intrinsic", {}).get("correlations", {})
+        result: dict[str, Any] = {}
+        values: list[float] = []
+        for name in ("pearson", "spearman"):
+            metric = correlations.get(name, {}) if isinstance(correlations, dict) else {}
+            value = metric.get("mean_abs_error") if isinstance(metric, dict) else None
+            result[name] = {"value": value, "status": "ok" if isinstance(value, (int, float)) else "not_evaluable"}
+            if isinstance(value, (int, float)):
+                values.append(float(value))
+        result["value"] = sum(values) / len(values) if values else None
+        result["status"] = "ok" if values else "not_evaluable"
+        return result
+
+    rows: list[dict[str, Any]] = []
+    for name, summary in (("b1", b1), ("b2", b2), ("b3", b3)):
+        requested = summary.get("requested", config.generation.requested_count)
+        raw_pool_count = summary.get("raw_pool_count")
+        parse_success_rate = summary.get("acceptance_rate")
+        if isinstance(requested, (int, float)) and isinstance(raw_pool_count, (int, float)):
+            parse_success_rate = float(raw_pool_count) / float(requested) if requested else None
+        parse_validity = {
+            "status": "ok" if raw_pool_count else "not_evaluable",
+            "requested": requested,
+            "parseable": raw_pool_count,
+            "parse_failure_count": (int(requested) - int(raw_pool_count)) if isinstance(requested, int) and isinstance(raw_pool_count, int) else None,
+            "parse_success_rate": parse_success_rate,
+        }
+        is_b3 = name == "b3"
+        generation_calls = {
+            "attempted": generation_attempted_calls,
+            "successful": generation_successful_calls,
+            "shared_generation_pool": True,
+            "recorded_latency_ms": generation_recorded_latency_ms,
+        }
+        judge_calls = {
+            "attempted": judge_attempted_calls if is_b3 else 0,
+            "successful": judge_successful_calls if is_b3 else 0,
+            "recorded_latency_ms": judge_recorded_latency_ms if is_b3 else None,
+            "applicable": is_b3,
+        }
+        tokens = {
+            "generation_input_tokens": generation_known_input_tokens,
+            "generation_output_tokens": generation_known_output_tokens,
+            "generation_total_tokens": generation_known_total_tokens,
+            "generation_usage_complete": generation_usage_complete,
+            "judge_input_tokens": judge_input_tokens if is_b3 else None,
+            "judge_output_tokens": judge_output_tokens if is_b3 else None,
+            "judge_total_tokens": judge_total_tokens if is_b3 else None,
+            "judge_usage_complete": (
+                judge_attempted_calls == judge_successful_calls
+                and judge_input_tokens is not None
+                and judge_output_tokens is not None
+                and judge_total_tokens is not None
+            ) if is_b3 and judge_attempted_calls is not None and judge_successful_calls is not None else False,
+            "status": "complete" if generation_usage_complete else "known_successful_calls_only",
+        }
+        rows.append({
+            "baseline": name,
+            "requested": requested,
+            "raw_pool_count": raw_pool_count,
+            "accepted": summary.get("accepted"),
+            "acceptance_rate": summary.get("acceptance_rate"),
+            "exact_duplicate_count": summary.get("exact_duplicate_count"),
+            "exact_train_match_count": summary.get("exact_train_match_count"),
+            "parse_validity": parse_validity,
+            "average_wasserstein": metric_average_wasserstein(summary),
+            "correlation_error": metric_correlation_error(summary),
+            "calls": {"generation": generation_calls, "judge": judge_calls},
+            "tokens": tokens,
+            "smoke": {
+                "status": "separate",
+                "call_count": _nullable_number(smoke_report, "call_count") if smoke_report else None,
+                "input_tokens": _nullable_number(smoke_report, "input_tokens"),
+                "output_tokens": _nullable_number(smoke_report, "output_tokens"),
+                "total_tokens": _nullable_number(smoke_report, "total_tokens"),
+                "latency_ms": _nullable_number(smoke_report, "latency_ms"),
+                "cost_usd": _nullable_number(smoke_report, "cost_usd"),
+            },
+            "trtr": summary.get("utility", {}).get("TRTR", {}),
+            "tstr": summary.get("utility", {}).get("TSTR", {}),
+        })
+    return rows
 
 
 _MISSING = object()
@@ -532,7 +839,32 @@ def _nullable_number(mapping: dict[str, Any] | None, key: str) -> int | float | 
 
 
 def _canonical_hash(candidate: CandidateRecord) -> str:
-    return sha256_text(json.dumps(candidate.data, sort_keys=True, separators=(",", ":")))
+    return _canonical_data_hash(candidate.data)
+
+
+def _canonical_data_hash(data: dict[str, Any]) -> str:
+    normalized = {
+        str(key): _json_scalar(value)
+        for key, value in data.items()
+    }
+    return sha256_text(json.dumps(normalized, sort_keys=True, separators=(",", ":")))
+
+
+def _json_scalar(value: Any) -> Any:
+    if isinstance(value, dict):
+        return {str(key): _json_scalar(item) for key, item in value.items()}
+    if isinstance(value, (list, tuple)):
+        return [_json_scalar(item) for item in value]
+    if value is None or isinstance(value, (str, int, float, bool)):
+        if value is None or isinstance(value, (str, bool)):
+            return value
+        return None if pd.isna(value) else value
+    missing = pd.isna(value)
+    if isinstance(missing, bool) and missing:
+        return None
+    if hasattr(value, "item"):
+        return _json_scalar(value.item())
+    return str(value)
 
 
 def _duplicate_count(candidates: list[CandidateRecord]) -> int:
@@ -540,26 +872,221 @@ def _duplicate_count(candidates: list[CandidateRecord]) -> int:
     return len(hashes) - len(set(hashes))
 
 
-def _aggregate_failures(failures: list[ParseFailureEvent], b1: dict[str, Any], b2: dict[str, Any], b3: dict[str, Any]) -> dict[str, int]:
-    result = {
-        "parse_failure": len(failures), "schema_failure": 0, "schema_failures": 0,
-        "missing_field": 0, "category_invalid": 0, "invalid_category": 0,
-        "target_wrong": 0, "target_mismatch": 0, "range_warning": 0, "range_warnings": 0,
-        "duplicate": 0, "b2_rejection": 0, "b2_rejections": 0,
-        "deterministic_structural_rejection": 0, "judge_rejection": 0,
-        "judge_rejections": 0, "judge_malformed": 0,
-        "judge_provider_failure": int(b3.get("judge_provider_failures", 0)),
+def _duplicate_counts_by_class(candidates: list[CandidateRecord], target_column: str) -> dict[str, int]:
+    grouped: dict[str, list[str]] = {}
+    for candidate in candidates:
+        label = str(candidate.data.get(target_column))
+        grouped.setdefault(label, []).append(_canonical_hash(candidate))
+    return {label: len(values) - len(set(values)) for label, values in sorted(grouped.items())}
+
+
+def _count_ids_by_class(candidates: list[CandidateRecord], ids: list[str], target_column: str) -> dict[str, int]:
+    selected = set(ids)
+    counts: dict[str, int] = {}
+    for candidate in candidates:
+        if candidate.record_id in selected:
+            label = str(candidate.data.get(target_column))
+            counts[label] = counts.get(label, 0) + 1
+    return dict(sorted(counts.items()))
+
+
+def _aggregate_failures(
+    failures: list[ParseFailureEvent], b1: dict[str, Any], b2: dict[str, Any], b3: dict[str, Any],
+    *, candidates: list[CandidateRecord] | None = None, plan: GenerationPlan | None = None,
+    spec: Any | None = None,
+) -> dict[str, Any]:
+    """Aggregate multi-label failure evidence with requested-class denominators.
+
+    Generation failures are emitted once per provider response, while the
+    denominator is requested records.  A failed batch therefore contributes
+    ``requested_count`` affected requested slots and retains a separate
+    ``failed_response_count`` event count for auditability.  Judge failures
+    remain candidate-level events and are tracked separately from generation
+    provider failures.
+    """
+
+    categories = (
+        "PARSE", "SCHEMA", "MISSING_FIELD", "INVALID_CATEGORY", "TARGET_MISMATCH",
+        "OBSERVED_RANGE_WARNING", "EXACT_DUPLICATE", "B2_REJECTED", "B3_REJECTED",
+        "B3_MALFORMED", "PROVIDER_ERROR",
+    )
+    candidate_list = candidates or []
+    candidate_by_id = {candidate.record_id: candidate for candidate in candidate_list}
+    requested_by_id = {
+        candidate.record_id: str(candidate.metadata.get("requested_class"))
+        for candidate in candidate_list
+        if candidate.metadata.get("requested_class") is not None
     }
-    for summary in (b1, b2, b3):
-        for key, value in summary.get("failure_counts", {}).items():
-            result[key] = max(result.get(key, 0), int(value))
-    result["deterministic_structural_rejection"] = b2.get("failure_counts", {}).get("deterministic_structural_rejection", 0)
-    result["b2_rejection"] = b2.get("failure_counts", {}).get("b2_rejection", result["deterministic_structural_rejection"])
-    result["b2_rejections"] = result["b2_rejection"]
-    result["judge_rejection"] = b3.get("failure_counts", {}).get("judge_rejection", 0)
-    result["judge_rejections"] = result["judge_rejection"]
-    result["judge_malformed"] = b3.get("failure_counts", {}).get("judge_malformed", 0)
-    return result
+    records: dict[str, dict[str, set[str]]] = {category: {} for category in categories}
+    occurrences: dict[str, dict[str, int]] = {category: {} for category in categories}
+    failed_response_counts: dict[str, dict[str, int]] = {category: {} for category in categories}
+    provider_sources: dict[str, dict[str, int]] = {
+        "generation": {"failed_response_count": 0, "affected_requested_record_count": 0},
+        "judge": {"failed_response_count": 0, "affected_record_count": 0},
+    }
+    generation_provider_records: dict[str, set[str]] = {}
+    seen_category_records: dict[str, set[str]] = {category: set() for category in categories}
+
+    def add(
+        category: str, record_id: str, requested_class: str | None, *, requested_count: int = 1,
+        source: str | None = None, count_response: bool = True,
+    ) -> None:
+        if category not in records:
+            return
+        label = requested_class or "<UNKNOWN>"
+        count = max(1, int(requested_count))
+        # A category should identify each affected response/record once.  A
+        # provider event may also appear in a baseline failure_record_ids
+        # export, so de-duplicate that candidate/event identity here.
+        if record_id in seen_category_records[category]:
+            return
+        seen_category_records[category].add(record_id)
+        affected_ids = {record_id} if count == 1 else {f"{record_id}:slot-{index}" for index in range(count)}
+        records[category].setdefault(label, set()).update(affected_ids)
+        occurrences[category][label] = occurrences[category].get(label, 0) + count
+        if count_response:
+            failed_response_counts[category][label] = failed_response_counts[category].get(label, 0) + 1
+        if source == "generation":
+            provider_sources["generation"]["failed_response_count"] += 1
+            provider_sources["generation"]["affected_requested_record_count"] += count
+            generation_provider_records.setdefault(label, set()).update(affected_ids)
+        elif source == "judge":
+            provider_sources["judge"]["failed_response_count"] += 1
+            provider_sources["judge"]["affected_record_count"] += count
+
+    for failure in failures:
+        requested_class = failure.metadata.get("requested_class")
+        requested = str(requested_class) if requested_class is not None else None
+        requested_count_value = failure.metadata.get("requested_count")
+        requested_count = int(requested_count_value) if isinstance(requested_count_value, (int, float)) and requested_count_value > 0 else 1
+        if failure.parser_version == "judge-json-v1":
+            category = "B3_MALFORMED"
+            add(category, f"event:{failure.event_id}", requested)
+        elif failure.parser_version == "provider-v1":
+            category = "PROVIDER_ERROR"
+            is_generation = requested_count_value is not None or failure.event_id.startswith("provider-generation-")
+            if not is_generation:
+                requested = requested or requested_by_id.get(failure.event_id.removeprefix("judge-provider-"))
+            add(category, f"event:{failure.event_id}", requested, requested_count=requested_count if is_generation else 1,
+                source="generation" if is_generation else "judge")
+        else:
+            category = "PARSE"
+            add(category, f"event:{failure.event_id}", requested, requested_count=requested_count)
+
+    # Every exact duplicate after the first is marked, while retaining the
+    # entire raw pool as the denominator.  This is a count of equality events,
+    # not a privacy or disclosure claim.
+    seen_hashes: set[str] = set()
+    for candidate in candidate_list:
+        canonical = _canonical_hash(candidate)
+        if canonical in seen_hashes:
+            add("EXACT_DUPLICATE", candidate.record_id, requested_by_id.get(candidate.record_id))
+        seen_hashes.add(canonical)
+
+    failure_event_ids = {failure.event_id for failure in failures}
+    for category in ("SCHEMA", "MISSING_FIELD", "INVALID_CATEGORY", "TARGET_MISMATCH", "OBSERVED_RANGE_WARNING", "B2_REJECTED", "B3_REJECTED", "B3_MALFORMED", "PROVIDER_ERROR"):
+        for record_id in b2.get("failure_record_ids", {}).get(category, []) + b3.get("failure_record_ids", {}).get(category, []):
+            if category == "B3_MALFORMED" and f"judge-parse-{record_id}" in failure_event_ids:
+                continue
+            if category == "PROVIDER_ERROR" and f"judge-provider-{record_id}" in failure_event_ids:
+                continue
+            candidate = candidate_by_id.get(str(record_id))
+            source = "judge" if category == "PROVIDER_ERROR" and str(record_id) in set(b3.get("failure_record_ids", {}).get(category, [])) else None
+            add(category, str(record_id), requested_by_id.get(str(record_id)), source=source)
+            if candidate is None and str(record_id).startswith("event:"):
+                add(category, str(record_id), None)
+
+    # Retain the original compact aliases consumed by earlier replay reports.
+    global_counts = {category: sum(len(ids) for ids in by_class.values()) for category, by_class in records.items()}
+    legacy: dict[str, int] = {
+        "parse_failure": global_counts["PARSE"],
+        "schema_failure": global_counts["SCHEMA"], "schema_failures": global_counts["SCHEMA"],
+        "missing_field": global_counts["MISSING_FIELD"],
+        "category_invalid": global_counts["INVALID_CATEGORY"], "invalid_category": global_counts["INVALID_CATEGORY"],
+        "target_wrong": global_counts["TARGET_MISMATCH"], "target_mismatch": global_counts["TARGET_MISMATCH"],
+        "range_warning": global_counts["OBSERVED_RANGE_WARNING"], "range_warnings": global_counts["OBSERVED_RANGE_WARNING"],
+        "duplicate": global_counts["EXACT_DUPLICATE"],
+        "b2_rejection": global_counts["B2_REJECTED"], "b2_rejections": global_counts["B2_REJECTED"],
+        "deterministic_structural_rejection": global_counts["B2_REJECTED"],
+        "judge_rejection": global_counts["B3_REJECTED"], "judge_rejections": global_counts["B3_REJECTED"],
+        "judge_malformed": global_counts["B3_MALFORMED"],
+        "judge_provider_failure": provider_sources["judge"]["affected_record_count"],
+        "generation_provider_failure": provider_sources["generation"]["affected_requested_record_count"],
+        "provider_error": global_counts["PROVIDER_ERROR"],
+    }
+
+    class_quotas = getattr(plan, "class_quotas", ()) if plan is not None else ()
+    quotas = {str(quota.label): int(quota.count) for quota in class_quotas}
+    raw_denominator = len(candidate_list)
+    requested_denominator = plan.requested_count if plan is not None else raw_denominator
+
+    def summary_for(labels: set[str], denominator: int) -> dict[str, Any]:
+        result: dict[str, Any] = {}
+        for category in categories:
+            ids = set().union(*(records[category].get(label, set()) for label in labels)) if labels else set()
+            count = sum(occurrences[category].get(label, 0) for label in labels)
+            parse_ids = set().union(*(records["PARSE"].get(label, set()) for label in labels)) if labels else set()
+            provider_ids = set().union(*(generation_provider_records.get(label, set()) for label in labels)) if labels else set()
+            unparseable_ids = parse_ids | provider_ids
+            result[category] = {
+                "occurrences": count,
+                "unique_affected_record_count": len(ids),
+                "failed_response_count": sum(failed_response_counts[category].get(label, 0) for label in labels),
+                "denominator": denominator,
+                "rate": len(ids) / denominator if denominator else None,
+            }
+        parse_ids = set().union(*(records["PARSE"].get(label, set()) for label in labels)) if labels else set()
+        provider_ids = set().union(*(generation_provider_records.get(label, set()) for label in labels)) if labels else set()
+        unparseable_ids = parse_ids | provider_ids
+        result["unparseable"] = {
+            "occurrences": len(unparseable_ids),
+            "unique_affected_record_count": len(unparseable_ids),
+            "denominator": denominator,
+            "rate": len(unparseable_ids) / denominator if denominator else None,
+        }
+        return result
+
+    by_requested: dict[str, Any] = {}
+    for label, denominator in quotas.items():
+        by_requested[label] = {
+            "requested_count": denominator,
+            "parseable_count": sum(1 for candidate in candidate_list if requested_by_id.get(candidate.record_id) == label),
+            "failures": summary_for({label}, denominator),
+        }
+    minority_label = str(getattr(spec, "minority_label", "")) if spec is not None and getattr(spec, "minority_label", None) is not None else None
+    majority_labels = set(quotas) - {minority_label} if minority_label is not None else set(quotas)
+    minority_labels = {minority_label} if minority_label in quotas else set()
+    by_role = {
+        "majority": {
+            "requested_count": sum(quotas.get(label, 0) for label in majority_labels),
+            "failures": summary_for(majority_labels, sum(quotas.get(label, 0) for label in majority_labels)),
+        },
+        "minority": {
+            "requested_count": sum(quotas.get(label, 0) for label in minority_labels),
+            "failures": summary_for(minority_labels, sum(quotas.get(label, 0) for label in minority_labels)),
+        },
+    }
+    global_summary = summary_for(set(quotas), requested_denominator)
+    # Keep a top-level count for report readers that need the concise view.
+    global_summary["raw_pool_count"] = raw_denominator
+    global_unparseable = global_summary["unparseable"]
+    global_summary["provider_error_breakdown"] = {
+        "generation": provider_sources["generation"],
+        "judge": provider_sources["judge"],
+    }
+    return {
+        **legacy,
+        "categories": list(categories),
+        "global": global_summary,
+        "unparseable_requested_record_count": global_unparseable["unique_affected_record_count"],
+        "unparseable_rate": global_unparseable["rate"],
+        "by_requested_class": by_requested,
+        "majority_vs_minority": by_role,
+        "provider_error_breakdown": {
+            "generation": provider_sources["generation"],
+            "judge": provider_sources["judge"],
+        },
+    }
 
 
 def _minority_analysis(spec: Any, plan: GenerationPlan, candidates: list[CandidateRecord], b1: dict[str, Any], b2: dict[str, Any], b3: dict[str, Any]) -> dict[str, Any]:
@@ -642,3 +1169,22 @@ def _git_dirty(root: Path) -> bool | None:
         return bool(result.stdout.strip()) if result.returncode == 0 else None
     except OSError:
         return None
+
+
+def _sanitized_endpoint(value: str | None) -> str | None:
+    """Retain endpoint identity while dropping query/fragment/userinfo."""
+
+    if not value:
+        return None
+    parts = urlsplit(str(value))
+    if not (parts.scheme or parts.netloc):
+        return str(value).split("?", 1)[0].split("#", 1)[0]
+    try:
+        hostname = parts.hostname or ""
+        host = f"[{hostname}]" if ":" in hostname and not hostname.startswith("[") else hostname
+        netloc = host
+        if parts.port is not None:
+            netloc = f"{netloc}:{parts.port}"
+    except ValueError:
+        netloc = ""
+    return urlunsplit((parts.scheme, netloc, parts.path, "", ""))
