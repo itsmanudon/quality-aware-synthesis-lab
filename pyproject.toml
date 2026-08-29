@@ -8,7 +8,9 @@ version = "0.1.0"
 description = "Risk-calibrated quality-aware synthetic dataset construction foundation"
 readme = "README.md"
 requires-python = ">=3.12,<3.13"
-dependencies = ["pydantic>=2", "PyYAML", "typer", "rich", "numpy", "scipy", "pandas", "scikit-learn"]
+# pandas is capped below 3.0: the 3.x line changes default dtypes/copy semantics
+# and ships stricter inline types that regress `pyright` for unchanged source.
+dependencies = ["pydantic>=2", "PyYAML", "typer", "rich", "numpy", "scipy", "pandas>=2.2,<3", "scikit-learn"]
 
 [project.optional-dependencies]
 dev = ["pytest", "pytest-cov", "ruff", "pyright"]

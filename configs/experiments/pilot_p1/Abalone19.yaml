@@ -1,0 +1,50 @@
+experiment_name: m1-5-p1-Abalone19
+run_id: m1-p1-real-Abalone19-gemma4-e4b-20260829
+dataset:
+  dataset_id: Abalone19
+  root_seed: 42
+  reference_example_count: 4
+  reference_examples_per_class: 2
+  reference_examples_enabled: true
+generation:
+  requested_count: 200
+  class_strategy: explicit
+  class_quotas: {negative: 100, positive: 100}
+  batch_size: 5
+  objective: data_emulation
+  generator_id: openai-compatible-generator
+  generator_version: "2"
+  prompt_version: v2
+  temperature: 0.7
+  max_tokens: 2048
+  provider_seed: 42
+  transport_version: v2
+  response_format: json_object
+  reasoning_effort: none
+generator:
+  kind: openai_compatible
+  base_url: http://127.0.0.1:11434/v1
+  model: gemma4:e4b
+  api_key_env: OLLAMA_API_KEY
+  timeout_seconds: 120
+judge:
+  provider:
+    kind: openai_compatible
+    base_url: http://127.0.0.1:11434/v1
+    model: gemma4:e4b
+    api_key_env: OLLAMA_API_KEY
+    timeout_seconds: 120
+  judge_id: single-judge
+  judge_version: "1"
+  prompt_version: v1
+  threshold: 0.7
+  malformed_policy: reject
+  response_format: json_object
+  reasoning_effort: none
+baselines:
+  reject_severities: [high, critical]
+  range_severity: medium
+metrics:
+  classifiers: [logistic_regression, random_forest]
+artifact_root: artifacts
+generator_judge_same_model: true

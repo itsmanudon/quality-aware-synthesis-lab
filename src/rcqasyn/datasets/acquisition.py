@@ -213,7 +213,7 @@ def build_dataset_report(
         "majority_count": max_count,
         "imbalance_ratio": (max_count / min_count) if min_count is not None and max_count is not None and min_count > 0 else None,
         "missing_count": int(dataset.missing_count),
-        "missing_rates": {str(column): float(dataset.frame[column].isna().mean()) for column in dataset.frame.columns},
+        "missing_rates": {str(column): float(series.isna().mean()) for column, series in dataset.frame.items()},
         "dataset_sha256": dataset.fingerprint,
         "archive_sha256": acquisition.sha256 if acquisition else None,
         "extracted_dataset_sha256": acquisition.extracted_sha256 if acquisition else None,

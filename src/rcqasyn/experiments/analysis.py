@@ -11,6 +11,7 @@ from __future__ import annotations
 import csv
 import hashlib
 import json
+import re
 from collections.abc import Iterable
 from pathlib import Path
 from typing import Any
@@ -250,8 +251,10 @@ def analyze_human_review(path: Path) -> dict[str, Any]:
             false_accepts += 1
         if not b3_accepted and human_valid:
             false_rejects += 1
+        # Multi-label is permitted: separate labels with '|', ';' or ','.
         failure_type = str(row.get("human_failure_type", "")).strip()
-        if failure_type and failure_type not in HUMAN_FAILURE_TAXONOMY:
+        labels = [token.strip() for token in re.split(r"[|;,]", failure_type) if token.strip()]
+        if labels and any(label not in HUMAN_FAILURE_TAXONOMY for label in labels):
             invalid_taxonomy += 1
     return {
         "status": "partial" if partial else "ok",

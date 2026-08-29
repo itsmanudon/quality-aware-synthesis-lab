@@ -13,7 +13,7 @@ from .ids import (
     record_id,
     run_id,
 )
-from .seeds import derive_seed, stable_seed
+from .seeds import derive_seed, generation_provider_seed, stable_seed
 
 __all__ = [
     "assessment_id",
@@ -21,6 +21,7 @@ __all__ = [
     "decision_id",
     "derive_seed",
     "evidence_id",
+    "generation_provider_seed",
     "new_assessment_id",
     "new_decision_id",
     "new_evidence_id",

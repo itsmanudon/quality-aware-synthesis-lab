@@ -322,6 +322,39 @@ def baselines_compare(
     print(f"Cross-dataset report: {destination}")
 
 
+@baselines_app.command("diagnose")
+def baselines_diagnose(
+    run_dirs: list[Path] = typer.Argument(..., help="Completed run directories to diagnose."),  # noqa: B008
+    root: Path | None = typer.Option(None, "--root", help="Project root."),  # noqa: B008
+) -> None:
+    """Write diagnostic-only copying and TRAIN-support artifacts for completed runs.
+
+    Does not read, change, or re-run any B1/B2/B3 acceptance decision.
+    """
+
+    from rcqasyn.experiments import copying_diagnostics, support_diagnostics
+
+    project_root = _root_option(root)
+    for run_dir in run_dirs:
+        path = run_dir if run_dir.is_absolute() else project_root / run_dir
+        try:
+            cp = copying_diagnostics(path, project_root)
+            sp = support_diagnostics(path, project_root)
+        except (OSError, KeyError, ValueError) as error:
+            typer.echo(f"error: {run_dir}: {error}", err=True)
+            raise typer.Exit(code=1) from error
+        overall = cp["overall"]
+        near = sp["overall"]["nearest_train_distance"]
+        print(
+            f"{path.name}: unique={overall['unique_records']}/{overall['records']} "
+            f"synth_dup={overall['exact_synthetic_duplicate']} "
+            f"ref_match={overall['exact_reference_match']} "
+            f"nonref_train_match={overall['exact_nonreference_train_match']} "
+            f"nearest_train_dist(min/median/max)="
+            f"{near.get('min')}/{near.get('median')}/{near.get('max')}"
+        )
+
+
 @baselines_app.command("run")
 def baselines_run(config: Path = typer.Option(..., "--config", help="Experiment YAML config."), root: Path | None = typer.Option(None, "--root", help="Project root.")) -> None:  # noqa: B008
     """Run a configured generation and paired B1/B2/B3 experiment."""

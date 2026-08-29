@@ -46,6 +46,7 @@ from rcqasyn.metrics import intrinsic_metrics, utility_metrics
 from rcqasyn.storage.artifacts import create_run_dir, write_json
 from rcqasyn.storage.jsonl import append_jsonl
 from rcqasyn.utils.hashing import sha256_text
+from rcqasyn.utils.seeds import generation_provider_seed
 
 
 @dataclass(frozen=True)
@@ -109,6 +110,10 @@ def run_experiment(config: ExperimentConfig, *, project_root: Path | None = None
     _write_json(run_dir / "dataset" / "split_manifest.json", split.to_dict())
     _write_json(run_dir / "dataset" / "profile.json", profile.model_dump(mode="json"))
     _write_json(run_dir / "generation_plan.json", plan.model_dump(mode="json"))
+    # Resolve + assert the deterministic unique per-batch provider seeds before
+    # any provider call (M1.4 seed-confound guard, M1.5 §5).
+    seed_plan = _generation_seed_plan(config, plan)
+    _write_json(run_dir / "generation_seed_plan.json", seed_plan)
 
     smoke_trace: ProviderCallTrace | None = None
     smoke_report: dict[str, Any] = {"status": "not_run", "reason": "offline replay" if replay else None}
@@ -127,7 +132,7 @@ def run_experiment(config: ExperimentConfig, *, project_root: Path | None = None
             _write_json(run_dir / "manifest.json", manifest, overwrite=True)
             raise RuntimeError(f"Provider smoke call failed; no pilot generation was attempted: {error}") from error
 
-    raw_candidates, traces, parse_failures, requested_calls = _generate_pool(config, run_id, plan, profile, generation_prompt.text, generator)
+    raw_candidates, traces, parse_failures, requested_calls = _generate_pool(config, run_id, plan, profile, generation_prompt.text, generator, seed_plan)
     _write_jsonl(run_dir / "provider_calls.jsonl", traces)
     _write_jsonl(run_dir / "generation_failures.jsonl", parse_failures)
     _write_jsonl(run_dir / "candidates_raw.jsonl", raw_candidates)
@@ -272,21 +277,81 @@ def _provider(config: Any, root: Path, replay: bool) -> Any:
     raise ValueError(f"unsupported provider kind {config.kind!r}")
 
 
-def _generate_pool(config: ExperimentConfig, run_id: str, plan: GenerationPlan, profile: Any, prompt_text: str, provider: Any) -> tuple[list[CandidateRecord], list[ProviderCallTrace], list[ParseFailureEvent], int]:
+def _generation_seed_plan(config: ExperimentConfig, plan: GenerationPlan) -> dict[str, Any]:
+    """Resolve the deterministic per-batch provider seed for every generation call.
+
+    Asserts the M1.4 seed-confound correction still holds: distinct
+    ``(dataset_id, requested_class, batch_index)`` tuples must map to distinct
+    provider seeds.  A collision raises before any provider call is made.
+    """
+
+    entries: list[dict[str, Any]] = []
+    seen: dict[int, tuple[str, str, int]] = {}
+    for quota in plan.class_quotas:
+        remaining = quota.count
+        batch_index = 0
+        while remaining > 0:
+            count = min(plan.batch_size, remaining)
+            key = (plan.dataset_id, str(quota.label), batch_index)
+            seed = (
+                generation_provider_seed(
+                    config.dataset.root_seed, plan.dataset_id, str(quota.label), batch_index,
+                    base_seed=config.generation.provider_seed,
+                )
+                if config.generation.provider_seed is not None
+                else None
+            )
+            if seed is not None:
+                if seed in seen and seen[seed] != key:
+                    raise RuntimeError(
+                        "generation seed confound: distinct "
+                        f"{key} and {seen[seed]} both derived provider seed {seed}"
+                    )
+                seen[seed] = key
+            entries.append({
+                "root_seed": config.dataset.root_seed, "dataset_id": plan.dataset_id,
+                "requested_class": str(quota.label), "batch_index": batch_index,
+                "requested_count": count, "provider_seed": seed,
+            })
+            remaining -= count
+            batch_index += 1
+    distinct_tuples = {(e["dataset_id"], e["requested_class"], e["batch_index"]) for e in entries}
+    distinct_seeds = {e["provider_seed"] for e in entries if e["provider_seed"] is not None}
+    return {
+        "schema_version": "m1-generation-seed-plan-v1",
+        "base_provider_seed": config.generation.provider_seed,
+        "derivation": "generation_provider_seed(root_seed, dataset_id, requested_class, batch_index, base_seed)",
+        "calls": entries,
+        "distinct_call_tuples": len(distinct_tuples),
+        "distinct_provider_seeds": len(distinct_seeds),
+        "all_seeds_unique": config.generation.provider_seed is None or len(distinct_seeds) == len(distinct_tuples),
+    }
+
+
+def _generate_pool(config: ExperimentConfig, run_id: str, plan: GenerationPlan, profile: Any, prompt_text: str, provider: Any, seed_plan: dict[str, Any] | None = None) -> tuple[list[CandidateRecord], list[ProviderCallTrace], list[ParseFailureEvent], int]:
     candidates: list[CandidateRecord] = []
     traces: list[ProviderCallTrace] = []
     failures: list[ParseFailureEvent] = []
-    requests: list[tuple[str, int]] = []
+    seed_by_key = {
+        (entry["requested_class"], entry["batch_index"]): entry["provider_seed"]
+        for entry in (seed_plan or _generation_seed_plan(config, plan))["calls"]
+    }
+    # (label, count, per-class batch index) so each batch gets a deterministic
+    # unique provider seed rather than replaying one configured seed.
+    requests: list[tuple[str, int, int]] = []
     for quota in plan.class_quotas:
         remaining = quota.count
+        batch_index = 0
         while remaining > 0:
             count = min(plan.batch_size, remaining)
-            requests.append((quota.label, count))
+            requests.append((quota.label, count, batch_index))
             remaining -= count
+            batch_index += 1
     requested_calls = len(requests)
     generation_context_json = json.dumps(profile.to_generation_context(), sort_keys=True) if hasattr(profile, "to_generation_context") else json.dumps(profile.model_dump(mode="json"), sort_keys=True)
     response_format = {"type": config.generation.response_format} if config.generation.response_format else None
-    for call_index, (requested_class, count) in enumerate(requests):
+    for call_index, (requested_class, count, batch_index) in enumerate(requests):
+        batch_seed = seed_by_key[(requested_class, batch_index)]
         prompt = prompt_text.format(
             profile_json=json.dumps(profile.model_dump(mode="json"), sort_keys=True),
             generation_context_json=generation_context_json, class_condition=requested_class,
@@ -296,7 +361,7 @@ def _generate_pool(config: ExperimentConfig, run_id: str, plan: GenerationPlan, 
         try:
             response = provider.call(
                 role="generation", prompt=prompt, request_index=call_index,
-                temperature=config.generation.temperature, seed=config.generation.provider_seed,
+                temperature=config.generation.temperature, seed=batch_seed,
                 max_tokens=config.generation.max_tokens, response_format=response_format,
                 reasoning_effort=config.generation.reasoning_effort,
             )
@@ -305,6 +370,7 @@ def _generate_pool(config: ExperimentConfig, run_id: str, plan: GenerationPlan, 
                 event_id=f"provider-generation-{call_index}", run_id=run_id, call_id=call_id,
                 parser_version="provider-v1", error=f"provider failure: {error}", recoverable=False,
                 created_at=datetime.now(UTC), metadata={"requested_class": requested_class, "requested_count": count,
+                                                       "batch_index": batch_index, "provider_seed": batch_seed,
                                                        "temperature": config.generation.temperature, "max_tokens": config.generation.max_tokens,
                                                        "transport_version": config.generation.transport_version,
                                                        "response_format": config.generation.response_format,
@@ -314,15 +380,15 @@ def _generate_pool(config: ExperimentConfig, run_id: str, plan: GenerationPlan, 
         call_id = response.call_id or call_id
         traces.append(_trace(
             run_id, "generation", response, config.generation.prompt_version, plan.prompt_hash, count,
-            config.generation.provider_seed, requested_class, prompt=prompt,
+            batch_seed, requested_class, prompt=prompt,
             temperature=config.generation.temperature, max_tokens=config.generation.max_tokens,
             response_format=response_format, reasoning_effort=config.generation.reasoning_effort,
-            transport_version=config.generation.transport_version,
+            transport_version=config.generation.transport_version, batch_index=batch_index,
         ))
         parsed = parse_generation_response(
             response.response, run_id=run_id, call_id=call_id, generator_id=plan.generator_id,
             generator_version=plan.generator_version, prompt_version=plan.prompt_version,
-            seed=config.generation.provider_seed, requested_class=requested_class,
+            seed=batch_seed, requested_class=requested_class,
             requested_count=count, transport_version=config.generation.transport_version,
         )
         candidates.extend(parsed.candidates)
@@ -330,8 +396,9 @@ def _generate_pool(config: ExperimentConfig, run_id: str, plan: GenerationPlan, 
     return candidates, traces, failures, requested_calls
 
 
-def _trace(run_id: str, role: str, response: ProviderResponse, prompt_version: str | None, prompt_hash: str | None, requested_count: int | None, seed: int | None, requested_class: str | None = None, *, prompt: str | None = None, temperature: float | None = None, max_tokens: int | None = None, response_format: dict[str, Any] | None = None, reasoning_effort: str | None = None, transport_version: str | None = None) -> ProviderCallTrace:
+def _trace(run_id: str, role: str, response: ProviderResponse, prompt_version: str | None, prompt_hash: str | None, requested_count: int | None, seed: int | None, requested_class: str | None = None, *, prompt: str | None = None, temperature: float | None = None, max_tokens: int | None = None, response_format: dict[str, Any] | None = None, reasoning_effort: str | None = None, transport_version: str | None = None, batch_index: int | None = None) -> ProviderCallTrace:
     return ProviderCallTrace(
+        metadata={"batch_index": batch_index} if batch_index is not None else {},
         call_id=response.call_id or f"call-{sha256_text(response.response)[:12]}", run_id=run_id, role=role,
         provider=response.provider, model=response.model, endpoint=response.endpoint, prompt_version=prompt_version,
         prompt_hash=prompt_hash, prompt=prompt, raw_response=response.response,
