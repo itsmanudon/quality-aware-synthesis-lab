@@ -47,6 +47,10 @@ pytest tests/m1/test_harness.py -q          # one file
 ruff check .
 pyright
 
+# audit trail: re-runs the three commands above and appends one record to
+# test-results/history.jsonl (tracked; see test-results/README.md)
+python scripts/record_test_run.py
+
 # CLI (also available as `python -m rcqasyn`)
 rcqasyn --help
 rcqasyn doctor                               # config/papers/artifacts/git state
@@ -94,8 +98,10 @@ docs/            architecture, contracts, datasets, baselines, generation protoc
                  experiment artifacts, human review, literature protocol, milestones, research plan
 tests/           mirrors src layout; tests/m1/ covers the harness
 experiments/     standalone report scripts (not importable package code)
+scripts/         dev-tooling scripts (not importable package code); record_test_run.py
 data/            raw/ processed/ manifests/ — contents gitignored except .gitkeep
 artifacts/       run outputs — gitignored except .gitkeep
+test-results/    tracked pytest/ruff/pyright audit log (history.jsonl) — NOT gitignored
 literature/      papers/ (PDFs gitignored), notes/, paper_inventory.csv
 AGENTS.md        commit-message rules — read before committing
 RC_QASyn_Research_Implementation_Manifest.xlsx   source-of-truth research manifest
@@ -246,6 +252,9 @@ in the body or a `Tests:`/`Verification:` footer. Keep commit scope intentional;
 sweep unrelated working-tree changes into a commit without explicit authorization.
 
 Run `pytest -q`, `ruff check .`, and `pyright` (inside the venv) before committing.
+For non-trivial changes, also run `python scripts/record_test_run.py` — it appends a
+JSON record of that verification run to the tracked `test-results/history.jsonl` audit
+log — and commit the updated `test-results/history.jsonl` alongside the change.
 
 ## Gotchas
 
@@ -254,6 +263,9 @@ Run `pytest -q`, `ruff check .`, and `pyright` (inside the venv) before committi
   `run_id` or delete the run directory.
 - `data/*` and `artifacts/*` contents are gitignored (`.gitkeep` files are tracked). Local
   run output and KEEL raw files never get committed — do not try to force them in.
+- `test-results/history.jsonl` is the one exception to that pattern: it is a tracked,
+  append-only pytest/ruff/pyright audit log (`test-results/README.md`), deliberately not
+  gitignored. Append to it, never rewrite or truncate existing lines.
 - `literature/papers/*.pdf` is gitignored for licensing and repo-size reasons; only
   `paper_inventory.csv` and the notes are tracked.
 - Judge and generation provider traces live in different files: successful generation
