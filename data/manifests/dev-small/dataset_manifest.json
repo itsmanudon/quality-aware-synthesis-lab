@@ -1,0 +1,1 @@
+{"class_counts":{"no":12,"yes":4},"dataset_id":"dev-small","features":["age","score","color"],"fingerprint":"d0cf8966bf0e2bd82e53047e43d176675da1374f416117354a3de7774bbf5c47","path":"/Users/manan/Documents/GitHub/quality-aware-synthesis-lab/tests/fixtures/dev-small.csv","rows":16,"target":"label"}
