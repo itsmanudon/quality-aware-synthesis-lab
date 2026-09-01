@@ -1,0 +1,66 @@
+{
+  "datasets": [
+    {
+      "dataset_id": "Abalone19",
+      "p1_duplicate_by_class": {
+        "None": 0,
+        "negative": 36,
+        "positive": 21
+      },
+      "p1_duplicate_rate": 0.285,
+      "p1_minority_duplicate_rate": 0.22105263157894736,
+      "p1_requested": 200,
+      "p1_unique": 143,
+      "prior_duplicate_by_class": {
+        "negative": 7,
+        "positive": 0
+      },
+      "prior_duplicate_rate": 0.175,
+      "prior_minority_duplicate_rate": 0.0,
+      "prior_requested": 40,
+      "prior_unique": 33
+    },
+    {
+      "dataset_id": "Ecoli4",
+      "p1_duplicate_by_class": {
+        "None": 0,
+        "negative": 21,
+        "positive": 0
+      },
+      "p1_duplicate_rate": 0.1044776119402985,
+      "p1_minority_duplicate_rate": 0.0,
+      "p1_requested": 200,
+      "p1_unique": 180,
+      "prior_duplicate_by_class": {
+        "negative": 2,
+        "positive": 0
+      },
+      "prior_duplicate_rate": 0.05,
+      "prior_minority_duplicate_rate": 0.0,
+      "prior_requested": 40,
+      "prior_unique": 38
+    },
+    {
+      "dataset_id": "page-blocks0",
+      "p1_duplicate_by_class": {
+        "None": 0,
+        "negative": 15,
+        "positive": 4
+      },
+      "p1_duplicate_rate": 0.095,
+      "p1_minority_duplicate_rate": 0.0425531914893617,
+      "p1_requested": 200,
+      "p1_unique": 181,
+      "prior_duplicate_by_class": {
+        "negative": 3,
+        "positive": 0
+      },
+      "prior_duplicate_rate": 0.075,
+      "prior_minority_duplicate_rate": 0.0,
+      "prior_requested": 40,
+      "prior_unique": 37
+    }
+  ],
+  "no_significance_claim": true,
+  "schema_version": "m1-5-diversity-scaling-v1"
+}

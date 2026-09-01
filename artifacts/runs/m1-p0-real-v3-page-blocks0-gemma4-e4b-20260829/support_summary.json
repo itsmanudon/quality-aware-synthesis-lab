@@ -1,0 +1,84 @@
+{
+  "by_target_class": {
+    "negative": {
+      "nearest_same_class_train_distance": {
+        "count": 20,
+        "max": 3.7708900373486673,
+        "mean": 0.6515401638663922,
+        "median": 0.26618654164168604,
+        "min": 0.0,
+        "p10": 0.0,
+        "p90": 1.7997008568533963
+      },
+      "nearest_train_distance": {
+        "count": 20,
+        "max": 3.7708900373486673,
+        "mean": 0.6515401638663922,
+        "median": 0.26618654164168604,
+        "min": 0.0,
+        "p10": 0.0,
+        "p90": 1.7997008568533963
+      }
+    },
+    "positive": {
+      "nearest_same_class_train_distance": {
+        "count": 20,
+        "max": 1.0395322310047053,
+        "mean": 0.4014498937312349,
+        "median": 0.3388386224087964,
+        "min": 0.1364676115956812,
+        "p10": 0.21611699949344607,
+        "p90": 0.6105930609238723
+      },
+      "nearest_train_distance": {
+        "count": 20,
+        "max": 0.3754300245854954,
+        "mean": 0.23118353037314412,
+        "median": 0.22191604815877952,
+        "min": 0.12376301982441597,
+        "p10": 0.14423199819790472,
+        "p90": 0.33426004951779204
+      }
+    }
+  },
+  "dataset_id": "page-blocks0",
+  "distance_representation": {
+    "categorical": "one-hot over TRAIN domain levels, unit weight; a nominal mismatch contributes sqrt(2) to the Euclidean distance (conservative, learning-free)",
+    "categorical_columns": [],
+    "numerical": "z-score standardized with TRAIN mean/std (ddof=0); zero-variance columns dropped"
+  },
+  "exact_train_contact_count": 0,
+  "note": "diagnostic only: learning-free standardized Euclidean NN distance to REAL TRAIN; no thresholds, not a validity probability",
+  "overall": {
+    "nearest_other_class_train_distance": {
+      "count": 40,
+      "max": 5.447080414533818,
+      "mean": 0.9779233490239957,
+      "median": 0.42464918200794766,
+      "min": 0.12376301982441597,
+      "p10": 0.17087697982336927,
+      "p90": 2.9408171058098773
+    },
+    "nearest_same_class_train_distance": {
+      "count": 40,
+      "max": 3.7708900373486673,
+      "mean": 0.5264950287988135,
+      "median": 0.3119229241029591,
+      "min": 0.0,
+      "p10": 0.08971055419525688,
+      "p90": 1.0843501428655402
+    },
+    "nearest_train_distance": {
+      "count": 40,
+      "max": 3.7708900373486673,
+      "mean": 0.4413618471197681,
+      "median": 0.2445597832019331,
+      "min": 0.0,
+      "p10": 0.08971055419525688,
+      "p90": 1.0843501428655402
+    }
+  },
+  "run_id": "m1-p0-real-v3-page-blocks0-gemma4-e4b-20260829",
+  "schema_version": "m1-5-support-diagnostics-v1",
+  "train_rows": 4377
+}

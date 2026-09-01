@@ -1,0 +1,146 @@
+{
+  "Abalone19": {
+    "b1": {
+      "acceptance_rate": 1.0,
+      "accepted": 200,
+      "failure_counts": {
+        "duplicate": 57
+      },
+      "raw_pool": 200
+    },
+    "b2": {
+      "acceptance_rate": 0.69,
+      "accepted": 138,
+      "failure_counts": {
+        "b2_rejection": 62,
+        "b2_rejections": 62,
+        "category_invalid": 0,
+        "deterministic_structural_rejection": 62,
+        "duplicate": 57,
+        "invalid_category": 0,
+        "missing_field": 5,
+        "range_warning": 0,
+        "range_warnings": 0,
+        "schema_failure": 5,
+        "schema_failures": 5,
+        "target_mismatch": 5,
+        "target_wrong": 5
+      },
+      "raw_pool": 200
+    },
+    "b3": {
+      "acceptance_rate": 1.0,
+      "accepted": 200,
+      "failure_counts": {
+        "duplicate": 57,
+        "judge_malformed": 0,
+        "judge_provider_failure": 0,
+        "judge_rejection": 0,
+        "judge_rejections": 0
+      },
+      "raw_pool": 200
+    },
+    "b3_detail": {
+      "judge_malformed": 0,
+      "judge_provider_failures": 0,
+      "judge_rejection_rate": 0.0,
+      "judge_rejections": 0
+    }
+  },
+  "Ecoli4": {
+    "b1": {
+      "acceptance_rate": 1.0,
+      "accepted": 201,
+      "failure_counts": {
+        "duplicate": 21
+      },
+      "raw_pool": 201
+    },
+    "b2": {
+      "acceptance_rate": 0.8656716417910447,
+      "accepted": 174,
+      "failure_counts": {
+        "b2_rejection": 27,
+        "b2_rejections": 27,
+        "category_invalid": 0,
+        "deterministic_structural_rejection": 27,
+        "duplicate": 21,
+        "invalid_category": 0,
+        "missing_field": 6,
+        "range_warning": 1,
+        "range_warnings": 1,
+        "schema_failure": 6,
+        "schema_failures": 6,
+        "target_mismatch": 5,
+        "target_wrong": 5
+      },
+      "raw_pool": 201
+    },
+    "b3": {
+      "acceptance_rate": 0.9950248756218906,
+      "accepted": 200,
+      "failure_counts": {
+        "duplicate": 21,
+        "judge_malformed": 0,
+        "judge_provider_failure": 0,
+        "judge_rejection": 1,
+        "judge_rejections": 1
+      },
+      "raw_pool": 201
+    },
+    "b3_detail": {
+      "judge_malformed": 0,
+      "judge_provider_failures": 0,
+      "judge_rejection_rate": 0.004975124378109453,
+      "judge_rejections": 1
+    }
+  },
+  "page-blocks0": {
+    "b1": {
+      "acceptance_rate": 1.0,
+      "accepted": 200,
+      "failure_counts": {
+        "duplicate": 19
+      },
+      "raw_pool": 200
+    },
+    "b2": {
+      "acceptance_rate": 0.875,
+      "accepted": 175,
+      "failure_counts": {
+        "b2_rejection": 25,
+        "b2_rejections": 25,
+        "category_invalid": 0,
+        "deterministic_structural_rejection": 25,
+        "duplicate": 19,
+        "invalid_category": 0,
+        "missing_field": 5,
+        "range_warning": 4,
+        "range_warnings": 4,
+        "schema_failure": 5,
+        "schema_failures": 5,
+        "target_mismatch": 6,
+        "target_wrong": 6
+      },
+      "raw_pool": 200
+    },
+    "b3": {
+      "acceptance_rate": 1.0,
+      "accepted": 200,
+      "failure_counts": {
+        "duplicate": 19,
+        "judge_malformed": 0,
+        "judge_provider_failure": 0,
+        "judge_rejection": 0,
+        "judge_rejections": 0
+      },
+      "raw_pool": 200
+    },
+    "b3_detail": {
+      "judge_malformed": 0,
+      "judge_provider_failures": 0,
+      "judge_rejection_rate": 0.0,
+      "judge_rejections": 0
+    }
+  }
+}

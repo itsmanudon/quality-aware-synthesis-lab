@@ -1,0 +1,254 @@
+{
+  "Abalone19": {
+    "TRTR": {
+      "logistic_regression": {
+        "auroc": 0.8482286634460547,
+        "average_precision": 0.025585877996355772,
+        "balanced_accuracy": 0.5,
+        "f1": 0.0,
+        "mcc": 0.0,
+        "pr_auc": 0.025585877996355772,
+        "status": "ok"
+      },
+      "random_forest": {
+        "auroc": 0.8023349436392916,
+        "average_precision": 0.02311223816665754,
+        "balanced_accuracy": 0.5,
+        "f1": 0.0,
+        "mcc": 0.0,
+        "pr_auc": 0.02311223816665754,
+        "status": "ok"
+      }
+    },
+    "b1_TSTR": {
+      "logistic_regression": {
+        "auroc": null,
+        "average_precision": null,
+        "balanced_accuracy": null,
+        "f1": null,
+        "mcc": null,
+        "pr_auc": null,
+        "reason": "The 'liblinear' solver does not support multiclass classification (n_classes >= 3). Either use another solver or wrap the estimator in a OneVsRestClassifier to keep applying a one-versus-rest scheme.",
+        "status": "undefined"
+      },
+      "random_forest": {
+        "auroc": 0.7630837359098228,
+        "average_precision": 0.0242107248183657,
+        "balanced_accuracy": 0.5772946859903382,
+        "f1": 0.783978896226628,
+        "mcc": 0.027537196135828525,
+        "pr_auc": 0.0242107248183657,
+        "status": "ok"
+      }
+    },
+    "b2_TSTR": {
+      "logistic_regression": {
+        "auroc": 0.7542270531400967,
+        "average_precision": 0.020600391119285622,
+        "balanced_accuracy": 0.7928743961352658,
+        "f1": 0.03380281690140845,
+        "mcc": 0.10035028554921287,
+        "pr_auc": 0.020600391119285622,
+        "status": "ok"
+      },
+      "random_forest": {
+        "auroc": 0.7620772946859904,
+        "average_precision": 0.01820050926635003,
+        "balanced_accuracy": 0.7294685990338164,
+        "f1": 0.03115264797507788,
+        "mcc": 0.08000278352476983,
+        "pr_auc": 0.01820050926635003,
+        "status": "ok"
+      }
+    },
+    "b3_TSTR": {
+      "logistic_regression": {
+        "auroc": null,
+        "average_precision": null,
+        "balanced_accuracy": null,
+        "f1": null,
+        "mcc": null,
+        "pr_auc": null,
+        "reason": "The 'liblinear' solver does not support multiclass classification (n_classes >= 3). Either use another solver or wrap the estimator in a OneVsRestClassifier to keep applying a one-versus-rest scheme.",
+        "status": "undefined"
+      },
+      "random_forest": {
+        "auroc": 0.7630837359098228,
+        "average_precision": 0.0242107248183657,
+        "balanced_accuracy": 0.5772946859903382,
+        "f1": 0.783978896226628,
+        "mcc": 0.027537196135828525,
+        "pr_auc": 0.0242107248183657,
+        "status": "ok"
+      }
+    }
+  },
+  "Ecoli4": {
+    "TRTR": {
+      "logistic_regression": {
+        "auroc": 1.0,
+        "average_precision": 1.0,
+        "balanced_accuracy": 1.0,
+        "f1": 1.0,
+        "mcc": 1.0,
+        "pr_auc": 1.0,
+        "status": "ok"
+      },
+      "random_forest": {
+        "auroc": 1.0,
+        "average_precision": 1.0,
+        "balanced_accuracy": 0.75,
+        "f1": 0.6666666666666666,
+        "mcc": 0.6961432213383857,
+        "pr_auc": 1.0,
+        "status": "ok"
+      }
+    },
+    "b1_TSTR": {
+      "logistic_regression": {
+        "auroc": null,
+        "average_precision": null,
+        "balanced_accuracy": null,
+        "f1": null,
+        "mcc": null,
+        "pr_auc": null,
+        "reason": "The 'liblinear' solver does not support multiclass classification (n_classes >= 3). Either use another solver or wrap the estimator in a OneVsRestClassifier to keep applying a one-versus-rest scheme.",
+        "status": "undefined"
+      },
+      "random_forest": {
+        "auroc": 0.9345238095238095,
+        "average_precision": 0.5838235294117646,
+        "balanced_accuracy": 0.8412698412698413,
+        "f1": 0.7799412640302531,
+        "mcc": 0.33727824382342503,
+        "pr_auc": 0.5838235294117646,
+        "status": "ok"
+      }
+    },
+    "b2_TSTR": {
+      "logistic_regression": {
+        "auroc": 0.7023809523809524,
+        "average_precision": 0.1113222235036328,
+        "balanced_accuracy": 0.746031746031746,
+        "f1": 0.2,
+        "mcc": 0.23382412480406722,
+        "pr_auc": 0.1113222235036328,
+        "status": "ok"
+      },
+      "random_forest": {
+        "auroc": 0.9821428571428572,
+        "average_precision": 0.8125,
+        "balanced_accuracy": 0.7857142857142857,
+        "f1": 0.22857142857142856,
+        "mcc": 0.27153769332085226,
+        "pr_auc": 0.8125,
+        "status": "ok"
+      }
+    },
+    "b3_TSTR": {
+      "logistic_regression": {
+        "auroc": null,
+        "average_precision": null,
+        "balanced_accuracy": null,
+        "f1": null,
+        "mcc": null,
+        "pr_auc": null,
+        "reason": "The 'liblinear' solver does not support multiclass classification (n_classes >= 3). Either use another solver or wrap the estimator in a OneVsRestClassifier to keep applying a one-versus-rest scheme.",
+        "status": "undefined"
+      },
+      "random_forest": {
+        "auroc": 0.9742063492063492,
+        "average_precision": 0.7611111111111111,
+        "balanced_accuracy": 0.8174603174603174,
+        "f1": 0.7457357746189192,
+        "mcc": 0.3066958041521574,
+        "pr_auc": 0.7611111111111111,
+        "status": "ok"
+      }
+    }
+  },
+  "page-blocks0": {
+    "TRTR": {
+      "logistic_regression": {
+        "auroc": 0.9334444484813254,
+        "average_precision": 0.7455872422791318,
+        "balanced_accuracy": 0.8019319502979219,
+        "f1": 0.7150259067357513,
+        "mcc": 0.699138713871576,
+        "pr_auc": 0.7455872422791318,
+        "status": "ok"
+      },
+      "random_forest": {
+        "auroc": 0.9925928280773144,
+        "average_precision": 0.9212922490047819,
+        "balanced_accuracy": 0.9106007484377271,
+        "f1": 0.8691588785046729,
+        "mcc": 0.8561715500418057,
+        "pr_auc": 0.9212922490047819,
+        "status": "ok"
+      }
+    },
+    "b1_TSTR": {
+      "logistic_regression": {
+        "auroc": null,
+        "average_precision": null,
+        "balanced_accuracy": null,
+        "f1": null,
+        "mcc": null,
+        "pr_auc": null,
+        "reason": "The 'liblinear' solver does not support multiclass classification (n_classes >= 3). Either use another solver or wrap the estimator in a OneVsRestClassifier to keep applying a one-versus-rest scheme.",
+        "status": "undefined"
+      },
+      "random_forest": {
+        "auroc": 0.8531917599186165,
+        "average_precision": 0.5394253827505664,
+        "balanced_accuracy": 0.7629932059293707,
+        "f1": 0.8995181935349708,
+        "mcc": 0.4827957151152384,
+        "pr_auc": 0.5394253827505664,
+        "status": "ok"
+      }
+    },
+    "b2_TSTR": {
+      "logistic_regression": {
+        "auroc": 0.6726356997529429,
+        "average_precision": 0.5004175278108927,
+        "balanced_accuracy": 0.7236593518383956,
+        "f1": 0.42953020134228187,
+        "mcc": 0.36096443517331667,
+        "pr_auc": 0.5004175278108927,
+        "status": "ok"
+      },
+      "random_forest": {
+        "auroc": 0.8474286077604999,
+        "average_precision": 0.5142728611227586,
+        "balanced_accuracy": 0.7770082473477693,
+        "f1": 0.5702479338842975,
+        "mcc": 0.5190069010750495,
+        "pr_auc": 0.5142728611227586,
+        "status": "ok"
+      }
+    },
+    "b3_TSTR": {
+      "logistic_regression": {
+        "auroc": null,
+        "average_precision": null,
+        "balanced_accuracy": null,
+        "f1": null,
+        "mcc": null,
+        "pr_auc": null,
+        "reason": "The 'liblinear' solver does not support multiclass classification (n_classes >= 3). Either use another solver or wrap the estimator in a OneVsRestClassifier to keep applying a one-versus-rest scheme.",
+        "status": "undefined"
+      },
+      "random_forest": {
+        "auroc": 0.8531917599186165,
+        "average_precision": 0.5394253827505664,
+        "balanced_accuracy": 0.7629932059293707,
+        "f1": 0.8995181935349708,
+        "mcc": 0.4827957151152384,
+        "pr_auc": 0.5394253827505664,
+        "status": "ok"
+      }
+    }
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "by_target_class": {
+    "negative": {
+      "nearest_same_class_train_distance": {
+        "count": 20,
+        "max": 1.238457747412143,
+        "mean": 0.5524202838592943,
+        "median": 0.5554110132303001,
+        "min": 0.0,
+        "p10": 0.0,
+        "p90": 1.1115586033589717
+      },
+      "nearest_train_distance": {
+        "count": 20,
+        "max": 1.238457747412143,
+        "mean": 0.544340057401208,
+        "median": 0.5554110132303001,
+        "min": 0.0,
+        "p10": 0.0,
+        "p90": 1.1115586033589717
+      }
+    },
+    "positive": {
+      "nearest_same_class_train_distance": {
+        "count": 20,
+        "max": 1.7227404296445206,
+        "mean": 0.8261145737686413,
+        "median": 0.7976444930834011,
+        "min": 0.3043003155900476,
+        "p10": 0.5187560072764901,
+        "p90": 1.200640674583236
+      },
+      "nearest_train_distance": {
+        "count": 20,
+        "max": 1.2428038384904228,
+        "mean": 0.6562405672335565,
+        "median": 0.6011427924004455,
+        "min": 0.13242362502823712,
+        "p10": 0.41369103915455224,
+        "p90": 0.9304478110251837
+      }
+    }
+  },
+  "dataset_id": "Ecoli4",
+  "distance_representation": {
+    "categorical": "one-hot over TRAIN domain levels, unit weight; a nominal mismatch contributes sqrt(2) to the Euclidean distance (conservative, learning-free)",
+    "categorical_columns": [],
+    "numerical": "z-score standardized with TRAIN mean/std (ddof=0); zero-variance columns dropped"
+  },
+  "exact_train_contact_count": 0,
+  "note": "diagnostic only: learning-free standardized Euclidean NN distance to REAL TRAIN; no thresholds, not a validity probability",
+  "overall": {
+    "nearest_other_class_train_distance": {
+      "count": 40,
+      "max": 4.639931708900512,
+      "mean": 1.5328723439300487,
+      "median": 1.236846110033801,
+      "min": 0.13242362502823712,
+      "p10": 0.5619646871015581,
+      "p90": 3.039816934406972
+    },
+    "nearest_same_class_train_distance": {
+      "count": 40,
+      "max": 1.7227404296445206,
+      "mean": 0.6892674288139677,
+      "median": 0.6104410026769209,
+      "min": 0.0,
+      "p10": 0.27387028403104297,
+      "p90": 1.1789019214679657
+    },
+    "nearest_train_distance": {
+      "count": 40,
+      "max": 1.2428038384904228,
+      "mean": 0.6002903123173822,
+      "median": 0.5722389687349463,
+      "min": 0.0,
+      "p10": 0.11918126252541346,
+      "p90": 0.9485978824699532
+    }
+  },
+  "run_id": "m1-p0-real-v3-Ecoli4-gemma4-e4b-20260829",
+  "schema_version": "m1-5-support-diagnostics-v1",
+  "train_rows": 269
+}

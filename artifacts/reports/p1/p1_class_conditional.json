@@ -1,0 +1,2041 @@
+{
+  "Abalone19": {
+    "diversity_by_class": {
+      "negative": {
+        "exact_nonreference_train_match": 0,
+        "exact_nonreference_train_match_rate": 0.0,
+        "exact_reference_match": 36,
+        "exact_reference_match_rate": 0.36,
+        "exact_synthetic_duplicate": 36,
+        "exact_synthetic_duplicate_rate": 0.36,
+        "records": 100,
+        "unique_records": 64
+      },
+      "positive": {
+        "exact_nonreference_train_match": 0,
+        "exact_nonreference_train_match_rate": 0.0,
+        "exact_reference_match": 13,
+        "exact_reference_match_rate": 0.13,
+        "exact_synthetic_duplicate": 21,
+        "exact_synthetic_duplicate_rate": 0.21,
+        "records": 100,
+        "unique_records": 79
+      }
+    },
+    "intrinsic_class_conditional": {
+      "classes": {
+        "negative": {
+          "categorical": {
+            "sex": {
+              "jensen_shannon_divergence": 0.021761312661350684,
+              "jsd": 0.021761312661350684,
+              "status": "ok",
+              "tvd": 0.15632468316234155
+            }
+          },
+          "exact_duplicate_count": 36,
+          "exact_duplicate_rate": 0.36,
+          "numeric": {
+            "diameter": {
+              "ks": 0.2873264936632469,
+              "ks_statistic": 0.2873264936632469,
+              "status": "ok",
+              "wasserstein": 0.031895835847917935,
+              "wasserstein_distance": 0.031895835847917935
+            },
+            "height": {
+              "ks": 0.3156366928183465,
+              "ks_statistic": 0.3156366928183465,
+              "status": "ok",
+              "wasserstein": 0.016609203379601693,
+              "wasserstein_distance": 0.016609203379601693
+            },
+            "length": {
+              "ks": 0.35056729028364514,
+              "ks_statistic": 0.35056729028364514,
+              "status": "ok",
+              "wasserstein": 0.048114001207000615,
+              "wasserstein_distance": 0.048114001207000615
+            },
+            "shell_weight": {
+              "ks": 0.3460712130356065,
+              "ks_statistic": 0.3460712130356065,
+              "status": "ok",
+              "wasserstein": 0.0712815509957755,
+              "wasserstein_distance": 0.0712815509957755
+            },
+            "shucked_weight": {
+              "ks": 0.46220277610138805,
+              "ks_statistic": 0.46220277610138805,
+              "status": "ok",
+              "wasserstein": 0.14752396499698253,
+              "wasserstein_distance": 0.14752396499698253
+            },
+            "viscera_weight": {
+              "ks": 0.4374109837054918,
+              "ks_statistic": 0.4374109837054918,
+              "status": "ok",
+              "wasserstein": 0.07837296922148462,
+              "wasserstein_distance": 0.07837296922148462
+            },
+            "whole_weight": {
+              "ks": 0.44444176222088116,
+              "ks_statistic": 0.44444176222088116,
+              "status": "ok",
+              "wasserstein": 0.32936076644538315,
+              "wasserstein_distance": 0.32936076644538315
+            }
+          },
+          "real_count": 3314,
+          "status": "ok",
+          "synthetic_count": 100
+        },
+        "positive": {
+          "categorical": {
+            "sex": {
+              "jensen_shannon_divergence": 0.0473972378223894,
+              "jsd": 0.0473972378223894,
+              "status": "ok",
+              "tvd": 0.20850202429149797
+            }
+          },
+          "exact_duplicate_count": 21,
+          "exact_duplicate_rate": 0.22105263157894736,
+          "numeric": {
+            "diameter": {
+              "ks": 0.4295546558704454,
+              "ks_statistic": 0.4295546558704454,
+              "status": "ok",
+              "wasserstein": 0.04450202429149797,
+              "wasserstein_distance": 0.04450202429149797
+            },
+            "height": {
+              "ks": 0.5554655870445344,
+              "ks_statistic": 0.5554655870445344,
+              "status": "ok",
+              "wasserstein": 0.03271862348178138,
+              "wasserstein_distance": 0.03271862348178138
+            },
+            "length": {
+              "ks": 0.41214574898785433,
+              "ks_statistic": 0.41214574898785433,
+              "status": "ok",
+              "wasserstein": 0.046465587044534414,
+              "wasserstein_distance": 0.046465587044534414
+            },
+            "shell_weight": {
+              "ks": 0.38744939271255063,
+              "ks_statistic": 0.38744939271255063,
+              "status": "ok",
+              "wasserstein": 0.05851174089068828,
+              "wasserstein_distance": 0.05851174089068828
+            },
+            "shucked_weight": {
+              "ks": 0.46356275303643735,
+              "ks_statistic": 0.46356275303643735,
+              "status": "ok",
+              "wasserstein": 0.2065556680161943,
+              "wasserstein_distance": 0.2065556680161943
+            },
+            "viscera_weight": {
+              "ks": 0.3514170040485831,
+              "ks_statistic": 0.3514170040485831,
+              "status": "ok",
+              "wasserstein": 0.06351882591093118,
+              "wasserstein_distance": 0.06351882591093118
+            },
+            "whole_weight": {
+              "ks": 0.3587044534412956,
+              "ks_statistic": 0.3587044534412956,
+              "status": "ok",
+              "wasserstein": 0.28252813765182183,
+              "wasserstein_distance": 0.28252813765182183
+            }
+          },
+          "real_count": 26,
+          "status": "ok",
+          "synthetic_count": 95
+        }
+      },
+      "status": "ok"
+    },
+    "minority_analysis": {
+      "authoritative_target_column": "class",
+      "b1": {
+        "accepted_count": 95,
+        "accepted_rate": 1.0,
+        "requested_rate": 0.95
+      },
+      "b2": {
+        "accepted_count": 74,
+        "accepted_rate": 0.7789473684210526,
+        "requested_rate": 0.74
+      },
+      "b3": {
+        "accepted_count": 95,
+        "accepted_rate": 1.0,
+        "requested_rate": 0.95
+      },
+      "class_conditional_discrepancy": {
+        "b1": {
+          "classes": {
+            "negative": {
+              "categorical": {
+                "sex": {
+                  "jensen_shannon_divergence": 0.021761312661350684,
+                  "jsd": 0.021761312661350684,
+                  "status": "ok",
+                  "tvd": 0.15632468316234155
+                }
+              },
+              "exact_duplicate_count": 36,
+              "exact_duplicate_rate": 0.36,
+              "numeric": {
+                "diameter": {
+                  "ks": 0.2873264936632469,
+                  "ks_statistic": 0.2873264936632469,
+                  "status": "ok",
+                  "wasserstein": 0.031895835847917935,
+                  "wasserstein_distance": 0.031895835847917935
+                },
+                "height": {
+                  "ks": 0.3156366928183465,
+                  "ks_statistic": 0.3156366928183465,
+                  "status": "ok",
+                  "wasserstein": 0.016609203379601693,
+                  "wasserstein_distance": 0.016609203379601693
+                },
+                "length": {
+                  "ks": 0.35056729028364514,
+                  "ks_statistic": 0.35056729028364514,
+                  "status": "ok",
+                  "wasserstein": 0.048114001207000615,
+                  "wasserstein_distance": 0.048114001207000615
+                },
+                "shell_weight": {
+                  "ks": 0.3460712130356065,
+                  "ks_statistic": 0.3460712130356065,
+                  "status": "ok",
+                  "wasserstein": 0.0712815509957755,
+                  "wasserstein_distance": 0.0712815509957755
+                },
+                "shucked_weight": {
+                  "ks": 0.46220277610138805,
+                  "ks_statistic": 0.46220277610138805,
+                  "status": "ok",
+                  "wasserstein": 0.14752396499698253,
+                  "wasserstein_distance": 0.14752396499698253
+                },
+                "viscera_weight": {
+                  "ks": 0.4374109837054918,
+                  "ks_statistic": 0.4374109837054918,
+                  "status": "ok",
+                  "wasserstein": 0.07837296922148462,
+                  "wasserstein_distance": 0.07837296922148462
+                },
+                "whole_weight": {
+                  "ks": 0.44444176222088116,
+                  "ks_statistic": 0.44444176222088116,
+                  "status": "ok",
+                  "wasserstein": 0.32936076644538315,
+                  "wasserstein_distance": 0.32936076644538315
+                }
+              },
+              "real_count": 3314,
+              "status": "ok",
+              "synthetic_count": 100
+            },
+            "positive": {
+              "categorical": {
+                "sex": {
+                  "jensen_shannon_divergence": 0.0473972378223894,
+                  "jsd": 0.0473972378223894,
+                  "status": "ok",
+                  "tvd": 0.20850202429149797
+                }
+              },
+              "exact_duplicate_count": 21,
+              "exact_duplicate_rate": 0.22105263157894736,
+              "numeric": {
+                "diameter": {
+                  "ks": 0.4295546558704454,
+                  "ks_statistic": 0.4295546558704454,
+                  "status": "ok",
+                  "wasserstein": 0.04450202429149797,
+                  "wasserstein_distance": 0.04450202429149797
+                },
+                "height": {
+                  "ks": 0.5554655870445344,
+                  "ks_statistic": 0.5554655870445344,
+                  "status": "ok",
+                  "wasserstein": 0.03271862348178138,
+                  "wasserstein_distance": 0.03271862348178138
+                },
+                "length": {
+                  "ks": 0.41214574898785433,
+                  "ks_statistic": 0.41214574898785433,
+                  "status": "ok",
+                  "wasserstein": 0.046465587044534414,
+                  "wasserstein_distance": 0.046465587044534414
+                },
+                "shell_weight": {
+                  "ks": 0.38744939271255063,
+                  "ks_statistic": 0.38744939271255063,
+                  "status": "ok",
+                  "wasserstein": 0.05851174089068828,
+                  "wasserstein_distance": 0.05851174089068828
+                },
+                "shucked_weight": {
+                  "ks": 0.46356275303643735,
+                  "ks_statistic": 0.46356275303643735,
+                  "status": "ok",
+                  "wasserstein": 0.2065556680161943,
+                  "wasserstein_distance": 0.2065556680161943
+                },
+                "viscera_weight": {
+                  "ks": 0.3514170040485831,
+                  "ks_statistic": 0.3514170040485831,
+                  "status": "ok",
+                  "wasserstein": 0.06351882591093118,
+                  "wasserstein_distance": 0.06351882591093118
+                },
+                "whole_weight": {
+                  "ks": 0.3587044534412956,
+                  "ks_statistic": 0.3587044534412956,
+                  "status": "ok",
+                  "wasserstein": 0.28252813765182183,
+                  "wasserstein_distance": 0.28252813765182183
+                }
+              },
+              "real_count": 26,
+              "status": "ok",
+              "synthetic_count": 95
+            }
+          },
+          "status": "ok"
+        },
+        "b2": {
+          "classes": {
+            "negative": {
+              "categorical": {
+                "sex": {
+                  "jensen_shannon_divergence": 0.0030324237115047234,
+                  "jsd": 0.0030324237115047234,
+                  "status": "ok",
+                  "tvd": 0.05382468316234157
+                }
+              },
+              "exact_duplicate_count": 0,
+              "exact_duplicate_rate": 0.0,
+              "numeric": {
+                "diameter": {
+                  "ks": 0.2608252866626433,
+                  "ks_statistic": 0.2608252866626433,
+                  "status": "ok",
+                  "wasserstein": 0.0383445703832227,
+                  "wasserstein_distance": 0.0383445703832227
+                },
+                "height": {
+                  "ks": 0.27626169281834645,
+                  "ks_statistic": 0.27626169281834645,
+                  "status": "ok",
+                  "wasserstein": 0.017382883222691613,
+                  "wasserstein_distance": 0.017382883222691613
+                },
+                "length": {
+                  "ks": 0.2595145594447797,
+                  "ks_statistic": 0.2595145594447797,
+                  "status": "ok",
+                  "wasserstein": 0.04802627112251056,
+                  "wasserstein_distance": 0.04802627112251056
+                },
+                "shell_weight": {
+                  "ks": 0.39903628545564274,
+                  "ks_statistic": 0.39903628545564274,
+                  "status": "ok",
+                  "wasserstein": 0.07766322325739289,
+                  "wasserstein_distance": 0.07766322325739289
+                },
+                "shucked_weight": {
+                  "ks": 0.4228745473747737,
+                  "ks_statistic": 0.4228745473747737,
+                  "status": "ok",
+                  "wasserstein": 0.15184239683916717,
+                  "wasserstein_distance": 0.15184239683916717
+                },
+                "viscera_weight": {
+                  "ks": 0.47635033192516596,
+                  "ks_statistic": 0.47635033192516596,
+                  "status": "ok",
+                  "wasserstein": 0.08759140672148463,
+                  "wasserstein_distance": 0.08759140672148463
+                },
+                "whole_weight": {
+                  "ks": 0.44466656608328303,
+                  "ks_statistic": 0.44466656608328303,
+                  "status": "ok",
+                  "wasserstein": 0.3574188433539529,
+                  "wasserstein_distance": 0.3574188433539529
+                }
+              },
+              "real_count": 3314,
+              "status": "ok",
+              "synthetic_count": 64
+            },
+            "positive": {
+              "categorical": {
+                "sex": {
+                  "jensen_shannon_divergence": 0.05869007820638815,
+                  "jsd": 0.05869007820638815,
+                  "status": "ok",
+                  "tvd": 0.21205821205821204
+                }
+              },
+              "exact_duplicate_count": 0,
+              "exact_duplicate_rate": 0.0,
+              "numeric": {
+                "diameter": {
+                  "ks": 0.48232848232848236,
+                  "ks_statistic": 0.48232848232848236,
+                  "status": "ok",
+                  "wasserstein": 0.04793659043659043,
+                  "wasserstein_distance": 0.04793659043659043
+                },
+                "height": {
+                  "ks": 0.6112266112266111,
+                  "ks_statistic": 0.6112266112266111,
+                  "status": "ok",
+                  "wasserstein": 0.03471933471933472,
+                  "wasserstein_distance": 0.03471933471933472
+                },
+                "length": {
+                  "ks": 0.470893970893971,
+                  "ks_statistic": 0.470893970893971,
+                  "status": "ok",
+                  "wasserstein": 0.05034823284823285,
+                  "wasserstein_distance": 0.05034823284823285
+                },
+                "shell_weight": {
+                  "ks": 0.4282744282744283,
+                  "ks_statistic": 0.4282744282744283,
+                  "status": "ok",
+                  "wasserstein": 0.061900727650727655,
+                  "wasserstein_distance": 0.061900727650727655
+                },
+                "shucked_weight": {
+                  "ks": 0.4656964656964657,
+                  "ks_statistic": 0.4656964656964657,
+                  "status": "ok",
+                  "wasserstein": 0.2149724532224532,
+                  "wasserstein_distance": 0.2149724532224532
+                },
+                "viscera_weight": {
+                  "ks": 0.37318087318087323,
+                  "ks_statistic": 0.37318087318087323,
+                  "status": "ok",
+                  "wasserstein": 0.0668035343035343,
+                  "wasserstein_distance": 0.0668035343035343
+                },
+                "whole_weight": {
+                  "ks": 0.3877338877338878,
+                  "ks_statistic": 0.3877338877338878,
+                  "status": "ok",
+                  "wasserstein": 0.29562266112266117,
+                  "wasserstein_distance": 0.29562266112266117
+                }
+              },
+              "real_count": 26,
+              "status": "ok",
+              "synthetic_count": 74
+            }
+          },
+          "status": "ok"
+        },
+        "b3": {
+          "classes": {
+            "negative": {
+              "categorical": {
+                "sex": {
+                  "jensen_shannon_divergence": 0.021761312661350684,
+                  "jsd": 0.021761312661350684,
+                  "status": "ok",
+                  "tvd": 0.15632468316234155
+                }
+              },
+              "exact_duplicate_count": 36,
+              "exact_duplicate_rate": 0.36,
+              "numeric": {
+                "diameter": {
+                  "ks": 0.2873264936632469,
+                  "ks_statistic": 0.2873264936632469,
+                  "status": "ok",
+                  "wasserstein": 0.031895835847917935,
+                  "wasserstein_distance": 0.031895835847917935
+                },
+                "height": {
+                  "ks": 0.3156366928183465,
+                  "ks_statistic": 0.3156366928183465,
+                  "status": "ok",
+                  "wasserstein": 0.016609203379601693,
+                  "wasserstein_distance": 0.016609203379601693
+                },
+                "length": {
+                  "ks": 0.35056729028364514,
+                  "ks_statistic": 0.35056729028364514,
+                  "status": "ok",
+                  "wasserstein": 0.048114001207000615,
+                  "wasserstein_distance": 0.048114001207000615
+                },
+                "shell_weight": {
+                  "ks": 0.3460712130356065,
+                  "ks_statistic": 0.3460712130356065,
+                  "status": "ok",
+                  "wasserstein": 0.0712815509957755,
+                  "wasserstein_distance": 0.0712815509957755
+                },
+                "shucked_weight": {
+                  "ks": 0.46220277610138805,
+                  "ks_statistic": 0.46220277610138805,
+                  "status": "ok",
+                  "wasserstein": 0.14752396499698253,
+                  "wasserstein_distance": 0.14752396499698253
+                },
+                "viscera_weight": {
+                  "ks": 0.4374109837054918,
+                  "ks_statistic": 0.4374109837054918,
+                  "status": "ok",
+                  "wasserstein": 0.07837296922148462,
+                  "wasserstein_distance": 0.07837296922148462
+                },
+                "whole_weight": {
+                  "ks": 0.44444176222088116,
+                  "ks_statistic": 0.44444176222088116,
+                  "status": "ok",
+                  "wasserstein": 0.32936076644538315,
+                  "wasserstein_distance": 0.32936076644538315
+                }
+              },
+              "real_count": 3314,
+              "status": "ok",
+              "synthetic_count": 100
+            },
+            "positive": {
+              "categorical": {
+                "sex": {
+                  "jensen_shannon_divergence": 0.0473972378223894,
+                  "jsd": 0.0473972378223894,
+                  "status": "ok",
+                  "tvd": 0.20850202429149797
+                }
+              },
+              "exact_duplicate_count": 21,
+              "exact_duplicate_rate": 0.22105263157894736,
+              "numeric": {
+                "diameter": {
+                  "ks": 0.4295546558704454,
+                  "ks_statistic": 0.4295546558704454,
+                  "status": "ok",
+                  "wasserstein": 0.04450202429149797,
+                  "wasserstein_distance": 0.04450202429149797
+                },
+                "height": {
+                  "ks": 0.5554655870445344,
+                  "ks_statistic": 0.5554655870445344,
+                  "status": "ok",
+                  "wasserstein": 0.03271862348178138,
+                  "wasserstein_distance": 0.03271862348178138
+                },
+                "length": {
+                  "ks": 0.41214574898785433,
+                  "ks_statistic": 0.41214574898785433,
+                  "status": "ok",
+                  "wasserstein": 0.046465587044534414,
+                  "wasserstein_distance": 0.046465587044534414
+                },
+                "shell_weight": {
+                  "ks": 0.38744939271255063,
+                  "ks_statistic": 0.38744939271255063,
+                  "status": "ok",
+                  "wasserstein": 0.05851174089068828,
+                  "wasserstein_distance": 0.05851174089068828
+                },
+                "shucked_weight": {
+                  "ks": 0.46356275303643735,
+                  "ks_statistic": 0.46356275303643735,
+                  "status": "ok",
+                  "wasserstein": 0.2065556680161943,
+                  "wasserstein_distance": 0.2065556680161943
+                },
+                "viscera_weight": {
+                  "ks": 0.3514170040485831,
+                  "ks_statistic": 0.3514170040485831,
+                  "status": "ok",
+                  "wasserstein": 0.06351882591093118,
+                  "wasserstein_distance": 0.06351882591093118
+                },
+                "whole_weight": {
+                  "ks": 0.3587044534412956,
+                  "ks_statistic": 0.3587044534412956,
+                  "status": "ok",
+                  "wasserstein": 0.28252813765182183,
+                  "wasserstein_distance": 0.28252813765182183
+                }
+              },
+              "real_count": 26,
+              "status": "ok",
+              "synthetic_count": 95
+            }
+          },
+          "status": "ok"
+        }
+      },
+      "minority_duplicate_count": 21,
+      "minority_duplicate_rate": 0.22105263157894736,
+      "parseable_minority_count": 95,
+      "requested_minority_count": 100,
+      "requested_minority_label": "positive",
+      "tstr": {
+        "b1": {
+          "logistic_regression": {
+            "auroc": null,
+            "average_precision": null,
+            "balanced_accuracy": null,
+            "f1": null,
+            "mcc": null,
+            "pr_auc": null,
+            "reason": "The 'liblinear' solver does not support multiclass classification (n_classes >= 3). Either use another solver or wrap the estimator in a OneVsRestClassifier to keep applying a one-versus-rest scheme.",
+            "status": "undefined"
+          },
+          "random_forest": {
+            "auroc": 0.7630837359098228,
+            "average_precision": 0.0242107248183657,
+            "balanced_accuracy": 0.5772946859903382,
+            "f1": 0.783978896226628,
+            "mcc": 0.027537196135828525,
+            "pr_auc": 0.0242107248183657,
+            "status": "ok"
+          }
+        },
+        "b2": {
+          "logistic_regression": {
+            "auroc": 0.7542270531400967,
+            "average_precision": 0.020600391119285622,
+            "balanced_accuracy": 0.7928743961352658,
+            "f1": 0.03380281690140845,
+            "mcc": 0.10035028554921287,
+            "pr_auc": 0.020600391119285622,
+            "status": "ok"
+          },
+          "random_forest": {
+            "auroc": 0.7620772946859904,
+            "average_precision": 0.01820050926635003,
+            "balanced_accuracy": 0.7294685990338164,
+            "f1": 0.03115264797507788,
+            "mcc": 0.08000278352476983,
+            "pr_auc": 0.01820050926635003,
+            "status": "ok"
+          }
+        },
+        "b3": {
+          "logistic_regression": {
+            "auroc": null,
+            "average_precision": null,
+            "balanced_accuracy": null,
+            "f1": null,
+            "mcc": null,
+            "pr_auc": null,
+            "reason": "The 'liblinear' solver does not support multiclass classification (n_classes >= 3). Either use another solver or wrap the estimator in a OneVsRestClassifier to keep applying a one-versus-rest scheme.",
+            "status": "undefined"
+          },
+          "random_forest": {
+            "auroc": 0.7630837359098228,
+            "average_precision": 0.0242107248183657,
+            "balanced_accuracy": 0.5772946859903382,
+            "f1": 0.783978896226628,
+            "mcc": 0.027537196135828525,
+            "pr_auc": 0.0242107248183657,
+            "status": "ok"
+          }
+        }
+      }
+    }
+  },
+  "Ecoli4": {
+    "diversity_by_class": {
+      "negative": {
+        "exact_nonreference_train_match": 0,
+        "exact_nonreference_train_match_rate": 0.0,
+        "exact_reference_match": 22,
+        "exact_reference_match_rate": 0.22,
+        "exact_synthetic_duplicate": 21,
+        "exact_synthetic_duplicate_rate": 0.21,
+        "records": 100,
+        "unique_records": 79
+      },
+      "positive": {
+        "exact_nonreference_train_match": 0,
+        "exact_nonreference_train_match_rate": 0.0,
+        "exact_reference_match": 0,
+        "exact_reference_match_rate": 0.0,
+        "exact_synthetic_duplicate": 0,
+        "exact_synthetic_duplicate_rate": 0.0,
+        "records": 101,
+        "unique_records": 101
+      }
+    },
+    "intrinsic_class_conditional": {
+      "classes": {
+        "negative": {
+          "categorical": {},
+          "exact_duplicate_count": 21,
+          "exact_duplicate_rate": 0.21,
+          "numeric": {
+            "aac": {
+              "ks": 0.2701185770750988,
+              "ks_statistic": 0.2701185770750988,
+              "status": "ok",
+              "wasserstein": 0.040930830039525704,
+              "wasserstein_distance": 0.040930830039525704
+            },
+            "alm1": {
+              "ks": 0.4075494071146245,
+              "ks_statistic": 0.4075494071146245,
+              "status": "ok",
+              "wasserstein": 0.15035770750988142,
+              "wasserstein_distance": 0.15035770750988142
+            },
+            "alm2": {
+              "ks": 0.529407114624506,
+              "ks_statistic": 0.529407114624506,
+              "status": "ok",
+              "wasserstein": 0.1601280632411067,
+              "wasserstein_distance": 0.1601280632411067
+            },
+            "chg": {
+              "ks": 0.0039525691699605625,
+              "ks_statistic": 0.0039525691699605625,
+              "status": "ok",
+              "wasserstein": 0.0019762845849802257,
+              "wasserstein_distance": 0.0019762845849802257
+            },
+            "gvh": {
+              "ks": 0.1092490118577075,
+              "ks_statistic": 0.1092490118577075,
+              "status": "ok",
+              "wasserstein": 0.026295256916996045,
+              "wasserstein_distance": 0.026295256916996045
+            },
+            "lip": {
+              "ks": 0.02371541501976293,
+              "ks_statistic": 0.02371541501976293,
+              "status": "ok",
+              "wasserstein": 0.012257707509881411,
+              "wasserstein_distance": 0.012257707509881411
+            },
+            "mcg": {
+              "ks": 0.28351778656126486,
+              "ks_statistic": 0.28351778656126486,
+              "status": "ok",
+              "wasserstein": 0.12011541501976283,
+              "wasserstein_distance": 0.12011541501976283
+            }
+          },
+          "real_count": 253,
+          "status": "ok",
+          "synthetic_count": 100
+        },
+        "positive": {
+          "categorical": {},
+          "exact_duplicate_count": 0,
+          "exact_duplicate_rate": 0.0,
+          "numeric": {
+            "aac": {
+              "ks": 0.6032894736842105,
+              "ks_statistic": 0.6032894736842105,
+              "status": "ok",
+              "wasserstein": 0.09967105263157894,
+              "wasserstein_distance": 0.09967105263157894
+            },
+            "alm1": {
+              "ks": 0.2901315789473684,
+              "ks_statistic": 0.2901315789473684,
+              "status": "ok",
+              "wasserstein": 0.037171052631578945,
+              "wasserstein_distance": 0.037171052631578945
+            },
+            "alm2": {
+              "ks": 0.49802631578947365,
+              "ks_statistic": 0.49802631578947365,
+              "status": "ok",
+              "wasserstein": 0.07269736842105262,
+              "wasserstein_distance": 0.07269736842105262
+            },
+            "chg": {
+              "ks": 0.0,
+              "ks_statistic": 0.0,
+              "status": "degenerate",
+              "wasserstein": 0.0,
+              "wasserstein_distance": 0.0
+            },
+            "gvh": {
+              "ks": 0.26842105263157895,
+              "ks_statistic": 0.26842105263157895,
+              "status": "ok",
+              "wasserstein": 0.04474342105263159,
+              "wasserstein_distance": 0.04474342105263159
+            },
+            "lip": {
+              "ks": 0.0625,
+              "ks_statistic": 0.0625,
+              "status": "ok",
+              "wasserstein": 0.032078947368421054,
+              "wasserstein_distance": 0.032078947368421054
+            },
+            "mcg": {
+              "ks": 0.4230263157894737,
+              "ks_statistic": 0.4230263157894737,
+              "status": "ok",
+              "wasserstein": 0.06394736842105264,
+              "wasserstein_distance": 0.06394736842105264
+            }
+          },
+          "real_count": 16,
+          "status": "ok",
+          "synthetic_count": 96
+        }
+      },
+      "status": "ok"
+    },
+    "minority_analysis": {
+      "authoritative_target_column": "class",
+      "b1": {
+        "accepted_count": 96,
+        "accepted_rate": 1.0,
+        "requested_rate": 0.96
+      },
+      "b2": {
+        "accepted_count": 95,
+        "accepted_rate": 0.9895833333333334,
+        "requested_rate": 0.95
+      },
+      "b3": {
+        "accepted_count": 95,
+        "accepted_rate": 0.9895833333333334,
+        "requested_rate": 0.95
+      },
+      "class_conditional_discrepancy": {
+        "b1": {
+          "classes": {
+            "negative": {
+              "categorical": {},
+              "exact_duplicate_count": 21,
+              "exact_duplicate_rate": 0.21,
+              "numeric": {
+                "aac": {
+                  "ks": 0.2701185770750988,
+                  "ks_statistic": 0.2701185770750988,
+                  "status": "ok",
+                  "wasserstein": 0.040930830039525704,
+                  "wasserstein_distance": 0.040930830039525704
+                },
+                "alm1": {
+                  "ks": 0.4075494071146245,
+                  "ks_statistic": 0.4075494071146245,
+                  "status": "ok",
+                  "wasserstein": 0.15035770750988142,
+                  "wasserstein_distance": 0.15035770750988142
+                },
+                "alm2": {
+                  "ks": 0.529407114624506,
+                  "ks_statistic": 0.529407114624506,
+                  "status": "ok",
+                  "wasserstein": 0.1601280632411067,
+                  "wasserstein_distance": 0.1601280632411067
+                },
+                "chg": {
+                  "ks": 0.0039525691699605625,
+                  "ks_statistic": 0.0039525691699605625,
+                  "status": "ok",
+                  "wasserstein": 0.0019762845849802257,
+                  "wasserstein_distance": 0.0019762845849802257
+                },
+                "gvh": {
+                  "ks": 0.1092490118577075,
+                  "ks_statistic": 0.1092490118577075,
+                  "status": "ok",
+                  "wasserstein": 0.026295256916996045,
+                  "wasserstein_distance": 0.026295256916996045
+                },
+                "lip": {
+                  "ks": 0.02371541501976293,
+                  "ks_statistic": 0.02371541501976293,
+                  "status": "ok",
+                  "wasserstein": 0.012257707509881411,
+                  "wasserstein_distance": 0.012257707509881411
+                },
+                "mcg": {
+                  "ks": 0.28351778656126486,
+                  "ks_statistic": 0.28351778656126486,
+                  "status": "ok",
+                  "wasserstein": 0.12011541501976283,
+                  "wasserstein_distance": 0.12011541501976283
+                }
+              },
+              "real_count": 253,
+              "status": "ok",
+              "synthetic_count": 100
+            },
+            "positive": {
+              "categorical": {},
+              "exact_duplicate_count": 0,
+              "exact_duplicate_rate": 0.0,
+              "numeric": {
+                "aac": {
+                  "ks": 0.6032894736842105,
+                  "ks_statistic": 0.6032894736842105,
+                  "status": "ok",
+                  "wasserstein": 0.09967105263157894,
+                  "wasserstein_distance": 0.09967105263157894
+                },
+                "alm1": {
+                  "ks": 0.2901315789473684,
+                  "ks_statistic": 0.2901315789473684,
+                  "status": "ok",
+                  "wasserstein": 0.037171052631578945,
+                  "wasserstein_distance": 0.037171052631578945
+                },
+                "alm2": {
+                  "ks": 0.49802631578947365,
+                  "ks_statistic": 0.49802631578947365,
+                  "status": "ok",
+                  "wasserstein": 0.07269736842105262,
+                  "wasserstein_distance": 0.07269736842105262
+                },
+                "chg": {
+                  "ks": 0.0,
+                  "ks_statistic": 0.0,
+                  "status": "degenerate",
+                  "wasserstein": 0.0,
+                  "wasserstein_distance": 0.0
+                },
+                "gvh": {
+                  "ks": 0.26842105263157895,
+                  "ks_statistic": 0.26842105263157895,
+                  "status": "ok",
+                  "wasserstein": 0.04474342105263159,
+                  "wasserstein_distance": 0.04474342105263159
+                },
+                "lip": {
+                  "ks": 0.0625,
+                  "ks_statistic": 0.0625,
+                  "status": "ok",
+                  "wasserstein": 0.032078947368421054,
+                  "wasserstein_distance": 0.032078947368421054
+                },
+                "mcg": {
+                  "ks": 0.4230263157894737,
+                  "ks_statistic": 0.4230263157894737,
+                  "status": "ok",
+                  "wasserstein": 0.06394736842105264,
+                  "wasserstein_distance": 0.06394736842105264
+                }
+              },
+              "real_count": 16,
+              "status": "ok",
+              "synthetic_count": 96
+            }
+          },
+          "status": "ok"
+        },
+        "b2": {
+          "classes": {
+            "negative": {
+              "categorical": {},
+              "exact_duplicate_count": 0,
+              "exact_duplicate_rate": 0.0,
+              "numeric": {
+                "aac": {
+                  "ks": 0.27713013458748176,
+                  "ks_statistic": 0.27713013458748176,
+                  "status": "ok",
+                  "wasserstein": 0.046360134087156654,
+                  "wasserstein_distance": 0.046360134087156654
+                },
+                "alm1": {
+                  "ks": 0.3825486566268075,
+                  "ks_statistic": 0.3825486566268075,
+                  "status": "ok",
+                  "wasserstein": 0.14453995096812927,
+                  "wasserstein_distance": 0.14453995096812927
+                },
+                "alm2": {
+                  "ks": 0.5240906589283034,
+                  "ks_statistic": 0.5240906589283034,
+                  "status": "ok",
+                  "wasserstein": 0.15869515184870167,
+                  "wasserstein_distance": 0.15869515184870167
+                },
+                "chg": {
+                  "ks": 0.0039525691699605625,
+                  "ks_statistic": 0.0039525691699605625,
+                  "status": "ok",
+                  "wasserstein": 0.0019762845849802257,
+                  "wasserstein_distance": 0.0019762845849802257
+                },
+                "gvh": {
+                  "ks": 0.12488117276229549,
+                  "ks_statistic": 0.12488117276229549,
+                  "status": "ok",
+                  "wasserstein": 0.03354230249662281,
+                  "wasserstein_distance": 0.03354230249662281
+                },
+                "lip": {
+                  "ks": 0.02691749637264218,
+                  "ks_statistic": 0.02691749637264218,
+                  "status": "ok",
+                  "wasserstein": 0.012364036623805462,
+                  "wasserstein_distance": 0.012364036623805462
+                },
+                "mcg": {
+                  "ks": 0.3057487366788413,
+                  "ks_statistic": 0.3057487366788413,
+                  "status": "ok",
+                  "wasserstein": 0.13311602541652073,
+                  "wasserstein_distance": 0.13311602541652073
+                }
+              },
+              "real_count": 253,
+              "status": "ok",
+              "synthetic_count": 79
+            },
+            "positive": {
+              "categorical": {},
+              "exact_duplicate_count": 0,
+              "exact_duplicate_rate": 0.0,
+              "numeric": {
+                "aac": {
+                  "ks": 0.6032894736842105,
+                  "ks_statistic": 0.6032894736842105,
+                  "status": "ok",
+                  "wasserstein": 0.09967105263157894,
+                  "wasserstein_distance": 0.09967105263157894
+                },
+                "alm1": {
+                  "ks": 0.2901315789473684,
+                  "ks_statistic": 0.2901315789473684,
+                  "status": "ok",
+                  "wasserstein": 0.037171052631578945,
+                  "wasserstein_distance": 0.037171052631578945
+                },
+                "alm2": {
+                  "ks": 0.49802631578947365,
+                  "ks_statistic": 0.49802631578947365,
+                  "status": "ok",
+                  "wasserstein": 0.07269736842105262,
+                  "wasserstein_distance": 0.07269736842105262
+                },
+                "chg": {
+                  "ks": 0.0,
+                  "ks_statistic": 0.0,
+                  "status": "degenerate",
+                  "wasserstein": 0.0,
+                  "wasserstein_distance": 0.0
+                },
+                "gvh": {
+                  "ks": 0.26842105263157895,
+                  "ks_statistic": 0.26842105263157895,
+                  "status": "ok",
+                  "wasserstein": 0.04474342105263159,
+                  "wasserstein_distance": 0.04474342105263159
+                },
+                "lip": {
+                  "ks": 0.0625,
+                  "ks_statistic": 0.0625,
+                  "status": "ok",
+                  "wasserstein": 0.032078947368421054,
+                  "wasserstein_distance": 0.032078947368421054
+                },
+                "mcg": {
+                  "ks": 0.4230263157894737,
+                  "ks_statistic": 0.4230263157894737,
+                  "status": "ok",
+                  "wasserstein": 0.06394736842105264,
+                  "wasserstein_distance": 0.06394736842105264
+                }
+              },
+              "real_count": 16,
+              "status": "ok",
+              "synthetic_count": 95
+            }
+          },
+          "status": "ok"
+        },
+        "b3": {
+          "classes": {
+            "negative": {
+              "categorical": {},
+              "exact_duplicate_count": 21,
+              "exact_duplicate_rate": 0.21,
+              "numeric": {
+                "aac": {
+                  "ks": 0.2701185770750988,
+                  "ks_statistic": 0.2701185770750988,
+                  "status": "ok",
+                  "wasserstein": 0.040930830039525704,
+                  "wasserstein_distance": 0.040930830039525704
+                },
+                "alm1": {
+                  "ks": 0.4075494071146245,
+                  "ks_statistic": 0.4075494071146245,
+                  "status": "ok",
+                  "wasserstein": 0.15035770750988142,
+                  "wasserstein_distance": 0.15035770750988142
+                },
+                "alm2": {
+                  "ks": 0.529407114624506,
+                  "ks_statistic": 0.529407114624506,
+                  "status": "ok",
+                  "wasserstein": 0.1601280632411067,
+                  "wasserstein_distance": 0.1601280632411067
+                },
+                "chg": {
+                  "ks": 0.0039525691699605625,
+                  "ks_statistic": 0.0039525691699605625,
+                  "status": "ok",
+                  "wasserstein": 0.0019762845849802257,
+                  "wasserstein_distance": 0.0019762845849802257
+                },
+                "gvh": {
+                  "ks": 0.1092490118577075,
+                  "ks_statistic": 0.1092490118577075,
+                  "status": "ok",
+                  "wasserstein": 0.026295256916996045,
+                  "wasserstein_distance": 0.026295256916996045
+                },
+                "lip": {
+                  "ks": 0.02371541501976293,
+                  "ks_statistic": 0.02371541501976293,
+                  "status": "ok",
+                  "wasserstein": 0.012257707509881411,
+                  "wasserstein_distance": 0.012257707509881411
+                },
+                "mcg": {
+                  "ks": 0.28351778656126486,
+                  "ks_statistic": 0.28351778656126486,
+                  "status": "ok",
+                  "wasserstein": 0.12011541501976283,
+                  "wasserstein_distance": 0.12011541501976283
+                }
+              },
+              "real_count": 253,
+              "status": "ok",
+              "synthetic_count": 100
+            },
+            "positive": {
+              "categorical": {},
+              "exact_duplicate_count": 0,
+              "exact_duplicate_rate": 0.0,
+              "numeric": {
+                "aac": {
+                  "ks": 0.6032894736842105,
+                  "ks_statistic": 0.6032894736842105,
+                  "status": "ok",
+                  "wasserstein": 0.09967105263157894,
+                  "wasserstein_distance": 0.09967105263157894
+                },
+                "alm1": {
+                  "ks": 0.2901315789473684,
+                  "ks_statistic": 0.2901315789473684,
+                  "status": "ok",
+                  "wasserstein": 0.037171052631578945,
+                  "wasserstein_distance": 0.037171052631578945
+                },
+                "alm2": {
+                  "ks": 0.49802631578947365,
+                  "ks_statistic": 0.49802631578947365,
+                  "status": "ok",
+                  "wasserstein": 0.07269736842105262,
+                  "wasserstein_distance": 0.07269736842105262
+                },
+                "chg": {
+                  "ks": 0.0,
+                  "ks_statistic": 0.0,
+                  "status": "degenerate",
+                  "wasserstein": 0.0,
+                  "wasserstein_distance": 0.0
+                },
+                "gvh": {
+                  "ks": 0.26842105263157895,
+                  "ks_statistic": 0.26842105263157895,
+                  "status": "ok",
+                  "wasserstein": 0.04474342105263159,
+                  "wasserstein_distance": 0.04474342105263159
+                },
+                "lip": {
+                  "ks": 0.0625,
+                  "ks_statistic": 0.0625,
+                  "status": "ok",
+                  "wasserstein": 0.032078947368421054,
+                  "wasserstein_distance": 0.032078947368421054
+                },
+                "mcg": {
+                  "ks": 0.4230263157894737,
+                  "ks_statistic": 0.4230263157894737,
+                  "status": "ok",
+                  "wasserstein": 0.06394736842105264,
+                  "wasserstein_distance": 0.06394736842105264
+                }
+              },
+              "real_count": 16,
+              "status": "ok",
+              "synthetic_count": 95
+            }
+          },
+          "status": "ok"
+        }
+      },
+      "minority_duplicate_count": 0,
+      "minority_duplicate_rate": 0.0,
+      "parseable_minority_count": 96,
+      "requested_minority_count": 100,
+      "requested_minority_label": "positive",
+      "tstr": {
+        "b1": {
+          "logistic_regression": {
+            "auroc": null,
+            "average_precision": null,
+            "balanced_accuracy": null,
+            "f1": null,
+            "mcc": null,
+            "pr_auc": null,
+            "reason": "The 'liblinear' solver does not support multiclass classification (n_classes >= 3). Either use another solver or wrap the estimator in a OneVsRestClassifier to keep applying a one-versus-rest scheme.",
+            "status": "undefined"
+          },
+          "random_forest": {
+            "auroc": 0.9345238095238095,
+            "average_precision": 0.5838235294117646,
+            "balanced_accuracy": 0.8412698412698413,
+            "f1": 0.7799412640302531,
+            "mcc": 0.33727824382342503,
+            "pr_auc": 0.5838235294117646,
+            "status": "ok"
+          }
+        },
+        "b2": {
+          "logistic_regression": {
+            "auroc": 0.7023809523809524,
+            "average_precision": 0.1113222235036328,
+            "balanced_accuracy": 0.746031746031746,
+            "f1": 0.2,
+            "mcc": 0.23382412480406722,
+            "pr_auc": 0.1113222235036328,
+            "status": "ok"
+          },
+          "random_forest": {
+            "auroc": 0.9821428571428572,
+            "average_precision": 0.8125,
+            "balanced_accuracy": 0.7857142857142857,
+            "f1": 0.22857142857142856,
+            "mcc": 0.27153769332085226,
+            "pr_auc": 0.8125,
+            "status": "ok"
+          }
+        },
+        "b3": {
+          "logistic_regression": {
+            "auroc": null,
+            "average_precision": null,
+            "balanced_accuracy": null,
+            "f1": null,
+            "mcc": null,
+            "pr_auc": null,
+            "reason": "The 'liblinear' solver does not support multiclass classification (n_classes >= 3). Either use another solver or wrap the estimator in a OneVsRestClassifier to keep applying a one-versus-rest scheme.",
+            "status": "undefined"
+          },
+          "random_forest": {
+            "auroc": 0.9742063492063492,
+            "average_precision": 0.7611111111111111,
+            "balanced_accuracy": 0.8174603174603174,
+            "f1": 0.7457357746189192,
+            "mcc": 0.3066958041521574,
+            "pr_auc": 0.7611111111111111,
+            "status": "ok"
+          }
+        }
+      }
+    }
+  },
+  "page-blocks0": {
+    "diversity_by_class": {
+      "negative": {
+        "exact_nonreference_train_match": 0,
+        "exact_nonreference_train_match_rate": 0.0,
+        "exact_reference_match": 0,
+        "exact_reference_match_rate": 0.0,
+        "exact_synthetic_duplicate": 15,
+        "exact_synthetic_duplicate_rate": 0.15,
+        "records": 100,
+        "unique_records": 85
+      },
+      "positive": {
+        "exact_nonreference_train_match": 0,
+        "exact_nonreference_train_match_rate": 0.0,
+        "exact_reference_match": 2,
+        "exact_reference_match_rate": 0.02,
+        "exact_synthetic_duplicate": 4,
+        "exact_synthetic_duplicate_rate": 0.04,
+        "records": 100,
+        "unique_records": 96
+      }
+    },
+    "intrinsic_class_conditional": {
+      "classes": {
+        "negative": {
+          "categorical": {},
+          "exact_duplicate_count": 15,
+          "exact_duplicate_rate": 0.1485148514851485,
+          "numeric": {
+            "Lenght": {
+              "ks": 0.17345375758949944,
+              "ks_statistic": 0.17345375758949944,
+              "status": "ok",
+              "wasserstein": 50.69715818910135,
+              "wasserstein_distance": 50.69715818910135
+            },
+            "area": {
+              "ks": 0.31411583906482254,
+              "ks_statistic": 0.31411583906482254,
+              "status": "ok",
+              "wasserstein": 2238.9773889602707,
+              "wasserstein_distance": 2238.9773889602707
+            },
+            "blackand": {
+              "ks": 0.38692968533494565,
+              "ks_statistic": 0.38692968533494565,
+              "status": "ok",
+              "wasserstein": 2462.2445292620873,
+              "wasserstein_distance": 2462.2445292620873
+            },
+            "blackpix": {
+              "ks": 0.33311918978157357,
+              "ks_statistic": 0.33311918978157357,
+              "status": "ok",
+              "wasserstein": 282.96201093391784,
+              "wasserstein_distance": 282.96201093391784
+            },
+            "eccen": {
+              "ks": 0.23618018290378656,
+              "ks_statistic": 0.23618018290378656,
+              "status": "ok",
+              "wasserstein": 6.383785775829489,
+              "wasserstein_distance": 6.383785775829489
+            },
+            "height": {
+              "ks": 0.2729624870884035,
+              "ks_statistic": 0.2729624870884035,
+              "status": "ok",
+              "wasserstein": 1.786879298616884,
+              "wasserstein_distance": 1.786879298616884
+            },
+            "mean_tr": {
+              "ks": 0.18415337716977798,
+              "ks_statistic": 0.18415337716977798,
+              "status": "ok",
+              "wasserstein": 0.7812235154813166,
+              "wasserstein_distance": 0.7812235154813166
+            },
+            "p_and": {
+              "ks": 0.1614365253319225,
+              "ks_statistic": 0.1614365253319225,
+              "status": "ok",
+              "wasserstein": 0.0436728818683395,
+              "wasserstein_distance": 0.0436728818683395
+            },
+            "p_black": {
+              "ks": 0.15992492379008896,
+              "ks_statistic": 0.15992492379008896,
+              "status": "ok",
+              "wasserstein": 0.03390360013100544,
+              "wasserstein_distance": 0.03390360013100544
+            },
+            "wb_trans": {
+              "ks": 0.30338346811780414,
+              "ks_statistic": 0.30338346811780414,
+              "status": "ok",
+              "wasserstein": 187.5770412919155,
+              "wasserstein_distance": 187.5770412919155
+            }
+          },
+          "real_count": 3930,
+          "status": "ok",
+          "synthetic_count": 101
+        },
+        "positive": {
+          "categorical": {},
+          "exact_duplicate_count": 8,
+          "exact_duplicate_rate": 0.0851063829787234,
+          "numeric": {
+            "Lenght": {
+              "ks": 0.4310771574087296,
+              "ks_statistic": 0.4310771574087296,
+              "status": "ok",
+              "wasserstein": 89.6372385644248,
+              "wasserstein_distance": 89.6372385644248
+            },
+            "area": {
+              "ks": 0.2258555857013661,
+              "ks_statistic": 0.2258555857013661,
+              "status": "ok",
+              "wasserstein": 1983.7628801942035,
+              "wasserstein_distance": 1983.7628801942035
+            },
+            "blackand": {
+              "ks": 0.21352753581798278,
+              "ks_statistic": 0.21352753581798278,
+              "status": "ok",
+              "wasserstein": 924.4382121947741,
+              "wasserstein_distance": 924.4382121947741
+            },
+            "blackpix": {
+              "ks": 0.30534532819267934,
+              "ks_statistic": 0.30534532819267934,
+              "status": "ok",
+              "wasserstein": 592.9926936075019,
+              "wasserstein_distance": 592.9926936075019
+            },
+            "eccen": {
+              "ks": 0.40870579275548574,
+              "ks_statistic": 0.40870579275548574,
+              "status": "ok",
+              "wasserstein": 43.4151712361369,
+              "wasserstein_distance": 43.4151712361369
+            },
+            "height": {
+              "ks": 0.3886667618639631,
+              "ks_statistic": 0.3886667618639631,
+              "status": "ok",
+              "wasserstein": 18.481983911656883,
+              "wasserstein_distance": 18.481983911656883
+            },
+            "mean_tr": {
+              "ks": 0.6324670379361226,
+              "ks_statistic": 0.6324670379361226,
+              "status": "ok",
+              "wasserstein": 58.20122138131245,
+              "wasserstein_distance": 58.20122138131245
+            },
+            "p_and": {
+              "ks": 0.4412632681231853,
+              "ks_statistic": 0.4412632681231853,
+              "status": "ok",
+              "wasserstein": 0.1889995716121662,
+              "wasserstein_distance": 0.1889995716121662
+            },
+            "p_black": {
+              "ks": 0.3646056451996763,
+              "ks_statistic": 0.3646056451996763,
+              "status": "ok",
+              "wasserstein": 0.20845187776667146,
+              "wasserstein_distance": 0.20845187776667146
+            },
+            "wb_trans": {
+              "ks": 0.26000761578371173,
+              "ks_statistic": 0.26000761578371173,
+              "status": "ok",
+              "wasserstein": 51.90277976105482,
+              "wasserstein_distance": 51.90277976105482
+            }
+          },
+          "real_count": 447,
+          "status": "ok",
+          "synthetic_count": 94
+        }
+      },
+      "status": "ok"
+    },
+    "minority_analysis": {
+      "authoritative_target_column": "class",
+      "b1": {
+        "accepted_count": 89,
+        "accepted_rate": 0.9468085106382979,
+        "requested_rate": 0.89
+      },
+      "b2": {
+        "accepted_count": 85,
+        "accepted_rate": 0.9042553191489362,
+        "requested_rate": 0.85
+      },
+      "b3": {
+        "accepted_count": 89,
+        "accepted_rate": 0.9468085106382979,
+        "requested_rate": 0.89
+      },
+      "class_conditional_discrepancy": {
+        "b1": {
+          "classes": {
+            "negative": {
+              "categorical": {},
+              "exact_duplicate_count": 15,
+              "exact_duplicate_rate": 0.1485148514851485,
+              "numeric": {
+                "Lenght": {
+                  "ks": 0.17345375758949944,
+                  "ks_statistic": 0.17345375758949944,
+                  "status": "ok",
+                  "wasserstein": 50.69715818910135,
+                  "wasserstein_distance": 50.69715818910135
+                },
+                "area": {
+                  "ks": 0.31411583906482254,
+                  "ks_statistic": 0.31411583906482254,
+                  "status": "ok",
+                  "wasserstein": 2238.9773889602707,
+                  "wasserstein_distance": 2238.9773889602707
+                },
+                "blackand": {
+                  "ks": 0.38692968533494565,
+                  "ks_statistic": 0.38692968533494565,
+                  "status": "ok",
+                  "wasserstein": 2462.2445292620873,
+                  "wasserstein_distance": 2462.2445292620873
+                },
+                "blackpix": {
+                  "ks": 0.33311918978157357,
+                  "ks_statistic": 0.33311918978157357,
+                  "status": "ok",
+                  "wasserstein": 282.96201093391784,
+                  "wasserstein_distance": 282.96201093391784
+                },
+                "eccen": {
+                  "ks": 0.23618018290378656,
+                  "ks_statistic": 0.23618018290378656,
+                  "status": "ok",
+                  "wasserstein": 6.383785775829489,
+                  "wasserstein_distance": 6.383785775829489
+                },
+                "height": {
+                  "ks": 0.2729624870884035,
+                  "ks_statistic": 0.2729624870884035,
+                  "status": "ok",
+                  "wasserstein": 1.786879298616884,
+                  "wasserstein_distance": 1.786879298616884
+                },
+                "mean_tr": {
+                  "ks": 0.18415337716977798,
+                  "ks_statistic": 0.18415337716977798,
+                  "status": "ok",
+                  "wasserstein": 0.7812235154813166,
+                  "wasserstein_distance": 0.7812235154813166
+                },
+                "p_and": {
+                  "ks": 0.1614365253319225,
+                  "ks_statistic": 0.1614365253319225,
+                  "status": "ok",
+                  "wasserstein": 0.0436728818683395,
+                  "wasserstein_distance": 0.0436728818683395
+                },
+                "p_black": {
+                  "ks": 0.15992492379008896,
+                  "ks_statistic": 0.15992492379008896,
+                  "status": "ok",
+                  "wasserstein": 0.03390360013100544,
+                  "wasserstein_distance": 0.03390360013100544
+                },
+                "wb_trans": {
+                  "ks": 0.30338346811780414,
+                  "ks_statistic": 0.30338346811780414,
+                  "status": "ok",
+                  "wasserstein": 187.5770412919155,
+                  "wasserstein_distance": 187.5770412919155
+                }
+              },
+              "real_count": 3930,
+              "status": "ok",
+              "synthetic_count": 101
+            },
+            "positive": {
+              "categorical": {},
+              "exact_duplicate_count": 8,
+              "exact_duplicate_rate": 0.0851063829787234,
+              "numeric": {
+                "Lenght": {
+                  "ks": 0.4310771574087296,
+                  "ks_statistic": 0.4310771574087296,
+                  "status": "ok",
+                  "wasserstein": 89.6372385644248,
+                  "wasserstein_distance": 89.6372385644248
+                },
+                "area": {
+                  "ks": 0.2258555857013661,
+                  "ks_statistic": 0.2258555857013661,
+                  "status": "ok",
+                  "wasserstein": 1983.7628801942035,
+                  "wasserstein_distance": 1983.7628801942035
+                },
+                "blackand": {
+                  "ks": 0.21352753581798278,
+                  "ks_statistic": 0.21352753581798278,
+                  "status": "ok",
+                  "wasserstein": 924.4382121947741,
+                  "wasserstein_distance": 924.4382121947741
+                },
+                "blackpix": {
+                  "ks": 0.30534532819267934,
+                  "ks_statistic": 0.30534532819267934,
+                  "status": "ok",
+                  "wasserstein": 592.9926936075019,
+                  "wasserstein_distance": 592.9926936075019
+                },
+                "eccen": {
+                  "ks": 0.40870579275548574,
+                  "ks_statistic": 0.40870579275548574,
+                  "status": "ok",
+                  "wasserstein": 43.4151712361369,
+                  "wasserstein_distance": 43.4151712361369
+                },
+                "height": {
+                  "ks": 0.3886667618639631,
+                  "ks_statistic": 0.3886667618639631,
+                  "status": "ok",
+                  "wasserstein": 18.481983911656883,
+                  "wasserstein_distance": 18.481983911656883
+                },
+                "mean_tr": {
+                  "ks": 0.6324670379361226,
+                  "ks_statistic": 0.6324670379361226,
+                  "status": "ok",
+                  "wasserstein": 58.20122138131245,
+                  "wasserstein_distance": 58.20122138131245
+                },
+                "p_and": {
+                  "ks": 0.4412632681231853,
+                  "ks_statistic": 0.4412632681231853,
+                  "status": "ok",
+                  "wasserstein": 0.1889995716121662,
+                  "wasserstein_distance": 0.1889995716121662
+                },
+                "p_black": {
+                  "ks": 0.3646056451996763,
+                  "ks_statistic": 0.3646056451996763,
+                  "status": "ok",
+                  "wasserstein": 0.20845187776667146,
+                  "wasserstein_distance": 0.20845187776667146
+                },
+                "wb_trans": {
+                  "ks": 0.26000761578371173,
+                  "ks_statistic": 0.26000761578371173,
+                  "status": "ok",
+                  "wasserstein": 51.90277976105482,
+                  "wasserstein_distance": 51.90277976105482
+                }
+              },
+              "real_count": 447,
+              "status": "ok",
+              "synthetic_count": 94
+            }
+          },
+          "status": "ok"
+        },
+        "b2": {
+          "classes": {
+            "negative": {
+              "categorical": {},
+              "exact_duplicate_count": 0,
+              "exact_duplicate_rate": 0.0,
+              "numeric": {
+                "Lenght": {
+                  "ks": 0.18401436910642122,
+                  "ks_statistic": 0.18401436910642122,
+                  "status": "ok",
+                  "wasserstein": 46.30084418500224,
+                  "wasserstein_distance": 46.30084418500224
+                },
+                "area": {
+                  "ks": 0.3473132764556205,
+                  "ks_statistic": 0.3473132764556205,
+                  "status": "ok",
+                  "wasserstein": 2545.445738661875,
+                  "wasserstein_distance": 2545.445738661875
+                },
+                "blackand": {
+                  "ks": 0.4311929351893429,
+                  "ks_statistic": 0.4311929351893429,
+                  "status": "ok",
+                  "wasserstein": 2850.2230833707536,
+                  "wasserstein_distance": 2850.2230833707536
+                },
+                "blackpix": {
+                  "ks": 0.32134411016314923,
+                  "ks_statistic": 0.32134411016314923,
+                  "status": "ok",
+                  "wasserstein": 339.50259242628323,
+                  "wasserstein_distance": 339.50259242628323
+                },
+                "eccen": {
+                  "ks": 0.2544678940278402,
+                  "ks_statistic": 0.2544678940278402,
+                  "status": "ok",
+                  "wasserstein": 6.127990929501568,
+                  "wasserstein_distance": 6.127990929501568
+                },
+                "height": {
+                  "ks": 0.2535099535997605,
+                  "ks_statistic": 0.2535099535997605,
+                  "status": "ok",
+                  "wasserstein": 2.0731148031731768,
+                  "wasserstein_distance": 2.0731148031731768
+                },
+                "mean_tr": {
+                  "ks": 0.1912587935937734,
+                  "ks_statistic": 0.1912587935937734,
+                  "status": "ok",
+                  "wasserstein": 0.6756912138901339,
+                  "wasserstein_distance": 0.6756912138901339
+                },
+                "p_and": {
+                  "ks": 0.15843436611285733,
+                  "ks_statistic": 0.15843436611285733,
+                  "status": "ok",
+                  "wasserstein": 0.04266859751534201,
+                  "wasserstein_distance": 0.04266859751534201
+                },
+                "p_black": {
+                  "ks": 0.18028738212842382,
+                  "ks_statistic": 0.18028738212842382,
+                  "status": "ok",
+                  "wasserstein": 0.036813411165993105,
+                  "wasserstein_distance": 0.036813411165993105
+                },
+                "wb_trans": {
+                  "ks": 0.3464451429426732,
+                  "ks_statistic": 0.3464451429426732,
+                  "status": "ok",
+                  "wasserstein": 208.2353988923814,
+                  "wasserstein_distance": 208.2353988923814
+                }
+              },
+              "real_count": 3930,
+              "status": "ok",
+              "synthetic_count": 85
+            },
+            "positive": {
+              "categorical": {},
+              "exact_duplicate_count": 4,
+              "exact_duplicate_rate": 0.044444444444444446,
+              "numeric": {
+                "Lenght": {
+                  "ks": 0.42587621178225205,
+                  "ks_statistic": 0.42587621178225205,
+                  "status": "ok",
+                  "wasserstein": 89.24507307979121,
+                  "wasserstein_distance": 89.24507307979121
+                },
+                "area": {
+                  "ks": 0.2220730797912006,
+                  "ks_statistic": 0.2220730797912006,
+                  "status": "ok",
+                  "wasserstein": 1974.2964876957503,
+                  "wasserstein_distance": 1974.2964876957503
+                },
+                "blackand": {
+                  "ks": 0.21066368381804634,
+                  "ks_statistic": 0.21066368381804634,
+                  "status": "ok",
+                  "wasserstein": 918.6076510067119,
+                  "wasserstein_distance": 918.6076510067119
+                },
+                "blackpix": {
+                  "ks": 0.3043997017151381,
+                  "ks_statistic": 0.3043997017151381,
+                  "status": "ok",
+                  "wasserstein": 587.8029082774053,
+                  "wasserstein_distance": 587.8029082774053
+                },
+                "eccen": {
+                  "ks": 0.4368381804623415,
+                  "ks_statistic": 0.4368381804623415,
+                  "status": "ok",
+                  "wasserstein": 43.82213057419837,
+                  "wasserstein_distance": 43.82213057419837
+                },
+                "height": {
+                  "ks": 0.38724832214765104,
+                  "ks_statistic": 0.38724832214765104,
+                  "status": "ok",
+                  "wasserstein": 18.5994780014914,
+                  "wasserstein_distance": 18.5994780014914
+                },
+                "mean_tr": {
+                  "ks": 0.6291573452647279,
+                  "ks_statistic": 0.6291573452647279,
+                  "status": "ok",
+                  "wasserstein": 60.2741923937357,
+                  "wasserstein_distance": 60.2741923937357
+                },
+                "p_and": {
+                  "ks": 0.4407904548844146,
+                  "ks_statistic": 0.4407904548844146,
+                  "status": "ok",
+                  "wasserstein": 0.18884921700223714,
+                  "wasserstein_distance": 0.18884921700223714
+                },
+                "p_black": {
+                  "ks": 0.36271439224459356,
+                  "ks_statistic": 0.36271439224459356,
+                  "status": "ok",
+                  "wasserstein": 0.20583982102908277,
+                  "wasserstein_distance": 0.20583982102908277
+                },
+                "wb_trans": {
+                  "ks": 0.27233407904548845,
+                  "ks_statistic": 0.27233407904548845,
+                  "status": "ok",
+                  "wasserstein": 51.85100671140944,
+                  "wasserstein_distance": 51.85100671140944
+                }
+              },
+              "real_count": 447,
+              "status": "ok",
+              "synthetic_count": 90
+            }
+          },
+          "status": "ok"
+        },
+        "b3": {
+          "classes": {
+            "negative": {
+              "categorical": {},
+              "exact_duplicate_count": 15,
+              "exact_duplicate_rate": 0.1485148514851485,
+              "numeric": {
+                "Lenght": {
+                  "ks": 0.17345375758949944,
+                  "ks_statistic": 0.17345375758949944,
+                  "status": "ok",
+                  "wasserstein": 50.69715818910135,
+                  "wasserstein_distance": 50.69715818910135
+                },
+                "area": {
+                  "ks": 0.31411583906482254,
+                  "ks_statistic": 0.31411583906482254,
+                  "status": "ok",
+                  "wasserstein": 2238.9773889602707,
+                  "wasserstein_distance": 2238.9773889602707
+                },
+                "blackand": {
+                  "ks": 0.38692968533494565,
+                  "ks_statistic": 0.38692968533494565,
+                  "status": "ok",
+                  "wasserstein": 2462.2445292620873,
+                  "wasserstein_distance": 2462.2445292620873
+                },
+                "blackpix": {
+                  "ks": 0.33311918978157357,
+                  "ks_statistic": 0.33311918978157357,
+                  "status": "ok",
+                  "wasserstein": 282.96201093391784,
+                  "wasserstein_distance": 282.96201093391784
+                },
+                "eccen": {
+                  "ks": 0.23618018290378656,
+                  "ks_statistic": 0.23618018290378656,
+                  "status": "ok",
+                  "wasserstein": 6.383785775829489,
+                  "wasserstein_distance": 6.383785775829489
+                },
+                "height": {
+                  "ks": 0.2729624870884035,
+                  "ks_statistic": 0.2729624870884035,
+                  "status": "ok",
+                  "wasserstein": 1.786879298616884,
+                  "wasserstein_distance": 1.786879298616884
+                },
+                "mean_tr": {
+                  "ks": 0.18415337716977798,
+                  "ks_statistic": 0.18415337716977798,
+                  "status": "ok",
+                  "wasserstein": 0.7812235154813166,
+                  "wasserstein_distance": 0.7812235154813166
+                },
+                "p_and": {
+                  "ks": 0.1614365253319225,
+                  "ks_statistic": 0.1614365253319225,
+                  "status": "ok",
+                  "wasserstein": 0.0436728818683395,
+                  "wasserstein_distance": 0.0436728818683395
+                },
+                "p_black": {
+                  "ks": 0.15992492379008896,
+                  "ks_statistic": 0.15992492379008896,
+                  "status": "ok",
+                  "wasserstein": 0.03390360013100544,
+                  "wasserstein_distance": 0.03390360013100544
+                },
+                "wb_trans": {
+                  "ks": 0.30338346811780414,
+                  "ks_statistic": 0.30338346811780414,
+                  "status": "ok",
+                  "wasserstein": 187.5770412919155,
+                  "wasserstein_distance": 187.5770412919155
+                }
+              },
+              "real_count": 3930,
+              "status": "ok",
+              "synthetic_count": 101
+            },
+            "positive": {
+              "categorical": {},
+              "exact_duplicate_count": 8,
+              "exact_duplicate_rate": 0.0851063829787234,
+              "numeric": {
+                "Lenght": {
+                  "ks": 0.4310771574087296,
+                  "ks_statistic": 0.4310771574087296,
+                  "status": "ok",
+                  "wasserstein": 89.6372385644248,
+                  "wasserstein_distance": 89.6372385644248
+                },
+                "area": {
+                  "ks": 0.2258555857013661,
+                  "ks_statistic": 0.2258555857013661,
+                  "status": "ok",
+                  "wasserstein": 1983.7628801942035,
+                  "wasserstein_distance": 1983.7628801942035
+                },
+                "blackand": {
+                  "ks": 0.21352753581798278,
+                  "ks_statistic": 0.21352753581798278,
+                  "status": "ok",
+                  "wasserstein": 924.4382121947741,
+                  "wasserstein_distance": 924.4382121947741
+                },
+                "blackpix": {
+                  "ks": 0.30534532819267934,
+                  "ks_statistic": 0.30534532819267934,
+                  "status": "ok",
+                  "wasserstein": 592.9926936075019,
+                  "wasserstein_distance": 592.9926936075019
+                },
+                "eccen": {
+                  "ks": 0.40870579275548574,
+                  "ks_statistic": 0.40870579275548574,
+                  "status": "ok",
+                  "wasserstein": 43.4151712361369,
+                  "wasserstein_distance": 43.4151712361369
+                },
+                "height": {
+                  "ks": 0.3886667618639631,
+                  "ks_statistic": 0.3886667618639631,
+                  "status": "ok",
+                  "wasserstein": 18.481983911656883,
+                  "wasserstein_distance": 18.481983911656883
+                },
+                "mean_tr": {
+                  "ks": 0.6324670379361226,
+                  "ks_statistic": 0.6324670379361226,
+                  "status": "ok",
+                  "wasserstein": 58.20122138131245,
+                  "wasserstein_distance": 58.20122138131245
+                },
+                "p_and": {
+                  "ks": 0.4412632681231853,
+                  "ks_statistic": 0.4412632681231853,
+                  "status": "ok",
+                  "wasserstein": 0.1889995716121662,
+                  "wasserstein_distance": 0.1889995716121662
+                },
+                "p_black": {
+                  "ks": 0.3646056451996763,
+                  "ks_statistic": 0.3646056451996763,
+                  "status": "ok",
+                  "wasserstein": 0.20845187776667146,
+                  "wasserstein_distance": 0.20845187776667146
+                },
+                "wb_trans": {
+                  "ks": 0.26000761578371173,
+                  "ks_statistic": 0.26000761578371173,
+                  "status": "ok",
+                  "wasserstein": 51.90277976105482,
+                  "wasserstein_distance": 51.90277976105482
+                }
+              },
+              "real_count": 447,
+              "status": "ok",
+              "synthetic_count": 94
+            }
+          },
+          "status": "ok"
+        }
+      },
+      "minority_duplicate_count": 4,
+      "minority_duplicate_rate": 0.0425531914893617,
+      "parseable_minority_count": 94,
+      "requested_minority_count": 100,
+      "requested_minority_label": "positive",
+      "tstr": {
+        "b1": {
+          "logistic_regression": {
+            "auroc": null,
+            "average_precision": null,
+            "balanced_accuracy": null,
+            "f1": null,
+            "mcc": null,
+            "pr_auc": null,
+            "reason": "The 'liblinear' solver does not support multiclass classification (n_classes >= 3). Either use another solver or wrap the estimator in a OneVsRestClassifier to keep applying a one-versus-rest scheme.",
+            "status": "undefined"
+          },
+          "random_forest": {
+            "auroc": 0.8531917599186165,
+            "average_precision": 0.5394253827505664,
+            "balanced_accuracy": 0.7629932059293707,
+            "f1": 0.8995181935349708,
+            "mcc": 0.4827957151152384,
+            "pr_auc": 0.5394253827505664,
+            "status": "ok"
+          }
+        },
+        "b2": {
+          "logistic_regression": {
+            "auroc": 0.6726356997529429,
+            "average_precision": 0.5004175278108927,
+            "balanced_accuracy": 0.7236593518383956,
+            "f1": 0.42953020134228187,
+            "mcc": 0.36096443517331667,
+            "pr_auc": 0.5004175278108927,
+            "status": "ok"
+          },
+          "random_forest": {
+            "auroc": 0.8474286077604999,
+            "average_precision": 0.5142728611227586,
+            "balanced_accuracy": 0.7770082473477693,
+            "f1": 0.5702479338842975,
+            "mcc": 0.5190069010750495,
+            "pr_auc": 0.5142728611227586,
+            "status": "ok"
+          }
+        },
+        "b3": {
+          "logistic_regression": {
+            "auroc": null,
+            "average_precision": null,
+            "balanced_accuracy": null,
+            "f1": null,
+            "mcc": null,
+            "pr_auc": null,
+            "reason": "The 'liblinear' solver does not support multiclass classification (n_classes >= 3). Either use another solver or wrap the estimator in a OneVsRestClassifier to keep applying a one-versus-rest scheme.",
+            "status": "undefined"
+          },
+          "random_forest": {
+            "auroc": 0.8531917599186165,
+            "average_precision": 0.5394253827505664,
+            "balanced_accuracy": 0.7629932059293707,
+            "f1": 0.8995181935349708,
+            "mcc": 0.4827957151152384,
+            "pr_auc": 0.5394253827505664,
+            "status": "ok"
+          }
+        }
+      }
+    }
+  }
+}

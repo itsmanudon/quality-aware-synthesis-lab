@@ -1,0 +1,423 @@
+{
+  "by_requested_class": {
+    "negative": {
+      "exact_nonreference_train_match": 0,
+      "exact_nonreference_train_match_rate": 0.0,
+      "exact_reference_match": 8,
+      "exact_reference_match_rate": 0.4,
+      "exact_synthetic_duplicate": 7,
+      "exact_synthetic_duplicate_rate": 0.35,
+      "records": 20,
+      "unique_records": 13
+    },
+    "positive": {
+      "exact_nonreference_train_match": 0,
+      "exact_nonreference_train_match_rate": 0.0,
+      "exact_reference_match": 2,
+      "exact_reference_match_rate": 0.1,
+      "exact_synthetic_duplicate": 0,
+      "exact_synthetic_duplicate_rate": 0.0,
+      "records": 20,
+      "unique_records": 20
+    }
+  },
+  "by_target_class": {
+    "negative": {
+      "exact_nonreference_train_match": 0,
+      "exact_nonreference_train_match_rate": 0.0,
+      "exact_reference_match": 8,
+      "exact_reference_match_rate": 0.4,
+      "exact_synthetic_duplicate": 7,
+      "exact_synthetic_duplicate_rate": 0.35,
+      "records": 20,
+      "unique_records": 13
+    },
+    "positive": {
+      "exact_nonreference_train_match": 0,
+      "exact_nonreference_train_match_rate": 0.0,
+      "exact_reference_match": 2,
+      "exact_reference_match_rate": 0.1,
+      "exact_synthetic_duplicate": 0,
+      "exact_synthetic_duplicate_rate": 0.0,
+      "records": 20,
+      "unique_records": 20
+    }
+  },
+  "dataset_id": "Abalone19",
+  "note": "copying diagnostics only; not a privacy or disclosure claim",
+  "overall": {
+    "exact_nonreference_train_match": 0,
+    "exact_nonreference_train_match_rate": 0.0,
+    "exact_reference_match": 10,
+    "exact_reference_match_rate": 0.25,
+    "exact_synthetic_duplicate": 7,
+    "exact_synthetic_duplicate_rate": 0.175,
+    "records": 40,
+    "unique_records": 33
+  },
+  "records": [
+    {
+      "canonical_hash": "285215058479823923b2272107754523e5d82cd3c0017f22b5dc33c511be8854",
+      "exact_nonreference_train_match": false,
+      "exact_reference_match": true,
+      "exact_synthetic_duplicate": false,
+      "record_id": "chatcmpl-103-item-0",
+      "requested_class": "negative",
+      "target_class": "negative"
+    },
+    {
+      "canonical_hash": "e67baeaaac11e18072a82c4fa49fd5b179fb5eb84bf2f6f99e88d05c6a8da795",
+      "exact_nonreference_train_match": false,
+      "exact_reference_match": true,
+      "exact_synthetic_duplicate": false,
+      "record_id": "chatcmpl-103-item-1",
+      "requested_class": "negative",
+      "target_class": "negative"
+    },
+    {
+      "canonical_hash": "992e03420acf40109cd83f9e7b6c8a6432b5cd6ef33ed932388616362ae1b81f",
+      "exact_nonreference_train_match": false,
+      "exact_reference_match": false,
+      "exact_synthetic_duplicate": false,
+      "record_id": "chatcmpl-103-item-2",
+      "requested_class": "negative",
+      "target_class": "negative"
+    },
+    {
+      "canonical_hash": "d47acf08bad49c9b1c1e074f031a39becc375c106a852098a19d5269242de017",
+      "exact_nonreference_train_match": false,
+      "exact_reference_match": false,
+      "exact_synthetic_duplicate": false,
+      "record_id": "chatcmpl-103-item-3",
+      "requested_class": "negative",
+      "target_class": "negative"
+    },
+    {
+      "canonical_hash": "1b94bd79e1c127af4254ec95cda23a5597b3fd71c134f6d4d066d4a2156ab1f3",
+      "exact_nonreference_train_match": false,
+      "exact_reference_match": false,
+      "exact_synthetic_duplicate": false,
+      "record_id": "chatcmpl-103-item-4",
+      "requested_class": "negative",
+      "target_class": "negative"
+    },
+    {
+      "canonical_hash": "285215058479823923b2272107754523e5d82cd3c0017f22b5dc33c511be8854",
+      "exact_nonreference_train_match": false,
+      "exact_reference_match": true,
+      "exact_synthetic_duplicate": true,
+      "record_id": "chatcmpl-860-item-0",
+      "requested_class": "negative",
+      "target_class": "negative"
+    },
+    {
+      "canonical_hash": "e67baeaaac11e18072a82c4fa49fd5b179fb5eb84bf2f6f99e88d05c6a8da795",
+      "exact_nonreference_train_match": false,
+      "exact_reference_match": true,
+      "exact_synthetic_duplicate": true,
+      "record_id": "chatcmpl-860-item-1",
+      "requested_class": "negative",
+      "target_class": "negative"
+    },
+    {
+      "canonical_hash": "a3745aefa4187c1a1e0b9cfe6cc8530e8f75fed3d6e77855a3a85f86bc26bffe",
+      "exact_nonreference_train_match": false,
+      "exact_reference_match": false,
+      "exact_synthetic_duplicate": false,
+      "record_id": "chatcmpl-860-item-2",
+      "requested_class": "negative",
+      "target_class": "negative"
+    },
+    {
+      "canonical_hash": "194d435312beda6e147cd119aee889a74b8e378ae96c4b1e05ef0b525a6bc823",
+      "exact_nonreference_train_match": false,
+      "exact_reference_match": false,
+      "exact_synthetic_duplicate": false,
+      "record_id": "chatcmpl-860-item-3",
+      "requested_class": "negative",
+      "target_class": "negative"
+    },
+    {
+      "canonical_hash": "e3ac569b921a339e4afb4cb4594f2fafe80bd9e930ad0ac18b513fca87f5519e",
+      "exact_nonreference_train_match": false,
+      "exact_reference_match": false,
+      "exact_synthetic_duplicate": false,
+      "record_id": "chatcmpl-860-item-4",
+      "requested_class": "negative",
+      "target_class": "negative"
+    },
+    {
+      "canonical_hash": "285215058479823923b2272107754523e5d82cd3c0017f22b5dc33c511be8854",
+      "exact_nonreference_train_match": false,
+      "exact_reference_match": true,
+      "exact_synthetic_duplicate": true,
+      "record_id": "chatcmpl-497-item-0",
+      "requested_class": "negative",
+      "target_class": "negative"
+    },
+    {
+      "canonical_hash": "e67baeaaac11e18072a82c4fa49fd5b179fb5eb84bf2f6f99e88d05c6a8da795",
+      "exact_nonreference_train_match": false,
+      "exact_reference_match": true,
+      "exact_synthetic_duplicate": true,
+      "record_id": "chatcmpl-497-item-1",
+      "requested_class": "negative",
+      "target_class": "negative"
+    },
+    {
+      "canonical_hash": "70f386ee4353d11fd8b0311cfbd7bb47e47817d8f4ceb656917e03627ac47598",
+      "exact_nonreference_train_match": false,
+      "exact_reference_match": false,
+      "exact_synthetic_duplicate": false,
+      "record_id": "chatcmpl-497-item-2",
+      "requested_class": "negative",
+      "target_class": "negative"
+    },
+    {
+      "canonical_hash": "78fb43a6c8f433559dddff1e367ac5f0e6c246746259d9ee219afc79bf134ae1",
+      "exact_nonreference_train_match": false,
+      "exact_reference_match": false,
+      "exact_synthetic_duplicate": false,
+      "record_id": "chatcmpl-497-item-3",
+      "requested_class": "negative",
+      "target_class": "negative"
+    },
+    {
+      "canonical_hash": "b50e03eeba5b9555f2114cb03f0150e558b41177288094657a19293bce6d19e8",
+      "exact_nonreference_train_match": false,
+      "exact_reference_match": false,
+      "exact_synthetic_duplicate": false,
+      "record_id": "chatcmpl-497-item-4",
+      "requested_class": "negative",
+      "target_class": "negative"
+    },
+    {
+      "canonical_hash": "285215058479823923b2272107754523e5d82cd3c0017f22b5dc33c511be8854",
+      "exact_nonreference_train_match": false,
+      "exact_reference_match": true,
+      "exact_synthetic_duplicate": true,
+      "record_id": "chatcmpl-244-item-0",
+      "requested_class": "negative",
+      "target_class": "negative"
+    },
+    {
+      "canonical_hash": "e67baeaaac11e18072a82c4fa49fd5b179fb5eb84bf2f6f99e88d05c6a8da795",
+      "exact_nonreference_train_match": false,
+      "exact_reference_match": true,
+      "exact_synthetic_duplicate": true,
+      "record_id": "chatcmpl-244-item-1",
+      "requested_class": "negative",
+      "target_class": "negative"
+    },
+    {
+      "canonical_hash": "a3745aefa4187c1a1e0b9cfe6cc8530e8f75fed3d6e77855a3a85f86bc26bffe",
+      "exact_nonreference_train_match": false,
+      "exact_reference_match": false,
+      "exact_synthetic_duplicate": true,
+      "record_id": "chatcmpl-244-item-2",
+      "requested_class": "negative",
+      "target_class": "negative"
+    },
+    {
+      "canonical_hash": "682926f2952707c2624968c2769500a7c203d240a9aa5779b6d63854e7a8739d",
+      "exact_nonreference_train_match": false,
+      "exact_reference_match": false,
+      "exact_synthetic_duplicate": false,
+      "record_id": "chatcmpl-244-item-3",
+      "requested_class": "negative",
+      "target_class": "negative"
+    },
+    {
+      "canonical_hash": "8266286bab1a8b77e504199927452189e9ebbac94c69c6c9799ac42e8f9a9f93",
+      "exact_nonreference_train_match": false,
+      "exact_reference_match": false,
+      "exact_synthetic_duplicate": false,
+      "record_id": "chatcmpl-244-item-4",
+      "requested_class": "negative",
+      "target_class": "negative"
+    },
+    {
+      "canonical_hash": "d791f4a54a85a9371836bc1adb0ff47ac7b5dad27ac7fe2bca2331e6ff10d24d",
+      "exact_nonreference_train_match": false,
+      "exact_reference_match": false,
+      "exact_synthetic_duplicate": false,
+      "record_id": "chatcmpl-54-item-0",
+      "requested_class": "positive",
+      "target_class": "positive"
+    },
+    {
+      "canonical_hash": "7959b659832265f70f43582cf00b6ab126e059314820e5b80f961768e7fbf48d",
+      "exact_nonreference_train_match": false,
+      "exact_reference_match": false,
+      "exact_synthetic_duplicate": false,
+      "record_id": "chatcmpl-54-item-1",
+      "requested_class": "positive",
+      "target_class": "positive"
+    },
+    {
+      "canonical_hash": "8f3fa68f150b73ddfa636c336f818371699c3b2dda223adc0fd92eb3ad6b387a",
+      "exact_nonreference_train_match": false,
+      "exact_reference_match": false,
+      "exact_synthetic_duplicate": false,
+      "record_id": "chatcmpl-54-item-2",
+      "requested_class": "positive",
+      "target_class": "positive"
+    },
+    {
+      "canonical_hash": "163ac0022413958e4c99e8668bfaeee7f3271300a6b48668a0160fd6f879bcd2",
+      "exact_nonreference_train_match": false,
+      "exact_reference_match": false,
+      "exact_synthetic_duplicate": false,
+      "record_id": "chatcmpl-54-item-3",
+      "requested_class": "positive",
+      "target_class": "positive"
+    },
+    {
+      "canonical_hash": "db62d31c6b6abe33916d0586ac7b20a3102af0a174c2fb25e0b4bcbdb53c248e",
+      "exact_nonreference_train_match": false,
+      "exact_reference_match": false,
+      "exact_synthetic_duplicate": false,
+      "record_id": "chatcmpl-54-item-4",
+      "requested_class": "positive",
+      "target_class": "positive"
+    },
+    {
+      "canonical_hash": "8c81aaae4a2195bc694d9fd5deeb45b5e7318c9bf77d44d9104e73df2e23abf1",
+      "exact_nonreference_train_match": false,
+      "exact_reference_match": false,
+      "exact_synthetic_duplicate": false,
+      "record_id": "chatcmpl-579-item-0",
+      "requested_class": "positive",
+      "target_class": "positive"
+    },
+    {
+      "canonical_hash": "42062039a1b14f88595af7926c931133e5dad411898bd7974c969c461d63d4c8",
+      "exact_nonreference_train_match": false,
+      "exact_reference_match": false,
+      "exact_synthetic_duplicate": false,
+      "record_id": "chatcmpl-579-item-1",
+      "requested_class": "positive",
+      "target_class": "positive"
+    },
+    {
+      "canonical_hash": "97c371f37bcf73cf95dceb5cb7c5c5870726f6b8bbe69f9045d967c834eb8811",
+      "exact_nonreference_train_match": false,
+      "exact_reference_match": false,
+      "exact_synthetic_duplicate": false,
+      "record_id": "chatcmpl-579-item-2",
+      "requested_class": "positive",
+      "target_class": "positive"
+    },
+    {
+      "canonical_hash": "32a20abd1d5d4e0c0f9477b0242e8fad8ce45ac560c221fa5e4d9319d629f5dd",
+      "exact_nonreference_train_match": false,
+      "exact_reference_match": false,
+      "exact_synthetic_duplicate": false,
+      "record_id": "chatcmpl-579-item-3",
+      "requested_class": "positive",
+      "target_class": "positive"
+    },
+    {
+      "canonical_hash": "0ea0ea4de9fce0657edb0095c29ab3abdd29e49f0eed8f7f86f9d4266a62a52a",
+      "exact_nonreference_train_match": false,
+      "exact_reference_match": false,
+      "exact_synthetic_duplicate": false,
+      "record_id": "chatcmpl-579-item-4",
+      "requested_class": "positive",
+      "target_class": "positive"
+    },
+    {
+      "canonical_hash": "1464eec5b77acf12033fbf7c6ed538b110a97528d957266f5678833c4fe4208d",
+      "exact_nonreference_train_match": false,
+      "exact_reference_match": false,
+      "exact_synthetic_duplicate": false,
+      "record_id": "chatcmpl-219-item-0",
+      "requested_class": "positive",
+      "target_class": "positive"
+    },
+    {
+      "canonical_hash": "dc141cd712e9c118d38ebab8bf9136dc092410096b3353b75cec2266480e9fb9",
+      "exact_nonreference_train_match": false,
+      "exact_reference_match": false,
+      "exact_synthetic_duplicate": false,
+      "record_id": "chatcmpl-219-item-1",
+      "requested_class": "positive",
+      "target_class": "positive"
+    },
+    {
+      "canonical_hash": "c97ff32d996ae8df4b393a9a654120f26f43949f68698cfcadf60faf13a5af30",
+      "exact_nonreference_train_match": false,
+      "exact_reference_match": false,
+      "exact_synthetic_duplicate": false,
+      "record_id": "chatcmpl-219-item-2",
+      "requested_class": "positive",
+      "target_class": "positive"
+    },
+    {
+      "canonical_hash": "c147ba547eef3fe16766ced38ed47790fd2778ca6ac7bd5159870fc65c44cba1",
+      "exact_nonreference_train_match": false,
+      "exact_reference_match": false,
+      "exact_synthetic_duplicate": false,
+      "record_id": "chatcmpl-219-item-3",
+      "requested_class": "positive",
+      "target_class": "positive"
+    },
+    {
+      "canonical_hash": "c66d9c6805f3244f14acfc68b08978018b5614ee93408735068372c7b912c371",
+      "exact_nonreference_train_match": false,
+      "exact_reference_match": false,
+      "exact_synthetic_duplicate": false,
+      "record_id": "chatcmpl-219-item-4",
+      "requested_class": "positive",
+      "target_class": "positive"
+    },
+    {
+      "canonical_hash": "e58356ad90a9a61283d3cb6ae70e3229e4b83481c65fdadb5659666a6b1c9989",
+      "exact_nonreference_train_match": false,
+      "exact_reference_match": true,
+      "exact_synthetic_duplicate": false,
+      "record_id": "chatcmpl-592-item-0",
+      "requested_class": "positive",
+      "target_class": "positive"
+    },
+    {
+      "canonical_hash": "7382f80e3ed7047bc031a6ac4155626104d1d8014bfb4ef9dba3a4e2ed91a063",
+      "exact_nonreference_train_match": false,
+      "exact_reference_match": true,
+      "exact_synthetic_duplicate": false,
+      "record_id": "chatcmpl-592-item-1",
+      "requested_class": "positive",
+      "target_class": "positive"
+    },
+    {
+      "canonical_hash": "6fb38f4abf2c28ab2ad9d2cf2ac17adde20ce35d07aa15d7dc3397203ee45e2d",
+      "exact_nonreference_train_match": false,
+      "exact_reference_match": false,
+      "exact_synthetic_duplicate": false,
+      "record_id": "chatcmpl-592-item-2",
+      "requested_class": "positive",
+      "target_class": "positive"
+    },
+    {
+      "canonical_hash": "ad966d669895cf4379a63e80e4b014730ed980532445bdcf285a4119d4b457d3",
+      "exact_nonreference_train_match": false,
+      "exact_reference_match": false,
+      "exact_synthetic_duplicate": false,
+      "record_id": "chatcmpl-592-item-3",
+      "requested_class": "positive",
+      "target_class": "positive"
+    },
+    {
+      "canonical_hash": "07e6bcad3973294630607c2d806528c0a5ef8187653f01476f0c2171e2da2f4d",
+      "exact_nonreference_train_match": false,
+      "exact_reference_match": false,
+      "exact_synthetic_duplicate": false,
+      "record_id": "chatcmpl-592-item-4",
+      "requested_class": "positive",
+      "target_class": "positive"
+    }
+  ],
+  "reference_examples_shown": 4,
+  "run_id": "m1-p0-real-v3-Abalone19-gemma4-e4b-20260829",
+  "schema_version": "m1-5-copying-diagnostics-v1"
+}

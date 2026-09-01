@@ -1,0 +1,86 @@
+{
+  "by_target_class": {
+    "negative": {
+      "nearest_same_class_train_distance": {
+        "count": 20,
+        "max": 1.24077644468077,
+        "mean": 0.33283907090404324,
+        "median": 0.18190791006203955,
+        "min": 0.0,
+        "p10": 0.0,
+        "p90": 0.8926390765489235
+      },
+      "nearest_train_distance": {
+        "count": 20,
+        "max": 1.24077644468077,
+        "mean": 0.33283907090404324,
+        "median": 0.18190791006203955,
+        "min": 0.0,
+        "p10": 0.0,
+        "p90": 0.8926390765489235
+      }
+    },
+    "positive": {
+      "nearest_same_class_train_distance": {
+        "count": 20,
+        "max": 1.8697993032196254,
+        "mean": 0.9791445129259888,
+        "median": 0.9170105013316483,
+        "min": 0.0,
+        "p10": 0.5057920431350321,
+        "p90": 1.7386831324470642
+      },
+      "nearest_train_distance": {
+        "count": 20,
+        "max": 1.1955709386948867,
+        "mean": 0.5829391995959301,
+        "median": 0.5880742187136129,
+        "min": 0.0,
+        "p10": 0.24917430276570035,
+        "p90": 0.9353600436567501
+      }
+    }
+  },
+  "dataset_id": "Abalone19",
+  "distance_representation": {
+    "categorical": "one-hot over TRAIN domain levels, unit weight; a nominal mismatch contributes sqrt(2) to the Euclidean distance (conservative, learning-free)",
+    "categorical_columns": [
+      "sex"
+    ],
+    "numerical": "z-score standardized with TRAIN mean/std (ddof=0); zero-variance columns dropped"
+  },
+  "exact_train_contact_count": 0,
+  "note": "diagnostic only: learning-free standardized Euclidean NN distance to REAL TRAIN; no thresholds, not a validity probability",
+  "overall": {
+    "nearest_other_class_train_distance": {
+      "count": 40,
+      "max": 2.71471992940658,
+      "mean": 0.8744566700749982,
+      "median": 0.6363948012969465,
+      "min": 0.2768603364063337,
+      "p10": 0.3297197759031533,
+      "p90": 1.7245159998558757
+    },
+    "nearest_same_class_train_distance": {
+      "count": 40,
+      "max": 1.8697993032196254,
+      "mean": 0.6559917919150161,
+      "median": 0.6858719367709687,
+      "min": 0.0,
+      "p10": 0.0,
+      "p90": 1.341175548480068
+    },
+    "nearest_train_distance": {
+      "count": 40,
+      "max": 1.24077644468077,
+      "mean": 0.4578891352499867,
+      "median": 0.4558056845769919,
+      "min": 0.0,
+      "p10": 0.0,
+      "p90": 0.9353600436567501
+    }
+  },
+  "run_id": "m1-p0-real-v3-Abalone19-gemma4-e4b-20260829",
+  "schema_version": "m1-5-support-diagnostics-v1",
+  "train_rows": 3340
+}

@@ -1,0 +1,24 @@
+{
+  "by_dataset": {
+    "Abalone19": 40,
+    "Ecoli4": 40,
+    "page-blocks0": 40
+  },
+  "human_columns_blank": true,
+  "path": "D:\\Github Repos\\quality-aware-synthesis-lab\\artifacts\\reports\\p1\\p1_human_review.csv",
+  "row_count": 120,
+  "schema_version": "m1-5-p1-human-review-v1",
+  "strata_hits": {
+    "b1_b2_b3_accepted": 18,
+    "b2_b3_disagreement": 8,
+    "b2_rejected": 7,
+    "b3_rejected": 1,
+    "high_train_distance": 18,
+    "low_train_distance": 16,
+    "majority": 15,
+    "minority": 15,
+    "non_copy": 15,
+    "reference_copy": 7
+  },
+  "unique_canonical_hashes": 120
+}

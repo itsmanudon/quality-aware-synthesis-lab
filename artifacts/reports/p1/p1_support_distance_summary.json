@@ -1,0 +1,286 @@
+{
+  "Abalone19": {
+    "by_target_class": {
+      "nan": {
+        "nearest_same_class_train_distance": {
+          "count": 0
+        },
+        "nearest_train_distance": {
+          "count": 5,
+          "max": 0.9900804737530712,
+          "mean": 0.6915168516275758,
+          "median": 0.6724133298116353,
+          "min": 0.3919612793147336,
+          "p10": 0.42152518098892283,
+          "p90": 0.9689515409551356
+        }
+      },
+      "negative": {
+        "nearest_same_class_train_distance": {
+          "count": 100,
+          "max": 1.24077644468077,
+          "mean": 0.26523887374499894,
+          "median": 0.20668900672507054,
+          "min": 0.0,
+          "p10": 0.0,
+          "p90": 0.8190327186598572
+        },
+        "nearest_train_distance": {
+          "count": 100,
+          "max": 1.24077644468077,
+          "mean": 0.26523887374499894,
+          "median": 0.20668900672507054,
+          "min": 0.0,
+          "p10": 0.0,
+          "p90": 0.8190327186598572
+        }
+      },
+      "positive": {
+        "nearest_same_class_train_distance": {
+          "count": 95,
+          "max": 1.8697993032196254,
+          "mean": 0.9501445986302707,
+          "median": 0.9254935953463042,
+          "min": 0.0,
+          "p10": 0.0,
+          "p90": 1.6220895180994506
+        },
+        "nearest_train_distance": {
+          "count": 95,
+          "max": 1.2002222765569983,
+          "mean": 0.48580703584110524,
+          "median": 0.47972179770360657,
+          "min": 0.0,
+          "p10": 0.0,
+          "p90": 0.8819043508310377
+        }
+      }
+    },
+    "distance_representation": {
+      "categorical": "one-hot over TRAIN domain levels, unit weight; a nominal mismatch contributes sqrt(2) to the Euclidean distance (conservative, learning-free)",
+      "categorical_columns": [
+        "sex"
+      ],
+      "numerical": "z-score standardized with TRAIN mean/std (ddof=0); zero-variance columns dropped"
+    },
+    "exact_train_contact_count": 0,
+    "overall": {
+      "nearest_other_class_train_distance": {
+        "count": 200,
+        "max": 2.7275404657628584,
+        "mean": 0.7880602518610541,
+        "median": 0.5609826215587614,
+        "min": 0.0,
+        "p10": 0.3297197759031533,
+        "p90": 1.6052020196948054
+      },
+      "nearest_same_class_train_distance": {
+        "count": 195,
+        "max": 1.8697993032196254,
+        "mean": 0.5989108935609004,
+        "median": 0.4355668409739189,
+        "min": 0.0,
+        "p10": 0.0,
+        "p90": 1.5293147785443433
+      },
+      "nearest_train_distance": {
+        "count": 200,
+        "max": 1.24077644468077,
+        "mean": 0.38066570018771384,
+        "median": 0.350037181834816,
+        "min": 0.0,
+        "p10": 0.0,
+        "p90": 0.874377875456884
+      }
+    },
+    "train_rows": 3340
+  },
+  "Ecoli4": {
+    "by_target_class": {
+      "nan": {
+        "nearest_same_class_train_distance": {
+          "count": 0
+        },
+        "nearest_train_distance": {
+          "count": 5,
+          "max": 0.7997840141007057,
+          "mean": 0.48872185498557713,
+          "median": 0.4645341799725774,
+          "min": 0.17578351492753358,
+          "p10": 0.2652411721916752,
+          "p90": 0.7215023715960959
+        }
+      },
+      "negative": {
+        "nearest_same_class_train_distance": {
+          "count": 100,
+          "max": 1.9925422954524628,
+          "mean": 0.5498953884970177,
+          "median": 0.5479826091124631,
+          "min": 0.0,
+          "p10": 0.0,
+          "p90": 1.0652628981041874
+        },
+        "nearest_train_distance": {
+          "count": 100,
+          "max": 1.9925422954524628,
+          "mean": 0.5413514083004296,
+          "median": 0.5479826091124631,
+          "min": 0.0,
+          "p10": 0.0,
+          "p90": 1.0652628981041874
+        }
+      },
+      "positive": {
+        "nearest_same_class_train_distance": {
+          "count": 96,
+          "max": 1.7227404296445206,
+          "mean": 0.8487008164686488,
+          "median": 0.8000200376626765,
+          "min": 0.19310576538578422,
+          "p10": 0.5115014908181672,
+          "p90": 1.3095051416544807
+        },
+        "nearest_train_distance": {
+          "count": 96,
+          "max": 1.4933484237513073,
+          "mean": 0.677233540424254,
+          "median": 0.6470578735670761,
+          "min": 0.13242362502823712,
+          "p10": 0.4081182733753046,
+          "p90": 0.992711481432796
+        }
+      }
+    },
+    "distance_representation": {
+      "categorical": "one-hot over TRAIN domain levels, unit weight; a nominal mismatch contributes sqrt(2) to the Euclidean distance (conservative, learning-free)",
+      "categorical_columns": [],
+      "numerical": "z-score standardized with TRAIN mean/std (ddof=0); zero-variance columns dropped"
+    },
+    "exact_train_contact_count": 0,
+    "overall": {
+      "nearest_other_class_train_distance": {
+        "count": 201,
+        "max": 5.212175553671301,
+        "mean": 1.5204530742074645,
+        "median": 1.2191369608123177,
+        "min": 0.13242362502823712,
+        "p10": 0.5396555500323706,
+        "p90": 3.039816934406972
+      },
+      "nearest_same_class_train_distance": {
+        "count": 196,
+        "max": 1.9925422954524628,
+        "mean": 0.6962490675035309,
+        "median": 0.6955682545083754,
+        "min": 0.0,
+        "p10": 0.0,
+        "p90": 1.1819747523718092
+      },
+      "nearest_train_distance": {
+        "count": 201,
+        "max": 1.9925422954524628,
+        "mean": 0.6049411442074588,
+        "median": 0.5800344573606468,
+        "min": 0.0,
+        "p10": 0.0,
+        "p90": 1.021732258951615
+      }
+    },
+    "train_rows": 269
+  },
+  "page-blocks0": {
+    "by_target_class": {
+      "nan": {
+        "nearest_same_class_train_distance": {
+          "count": 0
+        },
+        "nearest_train_distance": {
+          "count": 5,
+          "max": 0.23850250325188282,
+          "mean": 0.14589203514404686,
+          "median": 0.13438651220967457,
+          "min": 0.05316572167056141,
+          "p10": 0.06738713708948488,
+          "p90": 0.2289759732992279
+        }
+      },
+      "negative": {
+        "nearest_same_class_train_distance": {
+          "count": 101,
+          "max": 16.870151241135506,
+          "mean": 1.2266595763062211,
+          "median": 0.3939351136631093,
+          "min": 0.0,
+          "p10": 0.017304345735051685,
+          "p90": 2.87161511924626
+        },
+        "nearest_train_distance": {
+          "count": 101,
+          "max": 15.27197964822724,
+          "mean": 1.1752720204708185,
+          "median": 0.3939351136631093,
+          "min": 0.0,
+          "p10": 0.008652172867525842,
+          "p90": 2.681172620166242
+        }
+      },
+      "positive": {
+        "nearest_same_class_train_distance": {
+          "count": 94,
+          "max": 63.878324611003265,
+          "mean": 1.0635517353525754,
+          "median": 0.3644865411024339,
+          "min": 0.0,
+          "p10": 0.051913037205155166,
+          "p90": 0.7546158714419298
+        },
+        "nearest_train_distance": {
+          "count": 94,
+          "max": 63.878324611003265,
+          "mean": 0.8959151360996777,
+          "median": 0.21696106100699925,
+          "min": 0.0,
+          "p10": 0.0025956518602577587,
+          "p90": 0.3629540269619854
+        }
+      }
+    },
+    "distance_representation": {
+      "categorical": "one-hot over TRAIN domain levels, unit weight; a nominal mismatch contributes sqrt(2) to the Euclidean distance (conservative, learning-free)",
+      "categorical_columns": [],
+      "numerical": "z-score standardized with TRAIN mean/std (ddof=0); zero-variance columns dropped"
+    },
+    "exact_train_contact_count": 0,
+    "overall": {
+      "nearest_other_class_train_distance": {
+        "count": 200,
+        "max": 85.17371469065912,
+        "mean": 1.63698483259451,
+        "median": 0.47444834690302917,
+        "min": 0.0,
+        "p10": 0.18700138915459982,
+        "p90": 3.3441421773918294
+      },
+      "nearest_same_class_train_distance": {
+        "count": 195,
+        "max": 63.878324611003265,
+        "mean": 1.1480332324618996,
+        "median": 0.37022571912309166,
+        "min": 0.0,
+        "p10": 0.028123218997229422,
+        "p90": 1.9439272789936324
+      },
+      "nearest_train_distance": {
+        "count": 200,
+        "max": 63.878324611003265,
+        "mean": 1.018239785183213,
+        "median": 0.2550904036576077,
+        "min": 0.0,
+        "p10": 0.007786955580773277,
+        "p90": 1.8797673171862255
+      }
+    },
+    "train_rows": 4377
+  }
+}

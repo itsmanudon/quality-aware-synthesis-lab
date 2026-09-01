@@ -1,0 +1,32 @@
+{
+  "Abalone19": {
+    "by_direction": {
+      "B2_REJECT_B3_ACCEPT": 62
+    },
+    "by_reason_class": {
+      "dataset_redundancy": 57,
+      "structural_domain_failure": 5
+    },
+    "rows": 62
+  },
+  "Ecoli4": {
+    "by_direction": {
+      "B2_REJECT_B3_ACCEPT": 26
+    },
+    "by_reason_class": {
+      "dataset_redundancy": 21,
+      "structural_domain_failure": 5
+    },
+    "rows": 26
+  },
+  "page-blocks0": {
+    "by_direction": {
+      "B2_REJECT_B3_ACCEPT": 25
+    },
+    "by_reason_class": {
+      "dataset_redundancy": 19,
+      "structural_domain_failure": 6
+    },
+    "rows": 25
+  }
+}

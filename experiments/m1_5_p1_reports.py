@@ -46,6 +46,12 @@ def _w(name: str, value: Any) -> None:
     print(f"wrote {OUT / name}")
 
 
+def write_disagreement_summary(value: Any) -> None:
+    """Write the stable cross-dataset disagreement-summary artifact."""
+
+    _w("p1_b2_b3_disagreements_summary.json", value)
+
+
 def _read(run_dir: Path, rel: str) -> Any:
     return json.loads((run_dir / rel).read_text(encoding="utf-8"))
 
@@ -163,7 +169,7 @@ def main() -> None:
             w.writeheader()
             w.writerows(dis_rows)
         print(f"wrote {OUT / 'p1_b2_b3_disagreements.csv'} ({len(dis_rows)} rows)")
-    _w("p1_b2_b3_disagreement_summary.json", {
+    write_disagreement_summary({
         name: {
             "rows": sum(1 for r in dis_rows if r["dataset_id"] == comparisons[name]["dataset_id"]),
             "by_direction": _count(dis_rows, comparisons[name]["dataset_id"], "direction"),

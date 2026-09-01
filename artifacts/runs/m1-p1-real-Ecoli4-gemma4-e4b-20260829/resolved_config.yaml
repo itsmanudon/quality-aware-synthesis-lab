@@ -1,0 +1,58 @@
+artifact_root: D:\Github Repos\quality-aware-synthesis-lab\artifacts
+baselines:
+  range_severity: medium
+  reject_severities:
+  - high
+  - critical
+dataset:
+  dataset_id: Ecoli4
+  reference_example_count: 4
+  reference_examples_enabled: true
+  reference_examples_per_class: 2
+  root_seed: 42
+experiment_name: m1-5-p1-Ecoli4
+generation:
+  batch_size: 5
+  class_quotas:
+    negative: 100
+    positive: 100
+  class_strategy: explicit
+  generator_id: openai-compatible-generator
+  generator_version: '2'
+  max_tokens: 2048
+  objective: data_emulation
+  prompt_version: v2
+  provider_seed: 42
+  reasoning_effort: none
+  requested_count: 200
+  response_format: json_object
+  temperature: 0.7
+  transport_version: v2
+generator:
+  api_key_env: OLLAMA_API_KEY
+  base_url: http://127.0.0.1:11434/v1
+  fixture: null
+  kind: openai_compatible
+  model: gemma4:e4b
+  timeout_seconds: 120.0
+generator_judge_same_model: true
+judge:
+  judge_id: single-judge
+  judge_version: '1'
+  malformed_policy: reject
+  prompt_version: v1
+  provider:
+    api_key_env: OLLAMA_API_KEY
+    base_url: http://127.0.0.1:11434/v1
+    fixture: null
+    kind: openai_compatible
+    model: gemma4:e4b
+    timeout_seconds: 120.0
+  reasoning_effort: none
+  response_format: json_object
+  threshold: 0.7
+metrics:
+  classifiers:
+  - logistic_regression
+  - random_forest
+run_id: m1-p1-real-Ecoli4-gemma4-e4b-20260829

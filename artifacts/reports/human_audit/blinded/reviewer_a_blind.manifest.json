@@ -1,0 +1,849 @@
+{
+  "master_sha256": "7cdb5ee08216111fca2ab0b21f05930d256e391254a312e0284836bc63576649",
+  "record_count": 120,
+  "records": [
+    {
+      "annotation_id": "ann-e71066e29e97d68d8d43",
+      "canonical_record_sha256": "c2652f39050fb3f4cf9a61147b607f08450b346ca0cac38fd5c19d00a69b21fb",
+      "dataset_id": "Abalone19",
+      "record_id": "chatcmpl-12-item-3",
+      "requested_class": "negative"
+    },
+    {
+      "annotation_id": "ann-463d4424ed9adc7e4a29",
+      "canonical_record_sha256": "c1f2899e3a3c1f786389bde636a3055f1f71e4dfc30e9482afe3cee77e737673",
+      "dataset_id": "Abalone19",
+      "record_id": "chatcmpl-220-item-2",
+      "requested_class": "negative"
+    },
+    {
+      "annotation_id": "ann-490bfbef0b4f616b3a4d",
+      "canonical_record_sha256": "96011580587b4808b9b6af5ae473f57f48e3820943080328bc40182b871b9889",
+      "dataset_id": "Abalone19",
+      "record_id": "chatcmpl-301-item-2",
+      "requested_class": "negative"
+    },
+    {
+      "annotation_id": "ann-1f6709da6cfafed84b58",
+      "canonical_record_sha256": "fef74058388bc8d29fd9d31d8ecbe02d2bfbfd9073d6e55267da2bfe6a747d19",
+      "dataset_id": "Abalone19",
+      "record_id": "chatcmpl-301-item-3",
+      "requested_class": "negative"
+    },
+    {
+      "annotation_id": "ann-aba7a01debbca877c88d",
+      "canonical_record_sha256": "b50e03eeba5b9555f2114cb03f0150e558b41177288094657a19293bce6d19e8",
+      "dataset_id": "Abalone19",
+      "record_id": "chatcmpl-383-item-4",
+      "requested_class": "negative"
+    },
+    {
+      "annotation_id": "ann-f61d5a18558f1e1a38c2",
+      "canonical_record_sha256": "81ee5508558b698f6feee47434edb18b8ebe21569bb4752338f9c39131a7af0d",
+      "dataset_id": "Abalone19",
+      "record_id": "chatcmpl-627-item-4",
+      "requested_class": "negative"
+    },
+    {
+      "annotation_id": "ann-f840537c7073382e481d",
+      "canonical_record_sha256": "682926f2952707c2624968c2769500a7c203d240a9aa5779b6d63854e7a8739d",
+      "dataset_id": "Abalone19",
+      "record_id": "chatcmpl-700-item-3",
+      "requested_class": "negative"
+    },
+    {
+      "annotation_id": "ann-1d2665625f61429172aa",
+      "canonical_record_sha256": "1d468fe4621681ab4f9e4686f6dc76a979326ab6b202c08e319bddced8274e7f",
+      "dataset_id": "Abalone19",
+      "record_id": "chatcmpl-710-item-0",
+      "requested_class": "negative"
+    },
+    {
+      "annotation_id": "ann-7ab0245d45d2fe55d0fc",
+      "canonical_record_sha256": "d723ae6c65c77d6df72e2a164664eaedee332200b2a9dad4c99e4a40421607d1",
+      "dataset_id": "Abalone19",
+      "record_id": "chatcmpl-710-item-2",
+      "requested_class": "negative"
+    },
+    {
+      "annotation_id": "ann-c74a3e62a1526db7db3d",
+      "canonical_record_sha256": "a2ee71ef0fc0dacbbec18a16534ecc923c1ba878a58909ff635861c03d229d25",
+      "dataset_id": "Abalone19",
+      "record_id": "chatcmpl-710-item-3",
+      "requested_class": "negative"
+    },
+    {
+      "annotation_id": "ann-04a26e33fa7234835dd7",
+      "canonical_record_sha256": "aec299627eef673595c663134fb4e3cedf92d7f1513d28c26e12fb886b59a77b",
+      "dataset_id": "Abalone19",
+      "record_id": "chatcmpl-710-item-4",
+      "requested_class": "negative"
+    },
+    {
+      "annotation_id": "ann-c3c48a98ec6453e5da6a",
+      "canonical_record_sha256": "4c92841b3701199b434ad5f5c22694245139a56f2fb83325f9d3efcce64aae6d",
+      "dataset_id": "Abalone19",
+      "record_id": "chatcmpl-716-item-3",
+      "requested_class": "negative"
+    },
+    {
+      "annotation_id": "ann-dd41f121ce1f0a64787a",
+      "canonical_record_sha256": "285215058479823923b2272107754523e5d82cd3c0017f22b5dc33c511be8854",
+      "dataset_id": "Abalone19",
+      "record_id": "chatcmpl-733-item-0",
+      "requested_class": "negative"
+    },
+    {
+      "annotation_id": "ann-60649f6822e37c61e9aa",
+      "canonical_record_sha256": "e67baeaaac11e18072a82c4fa49fd5b179fb5eb84bf2f6f99e88d05c6a8da795",
+      "dataset_id": "Abalone19",
+      "record_id": "chatcmpl-733-item-1",
+      "requested_class": "negative"
+    },
+    {
+      "annotation_id": "ann-61f98d29469f65366486",
+      "canonical_record_sha256": "992e03420acf40109cd83f9e7b6c8a6432b5cd6ef33ed932388616362ae1b81f",
+      "dataset_id": "Abalone19",
+      "record_id": "chatcmpl-733-item-2",
+      "requested_class": "negative"
+    },
+    {
+      "annotation_id": "ann-95929b9ff465db2bd17a",
+      "canonical_record_sha256": "1b94bd79e1c127af4254ec95cda23a5597b3fd71c134f6d4d066d4a2156ab1f3",
+      "dataset_id": "Abalone19",
+      "record_id": "chatcmpl-733-item-4",
+      "requested_class": "negative"
+    },
+    {
+      "annotation_id": "ann-fd28438af19b8a1bccfd",
+      "canonical_record_sha256": "428fd3eb9e7150a4d1504294c7a0c02ffd714e5411f504bcec2f0c74cda8e880",
+      "dataset_id": "Abalone19",
+      "record_id": "chatcmpl-794-item-3",
+      "requested_class": "negative"
+    },
+    {
+      "annotation_id": "ann-0c9cecc089716eff651b",
+      "canonical_record_sha256": "194d435312beda6e147cd119aee889a74b8e378ae96c4b1e05ef0b525a6bc823",
+      "dataset_id": "Abalone19",
+      "record_id": "chatcmpl-810-item-3",
+      "requested_class": "negative"
+    },
+    {
+      "annotation_id": "ann-171cefd42302a47501fa",
+      "canonical_record_sha256": "410e201ac29aabc20661a29e97c43d060926086be898aa3d552231940e4a6c1a",
+      "dataset_id": "Abalone19",
+      "record_id": "chatcmpl-893-item-2",
+      "requested_class": "negative"
+    },
+    {
+      "annotation_id": "ann-bb48085d15c2673c8941",
+      "canonical_record_sha256": "21639adc58b9c347acea57a6b6d6aa279f7592925b75f22d4ed26e201f727e4e",
+      "dataset_id": "Abalone19",
+      "record_id": "chatcmpl-246-item-1",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-5ae85bc16eada33a59b7",
+      "canonical_record_sha256": "42062039a1b14f88595af7926c931133e5dad411898bd7974c969c461d63d4c8",
+      "dataset_id": "Abalone19",
+      "record_id": "chatcmpl-259-item-1",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-6d33b0ee28cc3e22439d",
+      "canonical_record_sha256": "97c371f37bcf73cf95dceb5cb7c5c5870726f6b8bbe69f9045d967c834eb8811",
+      "dataset_id": "Abalone19",
+      "record_id": "chatcmpl-259-item-2",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-f3464ed2bef043f311af",
+      "canonical_record_sha256": "32a20abd1d5d4e0c0f9477b0242e8fad8ce45ac560c221fa5e4d9319d629f5dd",
+      "dataset_id": "Abalone19",
+      "record_id": "chatcmpl-259-item-3",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-3c70e1636ba6615ae4fc",
+      "canonical_record_sha256": "0ea0ea4de9fce0657edb0095c29ab3abdd29e49f0eed8f7f86f9d4266a62a52a",
+      "dataset_id": "Abalone19",
+      "record_id": "chatcmpl-259-item-4",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-6e7dcbac04b908312e15",
+      "canonical_record_sha256": "0b1f1dd2cf0c33bf2a3782f124c8f660fadfe061b25d22625b505ffd0aa859cd",
+      "dataset_id": "Abalone19",
+      "record_id": "chatcmpl-320-item-2",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-5d9003bb2bd8af00a0f6",
+      "canonical_record_sha256": "f6a0e87f43466aa94a6c0e43bb5cd761e8bc6980506afb7da8d58973b3d63b6f",
+      "dataset_id": "Abalone19",
+      "record_id": "chatcmpl-376-item-0",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-ef045b0616f5daff382b",
+      "canonical_record_sha256": "799a6eecc390da5085a8d0ca933a5da0b4f748d1c42268a8789ba8bda60bd1e0",
+      "dataset_id": "Abalone19",
+      "record_id": "chatcmpl-376-item-1",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-a9a3366ed94c8e6fd52f",
+      "canonical_record_sha256": "0fdfe123a9e3e6cdb53aa42b05c9355e291cb0c7a133a3fe4ad09975d95485c4",
+      "dataset_id": "Abalone19",
+      "record_id": "chatcmpl-376-item-2",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-25d12869f7a035d1b9c2",
+      "canonical_record_sha256": "148c2fc74e5d9bb80eb8d78dd0e7c8022b26ebea7eb337ba83bccf52e6efd1ec",
+      "dataset_id": "Abalone19",
+      "record_id": "chatcmpl-376-item-3",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-e53012de7e0eca5f5a1f",
+      "canonical_record_sha256": "85f1d73e606b12e716ac8009093f95b8cb9c60078f956b79611f88e34c3d86d3",
+      "dataset_id": "Abalone19",
+      "record_id": "chatcmpl-376-item-4",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-3de1bd49a2f26855d432",
+      "canonical_record_sha256": "1d3d2b87b049076d314859b29280ad08687d7e9c78e126dec3abfb37a22ff17e",
+      "dataset_id": "Abalone19",
+      "record_id": "chatcmpl-521-item-2",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-330e635a6f5767602332",
+      "canonical_record_sha256": "c00f7a4fde4e4a8d1c12b16c515e61405cf6a8019739abb654837fa774b957bd",
+      "dataset_id": "Abalone19",
+      "record_id": "chatcmpl-521-item-3",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-718f5b21a917fd9527da",
+      "canonical_record_sha256": "a4ffdaa85cd6b3c0c0789e7380aa43dacb98842c7cf7f09893dad99f28b86ab6",
+      "dataset_id": "Abalone19",
+      "record_id": "chatcmpl-631-item-3",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-7a3575bd897e4fce9780",
+      "canonical_record_sha256": "dc141cd712e9c118d38ebab8bf9136dc092410096b3353b75cec2266480e9fb9",
+      "dataset_id": "Abalone19",
+      "record_id": "chatcmpl-658-item-1",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-66fac6c3bdc51ffc2352",
+      "canonical_record_sha256": "c97ff32d996ae8df4b393a9a654120f26f43949f68698cfcadf60faf13a5af30",
+      "dataset_id": "Abalone19",
+      "record_id": "chatcmpl-658-item-2",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-7cca77c71e797405a8bd",
+      "canonical_record_sha256": "c147ba547eef3fe16766ced38ed47790fd2778ca6ac7bd5159870fc65c44cba1",
+      "dataset_id": "Abalone19",
+      "record_id": "chatcmpl-658-item-3",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-efd0304dfa5205f0b197",
+      "canonical_record_sha256": "1d1e27f11e98a3721e907f671213f1f635dcaf06367c028518c21bfb8d554310",
+      "dataset_id": "Abalone19",
+      "record_id": "chatcmpl-671-item-2",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-7bb02426624835e01db3",
+      "canonical_record_sha256": "8818ca81cf3d4c99029897b717e5131111000543486ec78c254376f12837a88b",
+      "dataset_id": "Abalone19",
+      "record_id": "chatcmpl-773-item-2",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-3c3fc9555e72734e63a1",
+      "canonical_record_sha256": "e58356ad90a9a61283d3cb6ae70e3229e4b83481c65fdadb5659666a6b1c9989",
+      "dataset_id": "Abalone19",
+      "record_id": "chatcmpl-784-item-0",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-944ff0984c0841c06878",
+      "canonical_record_sha256": "7382f80e3ed7047bc031a6ac4155626104d1d8014bfb4ef9dba3a4e2ed91a063",
+      "dataset_id": "Abalone19",
+      "record_id": "chatcmpl-784-item-1",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-79ccb5d5b34769038485",
+      "canonical_record_sha256": "c5ae3873191ae1c161a1da3ea0317d3b8850d6ce4d7d5b64cde9ac53aef8ea7e",
+      "dataset_id": "Ecoli4",
+      "record_id": "chatcmpl-118-item-1",
+      "requested_class": "negative"
+    },
+    {
+      "annotation_id": "ann-2a0eca4859ebc4d81e6d",
+      "canonical_record_sha256": "b0f1f0eec7b60c6957f96d57f38661a0dc0382cda3ec5b7f16c1d065fa6211a3",
+      "dataset_id": "Ecoli4",
+      "record_id": "chatcmpl-16-item-4",
+      "requested_class": "negative"
+    },
+    {
+      "annotation_id": "ann-a6a888a25e1743c7bec9",
+      "canonical_record_sha256": "0190a46e1ae17c00ce1b014adff5778f058a32345d1da7bae2dcd0bcab40d048",
+      "dataset_id": "Ecoli4",
+      "record_id": "chatcmpl-213-item-2",
+      "requested_class": "negative"
+    },
+    {
+      "annotation_id": "ann-9574b34f068192a697bf",
+      "canonical_record_sha256": "b7d0e130f7281aa6d0606bb934f5a915c6cd907fce80aae844652d658dec8c06",
+      "dataset_id": "Ecoli4",
+      "record_id": "chatcmpl-213-item-3",
+      "requested_class": "negative"
+    },
+    {
+      "annotation_id": "ann-4aaf3d334cfceb21045f",
+      "canonical_record_sha256": "6ba239419afb9882ab94898904213938cb440ca5003d7bb8f1784247676de328",
+      "dataset_id": "Ecoli4",
+      "record_id": "chatcmpl-213-item-4",
+      "requested_class": "negative"
+    },
+    {
+      "annotation_id": "ann-5f077b2a4d5240683003",
+      "canonical_record_sha256": "58bfa6bf80afccde96ab78222738f9cab02cad7ac85e4c1a8d7e39c4b77155ff",
+      "dataset_id": "Ecoli4",
+      "record_id": "chatcmpl-316-item-4",
+      "requested_class": "negative"
+    },
+    {
+      "annotation_id": "ann-ee582d848388b6ea5666",
+      "canonical_record_sha256": "d8c754831ccd5ed07c495858a5fc36c56ca35f5613ddb4b7c87979c8e6949444",
+      "dataset_id": "Ecoli4",
+      "record_id": "chatcmpl-330-item-2",
+      "requested_class": "negative"
+    },
+    {
+      "annotation_id": "ann-3d8dd57c7f8da9c15214",
+      "canonical_record_sha256": "8e666a7aa6a2a42a1d3dcd497d55587cea87bcbea274b5d64d9d8c02a2fcd756",
+      "dataset_id": "Ecoli4",
+      "record_id": "chatcmpl-348-item-0",
+      "requested_class": "negative"
+    },
+    {
+      "annotation_id": "ann-988d552156fe3d83a757",
+      "canonical_record_sha256": "47da7da4493f84ccbd5603bab98c3585ed5c56c14c15811d1446bb6c83d4be90",
+      "dataset_id": "Ecoli4",
+      "record_id": "chatcmpl-348-item-3",
+      "requested_class": "negative"
+    },
+    {
+      "annotation_id": "ann-c2e098ae29306f8ef257",
+      "canonical_record_sha256": "8458631f0482348d4de4043871f52d27c369257ec9a268a786304812e7a7b579",
+      "dataset_id": "Ecoli4",
+      "record_id": "chatcmpl-448-item-0",
+      "requested_class": "negative"
+    },
+    {
+      "annotation_id": "ann-c60824bc307e982ab3fb",
+      "canonical_record_sha256": "8eba64275e997724c0ad00f6363f153370aebb56073b9733f3d23b7448a87860",
+      "dataset_id": "Ecoli4",
+      "record_id": "chatcmpl-448-item-1",
+      "requested_class": "negative"
+    },
+    {
+      "annotation_id": "ann-541ee3090abe24c8e667",
+      "canonical_record_sha256": "1b96612b943aed3d9593bd1e235f9c7d0a85f94898061a4b404bfd4019ddaf8c",
+      "dataset_id": "Ecoli4",
+      "record_id": "chatcmpl-570-item-4",
+      "requested_class": "negative"
+    },
+    {
+      "annotation_id": "ann-335f694c66897db60729",
+      "canonical_record_sha256": "d2f4944a9bf0ddbcec350fecd4a7d03b019130252dc4284b458274c1fef74243",
+      "dataset_id": "Ecoli4",
+      "record_id": "chatcmpl-581-item-2",
+      "requested_class": "negative"
+    },
+    {
+      "annotation_id": "ann-7d531772fa6b80386273",
+      "canonical_record_sha256": "0ed1674a2ad06f45cb6578a357114083cce6858b8ae8f2666357df6299fa8a6c",
+      "dataset_id": "Ecoli4",
+      "record_id": "chatcmpl-621-item-2",
+      "requested_class": "negative"
+    },
+    {
+      "annotation_id": "ann-ca262eaf09d46c894b88",
+      "canonical_record_sha256": "c6650d95417027c3998688a555219f1a48cbc4e4dd31f1a86ffe56b1a6d6f43c",
+      "dataset_id": "Ecoli4",
+      "record_id": "chatcmpl-777-item-2",
+      "requested_class": "negative"
+    },
+    {
+      "annotation_id": "ann-cc474676a21e18f3d0ca",
+      "canonical_record_sha256": "6b413fa782d0822397555f113a5e05195e344b3fe4948f00b7b632bc5b0cad15",
+      "dataset_id": "Ecoli4",
+      "record_id": "chatcmpl-936-item-1",
+      "requested_class": "negative"
+    },
+    {
+      "annotation_id": "ann-8050db5fb5333f7de13b",
+      "canonical_record_sha256": "968a67fff7829a4a6a705a4e758d9c2a6ea600c4aca3fb24637f83f67c06c9f4",
+      "dataset_id": "Ecoli4",
+      "record_id": "chatcmpl-166-item-1",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-aa314c8166db2395ce86",
+      "canonical_record_sha256": "b5643bfdb52c93fc3c0c54aff80e9a40582cd6a9d1599653f0b61162fd24d472",
+      "dataset_id": "Ecoli4",
+      "record_id": "chatcmpl-166-item-4",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-6f94b2458ccef75258bc",
+      "canonical_record_sha256": "4fc6618bc6134b5e49ac2ad5861bad690e36e3cba7f3bfb2fa6152a245a7ac60",
+      "dataset_id": "Ecoli4",
+      "record_id": "chatcmpl-181-item-0",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-ac2dbc1a166fab29e7b2",
+      "canonical_record_sha256": "c0af9aa1589e710f3758602c19eb3c07d0f492e4d7bcdc52def52a89f3656bc0",
+      "dataset_id": "Ecoli4",
+      "record_id": "chatcmpl-181-item-2",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-b983d26bd33449aeadcb",
+      "canonical_record_sha256": "c086f21149fc47968b41f8d685bbc58ed1f9c22cd5cd41e57db4a6746a418a7e",
+      "dataset_id": "Ecoli4",
+      "record_id": "chatcmpl-19-item-0",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-f45bd3b45d236f0c46fe",
+      "canonical_record_sha256": "2a92dbea5c50452d328ddb02316a812323f2e84b13689e2a421e15ad33409ff2",
+      "dataset_id": "Ecoli4",
+      "record_id": "chatcmpl-19-item-1",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-07f7b5c64c4a4bbfd7ab",
+      "canonical_record_sha256": "132e0bc6437d45e532c091046eef84c7549eb2c5d8a69a55346f49d51d10b092",
+      "dataset_id": "Ecoli4",
+      "record_id": "chatcmpl-478-item-1",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-175b1c82af05e1deadb4",
+      "canonical_record_sha256": "f1d08b98f896b125ed602c70aede4c6b10a2db6f2f8a54201683c9a154e69e03",
+      "dataset_id": "Ecoli4",
+      "record_id": "chatcmpl-478-item-3",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-59fc26ac40b11abcc32d",
+      "canonical_record_sha256": "a54a152ed6bff2a066c59e2d11c10413f8a4471ee179d6190fdcb577192ea59c",
+      "dataset_id": "Ecoli4",
+      "record_id": "chatcmpl-488-item-0",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-3bb9ff3812b6886f28a9",
+      "canonical_record_sha256": "b0e7f5b6cf74b245671658215ab7191c90cda8940d8a1be535cda4103ce46dfe",
+      "dataset_id": "Ecoli4",
+      "record_id": "chatcmpl-58-item-2",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-bbaae27fb4687d585f61",
+      "canonical_record_sha256": "25e8a5509562849df4114537edcbd5a3a5a839afca96c2cdce95a2830e246f60",
+      "dataset_id": "Ecoli4",
+      "record_id": "chatcmpl-58-item-3",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-181a098dbf512aad4b1e",
+      "canonical_record_sha256": "c9455d9aada01276dca4b5ea73824bd42a6ada94d087dfd09f0e437364ba70cd",
+      "dataset_id": "Ecoli4",
+      "record_id": "chatcmpl-58-item-4",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-599a3b9aec35d1a38e93",
+      "canonical_record_sha256": "b7cc9be189dec5f300a892fbb587290d1318ecff9abd87643559a3568ff75b14",
+      "dataset_id": "Ecoli4",
+      "record_id": "chatcmpl-781-item-2",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-e4602f6d0a7d06ba843d",
+      "canonical_record_sha256": "4a37266b7d30914a84d6cd288c6270df83901447803324459ad6be02b7619bd2",
+      "dataset_id": "Ecoli4",
+      "record_id": "chatcmpl-781-item-3",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-82da46b8a6f8c557ddbe",
+      "canonical_record_sha256": "c0e9d37a30dc9678a1bf48c976b6d9e46a764d882d745d07461d06c5c2039bce",
+      "dataset_id": "Ecoli4",
+      "record_id": "chatcmpl-84-item-0",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-701a03f2ed35b5fa8944",
+      "canonical_record_sha256": "5d7fcc97aff12d1fafe79b085294630c646ee06694da516e69a9044bd24fd758",
+      "dataset_id": "Ecoli4",
+      "record_id": "chatcmpl-84-item-1",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-316539441fd96c399a44",
+      "canonical_record_sha256": "d077577ee2362499ad429faec5579b44ee456b65c451b6577a88bebac5cdf5ad",
+      "dataset_id": "Ecoli4",
+      "record_id": "chatcmpl-84-item-2",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-564a71b283ad1fccfee5",
+      "canonical_record_sha256": "00e5ac705145d469f9d8031bb688a0d74cda11ff9d3d2bf09cbe4f6ebc6a65a5",
+      "dataset_id": "Ecoli4",
+      "record_id": "chatcmpl-84-item-3",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-cd59a45182fc7491e3ee",
+      "canonical_record_sha256": "fb2dc188dfbcfbcd75394e9b876710d7793cb076b0ff837f64631d1f4fcbbda7",
+      "dataset_id": "Ecoli4",
+      "record_id": "chatcmpl-84-item-4",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-4ff688d4df053bbbf340",
+      "canonical_record_sha256": "6ed550ed98a04c3f9665fb747a9dbc7d0b3a24e8877f31e641f9f39b28c63389",
+      "dataset_id": "Ecoli4",
+      "record_id": "chatcmpl-84-item-5",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-2a09cb61511924072c4a",
+      "canonical_record_sha256": "5ab73596c092a07f31454eeb4f1734575cb2f8f25fd9d7e86f06457d9e75f4a0",
+      "dataset_id": "Ecoli4",
+      "record_id": "chatcmpl-88-item-1",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-f9b3c0bfc332e21b261b",
+      "canonical_record_sha256": "204cd6bea5cec86297a2f87f89dfcabf4c056f4191c74b595a098c3c7d112c2f",
+      "dataset_id": "Ecoli4",
+      "record_id": "chatcmpl-88-item-3",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-bf0e9a31e4b3d8830419",
+      "canonical_record_sha256": "b436a317a4a8f9d420310fd9bcd2cfe23f371ab87988e3ea5290221b0418d3b9",
+      "dataset_id": "Ecoli4",
+      "record_id": "chatcmpl-991-item-3",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-c9d203543531b755c0cd",
+      "canonical_record_sha256": "534f93a0bd514eb4e220c9ab1515f3f8e398a65d6e5f1b7f83741bca689859b1",
+      "dataset_id": "Ecoli4",
+      "record_id": "chatcmpl-991-item-4",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-067d80ef5e0a00306260",
+      "canonical_record_sha256": "7674d27f763c22cb6076e284615d1839ea5b39b9b5fdf67e62ed526653909869",
+      "dataset_id": "page-blocks0",
+      "record_id": "chatcmpl-162-item-1",
+      "requested_class": "negative"
+    },
+    {
+      "annotation_id": "ann-ecfdcdf018280aea2fc3",
+      "canonical_record_sha256": "9a0d63bbe05cdb341816f6ac5f40521fb11c00967c8cc3ad157f3e3a185e6fce",
+      "dataset_id": "page-blocks0",
+      "record_id": "chatcmpl-203-item-0",
+      "requested_class": "negative"
+    },
+    {
+      "annotation_id": "ann-44d27bba2650e01b1245",
+      "canonical_record_sha256": "0f4efbd5efd01e8f384c5552dad511db5d86328f536f5ea9e2c05f1cf99dfc37",
+      "dataset_id": "page-blocks0",
+      "record_id": "chatcmpl-205-item-3",
+      "requested_class": "negative"
+    },
+    {
+      "annotation_id": "ann-ae87ad761ca2730a77f4",
+      "canonical_record_sha256": "b250ee393f78ad599b25c59bbf56f2a568ad096f44f3477a6b63666e79558c1c",
+      "dataset_id": "page-blocks0",
+      "record_id": "chatcmpl-314-item-3",
+      "requested_class": "negative"
+    },
+    {
+      "annotation_id": "ann-12041680f559ee0a416b",
+      "canonical_record_sha256": "432d9ad60508ed1cae4fbedaeb79de4ef8e2a601ea4692162090017aa46bcc87",
+      "dataset_id": "page-blocks0",
+      "record_id": "chatcmpl-345-item-0",
+      "requested_class": "negative"
+    },
+    {
+      "annotation_id": "ann-d12dd17684a3bb44e5df",
+      "canonical_record_sha256": "8fa7ecb1ac8af0cde4ea2705c4aa82f110e4949bea416d290fd03e8c37d76c5a",
+      "dataset_id": "page-blocks0",
+      "record_id": "chatcmpl-345-item-1",
+      "requested_class": "negative"
+    },
+    {
+      "annotation_id": "ann-faab0a67ef5a92a852f5",
+      "canonical_record_sha256": "1634760f85b497409fa853528b107fe49c7a29e5f52cf83db736c3091ebeb70b",
+      "dataset_id": "page-blocks0",
+      "record_id": "chatcmpl-441-item-1",
+      "requested_class": "negative"
+    },
+    {
+      "annotation_id": "ann-65d8134be3bd13bf26b3",
+      "canonical_record_sha256": "52944c1d9b58635b26723d748e226398cd1f4098606d092e6b3534a2a1c33e68",
+      "dataset_id": "page-blocks0",
+      "record_id": "chatcmpl-441-item-3",
+      "requested_class": "negative"
+    },
+    {
+      "annotation_id": "ann-4af499113270e7eb12a1",
+      "canonical_record_sha256": "48144b7d68c77d77ac08dec5c1c2aa9ddf91a758f976787c847eb13e1f51885f",
+      "dataset_id": "page-blocks0",
+      "record_id": "chatcmpl-483-item-0",
+      "requested_class": "negative"
+    },
+    {
+      "annotation_id": "ann-b834fd39f644c9a5b274",
+      "canonical_record_sha256": "91e3adc86fc4e9431761b15a4347c444fe1ec37fe579557ed6f84aebff9897a9",
+      "dataset_id": "page-blocks0",
+      "record_id": "chatcmpl-527-item-0",
+      "requested_class": "negative"
+    },
+    {
+      "annotation_id": "ann-6ce5c97bc4c113d8ac0d",
+      "canonical_record_sha256": "691dd1e56a059682833bf459298c0a87d89320d5ae9fe191b036111dba50271c",
+      "dataset_id": "page-blocks0",
+      "record_id": "chatcmpl-527-item-2",
+      "requested_class": "negative"
+    },
+    {
+      "annotation_id": "ann-e651f8ee05f50b3468de",
+      "canonical_record_sha256": "ca41d27c86aa3c74c576f68392037e4159a71974a8dd5534e7bac0a1c74e6fef",
+      "dataset_id": "page-blocks0",
+      "record_id": "chatcmpl-6-item-4",
+      "requested_class": "negative"
+    },
+    {
+      "annotation_id": "ann-e6ae275d74cea47bb572",
+      "canonical_record_sha256": "ee55fc63ebc55d8bf9fce08cada9e27236ee86eba9a16dde568d168fdf71652a",
+      "dataset_id": "page-blocks0",
+      "record_id": "chatcmpl-726-item-0",
+      "requested_class": "negative"
+    },
+    {
+      "annotation_id": "ann-26d5fbba71f8c808ebe7",
+      "canonical_record_sha256": "dd5df784c2515640c20043953df06199874d74a9b97e9a1c1f87d2c443e451a3",
+      "dataset_id": "page-blocks0",
+      "record_id": "chatcmpl-727-item-0",
+      "requested_class": "negative"
+    },
+    {
+      "annotation_id": "ann-6739934bf3361c18bcb6",
+      "canonical_record_sha256": "112fe1560a94da0300467a31dd2884c99fa11727216c7ee1027a8580c582b2af",
+      "dataset_id": "page-blocks0",
+      "record_id": "chatcmpl-727-item-2",
+      "requested_class": "negative"
+    },
+    {
+      "annotation_id": "ann-f34e07adc9b5e4bb3550",
+      "canonical_record_sha256": "90a6e4296a288baa0c62509ba0c996725f05c40366440ac9904504a39fe218f9",
+      "dataset_id": "page-blocks0",
+      "record_id": "chatcmpl-727-item-3",
+      "requested_class": "negative"
+    },
+    {
+      "annotation_id": "ann-4424cbe8c7ba6c4b9d72",
+      "canonical_record_sha256": "9a3c4d83142e416920e6930027a213d33a6cb472951972c476296b025205555d",
+      "dataset_id": "page-blocks0",
+      "record_id": "chatcmpl-914-item-0",
+      "requested_class": "negative"
+    },
+    {
+      "annotation_id": "ann-98a3b5ace0a525dc2666",
+      "canonical_record_sha256": "552e391bb7a62e7b4332acd76c29fb904ffe157eed57745454e159218bf71c70",
+      "dataset_id": "page-blocks0",
+      "record_id": "chatcmpl-914-item-2",
+      "requested_class": "negative"
+    },
+    {
+      "annotation_id": "ann-3cde621ee9deb8dda9d0",
+      "canonical_record_sha256": "937c7c6a218501087f741840bdbe0927439f7ac8ceadcdf53cd0eafcf7d4f653",
+      "dataset_id": "page-blocks0",
+      "record_id": "chatcmpl-925-item-2",
+      "requested_class": "negative"
+    },
+    {
+      "annotation_id": "ann-7d9dc4857a23dd9c926b",
+      "canonical_record_sha256": "7340adbf4255dd3c404489a0021fcc6d74b99f1d1d0e6766680e4b8743d722b3",
+      "dataset_id": "page-blocks0",
+      "record_id": "chatcmpl-925-item-4",
+      "requested_class": "negative"
+    },
+    {
+      "annotation_id": "ann-3d27394f9e01aca7ded7",
+      "canonical_record_sha256": "2a233500b8c375cb25e459fa95d15b669d5c533f47245d05e57c28a7541a6e96",
+      "dataset_id": "page-blocks0",
+      "record_id": "chatcmpl-979-item-1",
+      "requested_class": "negative"
+    },
+    {
+      "annotation_id": "ann-3330c41629c68d01a5f0",
+      "canonical_record_sha256": "92a2aa51b40d0d62b19b08270612f14551385a96eedd46bc05aa8c78a98a8432",
+      "dataset_id": "page-blocks0",
+      "record_id": "chatcmpl-154-item-0",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-bfd53bfdee5beda17e9e",
+      "canonical_record_sha256": "7d52b15ad33dd922281ad3568b7277477127091e9cfe9ecb4e342f2b14976527",
+      "dataset_id": "page-blocks0",
+      "record_id": "chatcmpl-154-item-1",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-a2067059679ecc2c132e",
+      "canonical_record_sha256": "d173632e57c6082098dad4ae3e80b3deccb1d5f857fb5d930ca0ac67228ac7ba",
+      "dataset_id": "page-blocks0",
+      "record_id": "chatcmpl-269-item-2",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-67a8b6a22871ad53e90a",
+      "canonical_record_sha256": "10e74b37e5bdfd960a8751bbe44a964ede66ae267d9582fd62e5ec8ee1491c61",
+      "dataset_id": "page-blocks0",
+      "record_id": "chatcmpl-269-item-4",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-e175e956f1a5f2684d70",
+      "canonical_record_sha256": "f934bf51277feec554fe65908f101f5a39fd700bfa4f645f6ada8091cb600be6",
+      "dataset_id": "page-blocks0",
+      "record_id": "chatcmpl-287-item-4",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-025449b7d2abc6e9d26a",
+      "canonical_record_sha256": "417d6ea6d4c1f16227eb3737e721e93e3a4cd41d5993a9f116720cc04082a7b7",
+      "dataset_id": "page-blocks0",
+      "record_id": "chatcmpl-396-item-0",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-04ededdd9b6b01ef47d1",
+      "canonical_record_sha256": "0159fdcc0882953551c32133f0352413564c6921ad0d9b3571c4a16cad090afc",
+      "dataset_id": "page-blocks0",
+      "record_id": "chatcmpl-396-item-1",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-c696d0a82785d7ccbe20",
+      "canonical_record_sha256": "be25cf31dc1be0f1e76dca52dd5483f62c37c45bdf3ca268bf0d4a165450595c",
+      "dataset_id": "page-blocks0",
+      "record_id": "chatcmpl-663-item-0",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-f0ee63f94309f863fa9e",
+      "canonical_record_sha256": "1f08b0169f2a9d6fae7d1373c705fc5a2af16be2052f5112789a2f5e9eb3b293",
+      "dataset_id": "page-blocks0",
+      "record_id": "chatcmpl-782-item-0",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-a321a72f5a2199c40374",
+      "canonical_record_sha256": "7a5fc3e7b7edf4a261ec87eb419a33768b31bcb2941a521fa573576bdc82bd08",
+      "dataset_id": "page-blocks0",
+      "record_id": "chatcmpl-782-item-1",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-d93e941ab0ee36c1f816",
+      "canonical_record_sha256": "5973ef8f2423da9b3a548024188ccdb053499d2eae168f6f5d08d78310570df7",
+      "dataset_id": "page-blocks0",
+      "record_id": "chatcmpl-782-item-3",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-044a74dd5464e75257be",
+      "canonical_record_sha256": "b54aa5605c56a100c3b3b6092e5036a1f77b9fa8270258b9493e1196b5f22a70",
+      "dataset_id": "page-blocks0",
+      "record_id": "chatcmpl-893-item-0",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-2c98a17d53aa3c83d128",
+      "canonical_record_sha256": "1e64d727ade5b9729bd0333d62cf8bdbba3c20a24cb89fb76468d67a9cbcfaec",
+      "dataset_id": "page-blocks0",
+      "record_id": "chatcmpl-952-item-3",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-4aa10f782d364e8eaa4b",
+      "canonical_record_sha256": "227fcb9cd41e75f586fbc56bada1a19171beca543f6aec774c069fa3fe0edcf6",
+      "dataset_id": "page-blocks0",
+      "record_id": "chatcmpl-981-item-3",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-aa50d16506d9203ca38e",
+      "canonical_record_sha256": "b876c7eedf74d5c9a3f1642e7c1e98fe9d3a29fbb3fe371ec8b498a57c05a201",
+      "dataset_id": "page-blocks0",
+      "record_id": "chatcmpl-994-item-0",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-230078b42147b3b75def",
+      "canonical_record_sha256": "08c96c9783d4dbd316d8fcc358218acb34427bfcecca6594a4db4b5773b62742",
+      "dataset_id": "page-blocks0",
+      "record_id": "chatcmpl-994-item-1",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-fa2398329a8dae2def8a",
+      "canonical_record_sha256": "5335f4f9e0a3ab117a40e758539dbb229bdf91d080d20c5fafcd5053777cde21",
+      "dataset_id": "page-blocks0",
+      "record_id": "chatcmpl-994-item-2",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-995a0ae1e51ef9fc13c7",
+      "canonical_record_sha256": "1bbb60ec4eeed3e4b7762708bcaf951a1c5b18a145ee7f97d774e05c602a6692",
+      "dataset_id": "page-blocks0",
+      "record_id": "chatcmpl-994-item-3",
+      "requested_class": "positive"
+    },
+    {
+      "annotation_id": "ann-501843b40ca368fbbf07",
+      "canonical_record_sha256": "23eef2658233c8802c05bdc9a200a494c714266c46997fc767cd7a10b6437aba",
+      "dataset_id": "page-blocks0",
+      "record_id": "chatcmpl-994-item-4",
+      "requested_class": "positive"
+    }
+  ],
+  "reviewer_id": "reviewer_a",
+  "schema_version": "m1-6-blinded-review-manifest-v1",
+  "selection_seed": 42
+}

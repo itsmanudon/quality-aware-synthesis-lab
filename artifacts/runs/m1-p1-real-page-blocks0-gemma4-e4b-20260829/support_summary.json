@@ -1,0 +1,98 @@
+{
+  "by_target_class": {
+    "nan": {
+      "nearest_same_class_train_distance": {
+        "count": 0
+      },
+      "nearest_train_distance": {
+        "count": 5,
+        "max": 0.23850250325188282,
+        "mean": 0.14589203514404686,
+        "median": 0.13438651220967457,
+        "min": 0.05316572167056141,
+        "p10": 0.06738713708948488,
+        "p90": 0.2289759732992279
+      }
+    },
+    "negative": {
+      "nearest_same_class_train_distance": {
+        "count": 101,
+        "max": 16.870151241135506,
+        "mean": 1.2266595763062211,
+        "median": 0.3939351136631093,
+        "min": 0.0,
+        "p10": 0.017304345735051685,
+        "p90": 2.87161511924626
+      },
+      "nearest_train_distance": {
+        "count": 101,
+        "max": 15.27197964822724,
+        "mean": 1.1752720204708185,
+        "median": 0.3939351136631093,
+        "min": 0.0,
+        "p10": 0.008652172867525842,
+        "p90": 2.681172620166242
+      }
+    },
+    "positive": {
+      "nearest_same_class_train_distance": {
+        "count": 94,
+        "max": 63.878324611003265,
+        "mean": 1.0635517353525754,
+        "median": 0.3644865411024339,
+        "min": 0.0,
+        "p10": 0.051913037205155166,
+        "p90": 0.7546158714419298
+      },
+      "nearest_train_distance": {
+        "count": 94,
+        "max": 63.878324611003265,
+        "mean": 0.8959151360996777,
+        "median": 0.21696106100699925,
+        "min": 0.0,
+        "p10": 0.0025956518602577587,
+        "p90": 0.3629540269619854
+      }
+    }
+  },
+  "dataset_id": "page-blocks0",
+  "distance_representation": {
+    "categorical": "one-hot over TRAIN domain levels, unit weight; a nominal mismatch contributes sqrt(2) to the Euclidean distance (conservative, learning-free)",
+    "categorical_columns": [],
+    "numerical": "z-score standardized with TRAIN mean/std (ddof=0); zero-variance columns dropped"
+  },
+  "exact_train_contact_count": 0,
+  "note": "diagnostic only: learning-free standardized Euclidean NN distance to REAL TRAIN; no thresholds, not a validity probability",
+  "overall": {
+    "nearest_other_class_train_distance": {
+      "count": 200,
+      "max": 85.17371469065912,
+      "mean": 1.63698483259451,
+      "median": 0.47444834690302917,
+      "min": 0.0,
+      "p10": 0.18700138915459982,
+      "p90": 3.3441421773918294
+    },
+    "nearest_same_class_train_distance": {
+      "count": 195,
+      "max": 63.878324611003265,
+      "mean": 1.1480332324618996,
+      "median": 0.37022571912309166,
+      "min": 0.0,
+      "p10": 0.028123218997229422,
+      "p90": 1.9439272789936324
+    },
+    "nearest_train_distance": {
+      "count": 200,
+      "max": 63.878324611003265,
+      "mean": 1.018239785183213,
+      "median": 0.2550904036576077,
+      "min": 0.0,
+      "p10": 0.007786955580773277,
+      "p90": 1.8797673171862255
+    }
+  },
+  "run_id": "m1-p1-real-page-blocks0-gemma4-e4b-20260829",
+  "schema_version": "m1-5-support-diagnostics-v1",
+  "train_rows": 4377
+}
