@@ -22,7 +22,15 @@ from rcqasyn.datasets import (
     record_acquisition,
     write_acquisition,
 )
-from rcqasyn.experiments import cross_dataset_comparison, run_experiment
+from rcqasyn.experiments import (
+    HumanAuditError,
+    analyze_review,
+    cross_dataset_comparison,
+    export_blinded_reviews,
+    import_blinded_review,
+    review_status,
+    run_experiment,
+)
 from rcqasyn.literature import build_inventory
 from rcqasyn.metrics import utility_metrics
 from rcqasyn.storage.artifacts import read_json, write_json
@@ -32,8 +40,188 @@ papers_app = typer.Typer(help="Inspect the local literature corpus.")
 app.add_typer(papers_app, name="papers")
 datasets_app = typer.Typer(help="Inspect and prepare registered local datasets.")
 baselines_app = typer.Typer(help="Run paired baseline experiments.")
+human_review_app = typer.Typer(help="Validate and analyze external human annotations.")
 app.add_typer(datasets_app, name="datasets")
 app.add_typer(baselines_app, name="baselines")
+app.add_typer(human_review_app, name="human-review")
+
+
+def _display_counts(values: dict[str, int]) -> str:
+    return ", ".join(f"{name}={count}" for name, count in values.items()) or "none"
+
+
+@human_review_app.command("status")
+def human_review_status(review_csv: Path) -> None:
+    """Report external annotation completeness without inferring labels."""
+
+    try:
+        status = review_status(review_csv.expanduser().resolve())
+    except HumanAuditError as error:
+        typer.echo(f"error: {error}")
+        raise typer.Exit(code=1) from error
+    for key in ("rows", "labelled", "unlabelled", "valid", "invalid"):
+        typer.echo(f"{key}: {status[key]}")
+    typer.echo(f"taxonomy: {_display_counts(status['taxonomy_counts'])}")
+    typer.echo(f"datasets: {_display_counts(status['dataset_counts'])}")
+    typer.echo(f"classes: {_display_counts(status['class_counts'])}")
+    typer.echo(f"roles: {_display_counts(status['role_counts'])}")
+    typer.echo(f"b2: {_display_counts(status['b2_counts'])}")
+    typer.echo(f"b3: {_display_counts(status['b3_counts'])}")
+    typer.echo(f"human_fields_blank: {str(status['human_fields_blank']).lower()}")
+    for field, counts in status["copying_flag_counts"].items():
+        typer.echo(f"{field}: {_display_counts(counts)}")
+    for field, count in status["support_distance_coverage"].items():
+        typer.echo(f"{field}: {count}/{status['rows']}")
+    for field, count in status["provider_lineage_coverage"].items():
+        typer.echo(f"{field}: {count}/{status['rows']}")
+    typer.echo(f"analysis_ready: {str(status['analysis_ready']).lower()}")
+    if status["unknown_taxonomy_labels"]:
+        typer.echo(f"unknown_taxonomy: {_display_counts(status['unknown_taxonomy_labels'])}")
+
+
+def _annotator_paths(values: list[str], project_root: Path) -> dict[str, Path]:
+    parsed: dict[str, Path] = {}
+    for value in values:
+        if "=" not in value:
+            raise HumanAuditError("--annotator must use ID=PATH syntax")
+        annotator_id, raw_path = value.split("=", 1)
+        annotator_id = annotator_id.strip()
+        raw_path = raw_path.strip()
+        if not annotator_id or not raw_path:
+            raise HumanAuditError("--annotator must use non-blank ID=PATH syntax")
+        if annotator_id in parsed or annotator_id == "primary":
+            raise HumanAuditError(f"duplicate or reserved annotator ID: {annotator_id}")
+        path = Path(raw_path).expanduser()
+        parsed[annotator_id] = (
+            path.resolve() if path.is_absolute() else (project_root / path).resolve()
+        )
+    return parsed
+
+
+@human_review_app.command("analyze")
+def human_review_analyze(
+    review_csv: Path,
+    root: Path | None = typer.Option(None, "--root", help="Project root."),  # noqa: B008
+    output_dir: Path | None = typer.Option(None, "--output-dir", help="Report directory."),  # noqa: B008
+    annotator: list[str] | None = typer.Option(  # noqa: B008
+        None, "--annotator", help="Optional ID=PATH annotation file."
+    ),
+    adjudicated: Path | None = typer.Option(  # noqa: B008
+        None, "--adjudicated", help="Explicit adjudicated annotation file."
+    ),
+    overwrite: bool = typer.Option(
+        False, "--overwrite", help="Replace reports from changed sources."
+    ),
+) -> None:
+    """Generate M1.6 reports from complete external human annotations."""
+
+    project_root = _root_option(root)
+    source = review_csv.expanduser()
+    source = source.resolve() if source.is_absolute() else (project_root / source).resolve()
+    destination = output_dir or project_root / "artifacts" / "reports" / "human_audit"
+    destination = (
+        destination.resolve()
+        if destination.is_absolute()
+        else (project_root / destination).resolve()
+    )
+    adjudicated_path = None
+    if adjudicated is not None:
+        adjudicated_path = adjudicated.expanduser()
+        adjudicated_path = (
+            adjudicated_path.resolve()
+            if adjudicated_path.is_absolute()
+            else (project_root / adjudicated_path).resolve()
+        )
+    try:
+        annotator_files = _annotator_paths(annotator or [], project_root)
+        result = analyze_review(
+            source,
+            project_root=project_root,
+            output_dir=destination,
+            annotators=annotator_files,
+            adjudicated=adjudicated_path,
+            overwrite=overwrite,
+        )
+    except HumanAuditError as error:
+        typer.echo(f"error: {error}")
+        raise typer.Exit(code=1) from error
+    typer.echo(f"human audit complete: {result['human_summary']['labelled']} labelled rows")
+    typer.echo(f"reports: {destination}")
+
+
+@human_review_app.command("export-blind")
+def human_review_export_blind(
+    master_csv: Path,
+    root: Path | None = typer.Option(None, "--root", help="Project root."),  # noqa: B008
+    output_dir: Path | None = typer.Option(None, "--output-dir", help="Blinded export directory."),  # noqa: B008
+    overlap: int = typer.Option(40, "--overlap", help="Reviewer B overlap size."),
+    seed: int = typer.Option(42, "--seed", help="Deterministic selection seed."),
+    overwrite: bool = typer.Option(False, "--overwrite", help="Replace generated blinded files."),
+) -> None:
+    """Create reviewer A/all and reviewer B/overlap exports without diagnostics."""
+
+    project_root = _root_option(root)
+    master = master_csv.expanduser()
+    master = master.resolve() if master.is_absolute() else (project_root / master).resolve()
+    destination = output_dir or project_root / "artifacts" / "reports" / "human_audit" / "blinded"
+    destination = (
+        destination.resolve()
+        if destination.is_absolute()
+        else (project_root / destination).resolve()
+    )
+    try:
+        master_status = review_status(master)
+        outputs = export_blinded_reviews(
+            master,
+            destination,
+            overlap=overlap,
+            seed=seed,
+            overwrite=overwrite,
+        )
+    except HumanAuditError as error:
+        typer.echo(f"error: {error}")
+        raise typer.Exit(code=1) from error
+    typer.echo(f"{outputs['reviewer_a'].name}: {master_status['rows']} rows")
+    typer.echo(f"{outputs['reviewer_b'].name}: {overlap} rows")
+    typer.echo(
+        f"manifests: {outputs['reviewer_a_manifest'].name}, {outputs['reviewer_b_manifest'].name}"
+    )
+
+
+@human_review_app.command("import-blind")
+def human_review_import_blind(
+    master_csv: Path,
+    reviewer_csv: Path,
+    manifest: Path = typer.Option(..., "--manifest", help="Matching internal manifest."),  # noqa: B008
+    annotator_id: str = typer.Option(..., "--annotator-id", help="Reviewer identifier."),
+    output: Path = typer.Option(..., "--output", help="New master-format annotation CSV."),  # noqa: B008
+    root: Path | None = typer.Option(None, "--root", help="Project root."),  # noqa: B008
+    overwrite: bool = typer.Option(False, "--overwrite", help="Replace the generated import."),
+) -> None:
+    """Validate and attach blinded labels to a new copy of the master review."""
+
+    project_root = _root_option(root)
+
+    def resolve(path: Path) -> Path:
+        expanded = path.expanduser()
+        return expanded.resolve() if expanded.is_absolute() else (project_root / expanded).resolve()
+
+    try:
+        imported = import_blinded_review(
+            resolve(master_csv),
+            resolve(reviewer_csv),
+            resolve(manifest),
+            resolve(output),
+            annotator_id=annotator_id,
+            overwrite=overwrite,
+        )
+        status = review_status(imported)
+    except HumanAuditError as error:
+        typer.echo(f"error: {error}")
+        raise typer.Exit(code=1) from error
+    typer.echo(f"imported: {imported}")
+    typer.echo(f"labelled: {status['labelled']}")
+    typer.echo(f"unlabelled: {status['unlabelled']}")
 
 
 def _root_option(root: Path | None) -> Path:
@@ -61,7 +249,11 @@ def doctor(
         papers_dir = resolved.literature.papers_dir
         paper_count = len(list(papers_dir.glob("*"))) if papers_dir.is_dir() else 0
         if papers_dir.is_dir():
-            paper_count = sum(1 for item in papers_dir.iterdir() if item.is_file() and item.suffix.lower() == ".pdf")
+            paper_count = sum(
+                1
+                for item in papers_dir.iterdir()
+                if item.is_file() and item.suffix.lower() == ".pdf"
+            )
             print(f"Papers: OK ({papers_dir}, count={paper_count})")
         else:
             print(f"Papers: ERROR (missing {papers_dir})")
@@ -104,11 +296,16 @@ def datasets_list(root: Path | None = typer.Option(None, "--root", help="Project
     registry = DatasetRegistry(project_root=_root_option(root))
     for spec in registry.list():
         path = registry.resolve_path(spec)
-        print(f"{spec.dataset_id}\t{spec.display_name}\t{'present' if path.is_file() else 'missing'}\t{path}")
+        print(
+            f"{spec.dataset_id}\t{spec.display_name}\t{'present' if path.is_file() else 'missing'}\t{path}"
+        )
 
 
 @datasets_app.command("inspect")
-def datasets_inspect(dataset_id: str, root: Path | None = typer.Option(None, "--root", help="Project root.")) -> None:  # noqa: B008
+def datasets_inspect(
+    dataset_id: str,
+    root: Path | None = typer.Option(None, "--root", help="Project root."),  # noqa: B008
+) -> None:
     """Show registry, presence, fingerprint, schema, and split metadata without records."""
     project_root = _root_option(root)
     registry = DatasetRegistry(project_root=project_root)
@@ -128,7 +325,9 @@ def datasets_inspect(dataset_id: str, root: Path | None = typer.Option(None, "--
     print(f"Missing policy: {spec.missing_policy}")
     print(f"Split: test_size={spec.split.test_size}, stratify={spec.split.stratify}")
     if not path.is_file():
-        print(f"Placement: copy the verified local source to {path} (accepted: {', '.join(spec.accepted_filenames)})")
+        print(
+            f"Placement: copy the verified local source to {path} (accepted: {', '.join(spec.accepted_filenames)})"
+        )
         return
     dataset = load_dataset(spec, registry)
     split = make_split(dataset, 42)
@@ -136,20 +335,30 @@ def datasets_inspect(dataset_id: str, root: Path | None = typer.Option(None, "--
         try:
             raw_report = inspect_dataset_schema(path, spec)
             print(f"Relation: {raw_report['relation'] or '<undeclared>'}")
-            print(f"Raw declarations: attributes={len(raw_report['attributes'])}, inputs={len(raw_report['inputs'])}, outputs={len(raw_report['outputs'])}")
-            print(f"Raw missing: representation={raw_report['missing_representation']}; cells={raw_report['missing_count']}")
+            print(
+                f"Raw declarations: attributes={len(raw_report['attributes'])}, inputs={len(raw_report['inputs'])}, outputs={len(raw_report['outputs'])}"
+            )
+            print(
+                f"Raw missing: representation={raw_report['missing_representation']}; cells={raw_report['missing_count']}"
+            )
             reconcile_schema(path, spec)
             print("Schema reconciliation: OK")
         except ValueError as error:
             print(f"Schema reconciliation: ERROR ({error})")
     print(f"Fingerprint: {dataset.fingerprint}")
     print(f"Rows: {len(dataset.frame)}; missing cells: {dataset.missing_count}")
-    print(f"Classes: {dataset.frame[spec.target_column].astype(str).value_counts().sort_index().to_dict()}")
+    print(
+        f"Classes: {dataset.frame[spec.target_column].astype(str).value_counts().sort_index().to_dict()}"
+    )
     print(f"Split indices: train={len(split.train_indices)}, test={len(split.test_indices)}")
 
 
 @datasets_app.command("prepare")
-def datasets_prepare(dataset_id: str, root: Path | None = typer.Option(None, "--root", help="Project root."), seed: int = typer.Option(42, "--seed")) -> None:  # noqa: B008
+def datasets_prepare(
+    dataset_id: str,
+    root: Path | None = typer.Option(None, "--root", help="Project root."),  # noqa: B008
+    seed: int = typer.Option(42, "--seed"),
+) -> None:
     """Prepare deterministic dataset, split, and TRAIN-only profile manifests."""
     project_root = _root_option(root)
     registry = DatasetRegistry(project_root=project_root)
@@ -164,7 +373,9 @@ def datasets_prepare(dataset_id: str, root: Path | None = typer.Option(None, "--
         profile = build_profile(dataset, split, seed=seed)
         assert_no_test_leakage(dataset, split, profile)
         acquisition_path = project_root / "data" / "manifests" / dataset_id / "source.json"
-        legacy_acquisition_path = project_root / "data" / "manifests" / dataset_id / "acquisition.json"
+        legacy_acquisition_path = (
+            project_root / "data" / "manifests" / dataset_id / "acquisition.json"
+        )
         acquisition = None
         if acquisition_path.is_file():
             import json
@@ -176,23 +387,30 @@ def datasets_prepare(dataset_id: str, root: Path | None = typer.Option(None, "--
             acquisition = json.loads(legacy_acquisition_path.read_text(encoding="utf-8"))
         destination = project_root / "data" / "manifests" / dataset_id
         destination.mkdir(parents=True, exist_ok=True)
-        _write_reusable_manifest(destination / "dataset_manifest.json", {
-            "dataset_id": dataset_id,
-            "display_name": spec.display_name,
-            "path": str(dataset.path),
-            "fingerprint": dataset.fingerprint,
-            "rows": len(dataset.frame),
-            "features": list(spec.feature_columns),
-            "target": spec.target_column,
-            "categorical_features": list(spec.categorical_columns),
-            "numerical_features": list(spec.numerical_columns),
-            "missing_policy": spec.missing_policy,
-            "class_counts": dataset.frame[spec.target_column].astype(str).value_counts().sort_index().to_dict(),
-            "source_url": spec.source_url,
-            "source_page": spec.source_page,
-            "preprocessing": list(spec.preprocessing),
-            "spec_metadata": spec.metadata,
-        })
+        _write_reusable_manifest(
+            destination / "dataset_manifest.json",
+            {
+                "dataset_id": dataset_id,
+                "display_name": spec.display_name,
+                "path": str(dataset.path),
+                "fingerprint": dataset.fingerprint,
+                "rows": len(dataset.frame),
+                "features": list(spec.feature_columns),
+                "target": spec.target_column,
+                "categorical_features": list(spec.categorical_columns),
+                "numerical_features": list(spec.numerical_columns),
+                "missing_policy": spec.missing_policy,
+                "class_counts": dataset.frame[spec.target_column]
+                .astype(str)
+                .value_counts()
+                .sort_index()
+                .to_dict(),
+                "source_url": spec.source_url,
+                "source_page": spec.source_page,
+                "preprocessing": list(spec.preprocessing),
+                "spec_metadata": spec.metadata,
+            },
+        )
         _write_reusable_manifest(destination / "split_manifest.json", split.to_dict())
         _write_reusable_manifest(destination / "profile.json", profile.model_dump(mode="json"))
         if raw_schema is not None:
@@ -203,12 +421,15 @@ def datasets_prepare(dataset_id: str, root: Path | None = typer.Option(None, "--
             report["archive_sha256"] = acquisition.get("sha256")
             report["extracted_dataset_sha256"] = acquisition.get("extracted_sha256")
         _write_reusable_manifest(destination / "dataset_report.json", report)
-        _write_reusable_manifest(destination / "leakage_assertions.json", {
-            "train_test_disjoint": True,
-            "train_test_cover_all_rows": True,
-            "profile_train_only": True,
-            "reference_train_only": True,
-        })
+        _write_reusable_manifest(
+            destination / "leakage_assertions.json",
+            {
+                "train_test_disjoint": True,
+                "train_test_cover_all_rows": True,
+                "profile_train_only": True,
+                "reference_train_only": True,
+            },
+        )
     except (OSError, ValueError, KeyError) as error:
         typer.echo(f"error: {error}", err=True)
         raise typer.Exit(code=1) from error
@@ -225,9 +446,24 @@ def _write_reusable_manifest(path: Path, value: object | BaseModel) -> None:
         # profile-v1 artifact, while continuing to refuse arbitrary manifest
         # overwrites.
         existing = read_json(path)
-        generated_profile = path.name == "profile.json" and isinstance(existing, dict) and str(existing.get("profile_id", "")).startswith("profile-")
-        generated_trtr = path.parent.name == "reports" and path.name.startswith("trtr-") and isinstance(existing, dict) and "TRTR" in existing and "seed" in existing
-        generated_cross_dataset = path.parent.name == "reports" and path.name == "cross-dataset-comparison.json" and isinstance(existing, dict) and str(existing.get("schema_version", "")).startswith("m1-cross-dataset-")
+        generated_profile = (
+            path.name == "profile.json"
+            and isinstance(existing, dict)
+            and str(existing.get("profile_id", "")).startswith("profile-")
+        )
+        generated_trtr = (
+            path.parent.name == "reports"
+            and path.name.startswith("trtr-")
+            and isinstance(existing, dict)
+            and "TRTR" in existing
+            and "seed" in existing
+        )
+        generated_cross_dataset = (
+            path.parent.name == "reports"
+            and path.name == "cross-dataset-comparison.json"
+            and isinstance(existing, dict)
+            and str(existing.get("schema_version", "")).startswith("m1-cross-dataset-")
+        )
         if generated_profile or generated_trtr or generated_cross_dataset:
             write_json(path, value, overwrite=True)
             return
@@ -239,8 +475,12 @@ def _write_reusable_manifest(path: Path, value: object | BaseModel) -> None:
 def datasets_record_acquisition(
     dataset_id: str,
     root: Path | None = typer.Option(None, "--root", help="Project root."),  # noqa: B008
-    source_url: str | None = typer.Option(None, "--source-url", help="Exact authoritative source URL."),
-    overwrite: bool = typer.Option(False, "--overwrite", help="Replace a manifest generated by this task."),
+    source_url: str | None = typer.Option(
+        None, "--source-url", help="Exact authoritative source URL."
+    ),
+    overwrite: bool = typer.Option(
+        False, "--overwrite", help="Replace a manifest generated by this task."
+    ),
 ) -> None:
     """Record size, SHA-256, and UTC acquisition time for an already acquired raw file."""
 
@@ -280,7 +520,9 @@ def baselines_trtr(
         result = utility_metrics(train, test, train.copy(), spec, seed=seed)["TRTR"]
         report = build_dataset_report(dataset, split)
         report.update({"seed": seed, "TRTR": result})
-        destination = output or project_root / "artifacts" / "reports" / f"trtr-{dataset_id}-{seed}.json"
+        destination = (
+            output or project_root / "artifacts" / "reports" / f"trtr-{dataset_id}-{seed}.json"
+        )
         if not destination.is_absolute():
             destination = project_root / destination
         _write_reusable_manifest(destination, report)
@@ -312,7 +554,9 @@ def baselines_compare(
                 raise TypeError(f"comparison must be a JSON object: {path / 'comparison.json'}")
             comparisons.append(value)
         report = cross_dataset_comparison(comparisons)
-        destination = output or project_root / "artifacts" / "reports" / "cross-dataset-comparison.json"
+        destination = (
+            output or project_root / "artifacts" / "reports" / "cross-dataset-comparison.json"
+        )
         if not destination.is_absolute():
             destination = project_root / destination
         _write_reusable_manifest(destination, report)
@@ -356,13 +600,19 @@ def baselines_diagnose(
 
 
 @baselines_app.command("run")
-def baselines_run(config: Path = typer.Option(..., "--config", help="Experiment YAML config."), root: Path | None = typer.Option(None, "--root", help="Project root.")) -> None:  # noqa: B008
+def baselines_run(
+    config: Path = typer.Option(..., "--config", help="Experiment YAML config."),  # noqa: B008
+    root: Path | None = typer.Option(None, "--root", help="Project root."),  # noqa: B008
+) -> None:
     """Run a configured generation and paired B1/B2/B3 experiment."""
     _run_baseline(config, root, replay=False)
 
 
 @baselines_app.command("replay")
-def baselines_replay(config: Path = typer.Option(..., "--config", help="Offline replay YAML config."), root: Path | None = typer.Option(None, "--root", help="Project root.")) -> None:  # noqa: B008
+def baselines_replay(
+    config: Path = typer.Option(..., "--config", help="Offline replay YAML config."),  # noqa: B008
+    root: Path | None = typer.Option(None, "--root", help="Project root."),  # noqa: B008
+) -> None:
     """Run the same baseline architecture using deterministic stored responses."""
     _run_baseline(config, root, replay=True)
 
@@ -378,13 +628,19 @@ def _run_baseline(config: Path, root: Path | None, replay: bool) -> None:
     print(f"Completed {result.run_id}")
     print(f"Artifacts: {result.artifact_dir}")
     for name, summary in result.comparison.get("baselines", {}).items():
-        print(f"{name}: accepted={summary.get('accepted')}/{summary.get('requested')} rate={summary.get('acceptance_rate')}")
+        print(
+            f"{name}: accepted={summary.get('accepted')}/{summary.get('requested')} rate={summary.get('acceptance_rate')}"
+        )
 
 
 def _git_status(root: Path) -> tuple[bool, str | None, bool]:
     try:
         detected = subprocess.run(
-            ["git", "rev-parse", "--is-inside-work-tree"], cwd=root, capture_output=True, text=True, check=False
+            ["git", "rev-parse", "--is-inside-work-tree"],
+            cwd=root,
+            capture_output=True,
+            text=True,
+            check=False,
         )
         if detected.returncode != 0:
             return False, None, False
