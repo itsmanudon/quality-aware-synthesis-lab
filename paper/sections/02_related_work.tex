@@ -1,0 +1,130 @@
+\section{Related Work}
+\label{sec:related-work}
+
+\subsection{Synthetic Tabular Data Generation}
+
+Tabular generators must jointly model heterogeneous variables, irregular
+continuous distributions, imbalanced categories, and inter-column
+dependencies. CTGAN addresses several of these difficulties through
+mode-specific normalization, conditional sampling, and adversarial training
+\citep{xu2019ctgan}. More recent diffusion approaches represent another model
+family. TabDDPM adapts denoising diffusion to mixed numerical and categorical
+features \citep{kotelnikov2023tabddpm}, while TabSyn applies score-based
+diffusion in a learned latent space \citep{zhang2024tabsyn}. These methods
+primarily concern how to learn and sample a data distribution; their existence
+does not remove the need for independent dataset auditing.
+
+Language-model approaches serialize rows and use autoregressive sequence
+models to represent tabular distributions. GReaT demonstrates conditional
+generation from arbitrary observed feature subsets
+\citep{borisov2023great}. REaLTabFormer extends transformer-based generation
+to both independent tables and parent--child relational settings, and includes
+mechanisms intended to detect or reduce copying
+\citep{solatorio2023realtabformer}. These approaches broaden the generator
+class relevant to our problem, but \rcqasyn{} is generator-agnostic: its focus
+is the evidence and control process around candidate records rather than a new
+generative model.
+
+\subsection{LLM-Based Synthetic Data and Augmentation}
+
+LLM-driven synthetic-data research commonly separates prompting and
+generation from curation and evaluation \citep{long2024survey}. For imbalanced
+tabular classification, EPIC shows that class-balanced demonstrations,
+grouping, and consistent formatting can materially affect generation
+\citep{kim2024epic}. This is particularly relevant to class-conditioned
+reference examples: demonstrations can convey useful structure, but they can
+also anchor generation to a small visible subset. Our development protocol
+therefore records reference identities and measures exact reference copying
+separately from other TRAIN matches.
+
+Generator evaluation is also sensitive to uncontrolled experimental choices.
+AgoraBench fixes data, prompts, student models, and evaluation within a setting
+when comparing language models as data generators, and considers several
+intrinsic signals alongside downstream performance
+\citep{kim2025evaluating}. We adopt the same broad principle of paired
+comparison: B1, B2, and B3 operate on one persisted candidate pool. Our present
+experiments concern small tabular development datasets rather than the text,
+code, and reasoning settings studied by AgoraBench.
+
+\subsection{Synthetic Data Quality Evaluation}
+
+Synthetic-data quality is inherently plural. Marginal distribution distances
+can reveal feature-wise shifts, association measures can expose relationship
+distortion, and downstream tasks estimate whether a synthetic training set
+supports prediction. None establishes the others. Alaa et al. formalize a
+related separation through alpha-precision, beta-recall, and authenticity,
+targeting fidelity, diversity, and generalization at both sample and
+distribution levels \citep{alaa2022faithful}. Constraint-based work likewise
+shows that distributional resemblance does not guarantee compliance with
+domain knowledge \citep{stoian2024realistic}.
+
+The current study uses transparent classical distances, correlation error,
+redundancy measures, class-conditional views, and TRTR/TSTR utility. It does
+not implement alpha-precision, beta-recall, or authenticity. Exact TRAIN
+matching and nearest-neighbour support distances are reported as development
+diagnostics, not as calibrated validity scores.
+% TODO[CITATION]: verify primary sources for the final privacy, fairness, and
+% subgroup-coverage evaluation protocol after those experiments are frozen.
+
+\subsection{LLM-Based Critics and Self-Evaluation}
+
+Language models can provide flexible rubric-based judgments where complete
+deterministic rules are unavailable. Studies of LLM-as-a-judge evaluation,
+however, document position, verbosity, self-enhancement, and reasoning biases
+\citep{zheng2023judging}. Their results concern open-ended assistant responses
+and do not establish reliability for tabular record validity. SelfCheckGPT
+uses variation across sampled responses as a black-box factuality signal
+\citep{manakul2023selfcheckgpt}; this is conceptually relevant to uncertainty
+and disagreement, but sentence-level factual consistency is not equivalent to
+schema, target-class, or support validity in a structured record.
+
+These limitations motivate treating a critic output as one evidence item with
+recorded provenance and uncertainty. The B3 critic in our implemented
+development pipeline is intentionally a narrow baseline: one static threshold,
+one judge, no calibration, no ensemble, and no evidence fusion. Moreover, the
+generator and B3 judge use the same model, creating a plausible correlated
+self-evaluation failure mode that the human audit is designed to examine.
+
+\subsection{Uncertainty, Calibration, and Risk Control}
+
+Calibration asks whether a model's reported confidence corresponds to its
+empirical correctness frequency. Post-hoc methods such as temperature scaling
+can improve calibration in conventional classification settings
+\citep{guo2017calibration}. Risk-control methods address a different goal:
+selecting a procedure or threshold so that a specified loss is controlled
+under stated assumptions. Conformal risk control extends conformal ideas to
+bounded monotone losses \citep{angelopoulos2022conformal}.
+
+\rcqasyn{} draws conceptual guidance from these distinctions but does not
+assume that an LLM's self-reported score is a calibrated probability. Nor does
+it claim that existing conformal guarantees transfer directly to dependent,
+heterogeneous validator evidence. Determining suitable calibration targets,
+held-out data, risk functions, and dependence assumptions is part of M2+.
+
+\subsection{Iterative Refinement and Repair}
+
+Iterative language-model methods demonstrate that generation need not end
+after a first draft. Self-Refine alternates model-generated feedback and
+revision \citep{madaan2023selfrefine}; Chain-of-Verification separates draft,
+verification questions, independent answers, and final revision for factual
+generation \citep{dhuliawala2024chain}. These methods support the general idea
+that critique can guide another action, but they do not by themselves provide
+dependency-aware field repair for tabular records. A local edit may invalidate
+related fields, and a repaired candidate must be revalidated under the same
+specification. The proposed repair subsystem therefore remains a distinct,
+optional extension rather than an assumed consequence of generic
+self-refinement.
+
+\subsection{Research Gap}
+
+Prior work provides strong generators, multidimensional metrics, constraint
+mechanisms, model-based critics, calibration methods, and iterative revision
+strategies. We find limited integration of these strands into a sequential
+tabular dataset-construction process that (i) preserves evidence scope and
+provenance, (ii) separates record validity from dataset-level evidence, and
+(iii) distinguishes evaluator uncertainty from acceptance risk before making
+a decision. This gap is narrower than a claim that no prior system combines
+validation and generation. It identifies the core open question addressed by
+\rcqasyn{}: whether calibrated heterogeneous record and dataset evidence can
+improve decisions under a reproducible, human-audited protocol. Repair and
+richer dataset optimization are possible extensions of that core.

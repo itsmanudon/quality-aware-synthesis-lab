@@ -1,0 +1,41 @@
+\begin{figure}[t]
+  \centering
+  \begin{tikzpicture}[
+    node distance=3.4mm,
+    every node/.style={font=\small, align=center, minimum height=6.5mm,
+      text width=0.70\linewidth, rounded corners=2pt},
+    implemented/.style={draw=black, fill=blue!8, thick},
+    diagnostic/.style={draw=orange!75!black, fill=orange!10, thick},
+    proposed/.style={draw=gray!75, fill=gray!6, dashed, thick},
+    flow/.style={-{Latex[length=2mm]}, thick}
+  ]
+    \node[implemented] (spec) {Dataset specification and TRAIN-derived context};
+    \node[implemented, below=of spec] (gen) {Versioned generation and persisted raw responses};
+    \node[implemented, below=of gen] (val) {Record-level validators\\\footnotesize deterministic M1 baseline; broader core set proposed};
+    \node[diagnostic, below=of val] (diag) {Dataset-level evidence\\\footnotesize copying and support measured in M1.5; not acceptance criteria};
+    \node[implemented, below=of diag] (evidence) {Scoped heterogeneous evidence\\\footnotesize current contracts; explicit scope proposed};
+    \node[proposed, below=of evidence] (fusion) {Calibration and evidence fusion};
+    \node[proposed, below=of fusion] (control) {Risk-aware acceptance decision};
+    \node[proposed, below=of control] (action) {Accept \;/\; regenerate \;/\; reject\\\footnotesize localized repair is a later extension};
+    \node[proposed, below=of action] (dataset) {Richer dataset optimization\\\footnotesize later extension if justified};
+    \node[implemented, below=of dataset] (audit) {Provenance, artifacts, and human-audit infrastructure};
+    \node[implemented, below=of audit] (utility) {Intrinsic evaluation and downstream utility};
+
+    \draw[flow] (spec) -- (gen);
+    \draw[flow] (gen) -- (val);
+    \draw[flow] (val) -- (diag);
+    \draw[flow] (diag) -- (evidence);
+    \draw[flow] (evidence) -- (fusion);
+    \draw[flow] (fusion) -- (control);
+    \draw[flow] (control) -- (action);
+    \draw[flow] (action) -- (dataset);
+    \draw[flow] (dataset) -- (audit);
+    \draw[flow] (audit) -- (utility);
+  \end{tikzpicture}
+  \caption{Intended \rcqasyn{} pipeline. Solid blue nodes denote implemented
+  M1 infrastructure, orange denotes M1.5 diagnostic analysis, and dashed gray
+  nodes denote unevaluated proposed components. The central proposed path is
+  scoped evidence, calibration/fusion, and risk-aware decision making;
+  localized repair and richer optimization are extensions.}
+  \label{fig:framework}
+\end{figure}

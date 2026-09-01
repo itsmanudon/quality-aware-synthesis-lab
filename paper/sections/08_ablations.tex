@@ -1,0 +1,42 @@
+\section{Ablation Study}
+\label{sec:ablations}
+
+All ablations in this section are planned. Their purpose is to freeze the
+questions that a final implementation may need to answer, not to imply an
+available outcome. The core sequence is record/dataset evidence, calibration,
+fusion, and decision control; repair and richer optimization are extension
+experiments. Detailed placeholder tables are preserved in
+\texttt{notes/future\_experiment\_tables.tex} and are not rendered in this
+professor draft.
+
+\paragraph{Record-level validators.}
+Starting from the complete record-level suite, remove structural rules,
+statistical-support evidence, and semantic criticism one family at a time.
+Measure human-invalid acceptance, human-valid rejection, failure-type recall,
+and cost on the same candidate identities.
+
+\paragraph{Dataset-level evaluators.}
+Remove exact/near redundancy, support coverage, class-conditional coverage,
+and subgroup control separately. Evaluate duplicate accumulation, coverage,
+distributional fidelity, and downstream utility at matched accepted-set size.
+
+\paragraph{Calibration and fusion.}
+Compare raw B3 scores, separately calibrated evaluator outputs, and the frozen
+heterogeneous fusion rule. Calibration data must be disjoint from final
+evaluation records. Report reliability and selective-risk views rather than
+accuracy alone.
+
+\paragraph{Repair policy (extension).}
+For candidates with a localizable defect, compare rejection, complete
+regeneration, and localized repair followed by dependency-aware revalidation.
+Measure human validity after action, residual defects, success per provider
+call, tokens, latency, and cost.
+
+\paragraph{Dataset construction (later-stage control).}
+Compare acceptance without contribution control to redundancy-only, coverage-
+only, and combined marginal-contribution policies. Repeat generation seeds and
+real-data splits so that uncertainty is not conflated with one extreme-
+imbalance partition.
+
+% TODO[ABLATION]: populate only after M2+ interfaces and the final protocol are
+% frozen and versioned.

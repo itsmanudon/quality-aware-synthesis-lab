@@ -1,0 +1,45 @@
+\section{Limitations}
+\label{sec:limitations}
+
+The present evidence comes from three development datasets, one corrected P1
+run per dataset, and one real TRAIN/TEST split per dataset. These datasets do
+not span the intended final benchmark, and 200 requested records per dataset
+provide limited evidence about scaling. Repeated generation seeds, repeated
+real-data splits, uncertainty intervals, and predeclared statistical
+comparisons are pending.
+
+Human evaluation is incomplete and modest in size: Reviewer A receives 120
+records and Reviewer B overlaps on 40. Even after adjudication, specialist
+domain validity may be difficult for general annotators to judge, particularly
+when feature names encode scientific measurements without sufficient domain
+context. The final paper must report reviewer qualifications and any domain
+guidance without exposing personal information.
+
+Generation and B3 judging use the same local model. Their errors may therefore
+be correlated, and findings may not generalize to other local models, hosted
+models, prompts, decoding configurations, or model scales. B3's score is
+uncalibrated. The proposed calibration, evidence fusion, and risk controller
+have not been implemented or tested, so the current system provides no
+calibrated risk control. Repair and richer dataset optimization are
+unimplemented extensions.
+
+Extreme imbalance makes single-split utility unstable. Ecoli4 and Abalone19
+have only four and six positive records, respectively, in the committed TEST
+splits. Several logistic-regression TSTR outputs are undefined, and the Ecoli4
+generation pool contains 201 records despite a request for 200. Final utility
+claims require correction or explicit accommodation of these issues.
+
+Copying and nearest-neighbour support are diagnostics, not privacy measures.
+Support distance depends on standardization, categorical encoding, feature
+weighting, and dimensionality; it has no calibrated threshold in the current
+study. Privacy and fairness validators, near-copy analysis, and subgroup-risk
+evaluation are not implemented. Exact absence of a match to an unshown TRAIN
+record must not be read as a privacy guarantee.
+
+The historical P1 manifests record a dirty working tree, although they retain
+resolved configuration, commit identity, prompts, traces, and outputs. The
+implementation workbook could not be inspected with the required read-only
+spreadsheet runtime during manuscript initialization and is not used as
+evidence. Finally, the literature review is substantial but incomplete;
+several repository notes remain unverified placeholders and are deliberately
+excluded from the bibliography.

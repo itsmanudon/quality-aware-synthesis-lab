@@ -1,0 +1,143 @@
+\section{Proposed RC-QASyn Framework}
+\label{sec:method}
+
+\rcqasyn{} is an intended architecture for constructing a synthetic dataset
+under explicit quality and risk requirements. Its core comprises scoped
+record- and dataset-level evidence, calibration and fusion, and risk-aware
+decision control around a replaceable generator. Localized repair,
+privacy/fairness or domain-factual modules, and richer dataset optimization are
+extensions that can be added when the core evidence justifies them. The
+architecture is shown in \cref{fig:framework}; visual status distinguishes
+implemented M1 infrastructure, M1.5 diagnostics, proposed core components, and
+later extensions.
+
+\input{figures/framework_pipeline}
+
+\subsection{Specification and Generation}
+
+The specification makes the schema, target, categorical domains,
+missing-value policy, class condition, generation objective, and provenance
+requirements explicit. Generation uses only a TRAIN-derived profile and,
+when enabled, deterministic class-aware TRAIN examples. Prompts and provider
+settings are versioned. Raw responses are preserved before parsing, so a
+transport or parse failure remains observable instead of being silently
+repaired. This stage and its reproducibility machinery are implemented.
+
+The generator is not assumed to certify its own output. A prompt may describe
+observed ranges or request target consistency, but compliance is established
+only by evidence produced after generation. This separation prevents prompt
+instructions from being mistaken for enforced constraints.
+
+\subsection{Independent Validators and Heterogeneous Evidence}
+
+Each validator should answer a narrow question and emit a structured evidence
+item rather than a final global judgment. Deterministic schema, domain,
+missing-value, target-condition, observed-range, and duplicate checks exist in
+the current baseline pipeline. The core proposed evaluator set adds
+independent statistical-support and task-relevant logical or semantic
+evidence. Factual verification, privacy, and fairness require domain- and
+use-specific definitions and are treated as optional modules, not as
+implemented or guaranteed capabilities in PAPER v0.1.
+
+Validator independence is an experimental objective, not an assumption that
+errors are statistically independent. Two evaluators may share training data,
+model families, prompts, or representations and therefore make correlated
+errors. Provenance and evaluator identity are retained so calibration and
+ablation can measure such dependence rather than conceal it.
+
+\subsection{Record-Level and Dataset-Level Evidence}
+\label{sec:record-dataset-evidence}
+
+Record-level evidence includes schema correctness, required-field presence,
+categorical validity, target consistency, local statistical support, and
+logical or semantic plausibility. It supports statements about one candidate
+or one of its fields. Dataset-level evidence instead includes exact and near
+redundancy, prompt-reference copying, support and class-conditional coverage,
+distributional fidelity, subgroup representation, and downstream utility.
+
+The distinction changes how evidence is acted upon. A target mismatch is a
+candidate defect; adding many copies of a correct minority example is a
+collection-level failure. A record can therefore satisfy record-level validity
+while contributing little new support to the dataset. \rcqasyn{} proposes to
+retain both views and to prevent a dataset-level redundancy finding from being
+misreported as record invalidity.
+
+\subsection{Calibration and Evidence Fusion}
+
+The proposed calibration layer maps evaluator outputs to empirically supported
+reliability statements on held-out, human-labelled development data. Fusion
+then combines evidence without erasing scope, missingness, or provenance. A
+field-level hard violation may dominate an acceptance decision, while
+uncertain semantic evidence may call for review or regeneration. Dataset-level
+coverage evidence should influence selection among otherwise acceptable
+records rather than retroactively redefine their structural validity.
+
+This draft deliberately does not specify a universal weighted sum. Calibration
+targets, dependence handling, fusion rules, and risk guarantees must be frozen
+and evaluated after the human audit. The current B3 score is uncalibrated and
+is not an implementation of this layer.
+
+\subsection{Risk-Aware Decision Control}
+
+Given calibrated evidence and declared risk constraints, the intended
+controller selects whether a candidate should be accepted, regenerated, or
+rejected under a frozen loss and operating policy. The action contract also
+reserves repair, but the core empirical question is whether calibrated scoped
+evidence yields more reliable acceptance decisions than the paired baselines.
+No action-selection policy or calibrated risk guarantee is implemented in the
+present milestone.
+
+\subsection{Dataset Evidence and Audit}
+
+Dataset-level evidence evaluates marginal redundancy, coverage, fidelity, and
+prospective utility relative to $D_{\mathrm{syn}}^{(t)}$. Keeping this evidence
+separate from record validity is part of the core formulation. A future
+controller may use it to defer or decline a valid but redundant record, but
+thresholds and objectives must be derived without access to REAL TEST labels
+or statistics.
+
+M1.5 implements diagnostic measurements of exact copying and TRAIN-support
+distance, but these measurements do not yet control acceptance. The audit
+layer is already partly implemented: run manifests, resolved configuration,
+prompt and seed plans, provider traces, candidates, decisions, evidence,
+metrics, copying/support diagnostics, and blinded human-review identities are
+persisted for analysis.
+
+\subsection{Later-Stage Extensions}
+
+Localized repair could be useful when a defect and its dependency set can be
+identified and revalidated; complete regeneration remains the comparison when
+localization is unsafe or uneconomical. Richer dataset optimization could
+select among valid candidates using multiple marginal-contribution objectives.
+Neither mechanism is necessary to test the core record/dataset evidence and
+calibrated-decision hypothesis. No repair operator or dataset optimizer is
+currently implemented, and neither is presented as an established advantage.
+
+\subsection{Implementation Status Summary}
+
+\begin{table}[t]
+  \centering
+  \caption{Framework status in PAPER v0.1. ``Development'' denotes pilot
+  diagnostics, not final benchmark validation.}
+  \label{tab:framework-status}
+  \begin{tabularx}{\linewidth}{@{}lXl@{}}
+    \toprule
+    Component & Current repository support & Research status \\
+    \midrule
+    Specification and generation & Versioned configs/prompts, TRAIN-only
+      context, persisted raw responses and provenance & Core---implemented \\
+    Baseline validators & Deterministic B2 checks and one B3 critic over a
+      shared candidate pool & Core---implemented \\
+    Copying/support analysis & Exact-copy categories and TRAIN-distance
+      summaries without acceptance thresholds & Core---development \\
+    Human audit & Blinded export/import, overlap, agreement, and adjudication
+      infrastructure; labels incomplete & Core---results pending \\
+    Explicit evidence scope & FIELD/RECORD/SUBGROUP/DATASET interface & Core---proposed \\
+    Calibration and fusion & Reliability estimation and heterogeneous fusion & Core---proposed \\
+    Risk-aware controller & Evidence-based acceptance policy & Core---proposed \\
+    Localized repair & Dependency-aware edit and revalidation & Extension \\
+    Richer dataset optimization & Multi-objective marginal-contribution
+      selection & Extension \\
+    \bottomrule
+  \end{tabularx}
+\end{table}
