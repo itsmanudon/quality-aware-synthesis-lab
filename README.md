@@ -106,3 +106,6 @@ Reproducibility depends on a Python 3.12 environment, resolved YAML configuratio
 seed, Git state, content hashes, and versioned run/artifact records. Future runs must
 retain their manifest, resolved configuration, lifecycle events, and schema versions.
 No claim about dataset quality or research performance is made by this foundation.
+See [docs/reproducibility-and-artifacts.md](docs/reproducibility-and-artifacts.md) for
+the tracked-artifact policy, large-artifact transfer procedure, and cross-device resume
+checklist.

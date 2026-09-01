@@ -8,13 +8,54 @@ __pycache__/
 htmlcov/
 .pyright/
 .env
+.env.*
+!.env.example
+*.log
+
+# Generated artifacts are local by default. Compact reports and manifests are
+# collaboration-critical and therefore tracked automatically.
 artifacts/*
 !artifacts/.gitkeep
+!artifacts/manifests/
+!artifacts/manifests/**
+!artifacts/reports/
+!artifacts/reports/**
+!artifacts/runs/
+artifacts/runs/*
+
+# These completed, expensive P0-v3/P1 runs are small enough for normal Git and
+# are the canonical source artifacts behind the committed M1.5 reports.
+!artifacts/runs/m1-p0-real-v3-Abalone19-gemma4-e4b-20260829/
+!artifacts/runs/m1-p0-real-v3-Abalone19-gemma4-e4b-20260829/**
+!artifacts/runs/m1-p0-real-v3-Ecoli4-gemma4-e4b-20260829/
+!artifacts/runs/m1-p0-real-v3-Ecoli4-gemma4-e4b-20260829/**
+!artifacts/runs/m1-p0-real-v3-page-blocks0-gemma4-e4b-20260829/
+!artifacts/runs/m1-p0-real-v3-page-blocks0-gemma4-e4b-20260829/**
+!artifacts/runs/m1-p1-real-Abalone19-gemma4-e4b-20260829/
+!artifacts/runs/m1-p1-real-Abalone19-gemma4-e4b-20260829/**
+!artifacts/runs/m1-p1-real-Ecoli4-gemma4-e4b-20260829/
+!artifacts/runs/m1-p1-real-Ecoli4-gemma4-e4b-20260829/**
+!artifacts/runs/m1-p1-real-page-blocks0-gemma4-e4b-20260829/
+!artifacts/runs/m1-p1-real-page-blocks0-gemma4-e4b-20260829/**
+
+# Archives and test scratch output remain local even under tracked parents.
+artifacts/archives/
+artifacts/test-tmp/
 data/raw/*
 !data/raw/.gitkeep
 data/processed/*
 !data/processed/.gitkeep
-data/manifests/*
-!data/manifests/.gitkeep
 literature/papers/*.pdf
+
+# Raw dataset packages and model artifacts do not belong in normal Git.
+*.zip
+*.dat
+*.tar
+*.tar.gz
+*.gguf
+*.safetensors
+*.ckpt
+*.pth
+*.pt
+.ollama/
 .DS_Store

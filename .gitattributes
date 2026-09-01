@@ -1,0 +1,3 @@
+# CSV cells may contain preserved multiline provider output whose internal blank
+# lines include spaces. Do not treat those data bytes as patch whitespace errors.
+*.csv whitespace=-blank-at-eol
