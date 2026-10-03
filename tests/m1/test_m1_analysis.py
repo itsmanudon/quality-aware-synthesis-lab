@@ -35,7 +35,7 @@ def test_profile_per_class_references_are_deterministic_and_train_only() -> None
 def _write_run_fixture(run_dir: Path) -> None:
     (run_dir / "baselines" / "b2").mkdir(parents=True)
     (run_dir / "baselines" / "b3").mkdir(parents=True)
-    (run_dir / "manifest.json").write_text(json.dumps({"run_id": "fixture", "dataset_id": "dev-small"}), encoding="utf-8")
+    (run_dir / "manifest.json").write_text(json.dumps({"schema_version": "m1-run-v1", "status": "completed", "run_id": "fixture", "dataset_id": "dev-small"}), encoding="utf-8")
     candidates = [
         {"record_id": "r1", "version": 1, "data": {"age": 1, "score": 0.1, "color": "red", "label": "yes"}, "raw_output": "raw-1"},
         {"record_id": "r2", "version": 1, "data": {"age": 2, "score": 0.2, "label": "yes"}, "raw_output": "raw-2"},

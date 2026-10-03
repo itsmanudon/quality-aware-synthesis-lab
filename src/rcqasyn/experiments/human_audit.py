@@ -14,11 +14,17 @@ from collections import Counter
 from collections.abc import Mapping, Sequence
 from itertools import combinations
 from pathlib import Path
-from typing import Any
+from typing import Any, cast
 
 import numpy as np
 from scipy.stats import mannwhitneyu
 from sklearn.metrics import average_precision_score, cohen_kappa_score, roc_auc_score
+
+from rcqasyn.contracts.m1 import finite_tree
+from rcqasyn.storage.artifacts import immutable_text_stream, write_text
+from rcqasyn.storage.ownership import assert_writable, seal_bundle
+
+from .readers import validate_source
 
 HUMAN_FAILURE_TAXONOMY = frozenset(
     {
@@ -363,7 +369,7 @@ def support_distance_analysis(rows: Sequence[Mapping[str, Any]]) -> dict[str, An
             "roc_auc": None,
         }
         if valid_values and invalid_values:
-            test = mannwhitneyu(invalid_values, valid_values, alternative="two-sided")
+            test = cast(Any, mannwhitneyu(invalid_values, valid_values, alternative="two-sided"))
             block["mann_whitney_u"] = float(test.statistic)
             block["mann_whitney_p_value"] = float(test.pvalue)
             block["rank_biserial"] = float(
@@ -497,6 +503,8 @@ def _b2_evidence_view(
             / "b2"
             / "evidence.jsonl"
         )
+        bundle = path.parents[2]
+        validate_source(bundle)
         records = _read_jsonl(path)
         grouped: dict[str, list[dict[str, Any]]] = {}
         for item in records:
@@ -728,22 +736,11 @@ _JSON_OUTPUTS = {
 
 
 def _prepare_output(output_dir: Path, primary_hash: str, *, overwrite: bool) -> None:
+    assert_writable(output_dir / "human_summary.json")
     if not output_dir.exists():
         return
-    existing = output_dir / "human_summary.json"
-    if not any(output_dir.iterdir()):
-        return
-    same_source = False
-    if existing.is_file():
-        try:
-            value = json.loads(existing.read_text(encoding="utf-8"))
-            same_source = value["source_files"]["primary"]["sha256"] == primary_hash
-        except (OSError, KeyError, TypeError, json.JSONDecodeError):
-            same_source = False
-    if not same_source and not overwrite:
-        raise HumanAuditError(
-            f"output directory contains results from another source; use --overwrite: {output_dir}"
-        )
+    if any(output_dir.iterdir()):
+        raise HumanAuditError(f"refusing to overwrite historical human-audit output: {output_dir}")
 
 
 def write_human_audit_reports(
@@ -752,24 +749,30 @@ def write_human_audit_reports(
     """Write the deterministic M1.6 report bundle."""
 
     destination = Path(output_dir)
+    assert_writable(destination / "output.json")
     primary_hash = result["human_summary"]["source_files"]["primary"]["sha256"]
     _prepare_output(destination, primary_hash, overwrite=overwrite)
     destination.mkdir(parents=True, exist_ok=True)
     written: list[Path] = []
     for key, filename in _JSON_OUTPUTS.items():
         path = destination / filename
-        path.write_text(json.dumps(result[key], indent=2, sort_keys=True) + "\n", encoding="utf-8")
+        issues: dict[str, str] = {}
+        payload = finite_tree(result[key], issues=issues)
+        if issues:
+            payload["metric_availability_issues"] = issues
+        write_text(path, json.dumps(payload, indent=2, sort_keys=True, allow_nan=False) + "\n")
         written.append(path)
     disagreement_path = destination / "b2_b3_human_disagreement.csv"
     rows = result["b2_b3_human_disagreement"]
-    with disagreement_path.open("w", encoding="utf-8", newline="") as stream:
+    with immutable_text_stream(disagreement_path) as stream:
         writer = csv.DictWriter(stream, fieldnames=list(rows[0]))
         writer.writeheader()
         writer.writerows(rows)
     written.append(disagreement_path)
     markdown_path = destination / "human_audit_summary.md"
-    markdown_path.write_text(_markdown_summary(result), encoding="utf-8")
+    write_text(markdown_path, _markdown_summary(result))
     written.append(markdown_path)
+    seal_bundle(destination)
     return tuple(written)
 
 
@@ -813,6 +816,8 @@ def analyze_review(
     else:
         rows = primary_rows
 
+    for run_id in sorted({row["run_id"] for row in rows}):
+        validate_source(Path(project_root) / "artifacts" / "runs" / run_id)
     b2_classes, evidence_sources = _b2_evidence_view(rows, Path(project_root))
     prepared: list[dict[str, Any]] = []
     for row in rows:
@@ -1015,7 +1020,7 @@ def _stratified_overlap(
 
 
 def _write_blind_csv(path: Path, rows: Sequence[Mapping[str, str]]) -> None:
-    with path.open("w", encoding="utf-8", newline="") as stream:
+    with immutable_text_stream(path) as stream:
         fieldnames: list[str] = list(BLINDED_REVIEW_COLUMNS)
         writer = csv.DictWriter(stream, fieldnames=fieldnames)
         writer.writeheader()
@@ -1055,6 +1060,7 @@ def export_blinded_reviews(
         raise HumanAuditError("deterministic annotation ID collision")
 
     destination = Path(output_dir)
+    assert_writable(destination / "output.json")
     outputs = {
         "reviewer_a": destination / "reviewer_a_blind.csv",
         "reviewer_a_manifest": destination / "reviewer_a_blind.manifest.json",
@@ -1062,7 +1068,7 @@ def export_blinded_reviews(
         "reviewer_b_manifest": destination / "reviewer_b_blind.manifest.json",
     }
     existing = [path for path in outputs.values() if path.exists()]
-    if existing and not overwrite:
+    if existing:
         raise HumanAuditError(f"refusing to overwrite blinded export: {existing[0]}")
     destination.mkdir(parents=True, exist_ok=True)
     _write_blind_csv(outputs["reviewer_a"], [blind for blind, _ in reviewer_a_pairs])
@@ -1082,9 +1088,7 @@ def export_blinded_reviews(
         ),
     }
     for key, manifest in manifests.items():
-        outputs[key].write_text(
-            json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8"
-        )
+        write_text(outputs[key], json.dumps(manifest, indent=2, sort_keys=True, allow_nan=False) + "\n")
     return outputs
 
 
@@ -1146,11 +1150,12 @@ def import_blinded_review(
 
     master = Path(master_path)
     output = Path(output_path)
+    assert_writable(output)
     if not annotator_id.strip():
         raise HumanAuditError("annotator_id must not be blank")
     if output.resolve() == master.resolve():
         raise HumanAuditError("refusing to overwrite the master review CSV")
-    if output.exists() and not overwrite:
+    if output.exists():
         raise HumanAuditError(f"refusing to overwrite imported review: {output}")
     manifest = _read_blind_manifest(manifest_path)
     if manifest.get("reviewer_id") != annotator_id:
@@ -1209,7 +1214,7 @@ def import_blinded_review(
     except OSError as error:
         raise HumanAuditError(f"cannot read master header: {error}") from error
     output.parent.mkdir(parents=True, exist_ok=True)
-    with output.open("w", encoding="utf-8", newline="") as stream:
+    with immutable_text_stream(output) as stream:
         writer = csv.DictWriter(stream, fieldnames=fieldnames)
         writer.writeheader()
         for row in master_rows:

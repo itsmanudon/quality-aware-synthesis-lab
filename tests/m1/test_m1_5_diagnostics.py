@@ -80,7 +80,7 @@ def test_seed_plan_generation_trace_records_derived_seed(replay_run: Path) -> No
 
 def test_copying_diagnostics_reports_three_independent_flags(replay_run: Path) -> None:
     result = copying_diagnostics(replay_run, Path.cwd())
-    assert (replay_run / "copying_diagnostics.json").is_file()
+    assert (Path(result["artifact_dir"]) / "copying_diagnostics.json").is_file()
     keys = {"exact_synthetic_duplicate", "exact_reference_match", "exact_nonreference_train_match"}
     for record in result["records"]:
         assert keys <= record.keys()
@@ -121,8 +121,8 @@ def test_support_diagnostics_are_deterministic_and_threshold_free(replay_run: Pa
 
 
 def test_support_diagnostics_jsonl_row_per_candidate(replay_run: Path) -> None:
-    support_diagnostics(replay_run, Path.cwd())
-    rows = [json.loads(x) for x in (replay_run / "support_diagnostics.jsonl").read_text().splitlines() if x.strip()]
+    result = support_diagnostics(replay_run, Path.cwd())
+    rows = [json.loads(x) for x in (Path(result["artifact_dir"]) / "support_diagnostics.jsonl").read_text().splitlines() if x.strip()]
     raw = [json.loads(x) for x in (replay_run / "candidates_raw.jsonl").read_text().splitlines() if x.strip()]
     assert len(rows) == len(raw)
 

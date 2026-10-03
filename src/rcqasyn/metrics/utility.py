@@ -83,14 +83,21 @@ def _fit_score(train: pd.DataFrame, test: pd.DataFrame, spec: DatasetDefinition,
         probability = probabilities[:, classes.index(positive)] if positive in classes else None
     else:
         probability = None
+    metric_reasons: dict[str, str] = {}
     result: dict[str, Any] = {
-        "status": "ok", "f1": _metric(lambda: f1_score(binary, predicted_binary) if y_train.nunique() == 2 else f1_score(y_test, predicted, average="weighted")),
-        "average_precision": _metric(lambda: average_precision_score(binary, probability)) if probability is not None and binary.nunique() > 1 else None,
-        "mcc": _metric(lambda: matthews_corrcoef(y_test, predicted)),
-        "balanced_accuracy": _metric(lambda: balanced_accuracy_score(y_test, predicted)),
-        "auroc": _metric(lambda: roc_auc_score(binary, probability)) if probability is not None and binary.nunique() > 1 else None,
+        "status": "ok", "f1": _metric(lambda: f1_score(binary, predicted_binary) if y_train.nunique() == 2 else f1_score(y_test, predicted, average="weighted"), reasons=metric_reasons, name="f1"),
+        "average_precision": _metric(lambda: average_precision_score(binary, probability), reasons=metric_reasons, name="average_precision") if probability is not None and binary.nunique() > 1 else None,
+        "mcc": _metric(lambda: matthews_corrcoef(y_test, predicted), reasons=metric_reasons, name="mcc"),
+        "balanced_accuracy": _metric(lambda: balanced_accuracy_score(y_test, predicted), reasons=metric_reasons, name="balanced_accuracy"),
+        "auroc": _metric(lambda: roc_auc_score(binary, probability), reasons=metric_reasons, name="auroc") if probability is not None and binary.nunique() > 1 else None,
     }
     result["pr_auc"] = result["average_precision"]
+    if result["average_precision"] is None:
+        metric_reasons.setdefault("average_precision", "undefined_for_evaluation_population")
+        metric_reasons["pr_auc"] = metric_reasons["average_precision"]
+    if result["auroc"] is None:
+        metric_reasons.setdefault("auroc", "undefined_for_evaluation_population")
+    result["metric_reasons"] = metric_reasons
     return result
 
 
@@ -100,9 +107,13 @@ def _positive_label(spec: DatasetDefinition, y: pd.Series) -> str:
     return max(y.unique().tolist())
 
 
-def _metric(fn: Any) -> float | None:
+def _metric(fn: Any, *, reasons: dict[str, str] | None = None, name: str = "") -> float | None:
     try:
         value = float(fn())
+        if not np.isfinite(value) and reasons is not None:
+            reasons[name] = "nonfinite"
         return value if np.isfinite(value) else None
-    except (ValueError, TypeError, ZeroDivisionError):
+    except (ValueError, TypeError, ZeroDivisionError) as error:
+        if reasons is not None:
+            reasons[name] = f"metric_exception:{type(error).__name__}: {error}"
         return None

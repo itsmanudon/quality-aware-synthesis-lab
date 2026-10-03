@@ -14,6 +14,7 @@ import csv
 import json
 from pathlib import Path
 from typing import Any
+from uuid import uuid4
 
 from rcqasyn.experiments import (
     copying_diagnostics,
@@ -23,6 +24,9 @@ from rcqasyn.experiments import (
     support_diagnostics,
 )
 from rcqasyn.experiments.diagnostics import classify_b2_reason
+from rcqasyn.experiments.readers import validate_source
+from rcqasyn.storage.artifacts import create_run_dir, immutable_text_stream, write_json
+from rcqasyn.storage.ownership import file_hash, seal_bundle
 
 ROOT = Path(__file__).resolve().parents[1]
 RUNS = ROOT / "artifacts" / "runs"
@@ -42,7 +46,7 @@ P0V3 = {
 
 def _w(name: str, value: Any) -> None:
     OUT.mkdir(parents=True, exist_ok=True)
-    (OUT / name).write_text(json.dumps(value, indent=2, sort_keys=True), encoding="utf-8")
+    write_json(OUT / name, value)
     print(f"wrote {OUT / name}")
 
 
@@ -53,6 +57,7 @@ def write_disagreement_summary(value: Any) -> None:
 
 
 def _read(run_dir: Path, rel: str) -> Any:
+    validate_source(run_dir)
     return json.loads((run_dir / rel).read_text(encoding="utf-8"))
 
 
@@ -62,12 +67,16 @@ def _jsonl(run_dir: Path, rel: str) -> list[dict[str, Any]]:
 
 
 def main() -> None:
+    global OUT
+    OUT = create_run_dir(ROOT / "artifacts" / "derived", f"p1-reports-{uuid4().hex}")
     p1_dirs = [RUNS / r for r in P1.values()]
     p0_dirs = [RUNS / r for r in P0V3.values()]
 
-    copying = {name: copying_diagnostics(RUNS / rid, ROOT) for name, rid in P1.items()}
-    support = {name: support_diagnostics(RUNS / rid, ROOT) for name, rid in P1.items()}
+    copying = {name: copying_diagnostics(RUNS / rid, ROOT, write=False) for name, rid in P1.items()}
+    support = {name: support_diagnostics(RUNS / rid, ROOT, write=False) for name, rid in P1.items()}
     comparisons = {name: _read(RUNS / rid, "comparison.json") for name, rid in P1.items()}
+
+    _w("source_provenance.json", {rid: {"manifest_sha256": file_hash(RUNS / rid / "manifest.json"), "comparison_sha256": file_hash(RUNS / rid / "comparison.json")} for rid in (*P1.values(), *P0V3.values())})
 
     # --- P1 cross-dataset comparison (existing machine-only builder) -----------
     _w("p1_cross_dataset_comparison.json", cross_dataset_comparison(list(comparisons.values())))
@@ -164,7 +173,7 @@ def main() -> None:
     if dis_rows:
         cols = [*dict.fromkeys(k for r in dis_rows for k in r)]
         OUT.mkdir(parents=True, exist_ok=True)
-        with (OUT / "p1_b2_b3_disagreements.csv").open("w", newline="", encoding="utf-8") as fh:
+        with immutable_text_stream(OUT / "p1_b2_b3_disagreements.csv") as fh:
             w = csv.DictWriter(fh, fieldnames=cols)
             w.writeheader()
             w.writerows(dis_rows)
@@ -181,6 +190,7 @@ def main() -> None:
     # --- P1 human-review sample (~120 unique, blank human fields) --------
     hr = p1_human_review_sample(p1_dirs, ROOT, OUT / "p1_human_review.csv", target=120, seed=42)
     _w("p1_human_review_manifest.json", hr)
+    seal_bundle(OUT)
     print("human review:", hr)
 
 

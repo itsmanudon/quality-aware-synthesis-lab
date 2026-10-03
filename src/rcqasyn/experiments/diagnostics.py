@@ -27,8 +27,13 @@ from typing import Any
 import numpy as np
 import pandas as pd
 
-from rcqasyn.datasets import DatasetRegistry, load_dataset, make_split
+from rcqasyn.datasets import DatasetRegistry, load_dataset
+from rcqasyn.datasets.split import SplitManifest, _subset_fingerprint, validate_partition
+from rcqasyn.storage.artifacts import immutable_text_stream, write_json, write_text
+from rcqasyn.storage.ownership import file_hash, seal_bundle
 from rcqasyn.utils.hashing import sha256_text
+
+from .readers import derived_directory, read_bundle, validate_source
 
 _MISSING = "<NULL>"
 
@@ -59,12 +64,35 @@ def _read_jsonl(path: Path) -> list[dict[str, Any]]:
 
 def _load_context(run_dir: Path, project_root: Path) -> dict[str, Any]:
     run_dir = Path(run_dir)
-    manifest = json.loads((run_dir / "manifest.json").read_text(encoding="utf-8"))
+    manifest = validate_source(run_dir)
     profile = json.loads((run_dir / "dataset" / "profile.json").read_text(encoding="utf-8"))
     registry = DatasetRegistry(project_root=project_root)
     spec = registry.get(str(manifest["dataset_id"]))
     dataset = load_dataset(spec, registry)
-    split = make_split(dataset, int(manifest["root_seed"]))
+    recorded = json.loads((run_dir / "dataset" / "split_manifest.json").read_text(encoding="utf-8"))
+    split = SplitManifest(**{key: tuple(value) if key.endswith("_indices") else value
+                             for key, value in recorded.items() if key != "split_fingerprint"})
+    try:
+        validate_partition(dataset, split)
+    except ValueError as error:
+        raise ValueError(f"diagnostic source provenance error: {error}") from error
+    if (dataset.fingerprint != recorded["dataset_fingerprint"]
+            or manifest.get("dataset_fingerprint") != dataset.fingerprint
+            or split.train_fingerprint != _subset_fingerprint(dataset.frame, list(split.train_indices))
+            or split.test_fingerprint != _subset_fingerprint(dataset.frame, list(split.test_indices))
+            or split.to_dict()["split_fingerprint"] != recorded.get("split_fingerprint")
+            or profile.get("split_fingerprint") != recorded.get("split_fingerprint")
+            or tuple(profile.get("train_indices", [])) != split.train_indices):
+        raise ValueError("diagnostic source provenance does not match recorded dataset/split")
+    columns = [*spec.feature_columns, spec.target_column]
+    if list(profile["feature_columns"]) != list(spec.feature_columns) or profile["target_column"] != spec.target_column:
+        raise ValueError("diagnostic source provenance does not match feature schema")
+    if manifest.get("schema_version") == "m1-run-v2":
+        saved = json.loads((run_dir / "scientific_specification.json").read_text(encoding="utf-8"))
+        definition = spec.model_dump(mode="json", exclude={"raw_path", "accepted_filenames", "display_name"})
+        if (saved["specification"]["dataset"]["definition"] != definition
+                or saved["specification"]["dataset"]["raw_source_sha256"] != file_hash(dataset.path)):
+            raise ValueError("diagnostic source provenance does not match dataset specification")
     train = dataset.frame.loc[list(split.train_indices)]
     columns = [*spec.feature_columns, spec.target_column]
     reference_indices = set(profile.get("reference_indices") or [])
@@ -87,7 +115,7 @@ def _load_context(run_dir: Path, project_root: Path) -> dict[str, Any]:
 # Copying diagnostics
 # --------------------------------------------------------------------------- #
 
-def copying_diagnostics(run_dir: Path, project_root: Path, *, write: bool = True) -> dict[str, Any]:
+def copying_diagnostics(run_dir: Path, project_root: Path, *, write: bool = True, output_dir: Path | None = None) -> dict[str, Any]:
     ctx = _load_context(Path(run_dir), Path(project_root))
     columns = ctx["columns"]
     target = ctx["target_column"]
@@ -143,8 +171,10 @@ def copying_diagnostics(run_dir: Path, project_root: Path, *, write: bool = True
         "records": per_record,
     }
     if write:
-        (Path(run_dir) / "copying_diagnostics.json").write_text(
-            json.dumps(result, indent=2, sort_keys=True), encoding="utf-8")
+        directory = derived_directory(Path(run_dir), "copying", output_dir)
+        result["artifact_dir"] = str(directory)
+        write_json(directory / "copying_diagnostics.json", result)
+        seal_bundle(directory)
     return result
 
 
@@ -170,7 +200,7 @@ def _encode(frame: pd.DataFrame, numerical: list[str], categorical: list[str],
     return np.nan_to_num(np.column_stack(parts), nan=0.0)
 
 
-def support_diagnostics(run_dir: Path, project_root: Path, *, write: bool = True) -> dict[str, Any]:
+def support_diagnostics(run_dir: Path, project_root: Path, *, write: bool = True, output_dir: Path | None = None) -> dict[str, Any]:
     ctx = _load_context(Path(run_dir), Path(project_root))
     target = ctx["target_column"]
     numerical: list[str] = ctx["numerical_columns"]
@@ -245,10 +275,11 @@ def support_diagnostics(run_dir: Path, project_root: Path, *, write: bool = True
         "train_rows": len(train),
     }
     if write:
-        out = Path(run_dir) / "support_diagnostics.jsonl"
-        out.write_text("\n".join(json.dumps(r, sort_keys=True) for r in rows) + ("\n" if rows else ""), encoding="utf-8")
-        (Path(run_dir) / "support_summary.json").write_text(
-            json.dumps(summary, indent=2, sort_keys=True), encoding="utf-8")
+        directory = derived_directory(Path(run_dir), "support", output_dir)
+        summary["artifact_dir"] = str(directory)
+        write_text(directory / "support_diagnostics.jsonl", "\n".join(json.dumps(r, sort_keys=True, allow_nan=False) for r in rows) + ("\n" if rows else ""))
+        write_json(directory / "support_summary.json", summary)
+        seal_bundle(directory)
     summary["records"] = rows
     return summary
 
@@ -293,8 +324,11 @@ def diversity_scaling(prior_run_dirs: list[Path], p1_run_dirs: list[Path]) -> di
     def _index(dirs: list[Path]) -> dict[str, dict[str, Any]]:
         out: dict[str, dict[str, Any]] = {}
         for run_dir in dirs:
-            cmp = json.loads((Path(run_dir) / "comparison.json").read_text(encoding="utf-8"))
-            out[str(cmp.get("dataset_id"))] = _dup_block(cmp)
+            cmp = read_bundle(Path(run_dir))
+            dataset_id = str(cmp.get("dataset_id"))
+            if dataset_id in out:
+                raise ValueError("diversity_scaling requires one explicit execution per dataset on each side")
+            out[dataset_id] = _dup_block(cmp)
         return out
 
     prior = _index(prior_run_dirs)
@@ -326,14 +360,14 @@ _HUMAN_COLUMNS = ("human_valid", "human_failure_type", "human_severity",
 
 def _run_candidate_table(run_dir: Path, project_root: Path) -> list[dict[str, Any]]:
     run_dir = Path(run_dir)
-    manifest = json.loads((run_dir / "manifest.json").read_text(encoding="utf-8"))
+    manifest = validate_source(run_dir)
     raw = _read_jsonl(run_dir / "candidates_raw.jsonl")
     b2 = {r["candidate_id"]: r for r in _read_jsonl(run_dir / "baselines" / "b2" / "decisions.jsonl")}
     b3 = {r["candidate_id"]: r for r in _read_jsonl(run_dir / "baselines" / "b3" / "decisions.jsonl")}
     judge = {str(r.get("candidate_id")): r for r in _read_jsonl(run_dir / "baselines" / "b3" / "judge_results.jsonl")}
     traces = {t.get("call_id"): t for t in _read_jsonl(run_dir / "provider_calls.jsonl") if t.get("role") == "generation"}
-    copying = {r["record_id"]: r for r in json.loads((run_dir / "copying_diagnostics.json").read_text(encoding="utf-8"))["records"]}
-    support = {r["record_id"]: r for r in _read_jsonl(run_dir / "support_diagnostics.jsonl")}
+    copying = {r["record_id"]: r for r in copying_diagnostics(run_dir, project_root, write=False)["records"]}
+    support = {r["record_id"]: r for r in support_diagnostics(run_dir, project_root, write=False)["records"]}
 
     dists = sorted(v["nearest_train_distance"] for v in support.values() if v["nearest_train_distance"] is not None)
     low_cut = dists[len(dists) // 3] if dists else 0.0
@@ -470,7 +504,7 @@ def p1_human_review_sample(
     ]
     out_path = Path(out_path)
     out_path.parent.mkdir(parents=True, exist_ok=True)
-    with out_path.open("w", encoding="utf-8", newline="") as fh:
+    with immutable_text_stream(out_path) as fh:
         writer = csv.DictWriter(fh, fieldnames=fieldnames)
         writer.writeheader()
         for row in rows:

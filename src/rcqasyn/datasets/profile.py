@@ -12,7 +12,7 @@ from pydantic import Field
 from rcqasyn.contracts._base import ContractModel, JsonValue, Metadata, NonEmptyStr, NonNegativeInt
 
 from .loader import LoadedDataset
-from .split import SplitManifest
+from .split import SplitManifest, validate_partition
 
 
 class DatasetProfile(ContractModel):
@@ -77,6 +77,7 @@ def build_profile(
     seed: int = 0,
     enabled: bool = True,
 ) -> DatasetProfile:
+    validate_partition(dataset, split)
     train = dataset.frame.loc[list(split.train_indices)].copy()
     spec = dataset.spec
     numeric_summary: dict[str, dict[str, float]] = {}

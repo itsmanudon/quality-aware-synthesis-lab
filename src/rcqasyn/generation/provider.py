@@ -1,6 +1,7 @@
 # pyright: reportOptionalMemberAccess=false
 from __future__ import annotations
 
+import hashlib
 import json
 import os
 import time
@@ -26,6 +27,7 @@ class ProviderResponse:
     replay_source_id: str | None = None
     cost_usd: float | None = None
     call_id: str | None = None
+    external_call_id: str | None = None
     finish_reason: str | None = None
     response_format: dict[str, Any] | None = None
     reasoning_effort: str | None = None
@@ -76,7 +78,9 @@ def provider_readiness(config: Any) -> ProviderReadiness:
 class ReplayProvider:
     def __init__(self, fixture_path: Path, *, model: str = "replay", provider: str = "replay") -> None:
         self.fixture_path = Path(fixture_path)
-        raw = json.loads(self.fixture_path.read_text(encoding="utf-8"))
+        fixture_bytes = self.fixture_path.read_bytes()
+        self.fixture_sha256 = hashlib.sha256(fixture_bytes).hexdigest()
+        raw = json.loads(fixture_bytes.decode("utf-8"))
         if not isinstance(raw, dict):
             raise TypeError("replay fixture must be a JSON object")
         self._queues: dict[str, list[dict[str, Any]]] = {}
