@@ -11,7 +11,7 @@ from typing import Any
 
 from pydantic import BaseModel
 
-from .ownership import assert_writable
+from .ownership import _STAGE_PREFIX, write_scope
 
 
 def _jsonable(value: Any) -> Any:
@@ -21,24 +21,23 @@ def _jsonable(value: Any) -> Any:
 def write_text(path: Path, payload: str, *, overwrite: bool = False) -> None:
     """Durable atomic write; immutable creation uses atomic exclusive hard-linking."""
     path = Path(path)
-    assert_writable(path)
-    path.parent.mkdir(parents=True, exist_ok=True)
-    fd, temporary = tempfile.mkstemp(prefix=f".{path.name}.", dir=path.parent)
-    try:
-        with os.fdopen(fd, "w", encoding="utf-8", newline="") as stream:
-            stream.write(payload)
-            stream.flush()
-            os.fsync(stream.fileno())
-        assert_writable(path)
-        if overwrite:
-            os.replace(temporary, path)
-        else:
-            os.link(temporary, path)
-    finally:
+    with write_scope(path):
+        path.parent.mkdir(parents=True, exist_ok=True)
+        fd, temporary = tempfile.mkstemp(prefix=f"{_STAGE_PREFIX}{path.name}-", dir=path.parent)
         try:
-            os.unlink(temporary)
-        except FileNotFoundError:
-            pass
+            with os.fdopen(fd, "w", encoding="utf-8", newline="") as stream:
+                stream.write(payload)
+                stream.flush()
+                os.fsync(stream.fileno())
+            if overwrite:
+                os.replace(temporary, path)
+            else:
+                os.link(temporary, path)
+        finally:
+            try:
+                os.unlink(temporary)
+            except FileNotFoundError:
+                pass
 
 
 def write_json(path: Path, value: Any, *, overwrite: bool = False) -> None:
@@ -64,10 +63,10 @@ def create_run_dir(root: Path, run_id: str, *, exist_ok: bool = False) -> Path:
     if not run_id or Path(run_id).name != run_id or run_id in {".", ".."}:
         raise ValueError("run_id must be a non-empty single directory name")
     root = Path(root)
-    assert_writable(root / run_id / "manifest.json")
-    root.mkdir(parents=True, exist_ok=True)
     destination = root / run_id
-    destination.mkdir(exist_ok=exist_ok)
+    with write_scope(destination / "manifest.json"):
+        root.mkdir(parents=True, exist_ok=True)
+        destination.mkdir(exist_ok=exist_ok)
     return destination
 
 

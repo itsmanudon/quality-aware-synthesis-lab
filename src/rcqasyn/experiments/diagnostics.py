@@ -391,6 +391,8 @@ def _run_candidate_table(run_dir: Path, project_root: Path) -> list[dict[str, An
         dist = sup.get("nearest_train_distance")
         rows.append({
             "run_id": manifest.get("run_id"), "dataset_id": manifest.get("dataset_id"),
+            "sampling_identity": manifest["specification_fingerprint"]
+            if manifest.get("schema_version") == "m1-run-v2" else manifest.get("run_id"),
             "record_id": rid, "candidate_version": candidate.get("version"),
             "requested_class": req_class,
             "target_class": cp.get("target_class"),
@@ -421,13 +423,71 @@ def _run_candidate_table(run_dir: Path, project_root: Path) -> list[dict[str, An
     return rows
 
 
+def _recorded_human_review_sample(
+    run_dirs: list[Path], recorded_sample: Path, out_path: Path,
+) -> dict[str, Any]:
+    """Consume a recorded selection without changing its order or human cells."""
+    import csv
+    import io
+
+    source_bytes = Path(recorded_sample).read_bytes()
+    reader = csv.DictReader(io.StringIO(source_bytes.decode("utf-8-sig"), newline=""))
+    required = {"run_id", "dataset_id", "record_id", "canonical_hash"}
+    if not required <= set(reader.fieldnames or ()):
+        raise ValueError("recorded selection source identity columns are missing")
+    rows = list(reader)
+    sources = {}
+    for directory in run_dirs:
+        manifest = validate_source(Path(directory))
+        run_id = manifest.get("run_id")
+        if not run_id or run_id in sources:
+            raise ValueError("recorded selection source identity is missing or ambiguous")
+        sources[run_id] = {
+            "dataset_id": manifest.get("dataset_id"),
+            "record_ids": {str(row["record_id"]) for row in _read_jsonl(Path(directory) / "candidates_raw.jsonl")},
+        }
+    by_dataset: dict[str, int] = {}
+    for row in rows:
+        source = sources.get(row["run_id"])
+        if (source is None or row["dataset_id"] != source["dataset_id"]
+                or row["record_id"] not in source["record_ids"]):
+            raise ValueError("recorded selection source identity does not match supplied bundles")
+        dataset_id = row["dataset_id"]
+        by_dataset[dataset_id] = by_dataset.get(dataset_id, 0) + 1
+    out_path = Path(out_path)
+    if out_path.resolve() != Path(recorded_sample).resolve():
+        # write_text preserves existing UTF-8 BOM and newline bytes and creates
+        # the destination exclusively; the recorded source is never rewritten.
+        write_text(out_path, source_bytes.decode("utf-8"))
+    return {
+        "schema_version": "m1-5-p1-human-review-v1",
+        "path": str(out_path), "row_count": len(rows),
+        "unique_canonical_hashes": len({row["canonical_hash"] for row in rows}),
+        "by_dataset": by_dataset,
+        "human_columns_blank": all(not row.get(column, "") for row in rows for column in _HUMAN_COLUMNS),
+        "recorded_selection": True,
+        "recorded_sample_sha256": hashlib.sha256(source_bytes).hexdigest(),
+    }
+
+
 def p1_human_review_sample(
     run_dirs: list[Path], project_root: Path, out_path: Path, *, target: int = 120, seed: int = 42,
+    recorded_sample: Path | None = None,
 ) -> dict[str, Any]:
-    """Deterministic, stratified sample of UNIQUE P1 candidates with blank human fields."""
+    """Sample new candidates, or consume an existing recorded selection unchanged.
+
+    Recorded selections retain their saved IDs, order, and human cells. Target
+    and seed apply only to new selections; historical strata/seed are not inferred.
+    """
 
     import csv
 
+    if recorded_sample is None and len(run_dirs) == 1:
+        recorded = Path(run_dirs[0]) / "p1_human_review.csv"
+        if recorded.is_file() and validate_source(Path(run_dirs[0])).get("schema_version") != "m1-run-v2":
+            recorded_sample = recorded
+    if recorded_sample is not None:
+        return _recorded_human_review_sample(run_dirs, Path(recorded_sample), Path(out_path))
     tables = {Path(d).name: _run_candidate_table(d, project_root) for d in run_dirs}
     datasets = sorted(tables)
     per_dataset_quota = max(1, target // max(1, len(datasets)))
@@ -456,7 +516,7 @@ def p1_human_review_sample(
 
     def order_key(stratum: str, row: dict[str, Any]) -> str:
         return hashlib.sha256(
-            f"{seed}:{stratum}:{row['run_id']}:{row['record_id']}".encode()).hexdigest()
+            f"{seed}:{stratum}:{row.get('sampling_identity', row['run_id'])}:{row['record_id']}".encode()).hexdigest()
 
     selected: dict[tuple[str, str], dict[str, Any]] = {}
     strata_hits: dict[str, int] = {}

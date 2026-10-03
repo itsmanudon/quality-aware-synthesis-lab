@@ -2,7 +2,8 @@
 
 Reads completed P1 run directories (and the prior P0-v3 runs for the diversity
 scaling comparison), runs the diagnostic-only copying / TRAIN-support analysis,
-and writes every M1.5 report under ``artifacts/reports/p1/``.
+and writes reports into a fresh ``artifacts/derived/p1-reports-<execution-id>/``
+namespace. An existing historical P1 review selection is consumed as recorded.
 
 Usage:
     python experiments/m1_5_p1_reports.py
@@ -64,6 +65,14 @@ def _read(run_dir: Path, rel: str) -> Any:
 def _jsonl(run_dir: Path, rel: str) -> list[dict[str, Any]]:
     p = run_dir / rel
     return [json.loads(x) for x in p.read_text(encoding="utf-8").splitlines() if x.strip()] if p.exists() else []
+
+
+def _review_sample(run_dirs: list[Path]) -> dict[str, Any]:
+    recorded = ROOT / "artifacts" / "reports" / "p1" / "p1_human_review.csv"
+    return p1_human_review_sample(
+        run_dirs, ROOT, OUT / "p1_human_review.csv", target=120, seed=42,
+        recorded_sample=recorded if recorded.is_file() else None,
+    )
 
 
 def main() -> None:
@@ -187,8 +196,8 @@ def main() -> None:
         for name in P1
     })
 
-    # --- P1 human-review sample (~120 unique, blank human fields) --------
-    hr = p1_human_review_sample(p1_dirs, ROOT, OUT / "p1_human_review.csv", target=120, seed=42)
+    # --- Consume recorded P1 selection, or sample new candidates ----------
+    hr = _review_sample(p1_dirs)
     _w("p1_human_review_manifest.json", hr)
     seal_bundle(OUT)
     print("human review:", hr)

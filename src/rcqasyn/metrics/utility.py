@@ -25,6 +25,17 @@ from rcqasyn.datasets import DatasetDefinition
 SUPPORTED_CLASSIFIERS = ("logistic_regression", "random_forest")
 
 
+def resolve_estimators(seed: int = 0) -> dict[str, Any]:
+    """Construct the frozen M1 estimators for execution and policy identity."""
+    return {
+        # liblinear is stable for the very small minority classes in the pilot
+        # and avoids the overflow warnings seen with the default lbfgs solver
+        # on the large integer-valued page-blocks features.
+        "logistic_regression": LogisticRegression(max_iter=300, random_state=seed, solver="liblinear"),
+        "random_forest": RandomForestClassifier(n_estimators=50, random_state=seed),
+    }
+
+
 def utility_metrics(real_train: pd.DataFrame, real_test: pd.DataFrame, synthetic: pd.DataFrame, spec: DatasetDefinition, *, seed: int = 0, classifiers: tuple[str, ...] = SUPPORTED_CLASSIFIERS) -> dict[str, Any]:
     unknown = sorted(set(classifiers) - set(SUPPORTED_CLASSIFIERS))
     if unknown:
@@ -32,13 +43,7 @@ def utility_metrics(real_train: pd.DataFrame, real_test: pd.DataFrame, synthetic
     if not classifiers:
         raise ValueError("at least one classifier must be configured")
     result: dict[str, Any] = {"status": "ok", "TRTR": {}, "TSTR": {}}
-    models = {
-        # liblinear is stable for the very small minority classes in the pilot
-        # and avoids the overflow warnings seen with the default lbfgs solver
-        # on the large integer-valued page-blocks features.
-        "logistic_regression": LogisticRegression(max_iter=300, random_state=seed, solver="liblinear"),
-        "random_forest": RandomForestClassifier(n_estimators=50, random_state=seed),
-    }
+    models = resolve_estimators(seed)
     for name in classifiers:
         model = models[name]
         result["TRTR"][name] = _fit_score(real_train, real_test, spec, model)

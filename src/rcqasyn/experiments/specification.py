@@ -11,10 +11,18 @@ from pathlib import Path
 from typing import Any
 
 from rcqasyn.config.experiment import ExperimentConfig
-from rcqasyn.datasets import DatasetRegistry, load_dataset, make_split
+from rcqasyn.datasets import (
+    DatasetDefinition,
+    DatasetRegistry,
+    build_profile,
+    load_dataset,
+    make_split,
+)
 from rcqasyn.datasets.loader import LoadedDataset
+from rcqasyn.datasets.profile import DatasetProfile
 from rcqasyn.datasets.split import SplitManifest
 from rcqasyn.generation.prompts import load_prompt
+from rcqasyn.metrics.utility import resolve_estimators
 from rcqasyn.storage.ownership import file_hash
 
 
@@ -25,6 +33,10 @@ def fingerprint(value: Any) -> str:
 
 
 def control_policies(config: ExperimentConfig) -> dict[str, Any]:
+    """Legacy unbound v1 descriptors, retained for snapshot compatibility.
+
+    Execution identity must use :func:`resolved_control_policies` instead.
+    """
     shared = {
         "parser": "json-wrapper-v2"
         if config.generation.transport_version == "v2"
@@ -81,6 +93,71 @@ def control_policies(config: ExperimentConfig) -> dict[str, Any]:
     }
 
 
+def _estimator_parameters(config: ExperimentConfig) -> dict[str, Any]:
+    models = resolve_estimators(config.dataset.root_seed)
+    return {name: models[name].get_params(deep=False) for name in config.metrics.classifiers}
+
+
+def resolved_control_policies(
+    config: ExperimentConfig,
+    spec: DatasetDefinition,
+    profile: DatasetProfile,
+    *,
+    prompt_hashes: dict[str, str],
+    provider_identities: dict[str, dict[str, Any]],
+    estimator_parameters: dict[str, Any] | None = None,
+) -> dict[str, Any]:
+    """Bind policy semantics to effective execution inputs, using TRAIN only.
+
+    Full profile lineage includes held-out fingerprints and artifact IDs; the
+    bounded context intentionally excludes those from the control identity.
+    """
+    policies = {name: policy["descriptor"] for name, policy in control_policies(config).items()}
+    parameters = (
+        estimator_parameters if estimator_parameters is not None else _estimator_parameters(config)
+    )
+    evaluation_schema = spec.model_dump(
+        mode="json",
+        include={
+            "feature_columns",
+            "target_column",
+            "numerical_columns",
+            "categorical_columns",
+            "minority_label",
+        },
+    )
+    for name, descriptor in policies.items():
+        descriptor["version"] = f"{name}-resolved-policy-v2"
+        descriptor["binding"] = "resolved-execution-inputs-v1"
+        descriptor["estimator_parameters"] = parameters
+        descriptor["evaluation_schema"] = evaluation_schema
+    policies["b2"]["dataset_validation"] = spec.model_dump(
+        mode="json",
+        include={
+            "feature_columns",
+            "target_column",
+            "numerical_columns",
+            "categorical_columns",
+            "missing_policy",
+        },
+    )
+    policies["b2"]["train_domains"] = profile.model_dump(mode="json", include={"domains"})[
+        "domains"
+    ]
+    policies["b2"]["train_ranges"] = {
+        column: {bound: summary[bound] for bound in ("min", "max")}
+        for column, summary in profile.numeric_summary.items()
+    }
+    policies["b3"]["provider"] = provider_identities["judge"]
+    policies["b3"]["prompt_sha256"] = prompt_hashes["judge"]
+    policies["b3"]["train_context_sha256"] = fingerprint(profile.to_generation_context())
+    policies["b3"]["context_identity"] = "bounded-train-profile-v1"
+    return {
+        name: {"descriptor": descriptor, "fingerprint": fingerprint(descriptor)}
+        for name, descriptor in policies.items()
+    }
+
+
 def scientific_specification(
     config: ExperimentConfig,
     root: Path,
@@ -88,6 +165,7 @@ def scientific_specification(
     replay: bool,
     dataset: LoadedDataset | None = None,
     split: SplitManifest | None = None,
+    profile: DatasetProfile | None = None,
     prompt_hashes: dict[str, str] | None = None,
     raw_source_sha256: str | None = None,
     provider_sources: dict[str, str] | None = None,
@@ -102,6 +180,26 @@ def scientific_specification(
     if file_hash(dataset.path) != raw_source_sha256:
         raise ValueError("dataset source provenance changed during resolution")
     split = split or make_split(dataset, config.dataset.root_seed)
+    profile = profile or build_profile(
+        dataset,
+        split,
+        reference_example_count=config.dataset.reference_example_count,
+        reference_examples_per_class=config.dataset.reference_examples_per_class,
+        seed=config.dataset.root_seed,
+        enabled=config.dataset.reference_examples_enabled,
+    )
+    resolved_prompts = (
+        prompt_hashes
+        if prompt_hashes is not None
+        else {
+            role: load_prompt(role, version, root).sha256
+            for role, version in (
+                ("generation", config.generation.prompt_version),
+                ("judge", config.judge.prompt_version),
+            )
+        }
+    )
+    estimator_parameters = _estimator_parameters(config)
     definition = dataset.spec.model_dump(
         mode="json", exclude={"raw_path", "accepted_filenames", "display_name"}
     )
@@ -130,28 +228,37 @@ def scientific_specification(
         "split_seed": split.split_seed,
         "generation": config.generation.model_dump(mode="json"),
         "providers": providers,
-        "prompts": prompt_hashes
-        or {
-            role: load_prompt(role, version, root).sha256
-            for role, version in (
-                ("generation", config.generation.prompt_version),
-                ("judge", config.judge.prompt_version),
-            )
-        },
-        "controls": control_policies(config),
+        "prompts": resolved_prompts,
+        "controls": resolved_control_policies(
+            config,
+            dataset.spec,
+            profile,
+            prompt_hashes=resolved_prompts,
+            provider_identities=providers,
+            estimator_parameters=estimator_parameters,
+        ),
         "evaluation": {
             "version": "m1-metrics-v1",
             "pr_auc": "alias_average_precision",
             "positive_label": "existing_minority_or_max_train_label",
             "classifiers": list(config.metrics.classifiers),
-            "estimator_parameters": {
-                "logistic_regression": {
-                    "max_iter": 300,
-                    "solver": "liblinear",
-                    "random_state": config.dataset.root_seed,
-                },
-                "random_forest": {"n_estimators": 50, "random_state": config.dataset.root_seed},
+            "result_families": {
+                "numeric_columns": list(dataset.spec.numerical_columns),
+                "categorical_columns": [
+                    *dataset.spec.categorical_columns,
+                    dataset.spec.target_column,
+                ],
+                "class_categorical_columns": list(dataset.spec.categorical_columns),
+                "classes": sorted(
+                    set(
+                        dataset.frame.loc[list(split.train_indices), dataset.spec.target_column]
+                        .dropna()
+                        .astype(str)
+                    )
+                ),
+                "populations": ["TRTR", "TSTR"],
             },
+            "estimator_parameters": estimator_parameters,
             "preprocessing": {
                 "numeric": ["median_imputation", "standard_scaler"],
                 "categorical": ["most_frequent_imputation", "onehot_ignore_unknown"],

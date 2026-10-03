@@ -35,6 +35,7 @@ from rcqasyn.contracts import (
     Verdict,
 )
 from rcqasyn.contracts.m1 import (
+    annotate_intrinsic,
     annotate_utility,
     execution_outcome,
     finite_tree,
@@ -69,7 +70,7 @@ from rcqasyn.storage.ownership import (
 from rcqasyn.utils.hashing import sha256_text
 from rcqasyn.utils.seeds import generation_provider_seed
 
-from .call_evidence import DurableProvider
+from .call_evidence import DurableCallFailure, DurableProvider
 from .specification import environment_snapshot, scientific_specification, seed_provenance
 
 
@@ -129,7 +130,7 @@ def _execute_experiment(config: ExperimentConfig, *, project_root: Path | None =
     # Validate both independently selectable providers before reserving an artifact directory.
     generator = _provider(config.generator, root, replay)
     judge_provider = _provider(config.judge.provider, root, False)
-    scientific = scientific_specification(config, root, replay=replay, dataset=dataset, split=split,
+    scientific = scientific_specification(config, root, replay=replay, dataset=dataset, split=split, profile=profile,
                                           prompt_hashes={"generation": generation_prompt.sha256, "judge": judge_prompt.sha256},
                                           raw_source_sha256=raw_source_sha256,
                                           provider_sources={name: provider.fixture_sha256 for name, provider in
@@ -222,12 +223,16 @@ def _execute_experiment(config: ExperimentConfig, *, project_root: Path | None =
     )
     comparison["schema_version"] = "m1-comparison-v2"
     comparison["run_id"] = run_id
+    comparison["execution_id"] = run_id
+    comparison["dataset_fingerprint"] = dataset.fingerprint
+    comparison["split_fingerprint"] = split.to_dict()["split_fingerprint"]
     comparison["configured_classifiers"] = list(config.metrics.classifiers)
+    comparison["configured_results"] = scientific["specification"]["evaluation"]["result_families"]
     comparison["specification_fingerprint"] = scientific["fingerprint"]
-    comparison["outcome"] = execution_outcome(comparison).model_dump(mode="json")
     comparison["generation_accounting"] = {
         "requested": plan.requested_count, "returned_parseable": len(raw_candidates),
         "status": "exact" if len(raw_candidates) == plan.requested_count else "overproduction" if len(raw_candidates) > plan.requested_count else "shortfall"}
+    comparison["outcome"] = execution_outcome(comparison).model_dump(mode="json")
     comparison["completed_at"] = datetime.now(UTC).isoformat()
     validate_comparison(comparison)
     _write_json(run_dir / "comparison.json", comparison)
@@ -452,7 +457,6 @@ def _generate_pool(config: ExperimentConfig, run_id: str, plan: GenerationPlan, 
             generation_context_json=generation_context_json, class_condition=requested_class,
             requested_count=count, reference_examples=json.dumps(profile.reference_examples, sort_keys=True),
         )
-        call_id = f"generation-{call_index}"
         try:
             response = provider.call(
                 role="generation", prompt=prompt, request_index=call_index,
@@ -460,9 +464,9 @@ def _generate_pool(config: ExperimentConfig, run_id: str, plan: GenerationPlan, 
                 max_tokens=config.generation.max_tokens, response_format=response_format,
                 reasoning_effort=config.generation.reasoning_effort,
             )
-        except (OSError, RuntimeError, TypeError, ValueError) as error:
+        except DurableCallFailure as error:
             failures.append(ParseFailureEvent(
-                event_id=f"provider-generation-{call_index}", run_id=run_id, call_id=call_id,
+                event_id=f"provider-generation-{call_index}", run_id=run_id, call_id=error.attempt_id,
                 parser_version="provider-v1", error=f"provider failure: {error}", recoverable=False,
                 created_at=datetime.now(UTC), metadata={"requested_class": requested_class, "requested_count": count,
                                                        "batch_index": batch_index, "provider_seed": batch_seed,
@@ -472,7 +476,7 @@ def _generate_pool(config: ExperimentConfig, run_id: str, plan: GenerationPlan, 
                                                        "reasoning_effort": config.generation.reasoning_effort},
             ))
             continue
-        call_id = response.call_id or call_id
+        call_id = response.call_id or f"generation-{call_index}"
         traces.append(_trace(
             run_id, "generation", response, config.generation.prompt_version, plan.prompt_hash, count,
             batch_seed, requested_class, prompt=prompt,
@@ -623,9 +627,9 @@ def _run_b3(candidates: list[CandidateRecord], train: pd.DataFrame, spec: Any, p
             if accept:
                 accepted.append(candidate)
             decisions.append(BaselineDecision(candidate_id=candidate.record_id, baseline="b3", accepted=accept, reason="single judge score meets static threshold" if accept else "single judge rejected below static threshold", judge_result_id=result.result_id, created_at=datetime.now(UTC)))
-        except (OSError, RuntimeError, TypeError, ValueError) as error:
+        except DurableCallFailure as error:
             provider_failures += 1
-            failures.append(ParseFailureEvent(event_id=f"judge-provider-{candidate.record_id}", run_id=run_dir.name, call_id=f"judge-{index}", parser_version="provider-v1", error=f"judge provider failure: {error}", recoverable=False, created_at=datetime.now(UTC)))
+            failures.append(ParseFailureEvent(event_id=f"judge-provider-{candidate.record_id}", run_id=run_dir.name, call_id=error.attempt_id, parser_version="provider-v1", error=f"judge provider failure: {error}", recoverable=False, created_at=datetime.now(UTC)))
             decisions.append(BaselineDecision(candidate_id=candidate.record_id, baseline="b3", accepted=False, reason="judge provider failure", created_at=datetime.now(UTC)))
     result = _persist_baseline("b3", accepted, candidates, train, spec, config, run_dir, evaluate, decisions=decisions, judge_results=results)
     _write_jsonl(run_dir / "baselines" / "b3" / "judge_failures.jsonl", failures)
@@ -690,6 +694,7 @@ def _persist_baseline(name: str, accepted: list[CandidateRecord], all_candidates
         # Preserve every metric's null/empty detail while making the global
         # state explicit for report readers and downstream evaluability checks.
         intrinsic["status"] = "empty"
+    intrinsic = annotate_intrinsic(intrinsic)
     _write_json(directory / "metrics.json", intrinsic)
     _write_json(directory / "classifier_metrics.json", utility)
     duplicate_hashes = [_canonical_hash(candidate) for candidate in all_candidates]

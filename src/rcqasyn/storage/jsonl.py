@@ -8,20 +8,20 @@ from typing import Any
 
 from pydantic import BaseModel
 
-from .ownership import assert_writable
+from .ownership import write_scope
 
 
 def append_jsonl(path: Path, records: Iterable[Any]) -> None:
     path = Path(path)
-    assert_writable(path)
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("a", encoding="utf-8", newline="\n") as stream:
-        for record in records:
-            value = record.model_dump(mode="json") if isinstance(record, BaseModel) else record
-            stream.write(json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False))
-            stream.write("\n")
-            stream.flush()
-            os.fsync(stream.fileno())
+    with write_scope(path):
+        path.parent.mkdir(parents=True, exist_ok=True)
+        with path.open("a", encoding="utf-8", newline="\n") as stream:
+            for record in records:
+                value = record.model_dump(mode="json") if isinstance(record, BaseModel) else record
+                stream.write(json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False))
+                stream.write("\n")
+                stream.flush()
+                os.fsync(stream.fileno())
 
 
 def read_jsonl(path: Path) -> Iterator[Any]:

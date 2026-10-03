@@ -16,6 +16,15 @@ class EvidenceWriteError(Exception):
     """Durability failure must escape provider/parse rejection handlers."""
 
 
+class DurableCallFailure(RuntimeError):
+    """Expected transport failure joined to its already persisted internal attempt."""
+
+    def __init__(self, attempt_id: str, cause: Exception) -> None:
+        self.attempt_id = attempt_id
+        self.provider_error = cause
+        super().__init__(str(cause))
+
+
 class DurableProvider:
     def __init__(self, provider: Any, directory: Path, role: str) -> None:
         self.provider = provider
@@ -47,6 +56,8 @@ class DurableProvider:
                     "reason": str(error),
                 },
             )
+            if isinstance(error, (OSError, RuntimeError, TypeError, ValueError)):
+                raise DurableCallFailure(attempt, error) from error
             raise
         raw = asdict(response)
         raw["created_at"] = response.created_at.isoformat()

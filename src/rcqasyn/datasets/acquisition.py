@@ -110,13 +110,13 @@ def write_acquisition(path: Path, record: AcquisitionRecord, *, overwrite: bool 
 
     from rcqasyn.storage.ownership import assert_writable
     destination = Path(path)
-    assert_writable(destination)
-    destination.parent.mkdir(parents=True, exist_ok=True)
     if destination.exists():
         existing = json.loads(destination.read_text(encoding="utf-8"))
         if existing == record.to_dict():
             return
         raise FileExistsError(f"existing acquisition manifest is incompatible: {destination}")
+    assert_writable(destination)
+    destination.parent.mkdir(parents=True, exist_ok=True)
     write_json(destination, record.to_dict())
 
 
