@@ -39,7 +39,7 @@ default rules — both produce spurious errors when run outside `.venv`.
 ## Commands
 
 ```bash
-# tests (67 tests, ~8s; testpaths = tests/)
+# tests (158 cases after Phase 1; testpaths = tests/; collect to verify current count)
 pytest -q
 pytest tests/m1/test_harness.py -q          # one file
 
@@ -137,7 +137,8 @@ anything about runs. Its order is load-bearing:
    *before* any provider call.
 8. **Provider smoke call** (non-replay): one bounded call that must return `{"ok":true}`;
    failure marks the run failed and aborts before pilot generation.
-9. Generate **one** raw candidate pool, persisted before parsing.
+9. Durably persist each raw provider response before parsing; build and then persist
+   **one** parsed candidate pool.
 10. Fork the *same* pool into B1, B2, B3 (strictly paired — never regenerate per branch).
 11. Metrics, `comparison.json`, `human_review.csv`, `b2_b3_disagreements.csv`,
     `machine_failure_report.json`, manifest finalization.
@@ -147,7 +148,7 @@ anything about runs. Its order is load-bearing:
 | | Policy |
 | --- | --- |
 | **B1** | Accept every parseable candidate. No quality filter at all. |
-| **B2** | Independent deterministic validators (schema, categorical-domain, missing, target-condition, observed-range). Rejects only configured severities (default HIGH/CRITICAL). No learned score, no fusion, no repair, no regeneration. |
+| **B2** | Independent deterministic validators (schema, categorical-domain, missing, target-condition, observed-range). Rejects configured severities (default HIGH/CRITICAL) or exact ordered duplicates. No learned score, no fusion, no repair, no regeneration. |
 | **B3** | Exactly one LLM judge call per parseable candidate, static score threshold, PASS/WARN accept. No calibration, no ensemble, no rule+judge fusion, no factual-verification claim. Malformed output is traced and rejected. |
 
 B1/B2/B3 are the research control conditions. **Do not "improve" them.** Making B2 or B3
@@ -158,9 +159,10 @@ smarter destroys the comparison the project exists to make.
 These are enforced by tests and by design; violating them silently corrupts the research.
 
 - **No test leakage.** Profiles, prompts, reference examples, filters, judges, model
-  selection, and preprocessing fit use **TRAIN only**. The REAL TEST split is touched
-  only for final utility scoring. `assert_no_test_leakage` guards this; see
-  `tests/m1/test_registry_split_profile.py` for the sentinel test.
+  selection, and preprocessing fit use **TRAIN only**. Full profile artifacts retain
+  TEST-inclusive lineage; fresh upstream inputs use `TrainingContext` instead. Legacy
+  unsafe fresh protocols fail before provider contact. REAL TEST is supplied only to
+  final utility evaluation. See `docs/phase1-stabilization.md` and the Phase-1 boundary tests.
 - **Quality / risk / uncertainty / dataset-contribution stay separate typed fields.**
   Never collapse them into one score. See `docs/contracts.md`.
 - **Scope is recorded with evidence.** FIELD / RECORD / SUBGROUP / DATASET measurements
@@ -194,8 +196,10 @@ These are enforced by tests and by design; violating them silently corrupts the 
   SHA-256 and refuses to guess.
 - **The coding agent never fills a human-review column** and never infers a human
   validity label from a B2/B3 decision. See `docs/human-review.md`.
-- **Artifacts are write-once.** `storage/artifacts.py::write_json` refuses to overwrite
-  unless `overwrite=True`; `create_run_dir` uses `exist_ok=False`. Schema changes require
+- **Historical artifacts are immutable.** Active execution-owned manifests/evidence may
+  transition until `FINALIZED.json` seals the bundle. Foreign runs and existing reports
+  cannot be replaced by workflow overwrite flags. `create_run_dir` reserves exclusively.
+  Generic unsealed nonhistorical JSON replacement remains explicit. Schema changes require
   an explicit migration and a `schema_version` bump.
 
 ## Code conventions
@@ -260,7 +264,7 @@ log — and commit the updated `test-results/history.jsonl` alongside the change
 
 - Running the CLI outside the venv fails with `ModuleNotFoundError: rcqasyn`.
 - Re-running a config with the same `run_id` fails with `FileExistsError`. Change the
-  `run_id` or delete the run directory.
+  `run_id` for a new execution; preserve the historical directory.
 - `data/*` and `artifacts/*` contents are gitignored (`.gitkeep` files are tracked). Local
   run output and KEEL raw files never get committed — do not try to force them in.
 - `test-results/history.jsonl` is the one exception to that pattern: it is a tracked,

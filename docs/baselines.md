@@ -43,3 +43,12 @@ false-reject analysis not-evaluable until a human fills those fields.
 
 After sequential runs, combine their machine-only comparisons with
 `rcqasyn baselines compare artifacts/runs/<page-run> artifacts/runs/<ecoli-run> artifacts/runs/<abalone-run>`.
+
+## Phase 1 execution contracts
+
+Control admission, thresholds and all metric formulas are unchanged. In particular,
+`pr_auc` still aliases average precision; B2 still rejects TRAIN-unseen categorical
+values and exact duplicates. Versioned policy descriptors and regression fixtures
+protect these behaviors. Finalization does not imply successful/evaluable utility:
+component status and per-metric availability are explicit. See
+[Phase 1](phase1-stabilization.md) for the TRAIN boundary and failure contracts.

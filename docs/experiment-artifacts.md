@@ -2,7 +2,10 @@
 
 M1 runs use `artifacts/runs/<run_id>/` with these core files:
 
-- `manifest.json`
+- `manifest.json` (v2 lifecycle and component outcome)
+- `scientific_specification.json`
+- `calls/<role>-<ordinal>.json` (durable response/failed-attempt evidence before parsing)
+- `FINALIZED.json` (last-written bundle hash seal)
 - `resolved_config.yaml`
 - `generation_plan.json`
 - `generation_seed_plan.json` - the deterministic unique per-batch provider seed for
@@ -19,7 +22,7 @@ M1 runs use `artifacts/runs/<run_id>/` with these core files:
 - `comparison.json`
 - `human_review.csv` and `b2_b3_disagreements.csv`
 
-Diagnostic-only artifacts (written by `rcqasyn baselines diagnose`; they never read,
+Diagnostic-only artifacts in new `artifacts/derived/<source-purpose-execution>/` directories (written by `rcqasyn baselines diagnose`; they never read,
 change, or re-run a B1/B2/B3 decision):
 
 - `copying_diagnostics.json` - per raw candidate, three independent booleans:
@@ -31,16 +34,21 @@ change, or re-run a B1/B2/B3 decision):
   (numeric z-score; categoricals one-hot with unit weight). Exploratory only: no
   threshold, no acceptance effect, not a validity probability.
 
-Every artifact records a schema version and belongs to a run manifest that records
-configuration, seed, environment, and Git state.
+Versioned manifests/results record configuration, seed routes, environment and Git state.
+CSV/JSONL rows and some scalar metadata do not each carry a schema version. A v2
+finalized bundle is immutable to package writers; only its owning active execution
+can transition lifecycle files or append active evidence.
 
 `comparison.json` reports attempted and successful calls separately, plus role-specific
 tokens, latency, and nullable costs. The aggregate token/latency/cost fields remain
 unknown when either role has unknown accounting rather than treating missing usage as
 zero.
 
-Schema changes require an explicit migration and version bump. No hidden mutable state,
+New result contracts use explicit versions; legacy bundles remain read-only and do not require migration. No hidden mutable state,
 implicit prompts, or unrecorded decisions are permitted. The resolved configuration,
 prompt hashes, provider traces, parser failures, baseline policies, and a no-test-leakage
 marker are retained. Replay creates no network/API calls, and the M0.1 storage
 primitives remain backward-compatible.
+
+See [Phase 1 stabilization](phase1-stabilization.md) for lifecycle versus success,
+source-bound diagnostics, unsafe legacy fresh-run rejection and legacy reader compatibility.

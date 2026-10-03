@@ -84,8 +84,8 @@ restore it from the repository root:
 tar -xzf artifacts/archives/<run-id>.tar.gz
 ```
 
-Never overwrite an existing run directory until its identity and checksum have been
-checked.
+Never overwrite an existing run directory. Verify source identities and checksums,
+then restore or derive into a new directory.
 
 ## Resume on another laptop
 
@@ -104,3 +104,13 @@ checked.
 Do not rerun an expensive experiment merely because artifacts are missing on another
 machine. Transfer the original artifacts if available; a rerun is a new experimental
 replicate.
+
+## Phase 1 execution guarantees
+
+Scientific-specification fingerprints exclude execution IDs and output paths. Unique
+execution IDs reserve separate bundles. Seeds, environment and dirty Git state are
+recorded, but provider determinism is not guaranteed. Missing seeds are explicit.
+Finalized and foreign run bundles are immutable to package writers; active owned
+manifest/evidence transitions are permitted until sealing. Derived analysis writes
+separately and validates source bindings. See [Phase 1](phase1-stabilization.md) for
+status contracts, durable call recovery, guards and legacy compatibility.
