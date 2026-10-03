@@ -2,7 +2,7 @@
 
 This change stabilizes execution boundaries and evidence. It introduces no new
 dataset, threshold, classifier, metric formula, split algorithm, control admission
-rule, generation quota, or review sampling policy. There is no CV, model selection,
+rule, generation quota, or review sampling design. There is no CV, model selection,
 hyperparameter search or calibration execution path in M1.
 
 ## TRAIN and REAL TEST
@@ -34,7 +34,20 @@ A replay with a newly executing judge remains subject to the fresh-context guard
 It binds the resolved dataset definition, normalized data fingerprint and raw source
 bytes, split protocol/seed, example policy, generation configuration, response fixture
 bytes where applicable, provider/model configuration, prompt hashes, B1/B2/B3 policy
-descriptors, classifier parameters, preprocessing and existing metric semantics.
+descriptors, effective classifier constructor parameters, configured result families,
+preprocessing and existing metric semantics. The estimator descriptor captures
+`get_params(deep=False)` from the same constructor factory used for execution,
+including LR C/tolerance and RF criterion/depth/features/bootstrap defaults. The
+constructors and their scientific settings are unchanged.
+
+New executions use resolved control descriptors: B2 binds declared schema and the
+resolved missing policy, TRAIN domains and ranges; B3 binds provider/model and recorded
+response source where applicable, prompt bytes, and the bounded TRAIN context hash.
+The old `control_policies(config)` descriptor hashes remain a compatibility API;
+they do not claim complete binding of resolved execution behavior.
+
+Canonical identity uses `json.dumps(value, sort_keys=True, separators=(",", ":"),
+allow_nan=False)` with the default ASCII escaping, UTF-8 encoding, then SHA-256.
 
 The runner uses already resolved inputs and checks source bytes during resolution.
 Replay source identities bind to the bytes actually loaded by each provider.
@@ -57,10 +70,29 @@ allowed and recorded honestly.
 The execution owns its newly reserved directory. Its lifecycle manifest and smoke
 state may transition while active; evidence streams may append. Other outputs use
 exclusive atomic creation. JSON writes reject non-standard NaN/Infinity.
-`FINALIZED.json` is written last and contains file hashes. A seal protects the
-whole bundle from package writers, including append/overwrite requests.
+`FINALIZED.json` uses `m1-seal-v1` and is written last with file hashes. Writers,
+JSONL appends, directory reservations, and seals use reentrant OS locks in TEMP.
+Locks cover checks, staging, installation, and cleanup; sealing holds the same locks
+over a quiescent inventory and seal installation. A writer finishes before sealing,
+or fails after the seal without installing. Competing seals have one winner.
+Reserved `.rcqasyn-stage-` files are excluded from inventories. Non-staging external file, directory, and dangling
+symlinks are rejected during sealing because their targets are outside bundle control.
+A seal protects the whole bundle from package writers, including new files and
+append/overwrite requests.
 
-Existing foreign M1 run directories are immutable even without a new seal.
+The ancestor locks conservatively serialize helpers sharing a filesystem root.
+Cooperating processes must use the same TEMP lock namespace. Windows thread/process
+races and symlink cases are exercised; the POSIX `flock` path is implemented but has
+not been runtime-tested on this Windows verification host.
+
+Existing foreign M1 run directories and supported unversioned/v1 `completed` legacy
+bundles are immutable even without a new seal. Existing standalone history in
+`artifacts/reports`, `artifacts/manifests`, `artifacts/derived`, `data/manifests`, and
+`test-history` cannot be overwritten or appended through public helpers. New files
+may be created in an unsealed namespace; sealing protects the entire bundle.
+Ownership snapshots preexisting files, so claiming an existing directory cannot
+authorize replacing its history. Files created by the current active owner can
+legitimately transition. Guards check both symlink entries and resolved targets.
 Dataset preparation and TRTR/comparison manifests may reuse byte-equivalent logical
 content without writing; changed content fails instead of refreshing old reports.
 Acquisition, CSV, YAML, JSONL and human-audit writers refuse replacements.
@@ -86,17 +118,38 @@ evidence remains ambiguous; it is never retrospectively inferred.
 parsing, admission or subsequent calls. Internal call identity is qualified by
 execution ID and directory; role ordinals remain stable across deterministic reruns.
 External provider IDs are retained in provenance and cannot collide in candidate,
-judge or evidence joins. Existing sampling still hashes the same seed/category/record
-identity; execution UUIDs do not enter those identities. Role summary trace files are
-written later; after a crash, the durable call files are the recovery evidence.
+judge or evidence joins. Expected transport failures propagate `DurableCallFailure`
+with the exact persisted attempt ID; callers never reconstruct failed durable IDs.
+A fresh smoke consumes `generation-0`, so the first actual batch is `generation-1`.
+Returned responses supply the authoritative ID used by traces and parser failures.
+
+New review selections hash review seed, stratum, scientific fingerprint, and stable
+candidate ID; execution UUIDs and output paths are excluded. Caps, categories, roles,
+tertiles, default seed, and eligible population retain their existing design. Legacy
+new selections retain their recorded run identity. If a legacy bundle contains a
+recorded `p1_human_review.csv`, it is consumed as recorded. Aggregate exports can be
+supplied with `recorded_sample=`; the P1 roll-up reuses its existing historical export.
+Source membership is checked, and recorded ordering/human cells/bytes are preserved.
+Historical seed and strata are not inferred from a CSV that does not record them.
+Role summary trace files are written later; after a crash, the durable call files are the recovery evidence.
 
 A terminal `finalized` execution is a persisted bundle, not necessarily a successful
 or fully evaluable experiment. `m1-outcome-v1` separates lifecycle, component states,
 utility evaluability and success. Generation/parse/judge failures, missing metrics,
 classifier failures and nonfinite metric values prevent full success. Per-metric
 availability preserves missing/nonfinite/exception reasons without altering numbers.
+The nested contract validates required configured columns, TRAIN classes,
+populations and classifiers, every supported nested status, explicit unavailable
+reasons, and component/accounting consistency. Missing required results or invalid
+accounting fail finalization; declared nested failures and explained unavailable
+results can produce a finalized diagnostic bundle with `success=false`. Low finite
+metric values do not constitute failure. Outcome reasons are ordered canonically
+for reader roundtrips.
+
 Requested and returned generation counts are reported separately; overproduction is
-recorded without truncation or regeneration.
+recorded without truncation or regeneration. Requested-denominator ratios may exceed
+one under the existing overproduction or batch-per-parser-event accounting formulas;
+validation checks those formulas rather than imposing a new cap.
 
 Unexpected exceptions propagate and attempt to persist a failed manifest/fallback
 marker. If storage itself fails, the missing final seal prevents new readers from
@@ -105,15 +158,20 @@ overwriting their files.
 
 ## Readers and frozen controls
 
-New readers require finalized v2 state, a valid seal, consistent specification/
-execution identity, and the required result contract. Utility evaluability is derived
-from required finite metrics and classifier status, rather than trusting an aggregate
+New readers require finalized v2 state, supported seal/specification/result schemas,
+a valid seal, and consistent run/execution, scientific, dataset/source, and split
+identities. Split fingerprints are recomputed with the approved split serialization.
+Configured result families/classifiers are bound to the scientific specification;
+profile/plan identity, durable call references, and baseline metric copies are checked
+against their authoritative source/result identity. Required new-format identity
+fields cannot be silently omitted. Readers enforce the nested result contract.
+Utility evaluability is derived from required finite metrics and classifier status, rather than trusting an aggregate
 flag. Missing diagnostics/admission/judge accounting fails schema validation.
 
 Known legacy bundles with recorded `completed` status remain readable without
 migration. Compatibility metadata explicitly states that the old success/schema/seal
-was not verified by the new contract. Missing manifests, running/failed state and
-unknown versions are rejected. Legacy dictionaries used directly by pure analysis
+and complete cross-artifact identity were not verified by the new contract.
+Missing manifests, running/failed state and unknown versions are rejected. Legacy dictionaries used directly by pure analysis
 helpers remain distinguishable from validated source bundles.
 Cross-dataset aggregation preserves separate execution entries. The one-to-one
 diversity comparison refuses multiple runs for a dataset on either side rather than
@@ -145,8 +203,11 @@ The original checkout and all historical source directories are outside the chan
 - Test isolation: dataset CLI uses copied specs and disposable raw/manifests locations.
 - Independent read-only review found status, metric-reason, resolved-source and reader
   gaps; failing regression tests preceded their fixes.
-- Ruling: use stable role-local call ordinals qualified by execution directory, so
-  execution uniqueness cannot change existing deterministic review sampling inputs.
+- Remediation: nested contracts, authoritative failure joins, scientific review
+  identity, writer/seal exclusion, legacy/public writer coverage, resolved behavior
+  fingerprints, and cross-artifact identity validation have regression coverage.
+- Ruling: role-local durable ordinals are qualified by execution directory; review
+  selection uses scientific identity rather than the execution directory identity.
 - Ruling: refuse ambiguous multi-execution diversity pairing instead of deciding a
   new scientific pairing policy.
 
@@ -158,21 +219,24 @@ for the current count instead of relying on historical counts. No provider resea
 experiment or performance claim is part of this verification.
 
 
-Final verification on the implementation worktree: 158 tests passed without
-deselection (14 expected sklearn warnings from adversarial TEST-label mutation);
-Ruff passed and Pyright reported zero errors/warnings. The focused Phase-1 suite
-contains 60 tests. An independent read-only reviewer checked the corrected result
-contracts and frozen scientific behavior; that review was not a second full-suite run.
+Remediation verification: 375 tests passed without deselection, including all
+original 158 tests and 217 added regression cases. The focused Phase-1 suite passed
+277 tests. Both runs reported the same 14 sklearn warnings from adversarial
+TEST-label mutation. Ruff passed; Pyright reported zero errors/warnings (a tool
+update advisory was recorded separately); `git diff --check` passed.
 
-Offline verification used two executions at seed 42 and one at seed 43 in fresh
-OS temporary directories. The seed-42 executions shared a scientific fingerprint,
-had different execution identities/directories and matched substantive replay outputs.
-Seed 43 changed both scientific and split fingerprints. The legacy replay fixture
-remains explicitly not fully successful/evaluable; a separate valid offline fixture
-proves that full success is reachable. No external provider was contacted.
+Standalone probes after the full suite reproduced F1-F7 through public contracts,
+fresh fake/recorded executions, disposable writer/seal races, and resealed adversarial
+bundles. Two seed-42 executions shared a scientific fingerprint and substantive
+results while reserving distinct directories. Seed 43 changed scientific and split
+fingerprints. Actual 100-candidate executions selected identical review IDs/order
+across execution UUIDs; changing review seed changed selection. Full success remains
+reachable with a valid fixture. The legacy replay fixture remains explicitly not
+fully successful/evaluable. No external provider was contacted.
 
-Byte-level aggregate hashes of the original checkout and protected historical groups
-in the implementation worktree matched their pre-implementation inventories.
-Historical `artifacts`, `data`, `paper`, prompts, configurations and recorded test
-results were not rewritten. Pytest basetemps and replay bundles were created only
-under the operating system temporary directory.
+Protected historical inventories are hashed before remediation and again after
+verification. Historical artifacts, data/history, paper/results, prompts,
+configurations and recorded test results are not rewritten. All test/replay/probe
+outputs are confined to fresh operating-system temporary directories. The final
+handoff records the integrity comparison and commit identities; re-verification
+remains the independent verifier's responsibility.

@@ -111,6 +111,9 @@ Scientific-specification fingerprints exclude execution IDs and output paths. Un
 execution IDs reserve separate bundles. Seeds, environment and dirty Git state are
 recorded, but provider determinism is not guaranteed. Missing seeds are explicit.
 Finalized and foreign run bundles are immutable to package writers; active owned
-manifest/evidence transitions are permitted until sealing. Derived analysis writes
+manifest/evidence transitions are permitted until sealing. OS locks exclude active
+writes from seal inventory/installation; existing standalone reports and dataset
+history resist public overwrite/append flags. Supported legacy completed bundles
+remain read-only and report their validation limitations. Derived analysis writes
 separately and validates source bindings. See [Phase 1](phase1-stabilization.md) for
 status contracts, durable call recovery, guards and legacy compatibility.
