@@ -96,8 +96,8 @@ def test_seal_rejects_file_symlink(tmp_path, dangling):
 
 
 @pytest.mark.parametrize("alias_kind", ["symlink", "junction"])
-def test_inventory_prunes_staging_alias_directory(tmp_path, alias_kind):
-    # Walking a staging junction would expose target files despite staging exclusion.
+def test_inventory_rejects_staging_alias_directory(tmp_path, alias_kind):
+    # Staging names must not hide aliases or permit inventorying their targets.
     bundle = tmp_path / "bundle"
     bundle.mkdir()
     (bundle / "record.json").write_text("record", encoding="utf-8")
@@ -105,9 +105,9 @@ def test_inventory_prunes_staging_alias_directory(tmp_path, alias_kind):
     outside.mkdir()
     _alias(outside / "recursive", outside, alias_kind)
     _alias(bundle / ".rcqasyn-stage-abandoned", outside, alias_kind)
-    seal_bundle(bundle)
-    verify_seal(bundle)
-    assert set(json.loads((bundle / "FINALIZED.json").read_text())["files"]) == {"record.json"}
+    with pytest.raises(ValueError, match="alias|symlink"):
+        seal_bundle(bundle)
+    assert not (bundle / "FINALIZED.json").exists()
 
 
 @pytest.mark.parametrize("kind", KINDS)

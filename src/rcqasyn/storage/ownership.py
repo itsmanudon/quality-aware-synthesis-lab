@@ -27,6 +27,18 @@ _held = threading.local()
 _open_handles: set[int] = set()
 
 
+def _normalize_namespace(path: Path) -> Path:
+    """Use one Windows filesystem identity without resolving any alias hops."""
+    text = str(path)
+    if os.name == "nt":
+        folded = text.casefold()
+        if folded.startswith(("\\\\?\\unc\\", "\\??\\unc\\")):
+            text = "\\\\" + text[8:]
+        elif folded.startswith(("\\\\?\\", "\\??\\")):
+            text = text[4:]
+    return Path(text)
+
+
 def _after_fork() -> None:
     # A child must not inherit its parent's local reentrancy or open flock handles.
     global _lock_guard, _thread_locks, _held, _open_handles
@@ -64,7 +76,7 @@ def _lock_file(descriptor: int) -> None:
 
 @contextmanager
 def _directory_lock(path: Path) -> Iterator[None]:
-    key = os.path.normcase(str(path))
+    key = os.path.normcase(str(_normalize_namespace(path)))
     with _lock_guard:
         local_lock = _thread_locks.setdefault(key, threading.RLock())
     with local_lock:
@@ -106,9 +118,10 @@ def bundle_lock(path: Path, *additional_paths: Path) -> Iterator[None]:
     in TEMP, never in the bundle. Local reentrancy lets sealing use normal writers.
     """
     directories = {
-        identity
+        _normalize_namespace(identity)
         for item in (path, *additional_paths)
-        for identity in (Path(item).absolute(), Path(item).resolve())
+        for normalized in (_normalize_namespace(Path(item)),)
+        for identity in (normalized.absolute(), normalized.resolve())
     }
     ancestors = {parent for directory in directories for parent in (directory, *directory.parents)}
     ordered = sorted(ancestors, key=lambda item: (len(item.parts), os.path.normcase(str(item))))
@@ -161,7 +174,7 @@ def own_run(path: Path) -> None:
     existing = _preexisting.get()
     if paths is None or existing is None:
         raise RuntimeError("execution ownership scope required")
-    directory = path.resolve()
+    directory = _normalize_namespace(path).resolve()
     with bundle_lock(directory):
         if directory not in existing:
             existing[directory] = {
@@ -188,22 +201,51 @@ def _is_alias(path: Path) -> bool:
 
 
 def _destination_paths(path: Path) -> tuple[Path, ...]:
-    """Keep lexical and physical identities, including intermediate alias ancestors."""
-    lexical = path.absolute()
-    destinations = {lexical, path.parent.resolve() / path.name, path.resolve()}
-    # An outside alias can enter history and a second alias can leave it again.
-    # Preserve that intermediate namespace rather than checking only the endpoint.
-    for parent in lexical.parents:
-        if _is_alias(parent):
-            destinations.add(parent.resolve() / lexical.relative_to(parent))
+    """Expand one alias hop at a time so no intermediate namespace is erased."""
+    lexical = _normalize_namespace(path).absolute()
+    destinations = {lexical}
+    current = Path(lexical.anchor)
+    pending = list(lexical.parts[1:])
+    visited: set[tuple[str, tuple[str, ...]]] = set()
+    hops = 0
+    while pending:
+        state = (os.path.normcase(str(current)), tuple(pending))
+        if state in visited:
+            raise FileExistsError(f"filesystem alias cycle in destination: {path}")
+        visited.add(state)
+        component = pending.pop(0)
+        if component == "..":
+            current = current.parent
+            continue
+        entry = current / component
+        if not _is_alias(entry):
+            current = entry
+            continue
+        hops += 1
+        if hops > 128:
+            raise FileExistsError(f"filesystem alias expansion limit in destination: {path}")
+        try:
+            target_text = os.readlink(entry)
+        except OSError as error:
+            raise FileExistsError(f"unreadable filesystem alias in destination {path}: {entry}") from error
+        # Windows junction readlink targets may use the extended-length namespace.
+        target = _normalize_namespace(Path(target_text))
+        if not target.is_absolute():
+            target = current / target
+        destinations.add(entry.joinpath(*pending))
+        destinations.add(target.joinpath(*pending))
+        current = Path(target.anchor)
+        pending = [*target.parts[1:], *pending]
+    destinations.add(current)
     return tuple(sorted(destinations, key=str))
 
 
 def assert_writable(path: Path) -> None:
-    path = Path(path)
+    path = _normalize_namespace(Path(path))
     lexical = path.absolute()
+    destinations = _destination_paths(path)
     aliased = any(_is_alias(entry) for entry in (lexical, *lexical.parents))
-    for destination in _destination_paths(path):
+    for destination in destinations:
         _assert_destination_writable(destination, aliased=aliased)
 
 
@@ -257,15 +299,21 @@ def _walk_real_entries(path: Path, *, exclude_staging: bool = False) -> Iterator
     while pending:
         directory = pending.pop()
         for entry in sorted(directory.iterdir()):
-            if exclude_staging and entry.name.startswith(_STAGE_PREFIX):
+            alias = _is_alias(entry)
+            if (
+                exclude_staging
+                and entry.name.startswith(_STAGE_PREFIX)
+                and not alias
+                and entry.is_file()
+            ):
                 continue
             yield entry
-            if not _is_alias(entry) and entry.is_dir():
+            if not alias and entry.is_dir():
                 pending.append(entry)
 
 
 def _assert_real_bundle_path(path: Path) -> None:
-    lexical = path.absolute()
+    lexical = _normalize_namespace(path).absolute()
     if any(_is_alias(entry) for entry in (lexical, *lexical.parents)):
         raise ValueError(f"bundle path contains filesystem alias: {path}")
 
@@ -292,7 +340,7 @@ def _bundle_inventory(path: Path) -> dict[str, str]:
 def seal_bundle(path: Path) -> None:
     from .artifacts import write_json
 
-    path = Path(path).absolute()
+    path = _normalize_namespace(Path(path)).absolute()
     if any(path.resolve() in destination.parents for destination in getattr(_held, "writes", [])):
         raise RuntimeError(f"cannot seal bundle during an active helper write: {path}")
     with bundle_lock(path):
@@ -302,7 +350,7 @@ def seal_bundle(path: Path) -> None:
 
 
 def verify_seal(path: Path) -> None:
-    path = Path(path)
+    path = _normalize_namespace(Path(path))
     _assert_real_bundle_path(path)
     if _is_alias(path / "FINALIZED.json"):
         raise ValueError(f"bundle seal contains filesystem alias: {path}")
@@ -321,4 +369,4 @@ def verify_seal(path: Path) -> None:
 
 
 def is_owned(path: Path) -> bool:
-    return path.resolve() in (_owned.get() or [])
+    return _normalize_namespace(path).resolve() in (_owned.get() or [])
