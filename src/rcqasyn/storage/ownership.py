@@ -6,6 +6,7 @@ import errno
 import hashlib
 import json
 import os
+import stat
 import tempfile
 import threading
 import time
@@ -16,7 +17,9 @@ from pathlib import Path
 from typing import Any
 
 _owned: ContextVar[list[Path] | None] = ContextVar("m1_owned_run", default=None)
-_preexisting: ContextVar[dict[Path, set[Path]] | None] = ContextVar("m1_owned_existing", default=None)
+_preexisting: ContextVar[dict[Path, set[Path]] | None] = ContextVar(
+    "m1_owned_existing", default=None
+)
 _STAGE_PREFIX = ".rcqasyn-stage-"
 _lock_guard = threading.Lock()
 _thread_locks: dict[str, Any] = {}
@@ -102,13 +105,18 @@ def bundle_lock(path: Path, *additional_paths: Path) -> Iterator[None]:
     destinations share the seal's lock even before a manifest exists. Locks live
     in TEMP, never in the bundle. Local reentrancy lets sealing use normal writers.
     """
-    directories = {Path(item).resolve() for item in (path, *additional_paths)}
+    directories = {
+        identity
+        for item in (path, *additional_paths)
+        for identity in (Path(item).absolute(), Path(item).resolve())
+    }
     ancestors = {parent for directory in directories for parent in (directory, *directory.parents)}
     ordered = sorted(ancestors, key=lambda item: (len(item.parts), os.path.normcase(str(item))))
     held_paths = getattr(_held, "paths", set())
     held_roots = {key for key in held_paths if Path(key).parent == Path(key)}
     new_roots = {
-        os.path.normcase(str(item)) for item in ordered
+        os.path.normcase(str(item))
+        for item in ordered
         if item.parent == item and os.path.normcase(str(item)) not in held_paths
     }
     if held_roots and new_roots and min(new_roots) < max(held_roots):
@@ -123,18 +131,17 @@ def bundle_lock(path: Path, *additional_paths: Path) -> Iterator[None]:
 def write_scope(path: Path) -> Iterator[None]:
     """Hold exclusion through validation, staging, installation and cleanup."""
     path = Path(path)
-    entry = path.parent.resolve() / path.name
-    destination = path.resolve()
-    with bundle_lock(entry.parent, destination.parent):
+    destinations = _destination_paths(path)
+    with bundle_lock(*(destination.parent for destination in destinations)):
         assert_writable(path)
         writes = getattr(_held, "writes", None)
         if writes is None:
             writes = _held.writes = []
-        writes.extend((entry, destination))
+        writes.extend(destinations)
         try:
             yield
         finally:
-            del writes[-2:]
+            del writes[-len(destinations) :]
 
 
 @contextmanager
@@ -158,19 +165,49 @@ def own_run(path: Path) -> None:
     with bundle_lock(directory):
         if directory not in existing:
             existing[directory] = {
-                identity for file in directory.rglob("*") if file.is_file()
-                for identity in (file.parent.resolve() / file.name, file.resolve())
+                identity
+                for file in _walk_real_entries(directory)
+                if _is_alias(file) or file.is_file()
+                for identity in (file.absolute(), file.parent.resolve() / file.name, file.resolve())
             }
             paths.append(directory)
 
 
+def _is_alias(path: Path) -> bool:
+    """Inspect the entry itself, including Windows junction/other reparse tags."""
+    try:
+        metadata = path.lstat()
+    except FileNotFoundError:
+        return False
+    return bool(
+        stat.S_ISLNK(metadata.st_mode)
+        or getattr(metadata, "st_file_attributes", 0) & stat.FILE_ATTRIBUTE_REPARSE_POINT
+        or path.is_symlink()
+        or path.is_junction()
+    )
+
+
+def _destination_paths(path: Path) -> tuple[Path, ...]:
+    """Keep lexical and physical identities, including intermediate alias ancestors."""
+    lexical = path.absolute()
+    destinations = {lexical, path.parent.resolve() / path.name, path.resolve()}
+    # An outside alias can enter history and a second alias can leave it again.
+    # Preserve that intermediate namespace rather than checking only the endpoint.
+    for parent in lexical.parents:
+        if _is_alias(parent):
+            destinations.add(parent.resolve() / lexical.relative_to(parent))
+    return tuple(sorted(destinations, key=str))
+
+
 def assert_writable(path: Path) -> None:
     path = Path(path)
-    for destination in {path.parent.resolve() / path.name, path.resolve()}:
-        _assert_destination_writable(destination)
+    lexical = path.absolute()
+    aliased = any(_is_alias(entry) for entry in (lexical, *lexical.parents))
+    for destination in _destination_paths(path):
+        _assert_destination_writable(destination, aliased=aliased)
 
 
-def _assert_destination_writable(destination: Path) -> None:
+def _assert_destination_writable(destination: Path, *, aliased: bool = False) -> None:
     owned = _owned.get() or []
     existing = _preexisting.get() or {}
     for parent in (destination.parent, *destination.parent.parents):
@@ -192,18 +229,21 @@ def _assert_destination_writable(destination: Path) -> None:
             ):
                 raise FileExistsError(f"historical/foreign execution is immutable: {parent}")
     parts = tuple(part.casefold() for part in destination.parts)
-    protected = "test-history" in parts or any(
-        parts[index:index + 2] in {
-            ("artifacts", "reports"), ("artifacts", "derived"),
-            ("artifacts", "manifests"), ("data", "manifests")
+    protected = bool({"test-history", "test-results"}.intersection(parts)) or any(
+        parts[index : index + 2]
+        in {
+            ("artifacts", "reports"),
+            ("artifacts", "derived"),
+            ("artifacts", "manifests"),
+            ("data", "manifests"),
         }
         for index in range(len(parts) - 1)
     )
-    active_owned = any(
+    active_owned = not aliased and any(
         parent in destination.parents and destination not in existing.get(parent, {destination})
         for parent in owned
     )
-    if destination.exists() and protected and not active_owned:
+    if protected and (aliased or destination.exists()) and not active_owned:
         raise FileExistsError(f"immutable historical artifact: {destination}")
 
 
@@ -211,29 +251,49 @@ def file_hash(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def _walk_real_entries(path: Path, *, exclude_staging: bool = False) -> Iterator[Path]:
+    """Walk top down; inspect aliases before deciding whether to visit children."""
+    pending = [path]
+    while pending:
+        directory = pending.pop()
+        for entry in sorted(directory.iterdir()):
+            if exclude_staging and entry.name.startswith(_STAGE_PREFIX):
+                continue
+            yield entry
+            if not _is_alias(entry) and entry.is_dir():
+                pending.append(entry)
+
+
+def _assert_real_bundle_path(path: Path) -> None:
+    lexical = path.absolute()
+    if any(_is_alias(entry) for entry in (lexical, *lexical.parents)):
+        raise ValueError(f"bundle path contains filesystem alias: {path}")
+
+
 def _bundle_inventory(path: Path) -> dict[str, str]:
     hashes: dict[str, str] = {}
+    _assert_real_bundle_path(path)
     resolved = path.resolve()
-    for file in sorted(path.rglob("*")):
+    for file in _walk_real_entries(path, exclude_staging=True):
         relative = file.relative_to(path)
-        if file == path / "FINALIZED.json" or any(
-            part.startswith(_STAGE_PREFIX) for part in relative.parts
-        ):
+        if _is_alias(file):
+            if file.is_symlink():
+                location = "internal" if file.resolve().is_relative_to(resolved) else "external"
+                kind = "file" if file.is_file() else "directory" if file.is_dir() else "dangling"
+                raise ValueError(f"bundle contains {location} {kind} symlink: {file}")
+            raise ValueError(f"bundle contains junction or reparse alias: {file}")
+        if file == path / "FINALIZED.json":
             continue
-        if file.is_symlink() and not file.resolve().is_relative_to(resolved):
-            kind = "file" if file.is_file() else "directory" if file.is_dir() else "dangling"
-            raise ValueError(f"bundle contains external {kind} symlink: {file}")
-        if not file.is_file():
-            continue
-        hashes[relative.as_posix()] = file_hash(file)
+        if file.is_file():
+            hashes[relative.as_posix()] = file_hash(file)
     return hashes
 
 
 def seal_bundle(path: Path) -> None:
     from .artifacts import write_json
 
-    path = Path(path).resolve()
-    if any(path in destination.parents for destination in getattr(_held, "writes", [])):
+    path = Path(path).absolute()
+    if any(path.resolve() in destination.parents for destination in getattr(_held, "writes", [])):
         raise RuntimeError(f"cannot seal bundle during an active helper write: {path}")
     with bundle_lock(path):
         assert_writable(path / "FINALIZED.json")
@@ -243,6 +303,9 @@ def seal_bundle(path: Path) -> None:
 
 def verify_seal(path: Path) -> None:
     path = Path(path)
+    _assert_real_bundle_path(path)
+    if _is_alias(path / "FINALIZED.json"):
+        raise ValueError(f"bundle seal contains filesystem alias: {path}")
     seal = json.loads((path / "FINALIZED.json").read_text(encoding="utf-8"))
     if not isinstance(seal, dict) or seal.get("schema_version") != "m1-seal-v1":
         raise ValueError(f"unsupported or missing seal schema: {path}")
