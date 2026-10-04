@@ -752,7 +752,6 @@ def write_human_audit_reports(
     assert_writable(destination / "output.json")
     primary_hash = result["human_summary"]["source_files"]["primary"]["sha256"]
     _prepare_output(destination, primary_hash, overwrite=overwrite)
-    destination.mkdir(parents=True, exist_ok=True)
     written: list[Path] = []
     for key, filename in _JSON_OUTPUTS.items():
         path = destination / filename
@@ -772,7 +771,8 @@ def write_human_audit_reports(
     markdown_path = destination / "human_audit_summary.md"
     write_text(markdown_path, _markdown_summary(result))
     written.append(markdown_path)
-    seal_bundle(destination)
+    # Each write validated the original alias chain; seal the authorized real tree.
+    seal_bundle(destination.resolve())
     return tuple(written)
 
 
@@ -1070,7 +1070,6 @@ def export_blinded_reviews(
     existing = [path for path in outputs.values() if path.exists()]
     if existing:
         raise HumanAuditError(f"refusing to overwrite blinded export: {existing[0]}")
-    destination.mkdir(parents=True, exist_ok=True)
     _write_blind_csv(outputs["reviewer_a"], [blind for blind, _ in reviewer_a_pairs])
     _write_blind_csv(outputs["reviewer_b"], [blind for blind, _ in reviewer_b_pairs])
     manifests = {
@@ -1213,7 +1212,6 @@ def import_blinded_review(
             fieldnames = tuple(csv.DictReader(stream).fieldnames or ())
     except OSError as error:
         raise HumanAuditError(f"cannot read master header: {error}") from error
-    output.parent.mkdir(parents=True, exist_ok=True)
     with immutable_text_stream(output) as stream:
         writer = csv.DictWriter(stream, fieldnames=fieldnames)
         writer.writeheader()

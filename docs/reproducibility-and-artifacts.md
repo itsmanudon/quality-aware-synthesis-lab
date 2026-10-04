@@ -119,6 +119,11 @@ separately and validates source bindings. See [Phase 1](phase1-stabilization.md)
 status contracts, durable call recovery, guards and legacy compatibility.
 
 Writer protection checks each alias hop, including intermediate historical namespaces.
+Derived-output reservations and human-review CLI outputs preserve the original path
+until guarded authorization, including intermediate alias ancestry. Public adapters
+leave parent creation to the locked writer/reservation; refusing a protected write
+creates no directories, files, or metadata paths in the protected tree. Tests compare
+the complete directory tree, file mtimes/bytes, and seal before and after refusal.
 Staging names do not exempt symlinks or junctions. JSONL append installs a durable
 copy, so appending through an outside hardlink does not mutate its protected source.
 Normal and extended Windows path spellings use the same lock identities; cooperating

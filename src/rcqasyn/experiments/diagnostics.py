@@ -563,7 +563,6 @@ def p1_human_review_sample(
         "candidate_json", "raw_output", *_HUMAN_COLUMNS,
     ]
     out_path = Path(out_path)
-    out_path.parent.mkdir(parents=True, exist_ok=True)
     with immutable_text_stream(out_path) as fh:
         writer = csv.DictWriter(fh, fieldnames=fieldnames)
         writer.writeheader()

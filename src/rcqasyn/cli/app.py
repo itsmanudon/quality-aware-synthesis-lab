@@ -120,9 +120,9 @@ def human_review_analyze(
     source = source.resolve() if source.is_absolute() else (project_root / source).resolve()
     destination = output_dir or project_root / "artifacts" / "reports" / "human_audit"
     destination = (
-        destination.resolve()
+        destination.absolute()
         if destination.is_absolute()
-        else (project_root / destination).resolve()
+        else (project_root / destination).absolute()
     )
     adjudicated_path = None
     if adjudicated is not None:
@@ -165,9 +165,9 @@ def human_review_export_blind(
     master = master.resolve() if master.is_absolute() else (project_root / master).resolve()
     destination = output_dir or project_root / "artifacts" / "reports" / "human_audit" / "blinded"
     destination = (
-        destination.resolve()
+        destination.absolute()
         if destination.is_absolute()
-        else (project_root / destination).resolve()
+        else (project_root / destination).absolute()
     )
     try:
         master_status = review_status(master)
@@ -211,7 +211,9 @@ def human_review_import_blind(
             resolve(master_csv),
             resolve(reviewer_csv),
             resolve(manifest),
-            resolve(output),
+            output.expanduser().absolute()
+            if output.expanduser().is_absolute()
+            else (project_root / output.expanduser()).absolute(),
             annotator_id=annotator_id,
             overwrite=overwrite,
         )
@@ -386,7 +388,6 @@ def datasets_prepare(
 
             acquisition = json.loads(legacy_acquisition_path.read_text(encoding="utf-8"))
         destination = project_root / "data" / "manifests" / dataset_id
-        destination.mkdir(parents=True, exist_ok=True)
         _write_reusable_manifest(
             destination / "dataset_manifest.json",
             {

@@ -116,7 +116,6 @@ def write_acquisition(path: Path, record: AcquisitionRecord, *, overwrite: bool 
             return
         raise FileExistsError(f"existing acquisition manifest is incompatible: {destination}")
     assert_writable(destination)
-    destination.parent.mkdir(parents=True, exist_ok=True)
     write_json(destination, record.to_dict())
 
 

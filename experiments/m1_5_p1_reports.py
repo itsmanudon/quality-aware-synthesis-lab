@@ -46,7 +46,6 @@ P0V3 = {
 
 
 def _w(name: str, value: Any) -> None:
-    OUT.mkdir(parents=True, exist_ok=True)
     write_json(OUT / name, value)
     print(f"wrote {OUT / name}")
 
@@ -181,7 +180,6 @@ def main() -> None:
             dis_rows.append(row)
     if dis_rows:
         cols = [*dict.fromkeys(k for r in dis_rows for k in r)]
-        OUT.mkdir(parents=True, exist_ok=True)
         with immutable_text_stream(OUT / "p1_b2_b3_disagreements.csv") as fh:
             w = csv.DictWriter(fh, fieldnames=cols)
             w.writeheader()

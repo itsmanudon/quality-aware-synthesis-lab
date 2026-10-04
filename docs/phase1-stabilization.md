@@ -86,6 +86,19 @@ the same policy, including the seal marker itself.
 A seal protects the whole bundle from package writers, including new files and
 append/overwrite requests.
 
+Explicit derived-output paths retain their caller-supplied logical ancestry through
+shared guarded directory reservation. Review/disagreement exports, copying/support
+diagnostics, and human-review CLI outputs pass that ancestry to the guard rather
+than replacing it with the final resolved endpoint. The guard checks logical,
+intermediate alias-target, and physical ancestry before creating the destination.
+
+Protected-write refusals are namespace-side-effect-free: public adapters do not
+pre-create parents. Directory reservation and file writers create parents only
+after authorization while holding the ownership locks. Refused P1 samples,
+JSON/YAML/JSONL/CSV/text writes, and derived reservations leave existing directories,
+file bytes/mtimes, and seals unchanged. This guarantee concerns protection refusals;
+a later failure in an authorized execution can leave its permitted active output.
+
 The ancestor locks conservatively serialize helpers sharing a filesystem root.
 Cooperating processes must use the same TEMP lock namespace. Equivalent normal and
 extended Windows path spellings share normalized lock and ownership identities.

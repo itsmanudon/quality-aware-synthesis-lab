@@ -168,7 +168,6 @@ def export_human_review(run_dir: Path, *, overwrite: bool = False, seed: int = 4
     destination = directory / "human_review.csv"
     if destination.exists():
         raise FileExistsError(f"refusing to overwrite existing artifact: {destination}")
-    destination.parent.mkdir(parents=True, exist_ok=True)
     with immutable_text_stream(destination) as stream:
         writer = csv.DictWriter(stream, fieldnames=list(REVIEW_COLUMNS))
         writer.writeheader()
@@ -222,7 +221,6 @@ def export_disagreements(run_dir: Path, *, overwrite: bool = False, output_dir: 
     destination = directory / "b2_b3_disagreements.csv"
     if destination.exists():
         raise FileExistsError(f"refusing to overwrite existing artifact: {destination}")
-    destination.parent.mkdir(parents=True, exist_ok=True)
     with immutable_text_stream(destination) as stream:
         writer = csv.DictWriter(stream, fieldnames=list(DISAGREEMENT_COLUMNS))
         writer.writeheader()

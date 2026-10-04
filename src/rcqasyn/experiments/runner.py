@@ -1335,7 +1335,6 @@ def _write_json(path: Path, value: Any, *, overwrite: bool = False) -> None:
 
 def _write_jsonl(path: Path, values: list[Any]) -> None:
     assert_writable(path)
-    path.parent.mkdir(parents=True, exist_ok=True)
     if values:
         append_jsonl(path, values)
     else:
@@ -1344,7 +1343,6 @@ def _write_jsonl(path: Path, values: list[Any]) -> None:
 
 def _write_yaml(path: Path, value: Any) -> None:
     assert_writable(path)
-    path.parent.mkdir(parents=True, exist_ok=True)
     write_text(path, yaml.safe_dump(value, sort_keys=True))
 
 

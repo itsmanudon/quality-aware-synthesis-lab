@@ -10,7 +10,7 @@ from uuid import uuid4
 
 from rcqasyn.contracts.m1 import validate_comparison
 from rcqasyn.storage.artifacts import create_run_dir, read_json, write_json
-from rcqasyn.storage.ownership import assert_writable, file_hash, verify_seal
+from rcqasyn.storage.ownership import file_hash, verify_seal
 
 from .artifact_identity import validate_execution_bindings, validate_legacy_identities
 from .specification import fingerprint
@@ -200,11 +200,12 @@ def derived_directory(source: Path, purpose: str, output_dir: Path | None = None
             source.parent.parent / "derived", f"{source.name}-{purpose}-{uuid4().hex}"
         )
     else:
-        directory = Path(output_dir).resolve()
-        if directory == source.resolve() or source.resolve() in directory.parents:
+        logical = Path(output_dir).absolute()
+        resolved = logical.resolve()
+        if resolved == source.resolve() or source.resolve() in resolved.parents:
             raise ValueError("derived output must be outside the historical source bundle")
-        assert_writable(directory / "source.json")
-        directory.mkdir(parents=True, exist_ok=False)
+        # Reservation must see the caller's path, including every intermediate alias.
+        directory = create_run_dir(logical.parent, logical.name).resolve()
     write_json(
         directory / "source.json",
         {
