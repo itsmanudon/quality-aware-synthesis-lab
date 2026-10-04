@@ -70,6 +70,7 @@ from rcqasyn.storage.ownership import (
 from rcqasyn.utils.hashing import sha256_text
 from rcqasyn.utils.seeds import generation_provider_seed
 
+from .artifact_identity import BINDING_VERSION, write_execution_bindings
 from .call_evidence import DurableCallFailure, DurableProvider
 from .specification import environment_snapshot, scientific_specification, seed_provenance
 
@@ -142,11 +143,13 @@ def _execute_experiment(config: ExperimentConfig, *, project_root: Path | None =
         artifact_root = root / artifact_root
     run_dir = create_run_dir(artifact_root / "runs", run_id, exist_ok=False)
     own_run(run_dir)
-    generator = DurableProvider(generator, run_dir, "generation")
-    judge_provider = DurableProvider(judge_provider, run_dir, "judge")
+    generator = DurableProvider(generator, run_dir, "generation", provider_identity=scientific["specification"]["providers"]["generator"], specification_fingerprint=scientific["fingerprint"])
+    judge_provider = DurableProvider(judge_provider, run_dir, "judge", provider_identity=scientific["specification"]["providers"]["judge"], specification_fingerprint=scientific["fingerprint"])
     _write_json(run_dir / "scientific_specification.json", scientific)
+    write_text(run_dir / "prompts/generation.txt", generation_prompt.text)
+    write_text(run_dir / "prompts/judge.txt", judge_prompt.text)
     _write_json(run_dir / "manifest.json", {
-        "schema_version": "m1-run-v2", "execution_id": run_id,
+        "schema_version": "m1-run-v2", "execution_id": run_id, "artifact_binding_version": BINDING_VERSION,
         "specification_fingerprint": scientific["fingerprint"], "boundary_version": "m1-train-boundary-v1",
         "environment": environment_snapshot(), "run_id": run_id, "experiment_name": config.experiment_name,
         "status": "running", "started_at": datetime.now(UTC).isoformat(), "root_seed": config.dataset.root_seed,
@@ -173,6 +176,7 @@ def _execute_experiment(config: ExperimentConfig, *, project_root: Path | None =
     _write_yaml(run_dir / "resolved_config.yaml", config.model_dump(mode="json"))
     _write_json(run_dir / "dataset" / "split_manifest.json", split.to_dict())
     _write_json(run_dir / "dataset" / "profile.json", profile.model_dump(mode="json"))
+    write_text(run_dir / "dataset/profile_source.json", profile.model_dump_json())
     _write_json(run_dir / "generation_plan.json", plan.model_dump(mode="json"))
     # Resolve + assert the deterministic unique per-batch provider seeds before
     # any provider call (M1.4 seed-confound guard, M1.5 §5).
@@ -186,7 +190,9 @@ def _execute_experiment(config: ExperimentConfig, *, project_root: Path | None =
     smoke_report: dict[str, Any] = {"status": "not_run", "reason": "offline replay" if replay else None}
     if not replay:
         try:
+            generator.evidence_purpose = "generation_smoke"
             smoke_trace, smoke_report = _provider_smoke(generator, run_dir.name, config, plan)
+            generator.evidence_purpose = "generation"
             _write_jsonl(run_dir / "provider_calls.jsonl", [smoke_trace])
             _write_json(run_dir / "provider_smoke.json", smoke_report)
             if smoke_report.get("status") != "ok":
@@ -235,6 +241,10 @@ def _execute_experiment(config: ExperimentConfig, *, project_root: Path | None =
     comparison["outcome"] = execution_outcome(comparison).model_dump(mode="json")
     comparison["completed_at"] = datetime.now(UTC).isoformat()
     validate_comparison(comparison)
+    binding_fingerprint = write_execution_bindings(run_dir, comparison, scientific)
+    manifest = _read_json(run_dir / "manifest.json")
+    manifest["execution_binding_fingerprint"] = binding_fingerprint
+    _write_json(run_dir / "manifest.json", manifest, overwrite=True)
     _write_json(run_dir / "comparison.json", comparison)
     export_human_review(run_dir)
     export_disagreements(run_dir)

@@ -12,6 +12,7 @@ from rcqasyn.contracts.m1 import validate_comparison
 from rcqasyn.storage.artifacts import create_run_dir, read_json, write_json
 from rcqasyn.storage.ownership import assert_writable, file_hash, verify_seal
 
+from .artifact_identity import validate_execution_bindings, validate_legacy_identities
 from .specification import fingerprint
 
 
@@ -33,9 +34,10 @@ def validate_source(path: Path, *, allow_active: bool = False) -> dict[str, Any]
         split = read_json(path / "dataset" / "split_manifest.json")
         try:
             _validate_identities(path, value, scientific, comparison, split)
+            validate_comparison(comparison)
+            validate_execution_bindings(path, value, scientific, comparison)
         except (KeyError, TypeError, AttributeError) as error:
             raise ValueError("required artifact identity is missing or invalid") from error
-        validate_comparison(comparison)
         if (
             value.get("outcome") != comparison["outcome"]
             or value.get("success") != comparison["outcome"]["success"]
@@ -43,6 +45,8 @@ def validate_source(path: Path, *, allow_active: bool = False) -> dict[str, Any]
             raise ValueError("manifest/result outcome mismatch")
     elif schema not in {"m1-run-v1", None} or value.get("status") != "completed":
         raise ValueError(f"legacy bundle requires recorded completed status: {path}")
+    else:
+        validate_legacy_identities(path, value)
     return value
 
 

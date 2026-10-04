@@ -26,10 +26,13 @@ class DurableCallFailure(RuntimeError):
 
 
 class DurableProvider:
-    def __init__(self, provider: Any, directory: Path, role: str) -> None:
+    def __init__(self, provider: Any, directory: Path, role: str, *, provider_identity: dict[str, Any] | None = None, specification_fingerprint: str | None = None) -> None:
         self.provider = provider
         self.directory = directory
         self.role = role
+        self.provider_identity = provider_identity
+        self.specification_fingerprint = specification_fingerprint
+        self.evidence_purpose = role
         self.counter = 0
         self.recorded_response_only = isinstance(provider, ReplayProvider)
 
@@ -40,6 +43,10 @@ class DurableProvider:
         request = {
             "schema_version": "m1-call-evidence-v1",
             "attempt_id": attempt,
+            "purpose": self.evidence_purpose,
+            "recorded_response_only": self.recorded_response_only,
+            "provider_identity": self.provider_identity,
+            "specification_fingerprint": self.specification_fingerprint,
             "execution_id": self.directory.name,
             "requested_at": datetime.now(UTC).isoformat(),
             "request": kwargs,
