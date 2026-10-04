@@ -175,6 +175,11 @@ def _execute_experiment(config: ExperimentConfig, *, project_root: Path | None =
     })
     _write_yaml(run_dir / "resolved_config.yaml", config.model_dump(mode="json"))
     _write_json(run_dir / "dataset" / "split_manifest.json", split.to_dict())
+    # Local evaluation provenance only: never part of TRAIN context or provider requests.
+    # Preserve the exact normalization serialization used by the dataset fingerprint.
+    write_text(run_dir / "dataset/evaluation_population.json", dataset.frame.to_json(
+        orient="split", date_format="iso", default_handler=str,
+    ))
     _write_json(run_dir / "dataset" / "profile.json", profile.model_dump(mode="json"))
     write_text(run_dir / "dataset/profile_source.json", profile.model_dump_json())
     _write_json(run_dir / "generation_plan.json", plan.model_dump(mode="json"))

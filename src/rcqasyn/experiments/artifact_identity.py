@@ -9,6 +9,11 @@ from typing import Any
 from rcqasyn.storage.artifacts import read_json, write_json
 from rcqasyn.storage.ownership import file_hash
 
+from .recorded_accounting import (
+    validate_call_accounting,
+    validate_call_purpose,
+    validate_comparison_identities,
+)
 from .specification import fingerprint
 
 BINDING_VERSION = "m1-artifact-bindings-v1"
@@ -63,6 +68,7 @@ def write_execution_bindings(
         "resolved_config.yaml",
         "scientific_specification.json",
         "dataset/split_manifest.json",
+        "dataset/evaluation_population.json",
         "dataset/profile.json",
         "dataset/profile_source.json",
         "generation_plan.json",
@@ -141,6 +147,7 @@ def validate_execution_bindings(
         "resolved_config.yaml",
         "scientific_specification.json",
         "dataset/split_manifest.json",
+        "dataset/evaluation_population.json",
         "dataset/profile.json",
         "dataset/profile_source.json",
         "generation_plan.json",
@@ -273,6 +280,22 @@ def validate_execution_bindings(
     for role, template in templates.items():
         _same(sha256_text(template), spec["prompts"][role], f"{role} prompt bytes")
 
+    from .recorded_requirements import validate_recorded_requirements
+    from .recorded_split import validate_recorded_split
+
+    population_path = path / "dataset/evaluation_population.json"
+    _same(identity["dataset_fingerprint"], file_hash(population_path), "normalized population source")
+    population = read_json(population_path)
+    validate_recorded_split(spec, split, profile.model_dump(mode="json"), population)
+    target_index = population["columns"].index(spec["dataset"]["definition"]["target_column"])
+    train_indices = set(split["train_indices"])
+    train_classes = sorted({
+        str(row[target_index])
+        for index, row in zip(population["index"], population["data"], strict=True)
+        if index in train_indices and row[target_index] is not None
+    })
+    validate_recorded_requirements(spec, config, profile, train_classes=train_classes)
+
     raw = jsonl(path / "candidates_raw.jsonl")
     raw_by_id = {row["record_id"]: row for row in raw}
     _same(len(raw), len(raw_by_id), "unique raw candidate")
@@ -289,10 +312,11 @@ def validate_execution_bindings(
         if call.get("status") not in {"returned", "failed"}:
             raise ValueError("durable call status identity is invalid")
         request = call["request"]
+        validate_call_purpose(call)
         role = request["role"]
         if role not in {"generation", "judge", "smoke"}:
             raise ValueError("durable call role identity is invalid")
-        provider_role = "judge" if role == "judge" else "generator"
+        provider_role = "judge" if call["purpose"] == "judge" else "generator"
         _same(
             spec["providers"][provider_role],
             call.get("provider_identity"),
@@ -453,6 +477,20 @@ def validate_execution_bindings(
     judge_calls = [call for call in calls.values() if call["purpose"] == "judge"]
     judge_calls.sort(key=lambda call: call["request"]["request_index"])
     _same(len(raw), len(judge_calls), "judge candidate call population")
+    validate_call_accounting(
+        manifest, comparison, calls, generation_failures,
+        jsonl(path / "baselines/b3/judge_failures.jsonl"),
+        jsonl(path / "baselines/b3/decisions.jsonl"),
+    )
+    validate_comparison_identities(
+        {key: value for key, value in comparison.items() if key != "baselines"},
+        {
+            **identity, "run_id": manifest["run_id"],
+            "scientific_fingerprint": scientific["fingerprint"],
+            "science_fingerprint": scientific["fingerprint"],
+        },
+        controls,
+    )
     for index, (call, candidate) in enumerate(zip(judge_calls, raw, strict=True)):
         request = call["request"]
         _same(index, request["request_index"], "judge request candidate order")
@@ -517,6 +555,7 @@ def validate_execution_bindings(
                 _same(value, result_binding.get(key), f"required result binding {key}")
         _same(name, result_binding.get("baseline"), "result binding baseline")
         accepted = jsonl(directory / "candidates.jsonl")
+        expected["accepted_population_fingerprint"] = fingerprint(accepted)
         decisions = jsonl(directory / "decisions.jsonl")
         _same(
             list(raw_by_id),
