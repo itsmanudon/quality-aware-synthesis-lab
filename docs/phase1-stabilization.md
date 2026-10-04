@@ -118,7 +118,12 @@ installed file unchanged. This copies the existing stream on each append and may
 cost more than in-place append for large streams; it does not prohibit hardlinks.
 Dataset preparation and TRTR/comparison manifests may reuse byte-equivalent logical
 content without writing; changed content fails instead of refreshing old reports.
-Acquisition, CSV, YAML, JSONL and human-audit writers refuse replacements.
+Acquisition, CSV, YAML, JSONL and human-audit writers refuse replacements of
+protected historical outputs. The public paper inventory API and
+`papers index --output` use the same guarded atomic writer, including alias-hop
+checks and seal exclusion. Regenerating an ordinary nonhistorical inventory or
+updating a new active-owned inventory remains supported. Atomic replacement
+detaches an outside hardlink instead of mutating its protected source file.
 Compatibility `--overwrite` arguments do not authorize replacing historical outputs.
 These are executable application protections, not filesystem permissions preventing
 arbitrary external editors from writing files.
@@ -330,6 +335,18 @@ races; normal/extended-path exclusion also has regression coverage and separate
 read-only review probes. All 18 substantive differential families matched the
 audited base. These are implementation verification results; the final merge gate
 still requires personnel-independent verification.
+
+A subsequent independent review found that the public literature inventory
+writer still opened CSV destinations directly. Its remediation routes both the
+API and CLI through the guarded atomic writer and adds 88 regression cases,
+including the 24 reported alias combinations, direct historical destinations,
+ownership claims, hardlinks, serialization and writer/seal exclusion. A separate
+TEMP-only manual probe passed 64 checks, including real subprocess CLI calls.
+Fresh verification passed 1,222 full-suite tests and 1,124 focused Phase-1 tests
+without deselection, with the same 14 sklearn warnings. Ruff and the diff check
+passed; Pyright reported zero errors and warnings. Protected historical inventories
+remained byte-identical. Merge approval still belongs to the personnel-independent
+verifier.
 
 Protected historical inventories are hashed before remediation and again after
 verification. Historical artifacts, data/history, paper/results, prompts,

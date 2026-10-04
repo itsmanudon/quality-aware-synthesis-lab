@@ -125,6 +125,11 @@ Normal and extended Windows path spellings use the same lock identities; coopera
 processes still require a common TEMP namespace, and ancestor locking is conservative.
 POSIX locks have not been runtime-tested on this Windows host.
 
+The public paper inventory CSV API and `papers index --output` also use the
+guarded atomic writer. Ordinary inventory regeneration remains supported;
+protected historical destinations cannot be replaced. Writing to an allowed
+outside hardlink replaces that directory entry without mutating its source.
+
 New bundles also bind a local normalized population snapshot to the dataset hash.
 Readers validate approved split membership, complete resolved controls, schema-derived
 result requirements, durable-call accounting and explicit nested source identities.
