@@ -117,3 +117,17 @@ history resist public overwrite/append flags. Supported legacy completed bundles
 remain read-only and report their validation limitations. Derived analysis writes
 separately and validates source bindings. See [Phase 1](phase1-stabilization.md) for
 status contracts, durable call recovery, guards and legacy compatibility.
+
+Writer protection checks each alias hop, including intermediate historical namespaces.
+Staging names do not exempt symlinks or junctions. JSONL append installs a durable
+copy, so appending through an outside hardlink does not mutate its protected source.
+Normal and extended Windows path spellings use the same lock identities; cooperating
+processes still require a common TEMP namespace, and ancestor locking is conservative.
+POSIX locks have not been runtime-tested on this Windows host.
+
+New bundles also bind a local normalized population snapshot to the dataset hash.
+Readers validate approved split membership, complete resolved controls, schema-derived
+result requirements, durable-call accounting and explicit nested source identities.
+The snapshot never enters provider or judge contexts. Validation compares provenance
+and recorded results; it does not recompute metrics or rerun admission. Older v2
+experimental output without the required snapshot is rejected rather than upgraded.

@@ -75,18 +75,21 @@ JSONL appends, directory reservations, and seals use reentrant OS locks in TEMP.
 Locks cover checks, staging, installation, and cleanup; sealing holds the same locks
 over a quiescent inventory and seal installation. A writer finishes before sealing,
 or fails after the seal without installing. Competing seals have one winner.
-Reserved `.rcqasyn-stage-` files and directories are pruned from inventories before
-traversal. Non-staging symbolic links and reparse-point aliases are rejected before
-target traversal: file, directory and dangling symlinks, Windows junctions, and
-entries carrying Windows
-reparse-point attributes. This conservative policy also rejects aliases pointing
+Object type is inspected before staging-name exclusion. Only real ordinary
+`.rcqasyn-stage-` files are excluded; ordinary staging directories are traversed
+and their contents checked. Symbolic links and reparse-point aliases are rejected
+regardless of filename before target traversal: file, directory and dangling
+symlinks, Windows junctions, and entries carrying Windows reparse-point attributes.
+This conservative policy also rejects aliases pointing
 inside the bundle and aliases in the bundle root ancestry. Seal verification applies
 the same policy, including the seal marker itself.
 A seal protects the whole bundle from package writers, including new files and
 append/overwrite requests.
 
 The ancestor locks conservatively serialize helpers sharing a filesystem root.
-Cooperating processes must use the same TEMP lock namespace. Windows thread/process
+Cooperating processes must use the same TEMP lock namespace. Equivalent normal and
+extended Windows path spellings share normalized lock and ownership identities.
+Windows thread/process
 races and real symlink/junction cases are exercised. Other reparse tags use the
 attribute guard but lack dedicated runtime fixtures. The POSIX `flock` path is
 implemented but has not been runtime-tested on this Windows verification host.
@@ -100,11 +103,19 @@ may be created in an unsealed namespace; sealing protects the entire bundle.
 Ownership snapshots preexisting files, so claiming an existing directory cannot
 authorize replacing its history. Files created by the current active owner can
 legitimately transition. Guards retain caller-supplied logical ancestry, resolved
-physical ancestry and intermediate alias ancestry. Path-component checks reject alias traversal into or
-out of protected history, including new destination files; ownership claims and
+physical ancestry and each intermediate alias target. Resolution expands one hop
+at a time, including relative targets and mixed symlink/junction chains; cycles
+or unreadable aliases fail closed. Path-component checks reject alias traversal
+into or out of protected history, including new destination files; ownership claims and
 `overwrite=True` cannot exempt an aliased historical destination. Clearly
 nonhistorical temporary aliases remain usable. Active ownership permits transitions
 only on real paths created by the current execution.
+JSONL append copies existing bytes into a new staged file, appends and flushes the
+batch, then atomically replaces the destination entry under the same writer lock.
+Appending through an outside hardlink therefore detaches that entry without
+changing the protected original or other hardlinks. A failed batch leaves the
+installed file unchanged. This copies the existing stream on each append and may
+cost more than in-place append for large streams; it does not prohibit hardlinks.
 Dataset preparation and TRTR/comparison manifests may reuse byte-equivalent logical
 content without writing; changed content fails instead of refreshing old reports.
 Acquisition, CSV, YAML, JSONL and human-audit writers refuse replacements.
@@ -176,18 +187,38 @@ overwriting their files.
 
 New readers require finalized v2 state, supported seal/specification/result schemas,
 a valid seal, and consistent run/execution, scientific, dataset/source, and split
-identities. Split fingerprints are recomputed with the approved split serialization.
+identities. New executions record `dataset/evaluation_population.json` using the
+exact normalization serialization whose SHA-256 is the dataset fingerprint.
+This snapshot is local evaluation provenance, never a TRAIN profile or upstream
+provider/judge input. Readers validate the approved seed derivation and class-wise
+hash-order membership against it, including unique/disjoint/full partitions,
+singleton TRAIN support, subset fingerprints and recorded counts. Split
+fingerprints retain the approved serialization; split generation is unchanged.
+Complete resolved control descriptors are reconstructed from recorded configuration,
+dataset schema, TRAIN profile, provider identities, prompt snapshots and recorded
+estimator parameters. Required result families are derived from the schema and
+TRAIN labels; classifier requirements come from configuration. Mutually agreeing
+result declarations cannot remove a required feature or alter a control policy.
 Configured result families/classifiers are bound to the scientific specification;
 the source identity graph is validated against recorded configuration and manifest
 truth. Root/split seeds, plan counts/quotas/provider settings and prompt bytes must
 agree. Durable calls bind execution, configured provider and actual requests;
+their purpose must agree with request role, provider and trace/consumer lineage.
+Summary attempts, returned responses, provider failures and parse failure events
+are reconciled with durable evidence. Every baseline comparison row is required
+exactly once, with generation/judge/smoke counts and population counts consistent
+with its sources. Smoke nulls in replay retain their existing representation;
+required accounting fields cannot be silently removed.
 candidates must match the recorded generation response and call. Every control
 decision must refer to the ordered raw pool, and its accepted subset must match
 exactly. Judge results/failures and B2 evidence must join the corresponding candidates
 and calls. Explicit nested result identities, including control identity, must agree
-with their source even when comparison copies agree with each other.
+with their source even when comparison copies agree with each other. Recognized
+execution/dataset/scientific/split/control fields are checked recursively in
+comparison metadata as well as baseline results.
 
-New v2 bundles require `m1-artifact-bindings-v1` and `execution_binding.json`; each
+New v2 bundles require the normalized population snapshot, `m1-artifact-bindings-v1`
+and `execution_binding.json`; each
 baseline requires `m1-result-binding-v1` in `result_binding.json`. Bindings record
 source/result file hashes, execution/dataset/scientific/control identities, and the
 accepted population identity. Comparison carries binding fingerprints outside the
@@ -201,6 +232,10 @@ replay request validation uses the recorded placeholder and does not render an
 unsafe legacy template. Required new-format bindings cannot be silently omitted.
 Pre-binding experimental v2 output is not accepted as finalized new-format input;
 there is no in-place upgrade. Readers enforce the nested result contract.
+Experimental v2 bundles produced before the population binding was required fail
+the current new-format requirements; they are not silently upgraded or credited
+with split-validation guarantees. Supported unversioned/v1 historical bundles
+remain under the explicit legacy compatibility contract.
 Utility evaluability is derived from required finite metrics and classifier status, rather than trusting an aggregate
 flag. Missing diagnostics/admission/judge accounting fails schema validation.
 
@@ -275,7 +310,7 @@ fully successful/evaluable. No external provider was contacted.
 The subsequent independent review identified filesystem alias/history and nested
 gaps in the bindings between sources and results. Final remediation adds real Windows alias matrices,
 refreshed-binding/resealed contradictions, and fresh failure-reader regressions.
-Final remediation verification passed 831 full-suite tests and 733 focused Phase-1
+The previous remediation round passed 831 full-suite tests and 733 focused Phase-1
 tests, without deselection, with the same 14 adversarial TEST-label warnings. This
 adds 396 filesystem and 60 reader regression cases to the prior 375-test suite.
 Ruff passed, Pyright reported zero errors/warnings, and the diff check passed.
@@ -284,6 +319,17 @@ Manual probes passed 88 storage checks, 21 correctly resealed bundle checks and
 18 substantive differential families against the audited base passed. Protected
 historical bytes remained unchanged. Prior counts above are historical results;
 the final handoff records the commit identities and remaining runtime limitations.
+
+The V1–V9 remediation adds 303 regression cases. Final verification passed 1,134
+full-suite tests and 1,036 focused Phase-1 tests without deselection, with the same
+14 sklearn warnings. Ruff and the diff check passed; Pyright reported zero errors
+and warnings. Disposable manual probes passed 41 storage checks, 19 resealed reader
+checks, and 118 prior contract/provenance/boundary checks. Fresh Windows thread and
+process probes covered six reservation/write/seal races and four append/overwrite
+races; normal/extended-path exclusion also has regression coverage and separate
+read-only review probes. All 18 substantive differential families matched the
+audited base. These are implementation verification results; the final merge gate
+still requires personnel-independent verification.
 
 Protected historical inventories are hashed before remediation and again after
 verification. Historical artifacts, data/history, paper/results, prompts,
