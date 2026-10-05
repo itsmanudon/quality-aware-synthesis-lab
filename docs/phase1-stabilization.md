@@ -93,6 +93,16 @@ resolution behavior. API and baseline run/replay CLI execution checks protected 
 ancestry before constructing providers, then reservation rechecks under the storage
 lock. A successful reservation may be canonicalized for active execution writes;
 configuration loading never resolves output aliases ahead of authorization.
+CLI project roots carry separate logical and physical paths. Caller `--root`
+spelling survives output anchoring; physical roots locate read-only configurations,
+datasets, fixtures, review sources, and literature inputs. Baseline run/replay pass
+the logical root through configuration loading and execution. Dataset manifests,
+reports, inventories, human-review exports, and diagnostic destinations also retain
+that output ancestry until their shared writer/reservation authorizes it. Existing
+conservative historical-namespace alias rules still apply.
+If implicit discovery through a linked subdirectory has no usable logical project
+ancestor, output commands require explicit `--root` rather than substituting a
+canonical output base. Read-only commands still use the discovered physical root.
 
 Explicit derived-output paths retain their caller-supplied logical ancestry through
 shared guarded directory reservation. Review/disagreement exports, copying/support

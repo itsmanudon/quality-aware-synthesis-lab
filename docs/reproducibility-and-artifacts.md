@@ -123,6 +123,12 @@ output authorization; read-only fixture paths retain their normal resolution. Pu
 baseline API and run/replay CLI entry paths apply the same output guard before provider
 construction and recheck during locked reservation. Canonical execution paths are used
 only after that reservation succeeds.
+CLI `--root` is retained as a logical output anchor, with a separate resolved root
+for read-only input lookup. Run/replay CLI, inventory and dataset/report exports,
+and diagnostic destinations pass logical output ancestry to the same guards as
+direct APIs; resolving input paths does not replace the output anchor.
+Implicit discovery without a usable logical project ancestor requires explicit
+`--root` for output commands; read-only lookup remains available.
 
 Writer protection checks each alias hop, including intermediate historical namespaces.
 Derived-output reservations and human-review CLI outputs preserve the original path

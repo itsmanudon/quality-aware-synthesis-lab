@@ -3,7 +3,9 @@ from __future__ import annotations
 import platform
 import subprocess
 import sys
+from dataclasses import dataclass
 from pathlib import Path
+from uuid import uuid4
 
 import typer
 from pydantic import BaseModel
@@ -34,6 +36,7 @@ from rcqasyn.experiments import (
 from rcqasyn.literature import build_inventory
 from rcqasyn.metrics import utility_metrics
 from rcqasyn.storage.artifacts import read_json, write_json
+from rcqasyn.storage.ownership import assert_writable
 
 app = typer.Typer(help="RC-QASyn research foundation CLI.")
 papers_app = typer.Typer(help="Inspect the local literature corpus.")
@@ -115,14 +118,15 @@ def human_review_analyze(
 ) -> None:
     """Generate M1.6 reports from complete external human annotations."""
 
-    project_root = _root_option(root)
+    roots = _root_option(root)
+    project_root = roots.physical
     source = review_csv.expanduser()
     source = source.resolve() if source.is_absolute() else (project_root / source).resolve()
-    destination = output_dir or project_root / "artifacts" / "reports" / "human_audit"
+    destination = output_dir or roots.logical / "artifacts" / "reports" / "human_audit"
     destination = (
         destination.absolute()
         if destination.is_absolute()
-        else (project_root / destination).absolute()
+        else (roots.logical / destination).absolute()
     )
     adjudicated_path = None
     if adjudicated is not None:
@@ -160,14 +164,15 @@ def human_review_export_blind(
 ) -> None:
     """Create reviewer A/all and reviewer B/overlap exports without diagnostics."""
 
-    project_root = _root_option(root)
+    roots = _root_option(root)
+    project_root = roots.physical
     master = master_csv.expanduser()
     master = master.resolve() if master.is_absolute() else (project_root / master).resolve()
-    destination = output_dir or project_root / "artifacts" / "reports" / "human_audit" / "blinded"
+    destination = output_dir or roots.logical / "artifacts" / "reports" / "human_audit" / "blinded"
     destination = (
         destination.absolute()
         if destination.is_absolute()
-        else (project_root / destination).absolute()
+        else (roots.logical / destination).absolute()
     )
     try:
         master_status = review_status(master)
@@ -200,7 +205,8 @@ def human_review_import_blind(
 ) -> None:
     """Validate and attach blinded labels to a new copy of the master review."""
 
-    project_root = _root_option(root)
+    roots = _root_option(root)
+    project_root = roots.physical
 
     def resolve(path: Path) -> Path:
         expanded = path.expanduser()
@@ -213,7 +219,7 @@ def human_review_import_blind(
             resolve(manifest),
             output.expanduser().absolute()
             if output.expanduser().is_absolute()
-            else (project_root / output.expanduser()).absolute(),
+            else (roots.logical / output.expanduser()).absolute(),
             annotator_id=annotator_id,
             overwrite=overwrite,
         )
@@ -226,8 +232,31 @@ def human_review_import_blind(
     typer.echo(f"unlabelled: {status['unlabelled']}")
 
 
-def _root_option(root: Path | None) -> Path:
-    return root.expanduser().resolve() if root else discover_project_root()
+@dataclass(frozen=True)
+class _ProjectRoots:
+    _logical: Path | None
+    physical: Path
+    discovery_origin: Path
+
+    @property
+    def logical(self) -> Path:
+        if self._logical is None:
+            # Discovery through a link to a subdirectory may have no usable
+            # logical project ancestor. Never substitute a canonical output base.
+            assert_writable(self.discovery_origin / ".rcqasyn-output-anchor")
+            raise ValueError("cannot preserve logical project-root ancestry; pass explicit --root")
+        return self._logical
+
+
+def _root_option(root: Path | None) -> _ProjectRoots:
+    """Separate output ancestry from canonical read-only project lookup."""
+    origin = (root or Path.cwd()).expanduser().absolute()
+    physical = origin.resolve() if root is not None else discover_project_root(origin)
+    logical = origin if root is not None else next(
+        (path for path in (origin, *origin.parents) if path.resolve() == physical),
+        None,
+    )
+    return _ProjectRoots(_logical=logical, physical=physical, discovery_origin=origin)
 
 
 @app.command()
@@ -236,7 +265,8 @@ def doctor(
     config: Path | None = typer.Option(None, "--config", help="YAML config path."),  # noqa: B008
 ) -> None:
     """Report required foundation state without exposing environment secrets."""
-    project_root = _root_option(root)
+    roots = _root_option(root)
+    project_root = roots.physical
     print(f"Python: {sys.version.split()[0]} ({platform.platform()})")
     print(f"Root: {project_root}")
     errors: list[str] = []
@@ -278,16 +308,17 @@ def papers_index(
     output: Path | None = typer.Option(None, "--output", help="Inventory CSV path."),  # noqa: B008
 ) -> None:
     """Create a deterministic CSV inventory of local PDFs."""
-    project_root = _root_option(root)
+    roots = _root_option(root)
+    project_root = roots.physical
     try:
         resolved = load_config(config, project_root)
     except (OSError, ValueError) as error:
         typer.echo(f"error: {error}", err=True)
         raise typer.Exit(code=1) from error
     papers_dir = resolved.literature.papers_dir
-    inventory_path = output or project_root / "literature" / "paper_inventory.csv"
+    inventory_path = output or roots.logical / "literature" / "paper_inventory.csv"
     if not inventory_path.is_absolute():
-        inventory_path = project_root / inventory_path
+        inventory_path = roots.logical / inventory_path
     entries = build_inventory(papers_dir, inventory_path, project_root)
     print(f"Indexed {len(entries)} PDF(s) to {inventory_path.resolve()}")
 
@@ -295,7 +326,7 @@ def papers_index(
 @datasets_app.command("list")
 def datasets_list(root: Path | None = typer.Option(None, "--root", help="Project root.")) -> None:  # noqa: B008
     """List registered datasets without reading or printing records."""
-    registry = DatasetRegistry(project_root=_root_option(root))
+    registry = DatasetRegistry(project_root=_root_option(root).physical)
     for spec in registry.list():
         path = registry.resolve_path(spec)
         print(
@@ -309,7 +340,8 @@ def datasets_inspect(
     root: Path | None = typer.Option(None, "--root", help="Project root."),  # noqa: B008
 ) -> None:
     """Show registry, presence, fingerprint, schema, and split metadata without records."""
-    project_root = _root_option(root)
+    roots = _root_option(root)
+    project_root = roots.physical
     registry = DatasetRegistry(project_root=project_root)
     try:
         spec = registry.get(dataset_id)
@@ -362,7 +394,8 @@ def datasets_prepare(
     seed: int = typer.Option(42, "--seed"),
 ) -> None:
     """Prepare deterministic dataset, split, and TRAIN-only profile manifests."""
-    project_root = _root_option(root)
+    roots = _root_option(root)
+    project_root = roots.physical
     registry = DatasetRegistry(project_root=project_root)
     try:
         spec = registry.get(dataset_id)
@@ -387,7 +420,7 @@ def datasets_prepare(
             import json
 
             acquisition = json.loads(legacy_acquisition_path.read_text(encoding="utf-8"))
-        destination = project_root / "data" / "manifests" / dataset_id
+        destination = roots.logical / "data" / "manifests" / dataset_id
         _write_reusable_manifest(
             destination / "dataset_manifest.json",
             {
@@ -459,13 +492,14 @@ def datasets_record_acquisition(
 ) -> None:
     """Record size, SHA-256, and UTC acquisition time for an already acquired raw file."""
 
-    project_root = _root_option(root)
+    roots = _root_option(root)
+    project_root = roots.physical
     registry = DatasetRegistry(project_root=project_root)
     try:
         spec = registry.get(dataset_id)
         raw_path = registry.resolve_path(spec)
         record = record_acquisition(spec, raw_path, source_url=source_url)
-        destination = project_root / "data" / "manifests" / dataset_id / "source.json"
+        destination = roots.logical / "data" / "manifests" / dataset_id / "source.json"
         write_acquisition(destination, record, overwrite=overwrite)
     except (OSError, ValueError, KeyError) as error:
         typer.echo(f"error: {error}", err=True)
@@ -482,7 +516,8 @@ def baselines_trtr(
 ) -> None:
     """Run the real-train/real-test pilot for both configured classifiers."""
 
-    project_root = _root_option(root)
+    roots = _root_option(root)
+    project_root = roots.physical
     registry = DatasetRegistry(project_root=project_root)
     try:
         spec = registry.get(dataset_id)
@@ -496,10 +531,10 @@ def baselines_trtr(
         report = build_dataset_report(dataset, split)
         report.update({"seed": seed, "TRTR": result})
         destination = (
-            output or project_root / "artifacts" / "reports" / f"trtr-{dataset_id}-{seed}.json"
+            output or roots.logical / "artifacts" / "reports" / f"trtr-{dataset_id}-{seed}.json"
         )
         if not destination.is_absolute():
-            destination = project_root / destination
+            destination = roots.logical / destination
         _write_reusable_manifest(destination, report)
     except (OSError, ValueError, KeyError) as error:
         typer.echo(f"error: {error}", err=True)
@@ -517,7 +552,8 @@ def baselines_compare(
 ) -> None:
     """Write a machine-only cross-dataset comparison for completed runs."""
 
-    project_root = _root_option(root)
+    roots = _root_option(root)
+    project_root = roots.physical
     try:
         comparisons = []
         for run_dir in run_dirs:
@@ -530,10 +566,10 @@ def baselines_compare(
             comparisons.append(value)
         report = cross_dataset_comparison(comparisons)
         destination = (
-            output or project_root / "artifacts" / "reports" / "cross-dataset-comparison.json"
+            output or roots.logical / "artifacts" / "reports" / "cross-dataset-comparison.json"
         )
         if not destination.is_absolute():
-            destination = project_root / destination
+            destination = roots.logical / destination
         _write_reusable_manifest(destination, report)
     except (OSError, TypeError, ValueError) as error:
         typer.echo(f"error: {error}", err=True)
@@ -553,12 +589,21 @@ def baselines_diagnose(
 
     from rcqasyn.experiments import copying_diagnostics, support_diagnostics
 
-    project_root = _root_option(root)
+    roots = _root_option(root)
+    project_root = roots.physical
     for run_dir in run_dirs:
         path = run_dir if run_dir.is_absolute() else project_root / run_dir
+        logical_path = run_dir if run_dir.is_absolute() else roots.logical / run_dir
+        output_root = logical_path.parent.parent / "derived"
         try:
-            cp = copying_diagnostics(path, project_root)
-            sp = support_diagnostics(path, project_root)
+            cp = copying_diagnostics(
+                path, project_root,
+                output_dir=output_root / f"{logical_path.name}-copying-{uuid4().hex}",
+            )
+            sp = support_diagnostics(
+                path, project_root,
+                output_dir=output_root / f"{logical_path.name}-support-{uuid4().hex}",
+            )
         except (OSError, KeyError, ValueError) as error:
             typer.echo(f"error: {run_dir}: {error}", err=True)
             raise typer.Exit(code=1) from error
@@ -593,10 +638,10 @@ def baselines_replay(
 
 
 def _run_baseline(config: Path, root: Path | None, replay: bool) -> None:
-    project_root = _root_option(root)
+    roots = _root_option(root)
     try:
-        experiment, _ = load_experiment_config(config, project_root)
-        result = run_experiment(experiment, project_root=project_root, replay=replay)
+        experiment, _ = load_experiment_config(config, roots.logical)
+        result = run_experiment(experiment, project_root=roots.logical, replay=replay)
     except (OSError, ValueError, KeyError, RuntimeError) as error:
         typer.echo(f"error: {error}", err=True)
         raise typer.Exit(code=1) from error
