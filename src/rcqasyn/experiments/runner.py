@@ -128,6 +128,13 @@ def _execute_experiment(config: ExperimentConfig, *, project_root: Path | None =
     _validate_upstream_context(config, generation_prompt.text, judge_prompt.text, replay=replay)
     if not replay:
         _require_real_provider(config)
+    run_id = config.run_id or f"{config.experiment_name}-{uuid4().hex}"
+    artifact_root = config.artifact_root
+    if not artifact_root.is_absolute():
+        artifact_root = (project_root or Path.cwd()).absolute() / artifact_root
+    # Reject protected outputs before provider construction, without creating parents.
+    # Reservation rechecks under the storage lock before any directory is installed.
+    assert_writable(artifact_root / "runs" / run_id / "manifest.json")
     # Validate both independently selectable providers before reserving an artifact directory.
     generator = _provider(config.generator, root, replay)
     judge_provider = _provider(config.judge.provider, root, False)
@@ -137,11 +144,7 @@ def _execute_experiment(config: ExperimentConfig, *, project_root: Path | None =
                                           provider_sources={name: provider.fixture_sha256 for name, provider in
                                               (("generator", generator), ("judge", judge_provider))
                                               if isinstance(provider, ReplayProvider)})
-    run_id = config.run_id or f"{config.experiment_name}-{uuid4().hex}"
-    artifact_root = config.artifact_root
-    if not artifact_root.is_absolute():
-        artifact_root = root / artifact_root
-    run_dir = create_run_dir(artifact_root / "runs", run_id, exist_ok=False)
+    run_dir = create_run_dir(artifact_root / "runs", run_id, exist_ok=False).resolve()
     own_run(run_dir)
     generator = DurableProvider(generator, run_dir, "generation", provider_identity=scientific["specification"]["providers"]["generator"], specification_fingerprint=scientific["fingerprint"])
     judge_provider = DurableProvider(judge_provider, run_dir, "judge", provider_identity=scientific["specification"]["providers"]["judge"], specification_fingerprint=scientific["fingerprint"])

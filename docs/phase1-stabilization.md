@@ -86,6 +86,14 @@ the same policy, including the seal marker itself.
 A seal protects the whole bundle from package writers, including new files and
 append/overwrite requests.
 
+Configured experiment `artifact_root` destinations retain their logical absolute
+paths, including relative paths anchored to the supplied project root, until guarded
+reservation. Input configuration and fixture paths keep their existing read-only
+resolution behavior. API and baseline run/replay CLI execution checks protected output
+ancestry before constructing providers, then reservation rechecks under the storage
+lock. A successful reservation may be canonicalized for active execution writes;
+configuration loading never resolves output aliases ahead of authorization.
+
 Explicit derived-output paths retain their caller-supplied logical ancestry through
 shared guarded directory reservation. Review/disagreement exports, copying/support
 diagnostics, and human-review CLI outputs pass that ancestry to the guard rather

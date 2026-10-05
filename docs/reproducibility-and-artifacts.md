@@ -118,6 +118,12 @@ remain read-only and report their validation limitations. Derived analysis write
 separately and validates source bindings. See [Phase 1](phase1-stabilization.md) for
 status contracts, durable call recovery, guards and legacy compatibility.
 
+Relative experiment `artifact_root` configuration preserves logical ancestry through
+output authorization; read-only fixture paths retain their normal resolution. Public
+baseline API and run/replay CLI entry paths apply the same output guard before provider
+construction and recheck during locked reservation. Canonical execution paths are used
+only after that reservation succeeds.
+
 Writer protection checks each alias hop, including intermediate historical namespaces.
 Derived-output reservations and human-review CLI outputs preserve the original path
 until guarded authorization, including intermediate alias ancestry. Public adapters
