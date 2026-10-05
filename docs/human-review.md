@@ -181,3 +181,15 @@ Reviewer comments belong only in the intended `human_notes` column. Private work
 notes outside that column must not be committed. See
 [`reproducibility-and-artifacts.md`](reproducibility-and-artifacts.md) for the repository
 artifact policy.
+
+## Phase 1 history protection
+
+Annotate a separate copy of the exported review CSV. Machine run bundles are sealed
+and immutable. Re-exporting historical reviews produces separate source-bound
+derivatives. Choose a fresh output directory for each human-audit report; existing
+reports/blinded exports/imports cannot be replaced even with `--overwrite`. Reports
+are sealed with `FINALIZED.json` after all files are written. Analysis requires
+completed source manifests; new sources additionally require valid seals/contracts.
+New B2 duplicate evidence faithfully identifies the existing duplicate-only rejection
+without changing admission or inferring evidence for legacy rows. See
+[Phase 1](phase1-stabilization.md).

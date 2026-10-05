@@ -16,6 +16,12 @@ from collections.abc import Iterable
 from pathlib import Path
 from typing import Any
 
+from rcqasyn.contracts.m1 import validate_comparison
+from rcqasyn.storage.artifacts import immutable_text_stream
+from rcqasyn.storage.ownership import is_owned, seal_bundle
+
+from .readers import derived_directory, validate_source
+
 HUMAN_FAILURE_TAXONOMY = (
     "NONE",
     "PARSE",
@@ -89,10 +95,11 @@ DISAGREEMENT_COLUMNS = (
 )
 
 
-def export_human_review(run_dir: Path, *, overwrite: bool = False, seed: int = 42, cap_per_category: int = 5) -> Path:
+def export_human_review(run_dir: Path, *, overwrite: bool = False, seed: int = 42, cap_per_category: int = 5, output_dir: Path | None = None) -> Path:
     """Export a deterministic, bounded review sample for each available category."""
 
     run_dir = Path(run_dir)
+    validate_source(run_dir, allow_active=True)
     if cap_per_category < 0:
         raise ValueError("cap_per_category must be non-negative")
     manifest = _read_json(run_dir / "manifest.json")
@@ -155,21 +162,26 @@ def export_human_review(run_dir: Path, *, overwrite: bool = False, seed: int = 4
         category_rows.sort(key=lambda row: hashlib.sha256(f"{seed}:{category}:{row['record_id']}".encode()).hexdigest())
         rows.extend(category_rows[:cap_per_category])
     rows.sort(key=lambda row: (row["category"], row["record_id"]))
-    destination = run_dir / "human_review.csv"
-    if destination.exists() and not overwrite:
+    if overwrite and (run_dir / "human_review.csv").exists():
+        raise FileExistsError("historical review export cannot be replaced")
+    directory = run_dir if is_owned(run_dir) and output_dir is None else derived_directory(run_dir, "review", output_dir)
+    destination = directory / "human_review.csv"
+    if destination.exists():
         raise FileExistsError(f"refusing to overwrite existing artifact: {destination}")
-    destination.parent.mkdir(parents=True, exist_ok=True)
-    with destination.open("w", encoding="utf-8", newline="") as stream:
+    with immutable_text_stream(destination) as stream:
         writer = csv.DictWriter(stream, fieldnames=list(REVIEW_COLUMNS))
         writer.writeheader()
         writer.writerows(rows)
+    if directory != run_dir:
+        seal_bundle(directory)
     return destination
 
 
-def export_disagreements(run_dir: Path, *, overwrite: bool = False) -> Path:
+def export_disagreements(run_dir: Path, *, overwrite: bool = False, output_dir: Path | None = None) -> Path:
     """Export all B2/B3 status disagreements without adjudication."""
 
     run_dir = Path(run_dir)
+    validate_source(run_dir, allow_active=True)
     manifest = _read_json(run_dir / "manifest.json")
     raw = _read_jsonl(run_dir / "candidates_raw.jsonl")
     b2 = {item["candidate_id"]: item for item in _read_jsonl(run_dir / "baselines" / "b2" / "decisions.jsonl")}
@@ -203,14 +215,18 @@ def export_disagreements(run_dir: Path, *, overwrite: bool = False) -> Path:
             "raw_output": str(candidate.get("raw_output") or ""),
         })
     rows.sort(key=lambda row: row["record_id"])
-    destination = run_dir / "b2_b3_disagreements.csv"
-    if destination.exists() and not overwrite:
+    if overwrite and (run_dir / "b2_b3_disagreements.csv").exists():
+        raise FileExistsError("historical disagreement export cannot be replaced")
+    directory = run_dir if is_owned(run_dir) and output_dir is None else derived_directory(run_dir, "disagreements", output_dir)
+    destination = directory / "b2_b3_disagreements.csv"
+    if destination.exists():
         raise FileExistsError(f"refusing to overwrite existing artifact: {destination}")
-    destination.parent.mkdir(parents=True, exist_ok=True)
-    with destination.open("w", encoding="utf-8", newline="") as stream:
+    with immutable_text_stream(destination) as stream:
         writer = csv.DictWriter(stream, fieldnames=list(DISAGREEMENT_COLUMNS))
         writer.writeheader()
         writer.writerows(rows)
+    if directory != run_dir:
+        seal_bundle(directory)
     return destination
 
 
@@ -302,7 +318,14 @@ def cross_dataset_comparison(comparisons: Iterable[dict[str, Any]]) -> dict[str,
         "OBSERVED_RANGE_WARNING", "EXACT_DUPLICATE", "B2_REJECTED", "B3_REJECTED",
         "B3_MALFORMED", "PROVIDER_ERROR",
     )
-    for comparison in comparisons:
+    comparisons = list(comparisons)
+    counts = {}
+    for item in comparisons:
+        dataset = str(item.get("dataset_id", ""))
+        counts[dataset] = counts.get(dataset, 0) + 1
+    for index, comparison in enumerate(comparisons):
+        if comparison.get("schema_version") == "m1-comparison-v2":
+            validate_comparison(comparison)
         row_failure_matrix = comparison.get("failure_aggregation", {})
         tstr_pr_auc = {
             name: {
@@ -315,7 +338,8 @@ def cross_dataset_comparison(comparisons: Iterable[dict[str, Any]]) -> dict[str,
             for name, value in comparison.get("baselines", {}).items()
         }
         rows.append({
-            "dataset_id": comparison.get("dataset_id"),
+            "dataset_id": comparison.get("dataset_id"), "run_id": comparison.get("run_id"),
+            "outcome": comparison.get("outcome"),
             "requested": comparison.get("requested"),
             "raw_pool_count": comparison.get("raw_pool_count"),
             "parse_success_rate": comparison.get("parse_success_rate"),
@@ -330,6 +354,9 @@ def cross_dataset_comparison(comparisons: Iterable[dict[str, Any]]) -> dict[str,
             "human_review": "separate/not_evaluable_until_adjudicated",
         })
         dataset_id = str(comparison.get("dataset_id", ""))
+        entry_id = dataset_id if counts[dataset_id] == 1 else str(comparison.get("run_id") or f"{dataset_id}-legacy-entry-{index}")
+        if entry_id in baseline_tables:
+            raise ValueError(f"duplicate execution identity: {entry_id}")
         aggregation = comparison.get("failure_aggregation", {})
         global_failures = aggregation.get("global", {})
         if not global_failures:
@@ -350,8 +377,8 @@ def cross_dataset_comparison(comparisons: Iterable[dict[str, Any]]) -> dict[str,
                 for category, alias in aliases.items()
             }
         for category in categories:
-            failure_matrix.setdefault(category, {})[dataset_id] = global_failures.get(category, {})
-        baseline_tables[dataset_id] = comparison.get("baseline_comparison", [])
+            failure_matrix.setdefault(category, {})[entry_id] = global_failures.get(category, {})
+        baseline_tables[entry_id] = comparison.get("baseline_comparison", [])
     rows.sort(key=lambda row: str(row.get("dataset_id", "")))
     return {
         "schema_version": "m1-cross-dataset-v1", "status": "machine_only", "no_significance_claim": True,

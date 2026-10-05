@@ -84,8 +84,8 @@ restore it from the repository root:
 tar -xzf artifacts/archives/<run-id>.tar.gz
 ```
 
-Never overwrite an existing run directory until its identity and checksum have been
-checked.
+Never overwrite an existing run directory. Verify source identities and checksums,
+then restore or derive into a new directory.
 
 ## Resume on another laptop
 
@@ -104,3 +104,52 @@ checked.
 Do not rerun an expensive experiment merely because artifacts are missing on another
 machine. Transfer the original artifacts if available; a rerun is a new experimental
 replicate.
+
+## Phase 1 execution guarantees
+
+Scientific-specification fingerprints exclude execution IDs and output paths. Unique
+execution IDs reserve separate bundles. Seeds, environment and dirty Git state are
+recorded, but provider determinism is not guaranteed. Missing seeds are explicit.
+Finalized and foreign run bundles are immutable to package writers; active owned
+manifest/evidence transitions are permitted until sealing. OS locks exclude active
+writes from seal inventory/installation; existing standalone reports and dataset
+history resist public overwrite/append flags. Supported legacy completed bundles
+remain read-only and report their validation limitations. Derived analysis writes
+separately and validates source bindings. See [Phase 1](phase1-stabilization.md) for
+status contracts, durable call recovery, guards and legacy compatibility.
+
+Relative experiment `artifact_root` configuration preserves logical ancestry through
+output authorization; read-only fixture paths retain their normal resolution. Public
+baseline API and run/replay CLI entry paths apply the same output guard before provider
+construction and recheck during locked reservation. Canonical execution paths are used
+only after that reservation succeeds.
+CLI `--root` is retained as a logical output anchor, with a separate resolved root
+for read-only input lookup. Run/replay CLI, inventory and dataset/report exports,
+and diagnostic destinations pass logical output ancestry to the same guards as
+direct APIs; resolving input paths does not replace the output anchor.
+Implicit discovery without a usable logical project ancestor requires explicit
+`--root` for output commands; read-only lookup remains available.
+
+Writer protection checks each alias hop, including intermediate historical namespaces.
+Derived-output reservations and human-review CLI outputs preserve the original path
+until guarded authorization, including intermediate alias ancestry. Public adapters
+leave parent creation to the locked writer/reservation; refusing a protected write
+creates no directories, files, or metadata paths in the protected tree. Tests compare
+the complete directory tree, file mtimes/bytes, and seal before and after refusal.
+Staging names do not exempt symlinks or junctions. JSONL append installs a durable
+copy, so appending through an outside hardlink does not mutate its protected source.
+Normal and extended Windows path spellings use the same lock identities; cooperating
+processes still require a common TEMP namespace, and ancestor locking is conservative.
+POSIX locks have not been runtime-tested on this Windows host.
+
+The public paper inventory CSV API and `papers index --output` also use the
+guarded atomic writer. Ordinary inventory regeneration remains supported;
+protected historical destinations cannot be replaced. Writing to an allowed
+outside hardlink replaces that directory entry without mutating its source.
+
+New bundles also bind a local normalized population snapshot to the dataset hash.
+Readers validate approved split membership, complete resolved controls, schema-derived
+result requirements, durable-call accounting and explicit nested source identities.
+The snapshot never enters provider or judge contexts. Validation compares provenance
+and recorded results; it does not recompute metrics or rerun admission. Older v2
+experimental output without the required snapshot is rejected rather than upgraded.

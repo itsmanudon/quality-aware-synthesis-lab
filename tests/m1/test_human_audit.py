@@ -76,6 +76,13 @@ def _row(index: int, **updates: str) -> dict[str, str]:
 
 
 def _write_review(path: Path, rows: list[dict[str, str]]) -> Path:
+    for row in rows:
+        source = path.parent / "artifacts" / "runs" / row["run_id"]
+        source.mkdir(parents=True, exist_ok=True)
+        manifest = source / "manifest.json"
+        if not manifest.exists():
+            manifest.write_text(json.dumps({"schema_version": "m1-run-v1", "status": "completed",
+                                            "run_id": row["run_id"], "dataset_id": row["dataset_id"]}))
     with path.open("w", encoding="utf-8", newline="") as stream:
         writer = csv.DictWriter(stream, fieldnames=REVIEW_COLUMNS)
         writer.writeheader()
@@ -327,6 +334,7 @@ def test_complete_analysis_writes_traceable_measurement_only_bundle(tmp_path: Pa
     result = analyze_review(review, project_root=tmp_path, output_dir=output)
 
     expected = {
+        "FINALIZED.json",
         "human_summary.json",
         "b2_human_confusion.json",
         "b3_human_confusion.json",

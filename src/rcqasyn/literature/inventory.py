@@ -1,9 +1,11 @@
 from __future__ import annotations
 
 import csv
+import io
 from dataclasses import dataclass
 from pathlib import Path
 
+from rcqasyn.storage.artifacts import write_text
 from rcqasyn.utils.hashing import sha256_file
 
 
@@ -36,9 +38,9 @@ def scan_pdfs(papers_dir: Path, project_root: Path | None = None) -> list[PaperI
 
 
 def write_inventory(entries: list[PaperInventoryEntry], output: Path) -> None:
-    output = Path(output)
-    output.parent.mkdir(parents=True, exist_ok=True)
-    with output.open("w", encoding="utf-8", newline="") as stream:
+    # Keep ordinary inventory regeneration, while protecting historical destinations
+    # and replacing directory entries rather than mutating hardlinked files in place.
+    with io.StringIO(newline="") as stream:
         writer = csv.DictWriter(
             stream, fieldnames=["filename", "relative_path", "sha256", "size_bytes"], lineterminator="\n"
         )
@@ -52,6 +54,7 @@ def write_inventory(entries: list[PaperInventoryEntry], output: Path) -> None:
             }
             for entry in entries
         )
+        write_text(Path(output), stream.getvalue(), overwrite=True)
 
 
 def build_inventory(papers_dir: Path, output: Path, project_root: Path | None = None) -> list[PaperInventoryEntry]:

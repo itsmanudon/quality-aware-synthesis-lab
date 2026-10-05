@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from datetime import UTC, datetime
-from typing import cast
+from typing import Protocol, cast
 
 from rcqasyn.contracts import (
     CandidateRecord,
@@ -12,13 +12,21 @@ from rcqasyn.contracts import (
     ValidationContext,
     Verdict,
 )
-from rcqasyn.datasets import DatasetDefinition, DatasetProfile
+from rcqasyn.datasets import DatasetDefinition
+
+
+class ValidatorProfile(Protocol):
+    @property
+    def domains(self) -> dict[str, tuple[str, ...]]: ...
+
+    @property
+    def numeric_summary(self) -> dict[str, dict[str, float]]: ...
 
 
 class _BaseValidator:
     validator_id = "validator"
 
-    def __init__(self, spec: DatasetDefinition, profile: DatasetProfile) -> None:
+    def __init__(self, spec: DatasetDefinition, profile: ValidatorProfile) -> None:
         self.spec = spec
         self.profile = profile
 
@@ -157,7 +165,7 @@ class ObservedRangeValidator(_BaseValidator):
 
     validator_id = "observed-range"
 
-    def __init__(self, spec: DatasetDefinition, profile: DatasetProfile, *, severity: Severity = Severity.MEDIUM) -> None:
+    def __init__(self, spec: DatasetDefinition, profile: ValidatorProfile, *, severity: Severity = Severity.MEDIUM) -> None:
         super().__init__(spec, profile)
         self.severity = severity
 
@@ -182,7 +190,7 @@ class ObservedRangeValidator(_BaseValidator):
 class ValidatorSuite:
     """Compose independent deterministic validators used by B2."""
 
-    def __init__(self, spec: DatasetDefinition, profile: DatasetProfile, *, range_severity: Severity = Severity.MEDIUM) -> None:
+    def __init__(self, spec: DatasetDefinition, profile: ValidatorProfile, *, range_severity: Severity = Severity.MEDIUM) -> None:
         self.schema = SchemaValidator(spec, profile)
         self.categorical = CategoricalDomainValidator(spec, profile)
         self.missing = MissingValueValidator(spec, profile)

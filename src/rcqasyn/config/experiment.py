@@ -145,7 +145,8 @@ class ExperimentConfig(ContractModel):
 
 
 def load_experiment_config(config_path: Path, project_root: Path | None = None) -> tuple[ExperimentConfig, Path]:
-    root = (project_root or Path.cwd()).resolve()
+    logical_root = (project_root or Path.cwd()).absolute()
+    root = logical_root.resolve()
     path = Path(config_path)
     if not path.is_absolute():
         path = root / path
@@ -159,16 +160,21 @@ def load_experiment_config(config_path: Path, project_root: Path | None = None) 
     except Exception as error:
         raise ValueError(f"invalid experiment config {path}: {error}") from error
     config = config.model_copy(update={
-        "artifact_root": _resolve(root, config.artifact_root),
+        "artifact_root": _logical_output_path(logical_root, config.artifact_root),
         "generator": config.generator.model_copy(update={"fixture": _resolve_optional(root, config.generator.fixture)}),
         "judge": config.judge.model_copy(update={"provider": config.judge.provider.model_copy(update={"fixture": _resolve_optional(root, config.judge.provider.fixture)})}),
     })
     return config, path
 
 
-def _resolve(root: Path, path: Path) -> Path:
+def _logical_output_path(root: Path, path: Path) -> Path:
+    """Keep output alias hops and logical ancestry for guarded authorization."""
+    return path if path.is_absolute() else root / path
+
+
+def _resolve_input_path(root: Path, path: Path) -> Path:
     return path if path.is_absolute() else (root / path).resolve()
 
 
 def _resolve_optional(root: Path, path: Path | None) -> Path | None:
-    return _resolve(root, path) if path else None
+    return _resolve_input_path(root, path) if path else None

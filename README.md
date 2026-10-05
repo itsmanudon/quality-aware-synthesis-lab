@@ -20,7 +20,7 @@ stratified splits, versioned prompts, replay and OpenAI-compatible provider adap
 and three strictly paired baselines. B1 accepts every parseable raw candidate; B2 uses
 independent deterministic validators; B3 uses exactly one judge with a static threshold,
 no calibration, and no rule/judge evidence fusion. The offline replay is a real run of
-the same architecture and never makes a network or paid call.
+the same evaluation architecture and never makes a network or paid call. Pure recorded-response replay does not render unsafe legacy contexts.
 
 The development fixture is non-sensitive and is not KEEL data or scientific evidence.
 M1.1 official KEEL raw archives remain ignored; their source and hashes are recorded in
@@ -99,6 +99,13 @@ M0.1 foundation behavior remains supported. M1 baseline generation/evaluation is
 implemented and executable offline. Advanced calibrated fusion, repair/regeneration,
 RAG/factual verification, embeddings, privacy/fairness validation, and alpha/beta
 metrics remain explicitly deferred.
+
+## Phase 1 evaluation stabilization
+
+M1 now distinguishes scientific specifications from executions, guards TRAIN-only
+provider contexts, persists raw calls before parsing, seals finalized bundles, and
+reports component failures and metric availability explicitly. See
+[the executable behavior and compatibility guide](docs/phase1-stabilization.md).
 
 ## Reproducibility
 

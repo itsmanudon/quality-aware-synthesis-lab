@@ -33,13 +33,19 @@ that authoritative spelling rather than silently renaming the raw column.
 `rcqasyn datasets prepare <id> --seed 42` writes a dataset fingerprint, deterministic
 stratified split manifest, a TRAIN-only profile, a compact dataset report, and explicit
 leakage assertions under `data/manifests/<id>/`. Existing manifests refuse accidental
-overwrite. The test split is never used for profile statistics, examples, prompt text,
-filters, judges, model selection, or preprocessing fit. Profiles are built from TRAIN
-only and include explicit train indices and hashes; sentinel test-only values/categories
-must therefore not appear in prompts or profiles. `rcqasyn baselines trtr <id> --seed 42`
+overwrite; identical content is a read-only no-op and changed content fails. TRAIN
+statistics/domains/examples exclude REAL TEST. The full profile retains TEST-inclusive
+lineage fingerprints for auditing; only the bounded TRAIN projection is allowed
+upstream in fresh execution. Legacy full-profile fresh contexts fail before provider
+contact. Classifier preprocessing fits its training population only. No CV/model
+selection or calibration path exists in M1. Sentinel TEST values must not appear
+in TRAIN summaries/examples or approved provider contexts. `rcqasyn baselines trtr <id> --seed 42`
 writes the real-train/real-test pilot report for logistic regression and random forest.
 
 Observed numeric ranges are descriptive support, not hard constraints. The B2 observed
 range validator emits a WARN verdict by default and only rejects if its configured
 severity is selected. This distinction prevents a small sample's observed support from
 being silently treated as a domain rule.
+
+The existing hash-ordered stratified split is unchanged. `stratify=false` is
+explicitly unsupported. See [Phase 1](phase1-stabilization.md).

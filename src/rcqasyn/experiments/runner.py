@@ -6,11 +6,14 @@ import platform
 import subprocess
 import sys
 import time
+from collections.abc import Callable
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from pathlib import Path
+from string import Formatter
 from typing import Any
 from urllib.parse import urlsplit, urlunsplit
+from uuid import uuid4
 
 import pandas as pd
 import yaml
@@ -22,13 +25,24 @@ from rcqasyn.contracts import (
     BaselineDecision,
     CandidateRecord,
     ClassQuota,
+    Evidence,
     GenerationPlan,
     JudgeResult,
     ParseFailureEvent,
     ProviderCallTrace,
+    QualityDimension,
+    Severity,
     Verdict,
 )
+from rcqasyn.contracts.m1 import (
+    annotate_intrinsic,
+    annotate_utility,
+    execution_outcome,
+    finite_tree,
+    validate_comparison,
+)
 from rcqasyn.datasets import DatasetRegistry, build_profile, load_dataset, make_split
+from rcqasyn.datasets.training import TrainingContext
 from rcqasyn.experiments.analysis import (
     export_disagreements,
     export_human_review,
@@ -40,13 +54,25 @@ from rcqasyn.generation.provider import (
     OpenAICompatibleGenerator,
     ProviderResponse,
     ReplayGenerator,
+    ReplayProvider,
     provider_readiness,
 )
 from rcqasyn.metrics import intrinsic_metrics, utility_metrics
-from rcqasyn.storage.artifacts import create_run_dir, write_json
+from rcqasyn.storage.artifacts import create_run_dir, write_json, write_text
 from rcqasyn.storage.jsonl import append_jsonl
+from rcqasyn.storage.ownership import (
+    assert_writable,
+    execution_scope,
+    file_hash,
+    own_run,
+    seal_bundle,
+)
 from rcqasyn.utils.hashing import sha256_text
 from rcqasyn.utils.seeds import generation_provider_seed
+
+from .artifact_identity import BINDING_VERSION, write_execution_bindings
+from .call_evidence import DurableCallFailure, DurableProvider
+from .specification import environment_snapshot, scientific_specification, seed_provenance
 
 
 @dataclass(frozen=True)
@@ -56,14 +82,40 @@ class BaselineRunResult:
     comparison: dict[str, Any]
 
 
+
 def run_experiment(config: ExperimentConfig, *, project_root: Path | None = None, replay: bool = False) -> BaselineRunResult:
+    with execution_scope() as paths:
+        try:
+            return _execute_experiment(config, project_root=project_root, replay=replay)
+        except Exception as error:
+            for directory in paths:
+                try:
+                    manifest = _read_json(directory / "manifest.json") if (directory / "manifest.json").exists() else {}
+                    manifest.update({"status": "failed", "success": False,
+                                     "failure": {"type": type(error).__name__, "reason": str(error)}})
+                    _write_json(directory / "manifest.json", manifest, overwrite=True)
+                except Exception as persistence_error:  # noqa: BLE001 - preserve the original failure
+                    error.add_note(f"failure manifest could not be persisted: {persistence_error}")
+                    # A missing final seal is deliberately never accepted by new readers.
+                    try:
+                        write_json(directory / "EXECUTION_FAILED.json",
+                                   {"status": "failed", "type": type(error).__name__, "reason": str(error)})
+                    except Exception as marker_error:  # noqa: BLE001 - preserve the original failure
+                        error.add_note(f"failure marker could not be persisted: {marker_error}")
+            raise
+
+
+def _execute_experiment(config: ExperimentConfig, *, project_root: Path | None = None, replay: bool = False) -> BaselineRunResult:
     started_perf = time.perf_counter()
     root = (project_root or Path.cwd()).resolve()
     if config.generation.objective != "data_emulation":
         raise ValueError("M1 execution supports objective=data_emulation only; minority_augmentation is planned")
     registry = DatasetRegistry(project_root=root)
     spec = registry.get(config.dataset.dataset_id)
+    raw_source_sha256 = file_hash(registry.resolve_path(spec))
     dataset = load_dataset(spec, registry)
+    if raw_source_sha256 != file_hash(dataset.path):
+        raise ValueError("dataset source provenance changed during load")
     split = make_split(dataset, config.dataset.root_seed)
     profile = build_profile(
         dataset, split, reference_example_count=config.dataset.reference_example_count,
@@ -73,18 +125,36 @@ def run_experiment(config: ExperimentConfig, *, project_root: Path | None = None
     generation_prompt = load_prompt("generation", config.generation.prompt_version, root)
     judge_prompt = load_prompt("judge", config.judge.prompt_version, root)
     plan = _generation_plan(config, profile, generation_prompt.sha256)
+    _validate_upstream_context(config, generation_prompt.text, judge_prompt.text, replay=replay)
     if not replay:
         _require_real_provider(config)
+    run_id = config.run_id or f"{config.experiment_name}-{uuid4().hex}"
+    artifact_root = config.artifact_root
+    if not artifact_root.is_absolute():
+        artifact_root = (project_root or Path.cwd()).absolute() / artifact_root
+    # Reject protected outputs before provider construction, without creating parents.
+    # Reservation rechecks under the storage lock before any directory is installed.
+    assert_writable(artifact_root / "runs" / run_id / "manifest.json")
     # Validate both independently selectable providers before reserving an artifact directory.
     generator = _provider(config.generator, root, replay)
     judge_provider = _provider(config.judge.provider, root, False)
-    run_id = config.run_id or f"{config.experiment_name}-{config.canonical_hash()[:12]}"
-    artifact_root = config.artifact_root
-    if not artifact_root.is_absolute():
-        artifact_root = root / artifact_root
-    run_dir = create_run_dir(artifact_root / "runs", run_id, exist_ok=False)
+    scientific = scientific_specification(config, root, replay=replay, dataset=dataset, split=split, profile=profile,
+                                          prompt_hashes={"generation": generation_prompt.sha256, "judge": judge_prompt.sha256},
+                                          raw_source_sha256=raw_source_sha256,
+                                          provider_sources={name: provider.fixture_sha256 for name, provider in
+                                              (("generator", generator), ("judge", judge_provider))
+                                              if isinstance(provider, ReplayProvider)})
+    run_dir = create_run_dir(artifact_root / "runs", run_id, exist_ok=False).resolve()
+    own_run(run_dir)
+    generator = DurableProvider(generator, run_dir, "generation", provider_identity=scientific["specification"]["providers"]["generator"], specification_fingerprint=scientific["fingerprint"])
+    judge_provider = DurableProvider(judge_provider, run_dir, "judge", provider_identity=scientific["specification"]["providers"]["judge"], specification_fingerprint=scientific["fingerprint"])
+    _write_json(run_dir / "scientific_specification.json", scientific)
+    write_text(run_dir / "prompts/generation.txt", generation_prompt.text)
+    write_text(run_dir / "prompts/judge.txt", judge_prompt.text)
     _write_json(run_dir / "manifest.json", {
-        "schema_version": "m1-run-v1", "run_id": run_id, "experiment_name": config.experiment_name,
+        "schema_version": "m1-run-v2", "execution_id": run_id, "artifact_binding_version": BINDING_VERSION,
+        "specification_fingerprint": scientific["fingerprint"], "boundary_version": "m1-train-boundary-v1",
+        "environment": environment_snapshot(), "run_id": run_id, "experiment_name": config.experiment_name,
         "status": "running", "started_at": datetime.now(UTC).isoformat(), "root_seed": config.dataset.root_seed,
         "dataset_id": spec.dataset_id, "dataset_fingerprint": dataset.fingerprint, "config_hash": config.canonical_hash(),
         "split_fingerprint": split.to_dict()["split_fingerprint"],
@@ -108,53 +178,101 @@ def run_experiment(config: ExperimentConfig, *, project_root: Path | None = None
     })
     _write_yaml(run_dir / "resolved_config.yaml", config.model_dump(mode="json"))
     _write_json(run_dir / "dataset" / "split_manifest.json", split.to_dict())
+    # Local evaluation provenance only: never part of TRAIN context or provider requests.
+    # Preserve the exact normalization serialization used by the dataset fingerprint.
+    write_text(run_dir / "dataset/evaluation_population.json", dataset.frame.to_json(
+        orient="split", date_format="iso", default_handler=str,
+    ))
     _write_json(run_dir / "dataset" / "profile.json", profile.model_dump(mode="json"))
+    write_text(run_dir / "dataset/profile_source.json", profile.model_dump_json())
     _write_json(run_dir / "generation_plan.json", plan.model_dump(mode="json"))
     # Resolve + assert the deterministic unique per-batch provider seeds before
     # any provider call (M1.4 seed-confound guard, M1.5 §5).
     seed_plan = _generation_seed_plan(config, plan)
     _write_json(run_dir / "generation_seed_plan.json", seed_plan)
+    manifest = _read_json(run_dir / "manifest.json")
+    manifest["seed_provenance"] = seed_provenance(config, split, seed_plan)
+    _write_json(run_dir / "manifest.json", manifest, overwrite=True)
 
     smoke_trace: ProviderCallTrace | None = None
     smoke_report: dict[str, Any] = {"status": "not_run", "reason": "offline replay" if replay else None}
     if not replay:
         try:
+            generator.evidence_purpose = "generation_smoke"
             smoke_trace, smoke_report = _provider_smoke(generator, run_dir.name, config, plan)
+            generator.evidence_purpose = "generation"
             _write_jsonl(run_dir / "provider_calls.jsonl", [smoke_trace])
             _write_json(run_dir / "provider_smoke.json", smoke_report)
             if smoke_report.get("status") != "ok":
                 raise RuntimeError(str(smoke_report.get("error", "smoke response failed validation")))
         except (OSError, RuntimeError, TypeError, ValueError) as error:
             smoke_report = {**smoke_report, "status": "failed", "error": str(error), "call_count": 1}
-            _write_json(run_dir / "provider_smoke.json", smoke_report)
+            _write_json(run_dir / "provider_smoke.json", smoke_report, overwrite=True)
             manifest = _read_json(run_dir / "manifest.json")
             manifest.update({"status": "failed", "failure": "provider_smoke", "provider_call_count": 1})
             _write_json(run_dir / "manifest.json", manifest, overwrite=True)
             raise RuntimeError(f"Provider smoke call failed; no pilot generation was attempted: {error}") from error
 
-    raw_candidates, traces, parse_failures, requested_calls = _generate_pool(config, run_id, plan, profile, generation_prompt.text, generator, seed_plan)
+    upstream = TrainingContext.from_profile(profile)
+    raw_candidates, traces, parse_failures, requested_calls = _generate_pool(config, run_id, plan, upstream, generation_prompt.text, generator, seed_plan)
     _write_jsonl(run_dir / "provider_calls.jsonl", traces)
     _write_jsonl(run_dir / "generation_failures.jsonl", parse_failures)
     _write_jsonl(run_dir / "candidates_raw.jsonl", raw_candidates)
 
-    b1 = _run_b1(raw_candidates, dataset.frame, split.train_indices, split.test_indices, spec, config, run_dir)
-    b2 = _run_b2(raw_candidates, dataset.frame, split.train_indices, split.test_indices, spec, profile, config, run_dir)
-    b3 = _run_b3(raw_candidates, dataset.frame, split.train_indices, split.test_indices, spec, profile, config, judge_prompt.text, judge_prompt.sha256, judge_prompt.version, run_dir, judge_provider)
+    train = dataset.frame.loc[list(split.train_indices)].copy()
+
+    def evaluate(synthetic: pd.DataFrame) -> tuple[dict[str, Any], dict[str, Any]]:
+        real_test = dataset.frame.loc[list(split.test_indices)]
+        return (intrinsic_metrics(train, synthetic, spec),
+                utility_metrics(train, real_test, synthetic, spec, seed=config.dataset.root_seed, classifiers=config.metrics.classifiers))
+
+    b1 = _run_b1(raw_candidates, train, spec, config, run_dir, evaluate)
+    b2 = _run_b2(raw_candidates, train, spec, upstream, config, run_dir, evaluate)
+    b3 = _run_b3(raw_candidates, train, spec, upstream, config, judge_prompt.text, judge_prompt.sha256, judge_prompt.version, run_dir, judge_provider, evaluate)
     judge_calls = b3["judge_calls"]
     comparison = _comparison(
         config, plan, raw_candidates, parse_failures, traces, requested_calls, judge_calls, b1, b2, b3,
         spec=spec, smoke_report=smoke_report, split_fingerprint=split.to_dict()["split_fingerprint"],
         wall_time_ms=(time.perf_counter() - started_perf) * 1000,
     )
+    comparison["schema_version"] = "m1-comparison-v2"
+    comparison["run_id"] = run_id
+    comparison["execution_id"] = run_id
+    comparison["dataset_fingerprint"] = dataset.fingerprint
+    comparison["split_fingerprint"] = split.to_dict()["split_fingerprint"]
+    comparison["configured_classifiers"] = list(config.metrics.classifiers)
+    comparison["configured_results"] = scientific["specification"]["evaluation"]["result_families"]
+    comparison["specification_fingerprint"] = scientific["fingerprint"]
+    comparison["generation_accounting"] = {
+        "requested": plan.requested_count, "returned_parseable": len(raw_candidates),
+        "status": "exact" if len(raw_candidates) == plan.requested_count else "overproduction" if len(raw_candidates) > plan.requested_count else "shortfall"}
+    comparison["outcome"] = execution_outcome(comparison).model_dump(mode="json")
     comparison["completed_at"] = datetime.now(UTC).isoformat()
+    validate_comparison(comparison)
+    binding_fingerprint = write_execution_bindings(run_dir, comparison, scientific)
+    manifest = _read_json(run_dir / "manifest.json")
+    manifest["execution_binding_fingerprint"] = binding_fingerprint
+    _write_json(run_dir / "manifest.json", manifest, overwrite=True)
     _write_json(run_dir / "comparison.json", comparison)
     export_human_review(run_dir)
     export_disagreements(run_dir)
     _write_json(run_dir / "machine_failure_report.json", machine_failure_report(comparison))
     manifest = _read_json(run_dir / "manifest.json")
-    manifest.update({"status": "completed", "completed_at": comparison["completed_at"], "provider_call_count": requested_calls + judge_calls + (1 if smoke_trace else 0)})
+    manifest.update({"status": "finalized", "success": comparison["outcome"]["success"], "outcome": comparison["outcome"], "completed_at": comparison["completed_at"], "provider_call_count": requested_calls + judge_calls + (1 if smoke_trace else 0)})
     _write_json(run_dir / "manifest.json", manifest, overwrite=True)
+    seal_bundle(run_dir)
     return BaselineRunResult(run_id, run_dir, comparison)
+
+
+
+def _validate_upstream_context(config: ExperimentConfig, prompt: str, judge_prompt: str, *, replay: bool) -> None:
+    """Boundary v1: reject unsafe fresh protocols without modifying their templates."""
+    recorded_only = replay and config.judge.provider.kind in {"replay", "fixture"}
+    fields = {field for _, field, _, _ in Formatter().parse(prompt) if field}
+    allowed = {"generation_context_json", "class_condition", "requested_count", "reference_examples"}
+    judge_fields = {field for _, field, _, _ in Formatter().parse(judge_prompt) if field}
+    if not recorded_only and (not fields <= allowed or not judge_fields <= {"profile_json", "candidate_json"} or config.generation.transport_version != "v2"):
+        raise ValueError("TRAIN-only context boundary v1 rejects this fresh generation/judge context")
 
 
 def _require_real_provider(config: ExperimentConfig) -> None:
@@ -324,7 +442,7 @@ def _generation_seed_plan(config: ExperimentConfig, plan: GenerationPlan) -> dic
         "calls": entries,
         "distinct_call_tuples": len(distinct_tuples),
         "distinct_provider_seeds": len(distinct_seeds),
-        "all_seeds_unique": config.generation.provider_seed is None or len(distinct_seeds) == len(distinct_tuples),
+        "all_seeds_unique": None if config.generation.provider_seed is None else len(distinct_seeds) == len(distinct_tuples),
     }
 
 
@@ -352,12 +470,11 @@ def _generate_pool(config: ExperimentConfig, run_id: str, plan: GenerationPlan, 
     response_format = {"type": config.generation.response_format} if config.generation.response_format else None
     for call_index, (requested_class, count, batch_index) in enumerate(requests):
         batch_seed = seed_by_key[(requested_class, batch_index)]
-        prompt = prompt_text.format(
+        prompt = "[recorded-response replay; no upstream prompt executed]" if (isinstance(provider, ReplayProvider) or getattr(provider, "recorded_response_only", False)) else prompt_text.format(
             profile_json=json.dumps(profile.model_dump(mode="json"), sort_keys=True),
             generation_context_json=generation_context_json, class_condition=requested_class,
             requested_count=count, reference_examples=json.dumps(profile.reference_examples, sort_keys=True),
         )
-        call_id = f"generation-{call_index}"
         try:
             response = provider.call(
                 role="generation", prompt=prompt, request_index=call_index,
@@ -365,9 +482,9 @@ def _generate_pool(config: ExperimentConfig, run_id: str, plan: GenerationPlan, 
                 max_tokens=config.generation.max_tokens, response_format=response_format,
                 reasoning_effort=config.generation.reasoning_effort,
             )
-        except (OSError, RuntimeError, TypeError, ValueError) as error:
+        except DurableCallFailure as error:
             failures.append(ParseFailureEvent(
-                event_id=f"provider-generation-{call_index}", run_id=run_id, call_id=call_id,
+                event_id=f"provider-generation-{call_index}", run_id=run_id, call_id=error.attempt_id,
                 parser_version="provider-v1", error=f"provider failure: {error}", recoverable=False,
                 created_at=datetime.now(UTC), metadata={"requested_class": requested_class, "requested_count": count,
                                                        "batch_index": batch_index, "provider_seed": batch_seed,
@@ -377,7 +494,7 @@ def _generate_pool(config: ExperimentConfig, run_id: str, plan: GenerationPlan, 
                                                        "reasoning_effort": config.generation.reasoning_effort},
             ))
             continue
-        call_id = response.call_id or call_id
+        call_id = response.call_id or f"generation-{call_index}"
         traces.append(_trace(
             run_id, "generation", response, config.generation.prompt_version, plan.prompt_hash, count,
             batch_seed, requested_class, prompt=prompt,
@@ -398,7 +515,7 @@ def _generate_pool(config: ExperimentConfig, run_id: str, plan: GenerationPlan, 
 
 def _trace(run_id: str, role: str, response: ProviderResponse, prompt_version: str | None, prompt_hash: str | None, requested_count: int | None, seed: int | None, requested_class: str | None = None, *, prompt: str | None = None, temperature: float | None = None, max_tokens: int | None = None, response_format: dict[str, Any] | None = None, reasoning_effort: str | None = None, transport_version: str | None = None, batch_index: int | None = None) -> ProviderCallTrace:
     return ProviderCallTrace(
-        metadata={"batch_index": batch_index} if batch_index is not None else {},
+        metadata={"batch_index": batch_index, "external_provider_call_id": response.external_call_id},
         call_id=response.call_id or f"call-{sha256_text(response.response)[:12]}", run_id=run_id, role=role,
         provider=response.provider, model=response.model, endpoint=response.endpoint, prompt_version=prompt_version,
         prompt_hash=prompt_hash, prompt=prompt, raw_response=response.response,
@@ -416,19 +533,20 @@ def _trace(run_id: str, role: str, response: ProviderResponse, prompt_version: s
     )
 
 
-def _run_b1(candidates: list[CandidateRecord], frame: pd.DataFrame, train_idx: tuple[int, ...], test_idx: tuple[int, ...], spec: Any, config: ExperimentConfig, run_dir: Path) -> dict[str, Any]:
+def _run_b1(candidates: list[CandidateRecord], train: pd.DataFrame, spec: Any, config: ExperimentConfig, run_dir: Path, evaluate: Callable[[pd.DataFrame], tuple[dict[str, Any], dict[str, Any]]]) -> dict[str, Any]:
     accepted = list(candidates)
-    result = _persist_baseline("b1", accepted, candidates, frame, train_idx, test_idx, spec, config, run_dir, decisions=[BaselineDecision(candidate_id=c.record_id, baseline="b1", accepted=True, reason="all parseable candidates accepted", created_at=datetime.now(UTC)) for c in candidates])
+    result = _persist_baseline("b1", accepted, candidates, train, spec, config, run_dir, evaluate, decisions=[BaselineDecision(candidate_id=c.record_id, baseline="b1", accepted=True, reason="all parseable candidates accepted", created_at=datetime.now(UTC)) for c in candidates])
     result["failure_counts"] = {"duplicate": _duplicate_count(candidates)}
     return result
 
 
-def _run_b2(candidates: list[CandidateRecord], frame: pd.DataFrame, train_idx: tuple[int, ...], test_idx: tuple[int, ...], spec: Any, profile: Any, config: ExperimentConfig, run_dir: Path) -> dict[str, Any]:
+def _run_b2(candidates: list[CandidateRecord], train: pd.DataFrame, spec: Any, profile: Any, config: ExperimentConfig, run_dir: Path, evaluate: Callable[[pd.DataFrame], tuple[dict[str, Any], dict[str, Any]]]) -> dict[str, Any]:
     suite = ValidatorSuite(spec, profile, range_severity=config.baselines.range_severity)
     accepted: list[CandidateRecord] = []
     all_evidence: list[Any] = []
     decisions: list[BaselineDecision] = []
     seen: set[str] = set()
+    first_seen: dict[str, str] = {}
     for candidate in candidates:
         requested_class = candidate.metadata.get("requested_class")
         expected_class = requested_class if isinstance(requested_class, str) else None
@@ -437,11 +555,23 @@ def _run_b2(candidates: list[CandidateRecord], frame: pd.DataFrame, train_idx: t
         duplicate = _canonical_hash(candidate) in seen
         seen.add(_canonical_hash(candidate))
         reject = rejects(evidence, frozenset(config.baselines.reject_severities)) or duplicate
+        if duplicate:
+            duplicate_evidence = Evidence(
+                evidence_id=f"b2-duplicate-{candidate.record_id}", candidate_id=candidate.record_id,
+                candidate_version=candidate.version, validator_id="b2-exact-duplicate", validator_version="1",
+                dimension=QualityDimension.DIVERSITY, verdict=Verdict.FAIL, severity=Severity.INFO,
+                message="existing B2 duplicate rule rejected an exact repeated candidate",
+                created_at=datetime.now(UTC),
+                metadata={"scope": "dataset_redundancy", "decision_provenance": True,
+                          "first_seen_candidate_id": first_seen[_canonical_hash(candidate)]})
+            evidence = (*evidence, duplicate_evidence)
+            all_evidence.append(duplicate_evidence)
+        first_seen.setdefault(_canonical_hash(candidate), candidate.record_id)
         if not reject:
             accepted.append(candidate)
         reason = "duplicate" if duplicate else "configured deterministic severity rejection" if reject else "all configured deterministic checks passed"
         decisions.append(BaselineDecision(candidate_id=candidate.record_id, baseline="b2", accepted=not reject, reason=reason, evidence_ids=tuple(item.evidence_id for item in evidence), created_at=datetime.now(UTC)))
-    result = _persist_baseline("b2", accepted, candidates, frame, train_idx, test_idx, spec, config, run_dir, decisions=decisions, evidence=all_evidence)
+    result = _persist_baseline("b2", accepted, candidates, train, spec, config, run_dir, evaluate, decisions=decisions, evidence=all_evidence)
     result["deterministic_rejections"] = sum(not decision.accepted for decision in decisions)
     missing_candidates = {item.candidate_id for item in all_evidence if item.metadata.get("missing_fields")}
     category_candidates = {item.candidate_id for item in all_evidence if item.validator_id == "categorical-domain" and item.verdict == Verdict.FAIL}
@@ -471,13 +601,13 @@ def _run_b2(candidates: list[CandidateRecord], frame: pd.DataFrame, train_idx: t
         "OBSERVED_RANGE_WARNING": sorted(range_candidates),
         "B2_REJECTED": sorted(decision.candidate_id for decision in decisions if not decision.accepted),
     }
-    result["deterministic_violations"] = len({item.candidate_id for item in all_evidence if item.verdict == Verdict.FAIL})
+    result["deterministic_violations"] = len({item.candidate_id for item in all_evidence if item.verdict == Verdict.FAIL and item.validator_id != "b2-exact-duplicate"})
     result["deterministic_rejection_rate"] = result["deterministic_rejections"] / len(candidates) if candidates else None
     result["deterministic_violation_rate"] = result["deterministic_violations"] / len(candidates) if candidates else None
     return result
 
 
-def _run_b3(candidates: list[CandidateRecord], frame: pd.DataFrame, train_idx: tuple[int, ...], test_idx: tuple[int, ...], spec: Any, profile: Any, config: ExperimentConfig, judge_text: str, judge_hash: str, judge_version: str, run_dir: Path, provider: Any) -> dict[str, Any]:
+def _run_b3(candidates: list[CandidateRecord], train: pd.DataFrame, spec: Any, profile: Any, config: ExperimentConfig, judge_text: str, judge_hash: str, judge_version: str, run_dir: Path, provider: Any, evaluate: Callable[[pd.DataFrame], tuple[dict[str, Any], dict[str, Any]]]) -> dict[str, Any]:
     judge = SingleLLMJudge(provider, threshold=config.judge.threshold, malformed_policy=config.judge.malformed_policy)
     accepted: list[CandidateRecord] = []
     decisions: list[BaselineDecision] = []
@@ -488,7 +618,7 @@ def _run_b3(candidates: list[CandidateRecord], frame: pd.DataFrame, train_idx: t
     response_format = {"type": config.judge.response_format} if config.judge.response_format else None
     judge_profile = profile.to_generation_context() if config.generation.transport_version == "v2" and hasattr(profile, "to_generation_context") else profile.model_dump(mode="json")
     for index, candidate in enumerate(candidates):
-        prompt = judge_text.format(profile_json=json.dumps(judge_profile, sort_keys=True), candidate_json=json.dumps(candidate.data, sort_keys=True))
+        prompt = "[recorded-response replay; no upstream prompt executed]" if (isinstance(provider, ReplayProvider) or getattr(provider, "recorded_response_only", False)) else judge_text.format(profile_json=json.dumps(judge_profile, sort_keys=True), candidate_json=json.dumps(candidate.data, sort_keys=True))
         try:
             evaluation = judge.evaluate(
                 prompt=prompt, run_id=run_dir.name, candidate_id=candidate.record_id,
@@ -515,11 +645,11 @@ def _run_b3(candidates: list[CandidateRecord], frame: pd.DataFrame, train_idx: t
             if accept:
                 accepted.append(candidate)
             decisions.append(BaselineDecision(candidate_id=candidate.record_id, baseline="b3", accepted=accept, reason="single judge score meets static threshold" if accept else "single judge rejected below static threshold", judge_result_id=result.result_id, created_at=datetime.now(UTC)))
-        except (OSError, RuntimeError, TypeError, ValueError) as error:
+        except DurableCallFailure as error:
             provider_failures += 1
-            failures.append(ParseFailureEvent(event_id=f"judge-provider-{candidate.record_id}", run_id=run_dir.name, call_id=f"judge-{index}", parser_version="provider-v1", error=f"judge provider failure: {error}", recoverable=False, created_at=datetime.now(UTC)))
+            failures.append(ParseFailureEvent(event_id=f"judge-provider-{candidate.record_id}", run_id=run_dir.name, call_id=error.attempt_id, parser_version="provider-v1", error=f"judge provider failure: {error}", recoverable=False, created_at=datetime.now(UTC)))
             decisions.append(BaselineDecision(candidate_id=candidate.record_id, baseline="b3", accepted=False, reason="judge provider failure", created_at=datetime.now(UTC)))
-    result = _persist_baseline("b3", accepted, candidates, frame, train_idx, test_idx, spec, config, run_dir, decisions=decisions, judge_results=results)
+    result = _persist_baseline("b3", accepted, candidates, train, spec, config, run_dir, evaluate, decisions=decisions, judge_results=results)
     _write_jsonl(run_dir / "baselines" / "b3" / "judge_failures.jsonl", failures)
     _write_jsonl(run_dir / "baselines" / "b3" / "provider_calls.jsonl", traces)
     result["judge_attempted_calls"] = len(candidates)
@@ -565,7 +695,7 @@ def _run_b3(candidates: list[CandidateRecord], frame: pd.DataFrame, train_idx: t
     return result
 
 
-def _persist_baseline(name: str, accepted: list[CandidateRecord], all_candidates: list[CandidateRecord], frame: pd.DataFrame, train_idx: tuple[int, ...], test_idx: tuple[int, ...], spec: Any, config: ExperimentConfig, run_dir: Path, *, decisions: list[BaselineDecision], evidence: list[Any] | None = None, judge_results: list[JudgeResult] | None = None) -> dict[str, Any]:
+def _persist_baseline(name: str, accepted: list[CandidateRecord], all_candidates: list[CandidateRecord], train: pd.DataFrame, spec: Any, config: ExperimentConfig, run_dir: Path, evaluate: Callable[[pd.DataFrame], tuple[dict[str, Any], dict[str, Any]]], *, decisions: list[BaselineDecision], evidence: list[Any] | None = None, judge_results: list[JudgeResult] | None = None) -> dict[str, Any]:
     directory = run_dir / "baselines" / name
     _write_jsonl(directory / "candidates.jsonl", accepted)
     _write_jsonl(directory / "decisions.jsonl", decisions)
@@ -573,15 +703,16 @@ def _persist_baseline(name: str, accepted: list[CandidateRecord], all_candidates
         _write_jsonl(directory / "evidence.jsonl", evidence)
     if judge_results is not None:
         _write_jsonl(directory / "judge_results.jsonl", judge_results)
-    train = frame.loc[list(train_idx)]
-    test = frame.loc[list(test_idx)]
     synthetic = pd.DataFrame([candidate.data for candidate in accepted], columns=[*spec.feature_columns, spec.target_column])
-    intrinsic = intrinsic_metrics(train, synthetic, spec)
-    utility = utility_metrics(train, test, synthetic, spec, seed=config.dataset.root_seed, classifiers=config.metrics.classifiers)
+    intrinsic_issues: dict[str, str] = {}
+    intrinsic, utility = evaluate(synthetic)
+    intrinsic = finite_tree(intrinsic, issues=intrinsic_issues)
+    utility = annotate_utility(utility, config.metrics.classifiers)
     if synthetic.empty:
         # Preserve every metric's null/empty detail while making the global
         # state explicit for report readers and downstream evaluability checks.
         intrinsic["status"] = "empty"
+    intrinsic = annotate_intrinsic(intrinsic)
     _write_json(directory / "metrics.json", intrinsic)
     _write_json(directory / "classifier_metrics.json", utility)
     duplicate_hashes = [_canonical_hash(candidate) for candidate in all_candidates]
@@ -589,7 +720,7 @@ def _persist_baseline(name: str, accepted: list[CandidateRecord], all_candidates
     duplicate_by_class = _duplicate_counts_by_class(all_candidates, spec.target_column)
     train_hashes = {
         _canonical_data_hash({column: row[column] for column in [*spec.feature_columns, spec.target_column]})
-        for _, row in frame.loc[list(train_idx), [*spec.feature_columns, spec.target_column]].iterrows()
+        for _, row in train[[*spec.feature_columns, spec.target_column]].iterrows()
     }
     train_match_ids = [candidate.record_id for candidate in all_candidates if _canonical_hash(candidate) in train_hashes]
     train_matches_by_class = _count_ids_by_class(all_candidates, train_match_ids, spec.target_column)
@@ -614,7 +745,7 @@ def _persist_baseline(name: str, accepted: list[CandidateRecord], all_candidates
         "accepted_record_ids": [candidate.record_id for candidate in accepted],
         "calls": 0,
         "cost_usd": None,
-        "intrinsic": intrinsic,
+        "intrinsic": intrinsic, "intrinsic_metric_issues": intrinsic_issues,
         "utility": utility,
     }
 
@@ -1206,16 +1337,16 @@ def _write_json(path: Path, value: Any, *, overwrite: bool = False) -> None:
 
 
 def _write_jsonl(path: Path, values: list[Any]) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
+    assert_writable(path)
     if values:
         append_jsonl(path, values)
     else:
-        path.touch(exist_ok=False)
+        write_text(path, "")
 
 
 def _write_yaml(path: Path, value: Any) -> None:
-    path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(yaml.safe_dump(value, sort_keys=True), encoding="utf-8")
+    assert_writable(path)
+    write_text(path, yaml.safe_dump(value, sort_keys=True))
 
 
 def _read_json(path: Path) -> Any:
