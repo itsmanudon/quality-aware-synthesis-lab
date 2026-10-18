@@ -109,7 +109,8 @@ def _validate(
     if any(not isinstance(row, list) or len(row) != len(columns) for row in data):
         raise ValueError("split evaluation population shape does not match columns")
     # Preserve JSON numeric primitives independently of inferred column dtypes.
-    frame = pd.DataFrame(data, columns=columns, index=indices, dtype=object)
+    # The axes were shape-checked above; cast only bridges current pandas stub signatures.
+    frame = pd.DataFrame(data, columns=cast(Any, columns), index=cast(Any, indices), dtype=object)
     train = _indices(split["train_indices"], "TRAIN")
     test = _indices(split["test_indices"], "TEST")
     if set(train) & set(test) or set(train) | set(test) != set(indices):
