@@ -1,0 +1,35 @@
+{
+  "design": "A priori sensitivity; no label or REAL TEST tuning",
+  "configurations": [
+    {
+      "name": "baseline-k5-a10",
+      "k": 5,
+      "shrinkage": 0.1,
+      "seed": 42
+    },
+    {
+      "name": "sensitivity-k3",
+      "k": 3,
+      "shrinkage": 0.1,
+      "seed": 42
+    },
+    {
+      "name": "sensitivity-k11",
+      "k": 11,
+      "shrinkage": 0.1,
+      "seed": 42
+    },
+    {
+      "name": "sensitivity-a05",
+      "k": 5,
+      "shrinkage": 0.05,
+      "seed": 42
+    },
+    {
+      "name": "sensitivity-a25",
+      "k": 5,
+      "shrinkage": 0.25,
+      "seed": 42
+    }
+  ]
+}

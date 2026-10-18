@@ -14,6 +14,7 @@ dependencies = ["cryptography>=46", "pydantic>=2", "PyYAML", "typer", "rich", "n
 
 [project.optional-dependencies]
 dev = ["pytest", "pytest-cov", "ruff", "pyright"]
+research = ["matplotlib>=3.8,<4"]
 
 [project.scripts]
 rcqasyn = "rcqasyn.cli.app:app"
