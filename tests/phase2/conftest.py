@@ -137,5 +137,11 @@ def supervisor_signer(tmp_path_factory):
                                        history, "SYNTHETIC_TEST_SUPERVISOR")
         return sign(ledger)
 
+    def anchor(history):
+        from rcqasyn.phase2.annotations import review_history
+        from rcqasyn.phase2.fixture_approval import FixtureTrustAnchor
+
+        return FixtureTrustAnchor(trust, key_id, review_history(history)[-1]["fingerprint"])
+
     return SimpleNamespace(key=key, key_id=key_id, trust=trust, sign=sign, attest=attest,
-                           directory=directory)
+                           anchor=anchor, directory=directory)

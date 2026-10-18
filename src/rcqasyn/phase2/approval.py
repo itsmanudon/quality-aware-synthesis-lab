@@ -2,7 +2,6 @@
 from __future__ import annotations
 
 import json
-from hashlib import sha256
 from pathlib import Path
 from typing import Any
 
@@ -127,29 +126,32 @@ def build_approval_ledger(root: Path, cohort: dict[str, Any], crosswalks: list[d
 
 
 def load_supervisor_trust(path: Path | None, forbidden_roots: tuple[Path, ...]) -> SupervisorTrust:
-    """The operator provisions this protected file, never the incoming ledger."""
-    if path is None:
-        raise ValueError("supervisor trust configuration required; fail closed")
-    if not path.is_absolute():
-        raise ValueError("supervisor trust configuration must be an absolute external path")
-    resolved = path.resolve(strict=True)
-    if (any(resolved.is_relative_to(p.resolve()) for p in forbidden_roots)
-            or any((p / ".git").exists() for p in resolved.parents)):
-        raise ValueError("supervisor trust configuration must be outside repositories/review data")
-    trust = SupervisorTrust.model_validate_json(json.dumps(read_approval_json(resolved)))
-    public = bytes.fromhex(trust.public_key_hex)
-    if sha256(public).hexdigest() != trust.key_id:
-        raise ValueError("trusted key ID does not match configured supervisor key")
-    return trust
+    """Reject the obsolete caller-selected authority interface, including test policies."""
+    raise ValueError("caller-selected supervisor trust is forbidden; protected enrollment unavailable")
 
 
 def authenticate_review(root: Path, cohort: dict[str, Any], crosswalks: list[dict[str, Any]],
                         protocol: dict[str, Any], approval: dict[str, Any],
                         proposals: list[dict[str, Any]], history: Path,
                         attestation: dict[str, Any] | None,
-                        trust_config: Path | None) -> dict[str, Any]:
-    """Only this shared boundary may classify final labels as authenticated."""
-    trust = load_supervisor_trust(trust_config, (root, history.parent))
+                        trust_config: Path | None = None) -> dict[str, Any]:
+    """Production gate: this build has no independently protected authority provider.
+
+    Neither an external path, environment variable, fixture object nor signed package
+    can enroll authority. A reviewed supervisor deployment is required before this
+    gate can be enabled. Keep legacy arguments only to reject old callers explicitly.
+    """
+    if trust_config is not None:
+        raise ValueError("caller-selected supervisor trust is forbidden")
+    raise ValueError("protected supervisor enrollment unavailable; official approval disabled")
+
+
+def _verify_review_signature(root: Path, cohort: dict[str, Any],
+                             crosswalks: list[dict[str, Any]], protocol: dict[str, Any],
+                             approval: dict[str, Any], proposals: list[dict[str, Any]],
+                             history: Path, attestation: dict[str, Any] | None,
+                             trust: SupervisorTrust, expected_history_tip: str) -> dict[str, Any]:
+    """Cryptographic/source checks only; this helper never establishes production authority."""
     if attestation is None:
         raise ValueError("signed supervisor attestation required")
     wire = SupervisorAttestation.model_validate_json(json.dumps(attestation))
@@ -158,6 +160,8 @@ def authenticate_review(root: Path, cohort: dict[str, Any], crosswalks: list[dic
     if wire.signature.key_id != trust.key_id:
         raise ValueError("untrusted supervisor signing key")
     supplied = wire.ledger.model_dump(mode="json")
+    if wire.ledger.correction_history_tip != expected_history_tip:
+        raise ValueError("signed history tip differs from the independently retained expected tip")
     if wire.ledger.reviewer_reference != trust.reviewer_reference:
         raise ValueError("signer is not the configured supervisor")
     try:
@@ -173,9 +177,8 @@ def authenticate_review(root: Path, cohort: dict[str, Any], crosswalks: list[dic
     decisions = check_decisions(supplied["decisions"], proposals, cohort, protocol, submitted=False)
     if any(d["review_status"] != "APPROVED" for d in decisions):
         raise ValueError("authenticated approval of every record is required")
-    return {"validation_status": "AUTHENTICATED_FIXTURE_REVIEW"
-            if cohort["population_kind"] == "synthetic_fixture"
-            else "AUTHENTICATED_SUPERVISOR_APPROVED",
+    return {"validation_status": "UNTRUSTED_SIGNATURE_DIAGNOSTIC",
+            "official": False, "production_approval": False,
             "population_kind": cohort["population_kind"],
             "attestation": wire.model_dump(mode="json"), "trusted_key_id": trust.key_id,
             "trust_configuration_fingerprint": digest(trust.model_dump(mode="json")),

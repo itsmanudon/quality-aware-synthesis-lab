@@ -233,7 +233,7 @@ def import_supervisor_approval(root: Path, cohort: dict[str, Any],
                                trust_config: Path | None, output: Path) -> Path:
     from .approval import authenticate_review
 
-    with bundle_lock(history):
-        validated = authenticate_review(root, cohort, crosswalks, protocol, approval,
-                                         proposals, history, attestation, trust_config)
-        return write_bundle(output, envelope("authenticated-supervisor-review-v1", validated))
+    # Refuse before locks/reservations; there is no protected production authority yet.
+    authenticate_review(root, cohort, crosswalks, protocol, approval,
+                        proposals, history, attestation, trust_config)
+    raise ValueError("protected supervisor approval unavailable")

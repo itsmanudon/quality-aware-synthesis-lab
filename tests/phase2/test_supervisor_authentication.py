@@ -12,7 +12,7 @@ from test_annotation_analysis import decision, propose
 from typer.testing import CliRunner
 
 from rcqasyn.cli.app import app
-from rcqasyn.phase2.analysis import analyze
+from rcqasyn.phase2.analysis import analyze, diagnose_fixture_analysis
 from rcqasyn.phase2.annotations import (
     import_supervisor_approval,
     record_review,
@@ -24,6 +24,11 @@ from rcqasyn.phase2.approval import (
     read_approval_json,
 )
 from rcqasyn.phase2.common import digest, envelope, read_bundle, write_bundle
+from rcqasyn.phase2.fixture_approval import (
+    FixtureTrustAnchor,
+    diagnose_fixture_review,
+    import_fixture_diagnostic,
+)
 
 
 @pytest.fixture
@@ -39,10 +44,18 @@ def reviewed(fixture_workflow, tmp_path, supervisor_signer):
                            wire=wire, tmp=tmp_path, checkpoint=checkpoint)
 
 
+def fixture_anchor(z, policy=...):
+    if policy is None:
+        return None
+    pin = z.signer.anchor(z.history)
+    return FixtureTrustAnchor(z.signer.trust if policy is ... else policy,
+                              pin.expected_key_id, pin.expected_history_tip)
+
+
 def auth(z, wire=..., trust=...):
-    return authenticate_review(z.root, z.cohort, z.cws, z.protocol, z.gate,
-                               z.proposals, z.history, z.wire if wire is ... else wire,
-                               z.signer.trust if trust is ... else trust)
+    return diagnose_fixture_review(z.root, z.cohort, z.cws, z.protocol, z.gate,
+                                    z.proposals, z.history, z.wire if wire is ... else wire,
+                                    fixture_anchor(z, trust))
 
 
 def refused(z, wire=..., trust=...):
@@ -57,7 +70,19 @@ def refused(z, wire=..., trust=...):
                                    z.proposals, z.history, value, key, output)
     with pytest.raises((ValueError, FileNotFoundError)):
         analyze(z.root, z.cohort, z.cws, z.protocol, z.gate, z.proposals, z.history,
-                fixture_only=True, supervisor_attestation=value, trust_config=key)
+                supervisor_attestation=value, trust_config=key)
+    # Retain all existing cryptographic and binding tests on the separate diagnostic path.
+    anchor = fixture_anchor(z, trust)
+    with pytest.raises((ValueError, FileNotFoundError)):
+        diagnose_fixture_review(z.root, z.cohort, z.cws, z.protocol, z.gate,
+                                  z.proposals, z.history, value, anchor)
+    with pytest.raises((ValueError, FileNotFoundError)):
+        import_fixture_diagnostic(z.root, z.cohort, z.cws, z.protocol, z.gate,
+                                    z.proposals, z.history, value, anchor, output)
+    with pytest.raises((ValueError, FileNotFoundError)):
+        diagnose_fixture_analysis(z.root, z.cohort, z.cws, z.protocol, z.gate,
+                                    z.proposals, z.history, supervisor_attestation=value,
+                                    fixture_anchor=anchor)
     assert not output.exists()
 
 
@@ -212,15 +237,15 @@ def test_signature_verification_is_deterministic_and_fixture_only(reviewed):
     assert auth(z) == auth(z)
     assert z.signer.sign(z.wire["ledger"]) == z.wire
     output = z.tmp / "verified-import"
-    import_supervisor_approval(z.root, z.cohort, z.cws, z.protocol, z.gate, z.proposals,
-                              z.history, z.wire, z.signer.trust, output)
-    assert read_bundle(output)["validation_status"] == "AUTHENTICATED_FIXTURE_REVIEW"
-    report = analyze(z.root, z.cohort, z.cws, z.protocol, z.gate, z.proposals, z.history,
-                     fixture_only=True, supervisor_attestation=z.wire,
-                     trust_config=z.signer.trust)
+    import_fixture_diagnostic(z.root, z.cohort, z.cws, z.protocol, z.gate, z.proposals,
+                                z.history, z.wire, fixture_anchor(z), output)
+    assert read_bundle(output)["validation_status"] == "UNTRUSTED_SIGNATURE_DIAGNOSTIC"
+    report = diagnose_fixture_analysis(
+        z.root, z.cohort, z.cws, z.protocol, z.gate, z.proposals, z.history,
+        supervisor_attestation=z.wire, fixture_anchor=fixture_anchor(z))
     assert report["official"] is False
-    assert report["validation_status"] == "AUTHENTICATED_FIXTURE_LABELS_VALIDATED"
-    with pytest.raises(ValueError, match="fixture provenance"):
+    assert report["validation_status"] == "UNTRUSTED_FIXTURE_LABELS_DIAGNOSTIC"
+    with pytest.raises(ValueError, match="caller-selected"):
         analyze(z.root, z.cohort, z.cws, z.protocol, z.gate, z.proposals, z.history,
                 supervisor_attestation=z.wire, trust_config=z.signer.trust)
 
@@ -258,7 +283,7 @@ def test_cli_analysis_and_approval_import_share_the_guard(reviewed, monkeypatch)
         "phase2", "analyze", str(gate), str(z.checkpoint), str(z.history),
         str(z.tmp / "official-output"), "--source-root", str(z.root)])
     assert isinstance(result.exception, ValueError)
-    assert "fixture provenance" in str(result.exception)
+    assert "protected supervisor enrollment" in str(result.exception)
     assert not (z.tmp / "official-output").exists()
     # Exercise the same CLI/API auth path in an explicitly test-only context;
     # the production CLI deliberately exposes no fixture_only switch.
@@ -268,7 +293,7 @@ def test_cli_analysis_and_approval_import_share_the_guard(reviewed, monkeypatch)
         "phase2", "analyze", str(gate), str(z.checkpoint), str(z.history),
         str(z.tmp / "official-output"), "--source-root", str(z.root)])
     assert isinstance(result.exception, ValueError)
-    assert "trust configuration" in str(result.exception)
+    assert "separate untrusted fixture" in str(result.exception)
     assert not (z.tmp / "official-output").exists()
     unsigned = z.tmp / "unsigned.json"
     unsigned.write_text(json.dumps(z.wire), encoding="utf-8")
@@ -339,9 +364,9 @@ def test_partial_submissions_and_merged_export_resume(fixture_workflow, tmp_path
     assert all(row["human_final_label"] is None for row in exported["proposals"])
     record_review(root, c, cws, p, gate, proposals, [decision(proposals[1])], history)
     wire = supervisor_signer.attest(fixture_workflow, proposals, history)
-    result = authenticate_review(root, c, cws, p, gate, proposals, history, wire,
-                                  supervisor_signer.trust)
-    assert result["validation_status"] == "AUTHENTICATED_FIXTURE_REVIEW"
+    result = diagnose_fixture_review(root, c, cws, p, gate, proposals, history, wire,
+                                     supervisor_signer.anchor(history))
+    assert result["validation_status"] == "UNTRUSTED_SIGNATURE_DIAGNOSTIC"
     assert len(review_history(history)) == 2
 
 
@@ -355,7 +380,7 @@ def test_signed_duplicate_or_foreign_decision_refused(reviewed):
         bad["decisions"][0][field] = "foreign"
         refused(z, wire=z.signer.sign(bad))
 
-def test_cli_unsigned_export_and_authenticated_import(reviewed, monkeypatch):
+def test_cli_unsigned_export_and_production_import_fail_closed(reviewed, monkeypatch):
     import shutil
 
     from rcqasyn.phase2 import cli
@@ -382,7 +407,143 @@ def test_cli_unsigned_export_and_authenticated_import(reviewed, monkeypatch):
     assert read_approval_json(unsigned / "ledger.json") == z.wire["ledger"]
     result = runner.invoke(app, [
         "phase2", "approval-import", str(gate), str(checkpoint), str(history),
-        str(signed), str(z.signer.trust), str(verified), "--source-root", str(z.root)])
-    assert result.exit_code == 0, result.exception
-    assert read_bundle(verified)["validation_status"] == "AUTHENTICATED_FIXTURE_REVIEW"
-    assert cli.read_attestation(verified) == z.wire
+        str(signed), str(verified), "--source-root", str(z.root)])
+    assert result.exit_code != 0 and not verified.exists()
+    assert "protected supervisor enrollment" in str(result.exception)
+    diagnostic = namespace / "fixture-diagnostic"
+    import_fixture_diagnostic(z.root, z.cohort, z.cws, z.protocol, z.gate, z.proposals,
+                                history, z.wire, fixture_anchor(z), diagnostic)
+    with pytest.raises(ValueError, match="schema"):
+        cli.read_attestation(diagnostic)
+
+
+@pytest.mark.parametrize("attack", [
+    "direct-policy-b", "import-policy-b", "analysis-policy-b", "cli-policy-b",
+    "environment-policy-b", "bundled-policy-b", "changed-selection", "missing-trust",
+    "cached-test-key", "fabricated-receipt", "receipt-key-id", "foreign-cohort",
+    "substituted-history-tip", "wrong-enrolled-key", "first-use-enrollment",
+    "fixture-official-mode", "arbitrary-reviewer", "json-trust-field",
+    "fixture-object", "legacy-authority-loader",
+])
+def test_r1_no_caller_input_can_enable_production_approval(reviewed, monkeypatch, attack):
+    from dataclasses import replace
+    from hashlib import sha256
+
+    from rcqasyn.phase2 import cli
+    from rcqasyn.phase2.approval import load_supervisor_trust
+
+    z = reviewed
+    agent = Ed25519PrivateKey.generate()
+    raw = agent.public_key().public_bytes_raw()
+    policy_b = z.signer.directory / "agent-owned-policy.json"
+    policy_b.write_text(json.dumps({"schema_version": "supervisor-trust-v1",
+        "reviewer_reference": "SYNTHETIC_TEST_SUPERVISOR",
+        "key_id": sha256(raw).hexdigest(), "public_key_hex": raw.hex()}), encoding="utf-8")
+    wire = copy.deepcopy(z.wire)
+    from rcqasyn.phase2.approval import signing_bytes
+    wire["signature"].update(key_id=sha256(raw).hexdigest(),
+        signature_hex=agent.sign(signing_bytes(wire["ledger"])).hex())
+    # Fixed fixture anchor A rejects B independently of the selected policy contents.
+    for selected in (z.signer.trust, policy_b):
+        with pytest.raises(ValueError):
+            diagnose_fixture_review(z.root, z.cohort, z.cws, z.protocol, z.gate,
+                z.proposals, z.history, wire,
+                replace(fixture_anchor(z), policy=selected))
+    supplied = policy_b
+    if attack == "missing-trust":
+        supplied = None
+    elif attack in ("environment-policy-b", "cached-test-key"):
+        assert auth(z)["production_approval"] is False
+        monkeypatch.setenv("RCQASYN_SUPERVISOR_TRUST_CONFIG", str(policy_b))
+        monkeypatch.setenv("SUPERVISOR_PUBLIC_KEY", raw.hex())
+        supplied = None
+    elif attack == "bundled-policy-b":
+        wire["public_key_hex"] = raw.hex()
+    elif attack == "fabricated-receipt":
+        wire = {"validation_status": "AUTHENTICATED_SUPERVISOR_APPROVED",
+                "official": True, "attestation": wire}
+    elif attack == "receipt-key-id":
+        wire["signature"]["key_id"] = z.signer.key_id
+    elif attack == "foreign-cohort":
+        wire["ledger"]["cohort_fingerprint"] = "f" * 64
+    elif attack == "substituted-history-tip":
+        wire["ledger"]["correction_history_tip"] = "f" * 64
+    elif attack == "first-use-enrollment":
+        supplied = z.tmp / "not-enrolled" / "trust.json"
+    elif attack == "arbitrary-reviewer":
+        wire["ledger"]["reviewer_reference"] = "invented-reviewer"
+    elif attack == "json-trust-field":
+        wire["trust_config"] = str(policy_b)
+    elif attack == "fixture-object":
+        supplied = fixture_anchor(z)
+    elif attack == "changed-selection":
+        diagnostic = auth(z)
+        assert diagnostic["production_approval"] is False
+    output = z.tmp / "r1-forbidden-output"
+    with pytest.raises(ValueError, match="caller-selected|protected supervisor"):
+        authenticate_review(z.root, z.cohort, z.cws, z.protocol, z.gate,
+                            z.proposals, z.history, wire, supplied)
+    with pytest.raises(ValueError):
+        import_supervisor_approval(z.root, z.cohort, z.cws, z.protocol, z.gate,
+            z.proposals, z.history, wire, supplied, output)
+    with pytest.raises(ValueError):
+        analyze(z.root, z.cohort, z.cws, z.protocol, z.gate, z.proposals, z.history,
+            supervisor_attestation=wire, trust_config=supplied,
+            fixture_only=attack == "fixture-official-mode")
+    with pytest.raises(ValueError):
+        load_supervisor_trust(supplied, ())
+    assert not output.exists()
+    if attack == "first-use-enrollment":
+        assert not supplied.parent.exists()
+    if attack == "cli-policy-b":
+        monkeypatch.setattr(cli, "discover_project_root", lambda: z.tmp)
+        monkeypatch.setattr(cli, "context", lambda *_: (z.cohort, z.cws, z.protocol, {}))
+        monkeypatch.setattr(cli, "derivative_destination", lambda _, path: path)
+        gate = z.tmp / "gate.json"
+        signed = z.tmp / "signed-b.json"
+        gate.write_text(json.dumps(z.gate), encoding="utf-8")
+        signed.write_text(json.dumps(wire), encoding="utf-8")
+        for args in (["approval-import", str(gate), str(z.checkpoint), str(z.history),
+                      str(signed), str(policy_b), str(output)],
+                     ["analyze", str(gate), str(z.checkpoint), str(z.history), str(output),
+                      "--trust-config", str(policy_b)]):
+            result = CliRunner().invoke(app, ["phase2", *args])
+            assert result.exit_code != 0 and not output.exists()
+
+
+def test_fixture_diagnostics_cannot_be_promoted_and_pin_is_independent(reviewed):
+    from dataclasses import replace
+
+    z = reviewed
+    diagnostic = auth(z)
+    assert diagnostic["official"] is False and diagnostic["production_approval"] is False
+    assert diagnostic["validation_status"] == "UNTRUSTED_SIGNATURE_DIAGNOSTIC"
+    for missing in ("expected_key_id", "expected_history_tip"):
+        bad = replace(fixture_anchor(z), **{missing: "0" * 64})
+        with pytest.raises(ValueError, match="pin|tip"):
+            diagnose_fixture_review(z.root, z.cohort, z.cws, z.protocol, z.gate,
+                                      z.proposals, z.history, z.wire, bad)
+    research = {**z.cohort, "population_kind": "research"}
+    with pytest.raises(ValueError, match="refuse research"):
+        diagnose_fixture_review(z.root, research, z.cws, z.protocol, z.gate,
+                                  z.proposals, z.history, z.wire, fixture_anchor(z))
+    with pytest.raises(ValueError, match="refuse research"):
+        diagnose_fixture_analysis(z.root, research, z.cws, z.protocol, z.gate,
+            z.proposals, z.history, supervisor_attestation=z.wire,
+            fixture_anchor=fixture_anchor(z))
+
+
+def test_policy_file_change_cannot_change_fixed_fixture_pin(reviewed):
+    z = reviewed
+    pin = fixture_anchor(z)
+    assert auth(z)["production_approval"] is False
+    key = Ed25519PrivateKey.generate()
+    from hashlib import sha256
+    public = key.public_key().public_bytes_raw()
+    changed = {"schema_version": "supervisor-trust-v1",
+               "reviewer_reference": "SYNTHETIC_TEST_SUPERVISOR",
+               "key_id": sha256(public).hexdigest(), "public_key_hex": public.hex()}
+    z.signer.trust.write_text(json.dumps(changed), encoding="utf-8")
+    with pytest.raises(ValueError, match="pin"):
+        diagnose_fixture_review(z.root, z.cohort, z.cws, z.protocol, z.gate,
+                                  z.proposals, z.history, z.wire, pin)

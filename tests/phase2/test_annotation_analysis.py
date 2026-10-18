@@ -5,7 +5,7 @@ import copy
 import pytest
 from pydantic import ValidationError
 
-from rcqasyn.phase2.analysis import _confusion, analyze
+from rcqasyn.phase2.analysis import _confusion, analyze, diagnose_fixture_analysis
 from rcqasyn.phase2.annotations import (
     gate_a,
     load_proposals,
@@ -96,14 +96,15 @@ def test_history_preserves_proposal_and_requires_all_explicit_approvals(fixture_
     record_review(root, c, cws, p, approval, proposals,
                   [decision(proposals[1], "VALID")], history)
     attestation = supervisor_signer.attest(fixture_workflow, proposals, history)
-    report = analyze(root, c, cws, p, approval, proposals, history, fixture_only=True,
-                     supervisor_attestation=attestation, trust_config=supervisor_signer.trust)
+    report = diagnose_fixture_analysis(
+        root, c, cws, p, approval, proposals, history,
+        supervisor_attestation=attestation, fixture_anchor=supervisor_signer.anchor(history))
     assert report["official"] is False
     assert report["overall"]["b2"]["indeterminate"] == 1
     assert report["overall"]["b2"]["binary_denominator"] == 1
     assert proposals == before
     assert len(review_history(history)) == 2
-    with pytest.raises(ValueError, match="fixture provenance"):
+    with pytest.raises(ValueError, match="protected supervisor enrollment"):
         analyze(root, c, cws, p, approval, proposals, history)
 
 

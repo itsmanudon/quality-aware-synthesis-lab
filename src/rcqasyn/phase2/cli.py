@@ -143,8 +143,7 @@ def review_command(approval: Path, decisions: Path, checkpoint: Path, history: P
 @app.command("analyze")
 def analyze_command(approval: Path, checkpoint: Path, history: Path, output: Path,
                     bundle: Path = DEFAULT_OUTPUT, source_root: Path | None = None,
-                    supervisor_attestation: Path | None = None,
-                    trust_config: Path | None = None) -> None:
+                    supervisor_attestation: Path | None = None) -> None:
     """Refuse official evaluation until all human final labels are approved."""
     root = discover_project_root()
     checkpoint = derivative_destination(root, checkpoint)
@@ -153,8 +152,7 @@ def analyze_command(approval: Path, checkpoint: Path, history: Path, output: Pat
     cohort, crosswalks, protocol, _ = context(source_root or root, root / bundle)
     result = analyze(source_root or root, cohort, crosswalks, protocol, read_json(approval),
                      load_proposals(checkpoint, cohort, protocol), history,
-                     supervisor_attestation=read_attestation(supervisor_attestation),
-                     trust_config=trust_config)
+                     supervisor_attestation=read_attestation(supervisor_attestation))
     write_bundle(output, result, {"approved-comparisons.csv": csv_text(result["rows"])})
     typer.echo(str(output))
 
@@ -190,10 +188,10 @@ def approval_export_command(approval: Path, checkpoint: Path, history: Path,
 
 @app.command("approval-import")
 def approval_import_command(approval: Path, checkpoint: Path, history: Path,
-                            attestation: Path, trust_config: Path, output: Path,
+                            attestation: Path, output: Path,
                             bundle: Path = DEFAULT_OUTPUT,
                             source_root: Path | None = None) -> None:
-    """Authenticate a signed ledger with an externally provisioned supervisor key."""
+    """Fail closed until independently protected supervisor enrollment is available."""
     root = discover_project_root()
     checkpoint = derivative_destination(root, checkpoint)
     history = derivative_destination(root, history)
@@ -202,5 +200,5 @@ def approval_import_command(approval: Path, checkpoint: Path, history: Path,
     path = import_supervisor_approval(
         source_root or root, cohort, crosswalks, protocol, read_json(approval),
         load_proposals(checkpoint, cohort, protocol), history, read_attestation(attestation),
-        trust_config, output)
+        None, output)
     typer.echo(str(path))

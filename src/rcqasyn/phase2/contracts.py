@@ -178,3 +178,22 @@ class SupervisorTrust(ContractModel):
     reviewer_reference: NonEmptyStr
     key_id: Hex32
     public_key_hex: Hex32
+
+
+class SupervisorEnrollment(ContractModel):
+    """Public offline enrollment record; never itself a production capability."""
+
+    schema_version: Literal["offline-supervisor-enrollment-v1"] = "offline-supervisor-enrollment-v1"
+    deployment_status: Literal["PENDING_PROTECTED_DEPLOYMENT"] = "PENDING_PROTECTED_DEPLOYMENT"
+    trust: SupervisorTrust
+    expected_key_id: Hex32
+    expected_history_tip: Hex32
+
+    @model_validator(mode="after")
+    def pinned_key(self) -> SupervisorEnrollment:
+        from hashlib import sha256
+
+        actual = sha256(bytes.fromhex(self.trust.public_key_hex)).hexdigest()
+        if actual != self.trust.key_id or actual != self.expected_key_id:
+            raise ValueError("supervisor public key differs from independently established pin")
+        return self
