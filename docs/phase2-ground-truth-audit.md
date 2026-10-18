@@ -1,5 +1,10 @@
 # Phase 2: source reconciliation and annotation preparation
 
+Current academic execution follows [the streamlined research workflow](phase2-research-workflow.md),
+approved on 2026-10-18. The production-authenticated path described below remains
+disabled; its deployment is not a prerequisite for supervisor-reviewed research.
+The research cohort/rubric and label-confirmation checkpoints remain mandatory.
+
 Status: PENDING_INDEPENDENT_VERIFICATION. These derivatives are not approved
 ground truth. No real cohort agent proposals, human labels or official B2/B3
 comparison have been produced.

@@ -20,6 +20,7 @@ from .annotations import (
 )
 from .approval import build_approval_ledger, read_approval_json
 from .common import csv_rows, csv_text, digest, envelope, read_bundle, verify_envelope, write_bundle
+from .research_cli import app as research_app
 from .workflow import (
     DEFAULT_OUTPUT,
     derivative_destination,
@@ -29,6 +30,7 @@ from .workflow import (
 )
 
 app = typer.Typer(help="Occurrence-bound Phase-2 preparation and approval-gated review.")
+app.add_typer(research_app, name="research")
 
 
 def context(root: Path, bundle: Path) -> tuple[Any, ...]:

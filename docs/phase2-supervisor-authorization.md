@@ -1,5 +1,10 @@
 # Phase-2 supervisor authorization after R1
 
+Current academic execution follows [the streamlined research workflow](phase2-research-workflow.md),
+approved on 2026-10-18. The production-authenticated path described below remains
+disabled; its deployment is not a prerequisite for supervisor-reviewed research.
+The research cohort/rubric and label-confirmation checkpoints remain mandatory.
+
 Status: READY FOR INDEPENDENT RE-VERIFICATION; no supervisor approval is implied.
 Production authentication is deliberately unavailable in this build. There is no
 protected Windows enrollment authority or independently installed approval provider.

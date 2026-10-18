@@ -78,9 +78,6 @@ def diagnose_fixture_analysis(root: Path, cohort: dict[str, Any],
                      "b2": source["controls"]["b2"]["decision"]["accepted"],
                      "b3": source["controls"]["b3"]["decision"]["accepted"],
                      "b3_recorded_verdict": source["controls"]["b3"]["result"]["verdict"]})
-    determinate = [r for r in rows if r["label"] != "INDETERMINATE"]
-    errors = {b: {r["occurrence_id"] for r in determinate
-                  if r[b] != (r["label"] == "VALID")} for b in ("b2", "b3")}
     return envelope("untrusted-fixture-analysis-v1", {
         "official": False, "production_approval": False,
         "population_kind": "synthetic_fixture",
@@ -95,6 +92,15 @@ def diagnose_fixture_analysis(root: Path, cohort: dict[str, Any],
         "supervisor_attestation_fingerprint": digest(authenticated["attestation"]),
         "trusted_supervisor_key_id": authenticated["trusted_key_id"],
         "trust_configuration_fingerprint": authenticated["trust_configuration_fingerprint"],
+        **comparison_metrics(rows, sampling_limitation=cohort["selection_limitations"]),
+    })
+
+
+def comparison_metrics(rows: list[dict[str, Any]], *, sampling_limitation: str = "") -> dict[str, Any]:
+    determinate = [r for r in rows if r["label"] != "INDETERMINATE"]
+    errors = {b: {r["occurrence_id"] for r in determinate
+                  if r[b] != (r["label"] == "VALID")} for b in ("b2", "b3")}
+    return {
         "label_counts": dict(Counter(r["label"] for r in rows)),
         "b3_recorded_verdict_counts": dict(Counter(r["b3_recorded_verdict"] for r in rows)),
         "controls_unchanged": True, "control_view": "original recorded admission decisions",
@@ -108,6 +114,94 @@ def diagnose_fixture_analysis(root: Path, cohort: dict[str, Any],
         "shared_error_occurrence_ids": sorted(errors["b2"] & errors["b3"]),
         "individual_failure_cases": [r for r in determinate if
                                      r["occurrence_id"] in errors["b2"] | errors["b3"]],
-        "rows": rows, "sampling_limitation": cohort["selection_limitations"],
+        "rows": rows, "sampling_limitation": sampling_limitation,
         "interpretation": "Exploratory selected-cohort audit; no population-wide accuracy claim.",
+    }
+
+
+def analyze_research(root: Path, cohort: dict[str, Any], crosswalks: list[dict[str, Any]],
+                     protocol: dict[str, Any], scope_approval: dict[str, Any],
+                     proposals: list[dict[str, Any]], ledger: dict[str, Any],
+                     confirmation: dict[str, Any], *, implementation_revision: str
+                     ) -> dict[str, Any]:
+    """Consume explicitly confirmed human research labels; never grant production approval."""
+    import platform
+    from importlib.metadata import version
+
+    from .research import RESEARCH, confirm_research_ledger, research_rubric
+
+    confirmed = confirm_research_ledger(root, cohort, crosswalks, protocol, scope_approval,
+                                        proposals, ledger, confirmation)
+    if (len(implementation_revision) != 40
+            or any(c not in "0123456789abcdef" for c in implementation_revision)):
+        raise ValueError("report requires the exact implementation commit")
+    final = {r["review_row_id"]: r for r in ledger["rows"]}
+    rows = [{"review_row_id": r["review_row_id"], "occurrence_id": r["occurrence_id"],
+             "payload_sha256": r["payload_sha256"], "dataset_id": r["dataset_id"],
+             "requested_class": r["requested_class"],
+             "label": final[r["review_row_id"]]["human_final_label"],
+             "b2": r["controls"]["b2"]["decision"]["accepted"],
+             "b3": r["controls"]["b3"]["decision"]["accepted"],
+             "b3_recorded_verdict": r["controls"]["b3"]["result"]["verdict"]}
+            for r in cohort["records"]]
+    return envelope("supervisor-reviewed-research-analysis-v1", {
+        **RESEARCH, "official": False, "population_kind": cohort["population_kind"],
+        "validation_status": "SUPERVISOR_CONFIRMED_RESEARCH_LABELS",
+        "implementation_revision": implementation_revision, "python_version": platform.python_version(),
+        "dependency_versions": {name: version(name) for name in
+                                ("pydantic", "numpy", "pandas", "scipy", "scikit-learn")},
+        "cohort_fingerprint": cohort["fingerprint"],
+        "crosswalk_fingerprints": cohort["crosswalk_fingerprints"],
+        "protocol_fingerprint": protocol["fingerprint"],
+        "research_rubric": research_rubric(protocol), "scope_approval": scope_approval,
+        "scope_approval_fingerprint": ledger["scope_approval_fingerprint"],
+        "proposal_set_fingerprint": ledger["proposal_set_fingerprint"],
+        "reviewed_ledger_fingerprint": ledger["fingerprint"],
+        "supervisor_confirmation": confirmed,
+        "source_files": {k: v for artifact in [*crosswalks, cohort, protocol]
+                         for k, v in artifact["source_files"].items()},
+        "controls_unchanged": True, "control_view": "original recorded admission decisions",
+        "overlap_review_row_ids": cohort["overlap_review_row_ids"],
+        "overlap_interpretation": "Historical overlap retained; one supervisor's review "
+        "does not establish two independent raters or inter-rater agreement.",
+        **comparison_metrics(rows, sampling_limitation=cohort["selection_limitations"]),
     })
+
+
+def research_report(result: dict[str, Any]) -> str:
+    """Render a durable report from the exact saved research result."""
+    lines = ["# RC-QASyn Phase-2 supervisor-reviewed research results", "",
+             ("This is a supervisor-confirmed academic research ledger. It is not "
+             "cryptographically authenticated and confers no production approval."), "",
+             f"Implementation: {result['implementation_revision']}",
+             f"Result fingerprint: {result['fingerprint']}",
+             f"Cohort fingerprint: {result['cohort_fingerprint']}",
+             f"Reviewed ledger fingerprint: {result['reviewed_ledger_fingerprint']}", "",
+             f"Labels: {json.dumps(result['label_counts'], sort_keys=True)}", "",
+             ("INVALID is the positive class. False acceptance means accepting an INVALID "
+             "record; false rejection means rejecting a VALID record. INDETERMINATE labels "
+             "are counted separately and excluded from binary denominators. Original B3 "
+             "verdicts and admission decisions are retained, including abstentions."), "",
+             "| Group | Baseline | TP | FP | FN | TN | Binary n | Indeterminate | FA rate | FR rate |",
+             "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |"]
+    groups = {"overall": result["overall"], **result["by_dataset"]}
+    for group, baselines in groups.items():
+        for baseline, m in baselines.items():
+            cells = [group, baseline.upper(), *(str(m[k]) for k in (
+                "tp", "fp", "fn", "tn", "binary_denominator", "indeterminate",
+                "false_acceptance_rate", "false_rejection_rate"))]
+            lines.append("| " + " | ".join(cells) + " |")
+    lines += ["", "## Interpretation and reproduction", "", result["sampling_limitation"],
+              result["interpretation"], result["overlap_interpretation"], "",
+              ("No B1/B2/B3 method, threshold, split or generation output was changed. "
+              "The result artifact includes dataset/class breakdowns, B3 verdict counts, "
+              "disagreements and individual/shared failures. Comparisons and reviewed labels "
+              "are also exported as CSV/JSON."), "",
+              ("Reproduce with the recorded implementation commit and dependency versions, "
+              "the preserved source preparation bundle, proposal checkpoint, scope approval, "
+              "reviewed ledger and exact explicit confirmation. Use phase2 research analyze "
+              "with these same inputs and a new output version. The bundle includes the "
+              "scope approval, proposals, reviewed ledger and confirmation used in this run."), "",
+              ("Source fingerprints detect input mismatches; they do not authenticate human "
+              "identity or resist a malicious agent with the same permissions."), ""]
+    return "\n".join(lines)
