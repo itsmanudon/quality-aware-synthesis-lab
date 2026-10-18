@@ -1,3 +1,9 @@
 # CSV cells may contain preserved multiline provider output whose internal blank
 # lines include spaces. Do not treat those data bytes as patch whitespace errors.
 *.csv whitespace=-blank-at-eol
+
+# Phase-2 seals bind exact serialized bytes across Windows and Unix checkouts.
+artifacts/reports/phase2/** -text
+
+# Preserve captured terminal logs, including their final blank line.
+artifacts/reports/phase2/verification-v1/*.txt whitespace=-blank-at-eof
