@@ -156,8 +156,8 @@ not permission to rewrite the records or controls.
 Run from this worktree with Python 3.12 and its src on PYTHONPATH. The source-root
 argument points to preserved main evidence/raw data. Example:
 
-    python -B -m rcqasyn phase3 score artifacts/reports/phase3/experiments/baseline-k5-a10 --source-root SOURCE_ROOT
-    python -B -m rcqasyn phase3 inspect artifacts/reports/phase3/experiments/baseline-k5-a10
+    python -B -m rcqasyn phase3 score artifacts/reports/phase3/experiments-replay-VERSION/baseline-k5-a10 --source-root SOURCE_ROOT
+    python -B -m rcqasyn phase3 inspect artifacts/reports/phase3/experiments-replay-VERSION/baseline-k5-a10
 
 Additional configurations use --k and --shrinkage. Outputs are new immutable
 versions under artifacts/reports/phase3. The guarded existing writer reserves and
@@ -182,3 +182,32 @@ No human approval record is manufactured. Phase 4 retains calibrated fusion,
 risk-aware admission, dataset contribution/selection policies and decision tuning.
 A dedicated fitted class-compatibility classifier, nonlinear density models and
 additional datasets are outside this compact M2 implementation.
+
+## Final artifact map
+
+- Latest supervisor sheet: artifacts/reports/phase3/review-v2/review.csv and review.json.
+- Final diagnostic configuration set: artifacts/reports/phase3/experiments-v2/manifest.
+- Final exploratory narrative and four PNG/SVG figure sets:
+  artifacts/reports/phase3/m2-report-v2/report.md.
+- Human dependency ledger: artifacts/reports/phase3/m2-report-v2/decision-ledger.csv.
+- Earlier experiments and report-v1 remain preserved development artifacts.
+
+```mermaid
+flowchart LR
+    S[Source-bound candidate occurrence] --> A[Authoritative structural evidence]
+    S --> B[Mixed-type local support]
+    S --> C[Global cross-feature consistency]
+    T[Frozen REAL TRAIN only] --> B
+    T --> C
+    D[DatasetSpecification and justified rules] --> A
+    A --> E[Separate versioned evidence records]
+    B --> E
+    C --> E
+    E --> R[Exploratory distributions and case reports]
+    P[Recorded B1/B2/B3 behavior] --> R
+```
+
+No cross-family fusion or admission node exists. REAL TEST does not feed fitting.
+Human-reviewed labels can later be joined by occurrence identity for separately
+authorized evaluation; refitting diagnostics is not required merely to correct
+agent labels. No personal label approval has been transcribed or inferred.
