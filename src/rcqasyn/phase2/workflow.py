@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import json
 from pathlib import Path
 from typing import Any
 
@@ -18,7 +19,7 @@ RUNS = (
     "m1-p1-real-Ecoli4-gemma4-e4b-20260829",
     "m1-p1-real-Abalone19-gemma4-e4b-20260829",
 )
-DEFAULT_OUTPUT = Path("artifacts/reports/phase2/gate-a-v1")
+DEFAULT_OUTPUT = Path("artifacts/reports/phase2/gate-a-v3")
 
 
 def historical_inventory(root: Path) -> dict[str, str]:
@@ -32,10 +33,19 @@ def historical_inventory(root: Path) -> dict[str, str]:
     return snapshot(root, files)
 
 
-def prepare(root: Path, output: Path, *, dry_run: bool = False) -> dict[str, Any]:
-    namespace = (root / "artifacts/reports/phase2").resolve()
-    if not output.resolve().is_relative_to(namespace) or output.resolve() == namespace:
-        raise ValueError("preparation output must be a version under artifacts/reports/phase2")
+def derivative_destination(root: Path, output: Path) -> Path:
+    target = output if output.is_absolute() else root / output
+    namespace = root / "artifacts/reports/phase2"
+    if (".." in output.parts or target.resolve() == namespace.resolve()
+            or not target.absolute().is_relative_to(namespace.absolute())
+            or not target.resolve().is_relative_to(namespace.resolve())):
+        raise ValueError("derivative output must be a version under artifacts/reports/phase2")
+    return target
+
+
+def prepare(root: Path, output: Path, *, dry_run: bool = False,
+            artifact_root: Path | None = None) -> dict[str, Any]:
+    output = derivative_destination(artifact_root or root, output)
     before = historical_inventory(root)
     crosswalks = [extract_crosswalk(root, root / "artifacts/runs" / run) for run in RUNS]
     page = crosswalks[0]["summary"]
@@ -53,6 +63,16 @@ def prepare(root: Path, output: Path, *, dry_run: bool = False) -> dict[str, Any
     objects = {**{f"crosswalk-{i + 1}": cw for i, cw in enumerate(crosswalks)},
                "cohort": cohort, "specifications": specs, "protocol": protocol,
                "public-packets": public, "private-map": private, "historical-integrity": inventory}
+    # Check the exact sorted JSON representation before reserving any output.
+    objects = json.loads(json.dumps(objects, sort_keys=True, allow_nan=False))
+    restored_crosswalks = [objects[f"crosswalk-{i + 1}"] for i in range(3)]
+    validate_cohort(root, objects["cohort"], restored_crosswalks)
+    validate_specifications(root, objects["specifications"])
+    if annotation_protocol(objects["specifications"]) != objects["protocol"]:
+        raise ValueError("protocol does not survive canonical serialization")
+    if packets(objects["cohort"], objects["protocol"]) != (
+            objects["public-packets"], objects["private-map"]):
+        raise ValueError("packet projection does not survive canonical serialization")
     manifest = envelope("phase2-gate-a-preparation-v1", {
         "crosswalk_version": crosswalks[0]["crosswalk_version"],
         "cohort_version": cohort["cohort_version"],
@@ -103,7 +123,7 @@ def prepare(root: Path, output: Path, *, dry_run: bool = False) -> dict[str, Any
                     "All three specifications are drafts. The exact KEEL source version, "
                     "primitive declarations, binary tokens, minority token, missing policy and "
                     "frozen split are verified locally. TRAIN profiles describe observations.\n\n"
-                    + "\n".join("- " + g["dataset_id"] + ": RESEARCH_DECISION_REQUIRED — "
+                    + "\n".join("- " + g["dataset_id"] + ": RESEARCH_DECISION_REQUIRED â€” "
                                 + ", ".join(g["gaps"]) for g in value["semantics_gaps"])
                     + "\n\nDo not infer original-class mappings from dataset names. Approve "
                     "task semantics and any new hard constraints only after authoritative evidence. "

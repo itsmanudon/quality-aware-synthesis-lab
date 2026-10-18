@@ -111,7 +111,7 @@ def build_cohort(root: Path, crosswalks: list[dict[str, Any]]) -> dict[str, Any]
                        "canonical_payload_hash": occurrence["payload_sha256"],
                        "recorded_hash": old["canonical_hash"],
                        "binding_status": "RECOVERABLE" if delta else "VERIFIED",
-                       "failure_reason": ",".join(delta),
+                       "failure_reason": ",".join(sorted(delta)),
                        "recommended_action": "Preserve payload and source-bound metadata"
                        if delta else "Retain occurrence binding"})
     if len({r["occurrence_id"] for r in rows}) != len(rows):

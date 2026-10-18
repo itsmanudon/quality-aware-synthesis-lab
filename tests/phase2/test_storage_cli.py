@@ -51,3 +51,22 @@ def test_cli_discovery_and_gate_commands_available():
     for command in ("prepare", "validate", "submit", "batches", "review", "analyze"):
         assert command in result.stdout
 
+
+@pytest.mark.parametrize("command", ["batches", "submit", "review-export", "review", "analyze"])
+def test_future_cli_writes_cannot_target_read_only_source_root(tmp_path, monkeypatch, command):
+    from rcqasyn.phase2 import cli
+    worktree, source = tmp_path / "worktree", tmp_path / "canonical-source"
+    monkeypatch.setattr(cli, "discover_project_root", lambda: worktree)
+    forbidden = str(source / "artifacts/reports/phase2/should-not-exist")
+    allowed = str(worktree / "artifacts/reports/phase2/output")
+    arguments = {
+        "batches": ["approval.json", forbidden, allowed],
+        "submit": ["approval.json", "answers.json", "agent", "execution", forbidden],
+        "review-export": [forbidden, allowed],
+        "review": ["approval.json", "decisions.json", forbidden, allowed],
+        "analyze": ["approval.json", forbidden, allowed, allowed],
+    }[command]
+    result = CliRunner().invoke(app, ["phase2", command, *arguments, "--source-root", str(source)])
+    assert isinstance(result.exception, ValueError)
+    assert "derivative output" in str(result.exception)
+    assert not worktree.exists() and not source.exists()

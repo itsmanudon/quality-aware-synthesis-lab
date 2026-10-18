@@ -18,7 +18,13 @@ from .annotations import (
     submit_batch,
 )
 from .common import csv_rows, csv_text, digest, envelope, write_bundle
-from .workflow import DEFAULT_OUTPUT, load_preparation, prepare, validate_preparation
+from .workflow import (
+    DEFAULT_OUTPUT,
+    derivative_destination,
+    load_preparation,
+    prepare,
+    validate_preparation,
+)
 
 app = typer.Typer(help="Occurrence-bound Phase-2 preparation and approval-gated review.")
 
@@ -29,27 +35,31 @@ def context(root: Path, bundle: Path) -> tuple[Any, ...]:
 
 
 @app.command("prepare")
-def prepare_command(output: Path = DEFAULT_OUTPUT, dry_run: bool = False) -> None:
+def prepare_command(output: Path = DEFAULT_OUTPUT, dry_run: bool = False,
+                    source_root: Path | None = None) -> None:
     """Reconstruct new derivatives; never generate annotation labels."""
     root = discover_project_root()
-    result = prepare(root, root / output, dry_run=dry_run)
+    result = prepare(source_root or root, root / output, dry_run=dry_run, artifact_root=root)
     typer.echo(json.dumps(result, indent=2))
 
 
 @app.command("validate")
-def validate_command(bundle: Path = DEFAULT_OUTPUT) -> None:
+def validate_command(bundle: Path = DEFAULT_OUTPUT, source_root: Path | None = None) -> None:
     """Independently rebuild bindings, order, schemas and historical integrity."""
     root = discover_project_root()
-    typer.echo(json.dumps(validate_preparation(root, root / bundle), indent=2))
+    typer.echo(json.dumps(validate_preparation(source_root or root, root / bundle), indent=2))
 
 
 @app.command("batches")
 def batches_command(approval: Path, checkpoint: Path, output: Path,
-                    bundle: Path = DEFAULT_OUTPUT, batch_size: int = 10) -> None:
+                    bundle: Path = DEFAULT_OUTPUT, batch_size: int = 10,
+                    source_root: Path | None = None) -> None:
     """After Gate A, export stable pending blinded requests. No model is called."""
     root = discover_project_root()
-    cohort, crosswalks, protocol, _ = context(root, root / bundle)
-    gate_a(root, cohort, crosswalks, protocol, read_json(approval))
+    checkpoint = derivative_destination(root, checkpoint)
+    output = derivative_destination(root, output)
+    cohort, crosswalks, protocol, _ = context(source_root or root, root / bundle)
+    gate_a(source_root or root, cohort, crosswalks, protocol, read_json(approval))
     batches = pending_batches(cohort, protocol, checkpoint, batch_size)
     value = envelope("annotation-batch-requests-v1", {
         "cohort_fingerprint": cohort["fingerprint"],
@@ -61,21 +71,25 @@ def batches_command(approval: Path, checkpoint: Path, output: Path,
 
 @app.command("submit")
 def submit_command(approval: Path, answers: Path, model: str, execution: str,
-                   checkpoint: Path, bundle: Path = DEFAULT_OUTPUT) -> None:
+                   checkpoint: Path, bundle: Path = DEFAULT_OUTPUT,
+                   source_root: Path | None = None) -> None:
     """Validate agent answers after Gate A; keep immutable proposal batches."""
     root = discover_project_root()
-    cohort, crosswalks, protocol, _ = context(root, root / bundle)
-    path = submit_batch(root, cohort, crosswalks, protocol, read_json(approval),
+    checkpoint = derivative_destination(root, checkpoint)
+    cohort, crosswalks, protocol, _ = context(source_root or root, root / bundle)
+    path = submit_batch(source_root or root, cohort, crosswalks, protocol, read_json(approval),
                         read_json(answers), model, execution, checkpoint)
     typer.echo(str(path))
 
 
 @app.command("review-export")
 def review_export_command(checkpoint: Path, output: Path,
-                          bundle: Path = DEFAULT_OUTPUT) -> None:
+                          bundle: Path = DEFAULT_OUTPUT, source_root: Path | None = None) -> None:
     """Export proposals for supervision; an export conveys no approval."""
     root = discover_project_root()
-    cohort, _, protocol, _ = context(root, root / bundle)
+    checkpoint = derivative_destination(root, checkpoint)
+    output = derivative_destination(root, output)
+    cohort, _, protocol, _ = context(source_root or root, root / bundle)
     proposals = load_proposals(checkpoint, cohort, protocol)
     byrow = {r["review_row_id"]: r for r in cohort["records"]}
     rows = [{**p, "proposal_fingerprint": digest(p), "payload": byrow[p["review_row_id"]]["payload"]}
@@ -90,10 +104,12 @@ def review_export_command(checkpoint: Path, output: Path,
 
 @app.command("review")
 def review_command(approval: Path, decisions: Path, checkpoint: Path, history: Path,
-                   bundle: Path = DEFAULT_OUTPUT) -> None:
+                   bundle: Path = DEFAULT_OUTPUT, source_root: Path | None = None) -> None:
     """Append explicitly supplied human decisions; never infer reviewer identity."""
     root = discover_project_root()
-    cohort, crosswalks, protocol, _ = context(root, root / bundle)
+    checkpoint = derivative_destination(root, checkpoint)
+    history = derivative_destination(root, history)
+    cohort, crosswalks, protocol, _ = context(source_root or root, root / bundle)
     proposals = load_proposals(checkpoint, cohort, protocol)
     if decisions.suffix.lower() == ".csv":
         fields = ("review_row_id", "occurrence_id", "payload_sha256", "proposal_fingerprint",
@@ -103,18 +119,21 @@ def review_command(approval: Path, decisions: Path, checkpoint: Path, history: P
                   for key in fields} for row in csv_rows(decisions)]
     else:
         value = read_json(decisions)
-    path = record_review(root, cohort, crosswalks, protocol, read_json(approval),
+    path = record_review(source_root or root, cohort, crosswalks, protocol, read_json(approval),
                          proposals, value, history)
     typer.echo(str(path))
 
 
 @app.command("analyze")
 def analyze_command(approval: Path, checkpoint: Path, history: Path, output: Path,
-                    bundle: Path = DEFAULT_OUTPUT) -> None:
+                    bundle: Path = DEFAULT_OUTPUT, source_root: Path | None = None) -> None:
     """Refuse official evaluation until all human final labels are approved."""
     root = discover_project_root()
-    cohort, crosswalks, protocol, _ = context(root, root / bundle)
-    result = analyze(root, cohort, crosswalks, protocol, read_json(approval),
+    checkpoint = derivative_destination(root, checkpoint)
+    history = derivative_destination(root, history)
+    output = derivative_destination(root, output)
+    cohort, crosswalks, protocol, _ = context(source_root or root, root / bundle)
+    result = analyze(source_root or root, cohort, crosswalks, protocol, read_json(approval),
                      load_proposals(checkpoint, cohort, protocol), history)
     write_bundle(output, result, {"approved-comparisons.csv": csv_text(result["rows"])})
     typer.echo(str(output))

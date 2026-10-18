@@ -109,3 +109,27 @@ def test_blind_projection_and_overlap(cohort, specs):
     assert [r["review_row_id"] for r in private["mapping"]] == [
         r["review_row_id"] for r in cohort["records"]]
     assert len({r["blinded_review_id"] for r in public["primary"]}) == 120
+
+
+def test_sealed_json_roundtrip_preserves_cohort_reconstruction(tmp_path, cohort, actual_crosswalks):
+    from rcqasyn.phase2.common import read_bundle, write_bundle
+    saved = []
+    for i, crosswalk in enumerate(actual_crosswalks):
+        path = tmp_path / f"crosswalk-{i}"
+        write_bundle(path, crosswalk)
+        saved.append(read_bundle(path))
+    path = tmp_path / "cohort"
+    write_bundle(path, cohort)
+    restored = read_bundle(path)
+    assert validate_cohort(ROOT, restored, saved)["records"] == 120
+    assert build_cohort(ROOT, saved) == restored
+
+
+def test_packet_projection_survives_sorted_json_roundtrip(cohort, specs):
+    protocol = annotation_protocol(specs)
+    public, private = packets(cohort, protocol)
+    restored_cohort = json.loads(json.dumps(cohort, sort_keys=True))
+    restored_protocol = json.loads(json.dumps(protocol, sort_keys=True))
+    assert packets(restored_cohort, restored_protocol) == (
+        json.loads(json.dumps(public, sort_keys=True)),
+        json.loads(json.dumps(private, sort_keys=True)))

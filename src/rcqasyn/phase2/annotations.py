@@ -53,7 +53,7 @@ def packets(cohort: dict[str, Any], protocol: dict[str, Any]
         primary.append({"blinded_review_id": blind, "dataset_id": row["dataset_id"],
                         "payload": row["payload"], "payload_sha256": row["payload_sha256"],
                         "field_definitions": protocol["fields"][row["dataset_id"]],
-                        "allowed_evidence": [rule for rule in protocol["rules"].values()
+                        "allowed_evidence": [rule for _, rule in sorted(protocol["rules"].items())
                                              if rule["rule_id"].startswith(row["dataset_id"] + ":")
                                              and rule["authority"] == "AUTHORITATIVE"],
                         "known_ambiguity": protocol["ambiguity"][row["dataset_id"]]})

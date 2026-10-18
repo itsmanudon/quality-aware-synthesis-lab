@@ -91,3 +91,19 @@ def test_bounded_source_locator(relative):
     from rcqasyn.phase2.common import source_path
     with pytest.raises(ValueError):
         source_path(ROOT, relative)
+
+
+def test_corrupted_source_inventory_digest_rejected(crosswalk):
+    forged = copy.deepcopy(crosswalk)
+    source = forged["records"][0]["source_artifact"]
+    forged["source_files"][source] = "0" * 64
+    forged["fingerprint"] = digest({k: v for k, v in forged.items() if k != "fingerprint"})
+    with pytest.raises(ValueError, match="source integrity"):
+        validate_crosswalk(ROOT, forged)
+
+
+def test_resolver_refuses_duplicate_occurrence_identity(crosswalk):
+    forged = copy.deepcopy(crosswalk)
+    forged["records"].append(forged["records"][0])
+    with pytest.raises(ValueError, match="ambiguous"):
+        resolve_occurrence(forged, forged["records"][0]["occurrence_id"])
