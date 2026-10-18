@@ -82,7 +82,7 @@ def write_bundle(output: Path, value: dict[str, Any],
         if read_json(output / "artifact.json") != value:
             raise FileExistsError("immutable derivative differs; choose a new version")
         for name, text in (extras or {}).items():
-            if (output / name).read_text(encoding="utf-8") != text:
+            if (output / name).read_bytes().decode("utf-8") != text:
                 raise ValueError("derivative export mismatch")
         return output
     for name in extras or {}:
