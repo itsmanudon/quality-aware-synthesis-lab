@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, Literal
+from typing import Annotated, Any, Literal
 
 from pydantic import Field, model_validator
 
@@ -126,7 +126,7 @@ class HumanDecision(ContractModel):
     occurrence_id: NonEmptyStr
     payload_sha256: NonEmptyStr
     proposal_fingerprint: NonEmptyStr
-    review_status: Literal["APPROVED", "UNRESOLVED"]
+    review_status: Literal["SUBMITTED", "APPROVED", "UNRESOLVED"]
     human_final_label: Label | None = None
     human_correction_note: str = ""
     human_reviewer_reference: NonEmptyStr
@@ -139,3 +139,42 @@ class HumanDecision(ContractModel):
         if self.review_status == "UNRESOLVED" and self.human_final_label is not None:
             raise ValueError("unresolved is not an approved label")
         return self
+
+# These approval-specific contracts do not change the frozen cohort or protocol.
+type Hex32 = Annotated[str, Field(pattern=r"^[0-9a-f]{64}$")]
+type Hex64 = Annotated[str, Field(pattern=r"^[0-9a-f]{128}$")]
+
+
+class ApprovalLedger(ContractModel):
+    schema_version: Literal["supervisor-approval-ledger-v1"] = "supervisor-approval-ledger-v1"
+    phase1_freeze_sha: Literal["341fc2ce647c180b0f4a34fdbdeb49a0acfdcbcc"] = FREEZE
+    cohort_fingerprint: NonEmptyStr
+    crosswalk_fingerprints: tuple[str, ...]
+    protocol_version: Literal["annotation-protocol-v1"]
+    protocol_fingerprint: NonEmptyStr
+    gate_a_approval_fingerprint: NonEmptyStr
+    population_kind: Literal["research", "synthetic_fixture"]
+    proposal_ledger_fingerprint: NonEmptyStr
+    reviewer_reference: NonEmptyStr
+    correction_history_tip: NonEmptyStr
+    correction_history_fingerprints: tuple[str, ...]
+    decisions: tuple[HumanDecision, ...]
+
+
+class DetachedSupervisorSignature(ContractModel):
+    schema_version: Literal["supervisor-signature-v1"] = "supervisor-signature-v1"
+    key_id: Hex32
+    signature_hex: Hex64
+
+
+class SupervisorAttestation(ContractModel):
+    schema_version: Literal["supervisor-attestation-v1"] = "supervisor-attestation-v1"
+    ledger: ApprovalLedger
+    signature: DetachedSupervisorSignature
+
+
+class SupervisorTrust(ContractModel):
+    schema_version: Literal["supervisor-trust-v1"] = "supervisor-trust-v1"
+    reviewer_reference: NonEmptyStr
+    key_id: Hex32
+    public_key_hex: Hex32

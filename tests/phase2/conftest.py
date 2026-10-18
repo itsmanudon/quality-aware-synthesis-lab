@@ -104,3 +104,38 @@ def fixture_workflow(tmp_path):
                 "implementation_owner_reference": "SYNTHETIC_TEST_OWNER",
                 "decision": "APPROVED", "personnel_independent": True}
     return root, [cw], cohort, protocol, approval
+
+
+@pytest.fixture
+def supervisor_signer(tmp_path_factory):
+    """Disposable test credential; never provisions an actual supervisor key."""
+    from hashlib import sha256
+    from types import SimpleNamespace
+
+    from cryptography.hazmat.primitives.asymmetric.ed25519 import Ed25519PrivateKey
+
+    from rcqasyn.phase2.approval import build_approval_ledger, signing_bytes
+
+    key = Ed25519PrivateKey.generate()
+    public = key.public_key().public_bytes_raw()
+    key_id = sha256(public).hexdigest()
+    directory = tmp_path_factory.mktemp("synthetic-supervisor-trust")
+    trust = directory / "trust.json"
+    trust.write_text(json.dumps({
+        "schema_version": "supervisor-trust-v1",
+        "reviewer_reference": "SYNTHETIC_TEST_SUPERVISOR",
+        "key_id": key_id, "public_key_hex": public.hex()}), encoding="utf-8")
+
+    def sign(ledger):
+        return {"schema_version": "supervisor-attestation-v1", "ledger": ledger,
+                "signature": {"schema_version": "supervisor-signature-v1", "key_id": key_id,
+                              "signature_hex": key.sign(signing_bytes(ledger)).hex()}}
+
+    def attest(workflow, proposals, history):
+        root, cws, cohort, protocol, approval = workflow
+        ledger = build_approval_ledger(root, cohort, cws, protocol, approval, proposals,
+                                       history, "SYNTHETIC_TEST_SUPERVISOR")
+        return sign(ledger)
+
+    return SimpleNamespace(key=key, key_id=key_id, trust=trust, sign=sign, attest=attest,
+                           directory=directory)

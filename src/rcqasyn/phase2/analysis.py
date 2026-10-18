@@ -5,9 +5,12 @@ from collections import Counter
 from pathlib import Path
 from typing import Any
 
-from .annotations import gate_a, review_history, validate_proposals
+from rcqasyn.storage.ownership import bundle_lock
+
+from .annotations import gate_a, review_history
+from .approval import authenticate_review
 from .common import digest, envelope
-from .contracts import HumanDecision, Proposal
+from .contracts import HumanDecision
 
 
 def _confusion(rows: list[dict[str, Any]], baseline: str) -> dict[str, Any]:
@@ -29,37 +32,21 @@ def _confusion(rows: list[dict[str, Any]], baseline: str) -> dict[str, Any]:
 def analyze(root: Path, cohort: dict[str, Any], crosswalks: list[dict[str, Any]],
             protocol: dict[str, Any], approval: dict[str, Any],
             proposals: list[dict[str, Any]], history: Path,
-            *, fixture_only: bool = False) -> dict[str, Any]:
+            *, fixture_only: bool = False,
+            supervisor_attestation: dict[str, Any] | None = None,
+            trust_config: Path | None = None) -> dict[str, Any]:
     attestation = gate_a(root, cohort, crosswalks, protocol, approval)
     fixture = cohort["population_kind"] == "synthetic_fixture"
     if fixture != fixture_only:
         raise ValueError("fixture provenance cannot be used for official research analysis")
     byrow = {r["review_row_id"]: r for r in cohort["records"]}
-    validate_proposals(proposals, cohort, protocol)
-    proposed = {}
-    for raw in proposals:
-        row = Proposal.model_validate_json(json.dumps(raw)).model_dump(mode="json")
-        if row["review_row_id"] in proposed:
-            raise ValueError("duplicate proposal")
-        proposed[row["review_row_id"]] = row
-    if set(proposed) != set(byrow):
-        raise ValueError("proposal set differs from complete cohort")
-    final = {}
-    events = review_history(history)
-    for event in events:
-        if (event["cohort_fingerprint"] != cohort["fingerprint"]
-                or event["protocol_fingerprint"] != protocol["fingerprint"]
-                or event["population_kind"] != cohort["population_kind"]):
-            raise ValueError("stale review event")
-        for raw in event["decisions"]:
-            decision = HumanDecision.model_validate_json(json.dumps(raw))
-            if decision.review_row_id not in proposed:
-                raise ValueError("foreign review identity")
-            if decision.proposal_fingerprint != digest(proposed[decision.review_row_id]):
-                raise ValueError("stale proposal approval")
-            final[decision.review_row_id] = decision
-    if set(final) != set(byrow) or any(r.review_status != "APPROVED" for r in final.values()):
-        raise ValueError("official analysis requires explicit approval of every record")
+    with bundle_lock(history):
+        authenticated = authenticate_review(root, cohort, crosswalks, protocol, approval,
+                                             proposals, history, supervisor_attestation, trust_config)
+        events = review_history(history)
+    proposed = {r["review_row_id"]: r for r in proposals}
+    final = {d["review_row_id"]: HumanDecision.model_validate_json(json.dumps(d))
+             for d in authenticated["approved_decisions"]}
     rows = []
     for key, source in byrow.items():
         proposal, decision = proposed[key], final[key]
@@ -78,7 +65,7 @@ def analyze(root: Path, cohort: dict[str, Any], crosswalks: list[dict[str, Any]]
     determinate = [r for r in rows if r["label"] != "INDETERMINATE"]
     errors = {b: {r["occurrence_id"] for r in determinate
                   if r[b] != (r["label"] == "VALID")} for b in ("b2", "b3")}
-    return envelope("b2-b3-approved-label-analysis-v1", {
+    return envelope("b2-b3-approved-label-analysis-v2", {
         "official": not fixture, "population_kind": cohort["population_kind"],
         "cohort_fingerprint": cohort["fingerprint"], "protocol_fingerprint": protocol["fingerprint"],
         "crosswalk_fingerprints": cohort["crosswalk_fingerprints"],
@@ -87,7 +74,11 @@ def analyze(root: Path, cohort: dict[str, Any], crosswalks: list[dict[str, Any]]
         "review_event_fingerprints": [e["fingerprint"] for e in events],
         "approved_ledger_fingerprint": digest([final[k].model_dump(mode="json") for k in sorted(final)]),
         "approved_decisions": [final[k].model_dump(mode="json") for k in sorted(final)],
-        "validation_status": "APPROVED_LABELS_VALIDATED",
+        "validation_status": "AUTHENTICATED_FIXTURE_LABELS_VALIDATED" if fixture
+        else "AUTHENTICATED_LABELS_VALIDATED",
+        "supervisor_attestation_fingerprint": digest(authenticated["attestation"]),
+        "trusted_supervisor_key_id": authenticated["trusted_key_id"],
+        "trust_configuration_fingerprint": authenticated["trust_configuration_fingerprint"],
         "label_counts": dict(Counter(r["label"] for r in rows)),
         "b3_recorded_verdict_counts": dict(Counter(r["b3_recorded_verdict"] for r in rows)),
         "controls_unchanged": True, "control_view": "original recorded admission decisions",

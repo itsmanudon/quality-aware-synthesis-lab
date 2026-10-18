@@ -8,7 +8,7 @@ from rcqasyn.storage.ownership import bundle_lock
 
 from .cohort import validate_cohort
 from .common import digest, envelope, read_bundle, verify_envelope, verify_sources, write_bundle
-from .contracts import COHORT, PROTOCOL, GateAApproval, HumanDecision, Proposal, Rule
+from .contracts import COHORT, PROTOCOL, GateAApproval, Proposal, Rule
 
 
 def annotation_protocol(specs: dict[str, Any]) -> dict[str, Any]:
@@ -186,32 +186,21 @@ def record_review(root: Path, cohort: dict[str, Any], crosswalks: list[dict[str,
                   proposals: list[dict[str, Any]], decisions: list[dict[str, Any]],
                   history: Path) -> Path:
     gate_a(root, cohort, crosswalks, protocol, approval)
-    byrow = {r["review_row_id"]: Proposal.model_validate_json(json.dumps(r)).model_dump(mode="json")
-             for r in proposals}
-    validate_proposals(proposals, cohort, protocol)
-    if len(byrow) != len(proposals):
-        raise ValueError("duplicate proposal")
-    records = []
-    for raw in decisions:
-        decision = HumanDecision.model_validate_json(json.dumps(raw))
-        original = byrow.get(decision.review_row_id)
-        if (original is None or decision.proposal_fingerprint != digest(original)
-                or decision.occurrence_id != original["occurrence_id"]
-                or decision.payload_sha256 != original["payload_sha256"]):
-            raise ValueError("review decision has stale proposal/occurrence binding")
-        if (decision.human_final_label is not None
-                and decision.human_final_label != original["proposed_label"]
-                and not decision.human_correction_note.strip()):
-            raise ValueError("a changed label requires a correction note")
-        records.append(decision.model_dump(mode="json"))
+    from .approval import check_decisions
+
+    byrow = {r["review_row_id"]: r for r in proposals}
+    records = check_decisions(decisions, proposals, cohort, protocol, submitted=True)
     if not records or len({r["review_row_id"] for r in records}) != len(records):
         raise ValueError("empty or duplicate review events")
     with bundle_lock(history):
         chain = review_history(history)
+        if any(e["schema_version"] != "supervisor-review-event-v2" for e in chain):
+            raise ValueError("legacy approval history must remain unchanged; start a new submitted ledger")
         if any(e["cohort_fingerprint"] != cohort["fingerprint"] or
                e["protocol_fingerprint"] != protocol["fingerprint"] for e in chain):
             raise ValueError("stale review history")
-        event = envelope("supervisor-review-event-v1", {
+        event = envelope("supervisor-review-event-v2", {
+            "validation_status": "SUBMITTED_UNVERIFIED",
             "cohort_fingerprint": cohort["fingerprint"],
             "protocol_fingerprint": protocol["fingerprint"],
             "population_kind": cohort["population_kind"],
@@ -226,9 +215,25 @@ def review_history(history: Path) -> list[dict[str, Any]]:
     events, previous = [], None
     for index, path in enumerate(sorted(history.glob("event-*")), 1):
         event = read_bundle(path)
-        verify_envelope(event, "supervisor-review-event-v1")
+        kind = event.get("schema_version")
+        if kind not in ("supervisor-review-event-v1", "supervisor-review-event-v2"):
+            raise ValueError("unsupported supervisor review event")
+        verify_envelope(event, kind)
         if event["sequence"] != index or event["previous_event_fingerprint"] != previous:
             raise ValueError("review correction history is missing, reordered or modified")
         previous = event["fingerprint"]
         events.append(event)
     return events
+
+
+def import_supervisor_approval(root: Path, cohort: dict[str, Any],
+                               crosswalks: list[dict[str, Any]], protocol: dict[str, Any],
+                               approval: dict[str, Any], proposals: list[dict[str, Any]],
+                               history: Path, attestation: dict[str, Any] | None,
+                               trust_config: Path | None, output: Path) -> Path:
+    from .approval import authenticate_review
+
+    with bundle_lock(history):
+        validated = authenticate_review(root, cohort, crosswalks, protocol, approval,
+                                         proposals, history, attestation, trust_config)
+        return write_bundle(output, envelope("authenticated-supervisor-review-v1", validated))

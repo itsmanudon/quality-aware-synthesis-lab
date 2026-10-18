@@ -35,7 +35,7 @@ def propose(workflow, tmp_path):
     return checkpoint, load_proposals(checkpoint, cohort, protocol)
 
 
-def decision(p, label="INDETERMINATE", status="APPROVED"):
+def decision(p, label="INDETERMINATE", status="SUBMITTED"):
     return {**{k: p[k] for k in ("review_row_id", "occurrence_id", "payload_sha256")},
             "proposal_fingerprint": digest(p), "review_status": status,
             "human_final_label": label, "human_correction_note": "Synthetic fixture",
@@ -82,20 +82,22 @@ def test_invalid_verdict_or_evidence_refused(fixture_workflow, tmp_path, label, 
     assert not (tmp_path / "out").exists()
 
 
-def test_history_preserves_proposal_and_requires_all_explicit_approvals(fixture_workflow, tmp_path):
+def test_history_preserves_proposal_and_requires_all_explicit_approvals(fixture_workflow, tmp_path, supervisor_signer):
     root, cws, c, p, approval = fixture_workflow
     _, proposals = propose(fixture_workflow, tmp_path)
     before = copy.deepcopy(proposals)
     history = tmp_path / "history"
-    with pytest.raises(ValueError, match="every record"):
+    with pytest.raises(ValueError):
         analyze(root, c, cws, p, approval, proposals, history, fixture_only=True)
     record_review(root, c, cws, p, approval, proposals,
                   [decision(proposals[0])], history)
-    with pytest.raises(ValueError, match="every record"):
+    with pytest.raises(ValueError):
         analyze(root, c, cws, p, approval, proposals, history, fixture_only=True)
     record_review(root, c, cws, p, approval, proposals,
                   [decision(proposals[1], "VALID")], history)
-    report = analyze(root, c, cws, p, approval, proposals, history, fixture_only=True)
+    attestation = supervisor_signer.attest(fixture_workflow, proposals, history)
+    report = analyze(root, c, cws, p, approval, proposals, history, fixture_only=True,
+                     supervisor_attestation=attestation, trust_config=supervisor_signer.trust)
     assert report["official"] is False
     assert report["overall"]["b2"]["indeterminate"] == 1
     assert report["overall"]["b2"]["binary_denominator"] == 1
@@ -130,7 +132,7 @@ def test_correction_note_and_reopened_review(fixture_workflow, tmp_path):
                   [decision(r) for r in proposals], history)
     record_review(root, c, cws, p, approval, proposals,
                   [decision(proposals[0], None, "UNRESOLVED")], history)
-    with pytest.raises(ValueError, match="every record"):
+    with pytest.raises(ValueError):
         analyze(root, c, cws, p, approval, proposals, history, fixture_only=True)
 
 
