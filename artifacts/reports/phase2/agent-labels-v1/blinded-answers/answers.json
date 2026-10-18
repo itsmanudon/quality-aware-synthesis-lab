@@ -1,0 +1,1210 @@
+[
+  {
+    "blinded_review_id": "blind-6c6d31949079cecac0eeb0047850611ec44530a7db5c72727428289392a84079",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 9 of 9 declared fields; primitive types and available nominal tokens (sex='M', class='negative') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Abalone19:declared-categories",
+      "Abalone19:schema",
+      "Abalone19:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-07c836f331b80e756afe0f2747a998ff7d14ce33bfeabee30959993a1a9cc6d6",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 9 of 9 declared fields; primitive types and available nominal tokens (sex='M', class='negative') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Abalone19:declared-categories",
+      "Abalone19:schema",
+      "Abalone19:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-85473fac52172492f1e1b06db2366845152e7b8e8e273a1d51044a615af55d3d",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 9 of 9 declared fields; primitive types and available nominal tokens (sex='I', class='negative') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Abalone19:declared-categories",
+      "Abalone19:schema",
+      "Abalone19:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-ccb36dada17c3ce4caa5a09d85f3a9fa0c7dbae53fd507d35225fff17a3c0f36",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 9 of 9 declared fields; primitive types and available nominal tokens (sex='M', class='negative') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Abalone19:declared-categories",
+      "Abalone19:schema",
+      "Abalone19:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-5c010b30faffe4c64494cbd2fd69a7207156b06ea0313e430664755af832dcaf",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 9 of 9 declared fields; primitive types and available nominal tokens (sex='F', class='negative') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Abalone19:declared-categories",
+      "Abalone19:schema",
+      "Abalone19:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-d66ef46b4ce943fd66982f359adf76db5086d6c33f65d12394f5e9f0401166e8",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 9 of 9 declared fields; primitive types and available nominal tokens (sex='F', class='negative') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Abalone19:declared-categories",
+      "Abalone19:schema",
+      "Abalone19:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-a51a7eda499f4531a1dca0afce5ee529551b828a2d04590c37b8c326825a2c1a",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 9 of 9 declared fields; primitive types and available nominal tokens (sex='I', class='negative') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Abalone19:declared-categories",
+      "Abalone19:schema",
+      "Abalone19:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-7de3e7e0fc912654febd72f6df3a7b1c7e34d80fc26cc30bcbe6bdb2a14aebd0",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 9 of 9 declared fields; primitive types and available nominal tokens (sex='I', class='negative') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Abalone19:declared-categories",
+      "Abalone19:schema",
+      "Abalone19:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-c1e41b25e0515cf5fab531a02b273306076a2321c9da31257b77690fe48510fd",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 9 of 9 declared fields; primitive types and available nominal tokens (sex='F', class='negative') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Abalone19:declared-categories",
+      "Abalone19:schema",
+      "Abalone19:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-843dce5845d657446026e04311b3b33972ec7dd1e9f49807159c013542d7414b",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 9 of 9 declared fields; primitive types and available nominal tokens (sex='I', class='negative') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Abalone19:declared-categories",
+      "Abalone19:schema",
+      "Abalone19:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-3903f577d10adb0446eb3df3b5c7e6e1e33eeda06c28a13a569b0667c729823e",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 9 of 9 declared fields; primitive types and available nominal tokens (sex='F', class='negative') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Abalone19:declared-categories",
+      "Abalone19:schema",
+      "Abalone19:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-9f3d9c73a43bf1189e8474d22b331d6a19a075f75b1f7bf36b40344ea256e779",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 9 of 9 declared fields; primitive types and available nominal tokens (sex='I', class='negative') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Abalone19:declared-categories",
+      "Abalone19:schema",
+      "Abalone19:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-0462b99878ccfb37cb3dda439553927dc3067c25f23846ca76a494e672a3f7c5",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 9 of 9 declared fields; primitive types and available nominal tokens (sex='I', class='negative') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Abalone19:declared-categories",
+      "Abalone19:schema",
+      "Abalone19:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-606ca7694bb47772735699622ca40181701dfe66b7870e0f4479d95539fc1cfa",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 9 of 9 declared fields; primitive types and available nominal tokens (sex='F', class='negative') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Abalone19:declared-categories",
+      "Abalone19:schema",
+      "Abalone19:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-3ee98dd0b10d9643a4518d689218720a435f30bc2ec468cfd36dba5865c01fb4",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 9 of 9 declared fields; primitive types and available nominal tokens (sex='M', class='negative') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Abalone19:declared-categories",
+      "Abalone19:schema",
+      "Abalone19:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-6679f1ccba988f585a238aa66d46c6e2fbbda2a78233cc31d0a270ff22b81029",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 9 of 9 declared fields; primitive types and available nominal tokens (sex='F', class='negative') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Abalone19:declared-categories",
+      "Abalone19:schema",
+      "Abalone19:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-e2b80e7139141c2902e9274056056178315994e8efa23ce97cf5bbbfd47b8448",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 9 of 9 declared fields; primitive types and available nominal tokens (sex='I', class='negative') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Abalone19:declared-categories",
+      "Abalone19:schema",
+      "Abalone19:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-303f71dad69ecc5f5342f3ca1352faebba52e0a296e88722e1e73b05fda9578a",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 9 of 9 declared fields; primitive types and available nominal tokens (sex='I', class='negative') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Abalone19:declared-categories",
+      "Abalone19:schema",
+      "Abalone19:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-6330ecb0ec2a8e5470e02b377827faea3ca9dbc02b8291810909d6cba411883f",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 9 of 9 declared fields; primitive types and available nominal tokens (sex='M', class='negative') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Abalone19:declared-categories",
+      "Abalone19:schema",
+      "Abalone19:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-34aa17c05eb9a0d5a7c2108d30127d546078f96659bfdf2f228ba264ad8aa173",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 9 of 9 declared fields; primitive types and available nominal tokens (sex='M', class='positive') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Abalone19:declared-categories",
+      "Abalone19:schema",
+      "Abalone19:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-0deb46a2730e888ca03f2170afe6d5984a0d620f4997c877d0709f509b155dae",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 9 of 9 declared fields; primitive types and available nominal tokens (sex='M', class='positive') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Abalone19:declared-categories",
+      "Abalone19:schema",
+      "Abalone19:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-59b670f7bda83a6c55948850741c89d8fe9f694bd7763405f050115e151857df",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 9 of 9 declared fields; primitive types and available nominal tokens (sex='F', class='positive') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Abalone19:declared-categories",
+      "Abalone19:schema",
+      "Abalone19:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-ece470a399ee087c0a749a710f96970dfa091cca964fa114eb45b777b2e46e50",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 9 of 9 declared fields; primitive types and available nominal tokens (sex='M', class='positive') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Abalone19:declared-categories",
+      "Abalone19:schema",
+      "Abalone19:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-fa5397ee8af7fe4349a1952fe1faf62abe987981586f7bf05b7affbc8c8c5eb7",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 9 of 9 declared fields; primitive types and available nominal tokens (sex='F', class='positive') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Abalone19:declared-categories",
+      "Abalone19:schema",
+      "Abalone19:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-ef761a09d3bc7222ab59d666b926f64150ffca80d9fcd61bd1d233d52fbd43e0",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 9 of 9 declared fields; primitive types and available nominal tokens (sex='I', class='positive') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Abalone19:declared-categories",
+      "Abalone19:schema",
+      "Abalone19:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-d1ccb86e50233ace9376ed9a3b17ec0e827c8d0a5d25a3e09bdf252c551689c8",
+    "proposed_label": "INVALID",
+    "proposed_rationale": "Absent declared field(s): class. This is a declared-field/primitive-type violation; no physical relationship, rarity, TRAIN support, or machine judgment is used.",
+    "supporting_evidence_ids": [
+      "Abalone19:schema"
+    ],
+    "uncertainty_or_ambiguity": "Specific schema evidence supports this proposed INVALID judgment. Original target mapping, physical meanings/units and cross-field constraints remain unresolved and are not asserted. Supervisor should inspect the cited declaration and original values."
+  },
+  {
+    "blinded_review_id": "blind-336e557cdc234d9fcd6dc662a92518d141b8fa164a814559050f75f882920fee",
+    "proposed_label": "INVALID",
+    "proposed_rationale": "Absent declared field(s): class. This is a declared-field/primitive-type violation; no physical relationship, rarity, TRAIN support, or machine judgment is used.",
+    "supporting_evidence_ids": [
+      "Abalone19:schema"
+    ],
+    "uncertainty_or_ambiguity": "Specific schema evidence supports this proposed INVALID judgment. Original target mapping, physical meanings/units and cross-field constraints remain unresolved and are not asserted. Supervisor should inspect the cited declaration and original values."
+  },
+  {
+    "blinded_review_id": "blind-c3f3b8b59ee0dd05f040f5bd8be5810a2d5eb0a4325c206e97d723c52335bbc6",
+    "proposed_label": "INVALID",
+    "proposed_rationale": "Absent declared field(s): class. This is a declared-field/primitive-type violation; no physical relationship, rarity, TRAIN support, or machine judgment is used.",
+    "supporting_evidence_ids": [
+      "Abalone19:schema"
+    ],
+    "uncertainty_or_ambiguity": "Specific schema evidence supports this proposed INVALID judgment. Original target mapping, physical meanings/units and cross-field constraints remain unresolved and are not asserted. Supervisor should inspect the cited declaration and original values."
+  },
+  {
+    "blinded_review_id": "blind-bee96ae9dade0e8d41c2e1ecfc0d0f1e5e624f5fac2c92a85a9b591780a28748",
+    "proposed_label": "INVALID",
+    "proposed_rationale": "Absent declared field(s): class. This is a declared-field/primitive-type violation; no physical relationship, rarity, TRAIN support, or machine judgment is used.",
+    "supporting_evidence_ids": [
+      "Abalone19:schema"
+    ],
+    "uncertainty_or_ambiguity": "Specific schema evidence supports this proposed INVALID judgment. Original target mapping, physical meanings/units and cross-field constraints remain unresolved and are not asserted. Supervisor should inspect the cited declaration and original values."
+  },
+  {
+    "blinded_review_id": "blind-2b1fec675f3bafd21cd9f9f2869fce237984650d8f4321e048c10f546fd9b4e2",
+    "proposed_label": "INVALID",
+    "proposed_rationale": "Absent declared field(s): class. This is a declared-field/primitive-type violation; no physical relationship, rarity, TRAIN support, or machine judgment is used.",
+    "supporting_evidence_ids": [
+      "Abalone19:schema"
+    ],
+    "uncertainty_or_ambiguity": "Specific schema evidence supports this proposed INVALID judgment. Original target mapping, physical meanings/units and cross-field constraints remain unresolved and are not asserted. Supervisor should inspect the cited declaration and original values."
+  },
+  {
+    "blinded_review_id": "blind-42e8ed4993109295717872e0f8cae768b9441f4abc5f29c37024a656e1c367c9",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 9 of 9 declared fields; primitive types and available nominal tokens (sex='I', class='positive') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Abalone19:declared-categories",
+      "Abalone19:schema",
+      "Abalone19:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-bd85601cbef7095ce08c1a2c09f6593bd6d9909d5f3379c34cb663d777fa4f8e",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 9 of 9 declared fields; primitive types and available nominal tokens (sex='M', class='positive') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Abalone19:declared-categories",
+      "Abalone19:schema",
+      "Abalone19:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-ac8455fd2fed8fe0dbe050925a2e5c4d2d04b4c2d9437ae0a87c09ce47bdc4b7",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 9 of 9 declared fields; primitive types and available nominal tokens (sex='F', class='positive') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Abalone19:declared-categories",
+      "Abalone19:schema",
+      "Abalone19:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-f6565b91d8ea3123f9ebe0d65d60f3ef95727cd4e673d7c08dda2f31c229fa36",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 9 of 9 declared fields; primitive types and available nominal tokens (sex='F', class='positive') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Abalone19:declared-categories",
+      "Abalone19:schema",
+      "Abalone19:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-2faaad82ce1a0beeac264592b0e808f45da2cbd9d950bd4ddec734e31a0f3f5b",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 9 of 9 declared fields; primitive types and available nominal tokens (sex='I', class='positive') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Abalone19:declared-categories",
+      "Abalone19:schema",
+      "Abalone19:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-282d11cb69d7aa0b3e65e559712feed05998fc947fa4cd388cf9b28e38135f25",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 9 of 9 declared fields; primitive types and available nominal tokens (sex='M', class='positive') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Abalone19:declared-categories",
+      "Abalone19:schema",
+      "Abalone19:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-752eae2bb80747d5fc0b54ffeed98cfaa1455d30923306b31447cb3531fbb26c",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 9 of 9 declared fields; primitive types and available nominal tokens (sex='I', class='positive') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Abalone19:declared-categories",
+      "Abalone19:schema",
+      "Abalone19:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-ce69ddf89bb67785ea7e3d0a386e940ecb97bdf911e20dfade192fb91021c4ca",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 9 of 9 declared fields; primitive types and available nominal tokens (sex='I', class='positive') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Abalone19:declared-categories",
+      "Abalone19:schema",
+      "Abalone19:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-bb713d6cd34aa3ceb2e4cfd6c9c6bf2297c42b47a7df81ee887efc0e91f78b48",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 9 of 9 declared fields; primitive types and available nominal tokens (sex='M', class='positive') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Abalone19:declared-categories",
+      "Abalone19:schema",
+      "Abalone19:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-58378cba1698d834b668a86d4359a2118ec17e25d8a46ee882b6938b5e1ae5be",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 9 of 9 declared fields; primitive types and available nominal tokens (sex='F', class='positive') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Abalone19:declared-categories",
+      "Abalone19:schema",
+      "Abalone19:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-4bab850f43d6a0293b14a354aed7d34c274c819c3e40cca049e05cba6bfcebe3",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 8 of 8 declared fields; primitive types and available nominal tokens (class='negative') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Ecoli4:schema",
+      "Ecoli4:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment. Descriptive source-support excursion(s): lip=0.47. These do not establish invalidity."
+  },
+  {
+    "blinded_review_id": "blind-c5dd13808f11637cc299235db13907308a2102271fc1c6daf6b35f48753dc6d1",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 8 of 8 declared fields; primitive types and available nominal tokens (class='negative') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Ecoli4:schema",
+      "Ecoli4:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-70597ef967b21525e938df139ebcd76c79ec4789fb27c95fa66841a45e9e58b6",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 8 of 8 declared fields; primitive types and available nominal tokens (class='negative') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Ecoli4:schema",
+      "Ecoli4:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-94d346613babacbdd082dbced81e3085df839f4a2cd970675aefe107901a1a39",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 8 of 8 declared fields; primitive types and available nominal tokens (class='negative') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Ecoli4:schema",
+      "Ecoli4:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-c51008af47d9e5e9d762f1bd5b25a56029acb3dceda616bb3188ff717613ce10",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 8 of 8 declared fields; primitive types and available nominal tokens (class='negative') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Ecoli4:schema",
+      "Ecoli4:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-026568486e8645fb68aea4e90ba1512fb45254677505b414f0bf898e3d4de2cf",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 8 of 8 declared fields; primitive types and available nominal tokens (class='negative') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Ecoli4:schema",
+      "Ecoli4:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-59dcd97a27b5a5191a7f8673af8b37c3b5238126b3d695701140378ba25fe983",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 8 of 8 declared fields; primitive types and available nominal tokens (class='negative') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Ecoli4:schema",
+      "Ecoli4:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-3fb50350c9ec68e85e733d0ac762c121c6ae3d9f1bf3b107a877133614b76771",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 8 of 8 declared fields; primitive types and available nominal tokens (class='negative') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Ecoli4:schema",
+      "Ecoli4:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-8f3d8d8ebccbc8a1871f43df8c41933569fff427b52e6617e378a0d0eaff50f1",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 8 of 8 declared fields; primitive types and available nominal tokens (class='negative') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Ecoli4:schema",
+      "Ecoli4:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-b03c4d1587c768c432f14b1dda0b0724af6ece92a3116c46625707dc01df0a3c",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 8 of 8 declared fields; primitive types and available nominal tokens (class='negative') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Ecoli4:schema",
+      "Ecoli4:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-e3020b068ec7009b069c5b637849d31bc9d0f6d2a74e8cc332e5ad639cdf3d99",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 8 of 8 declared fields; primitive types and available nominal tokens (class='negative') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Ecoli4:schema",
+      "Ecoli4:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-e3a7ee929d2ffdc905ea3f9b9be275514935882cae20d39c46776bcf1bd4c632",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 8 of 8 declared fields; primitive types and available nominal tokens (class='negative') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Ecoli4:schema",
+      "Ecoli4:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-01d95a8b78ee199ebe25c829b85084eb1ff230e6c7d5abf8fd9debe55130a562",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 8 of 8 declared fields; primitive types and available nominal tokens (class='negative') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Ecoli4:schema",
+      "Ecoli4:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-c5965de4095ce4092be880f8ffb38bffc473173dda39df1e432c61d53edddbe5",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 8 of 8 declared fields; primitive types and available nominal tokens (class='negative') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Ecoli4:schema",
+      "Ecoli4:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-fc4256450db326f31f9a246da46918a363b31f75534cc526731268d9ef8fc48c",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 8 of 8 declared fields; primitive types and available nominal tokens (class='negative') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Ecoli4:schema",
+      "Ecoli4:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-645618be759fa83549585d679e3944e70391def0f249ca86963d5033d49962e5",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 8 of 8 declared fields; primitive types and available nominal tokens (class='negative') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Ecoli4:schema",
+      "Ecoli4:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-9b5a0628328634fa837447319f3fcefec9f446373d9f7c2a8c72c86c8e4df686",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 8 of 8 declared fields; primitive types and available nominal tokens (class='positive') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Ecoli4:schema",
+      "Ecoli4:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-8f0fb00ec6cd449e05e14018397dced56644fd55ee2dd3412d42e4981b7d5931",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 8 of 8 declared fields; primitive types and available nominal tokens (class='positive') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Ecoli4:schema",
+      "Ecoli4:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-8942fc6d17abcc73e0f14c16147bfc393a649fbfbf35e0ab64db84ba347c908a",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 8 of 8 declared fields; primitive types and available nominal tokens (class='positive') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Ecoli4:schema",
+      "Ecoli4:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-d950176028c6fa475d03ed722d0100aabbd6b3d122f65624a1c1a062c383fb53",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 8 of 8 declared fields; primitive types and available nominal tokens (class='positive') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Ecoli4:schema",
+      "Ecoli4:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-8aff8ab7f9723292b62bd1ad4f748fc48d843f9d801892210743d19f03811f81",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 8 of 8 declared fields; primitive types and available nominal tokens (class='positive') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Ecoli4:schema",
+      "Ecoli4:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-04c3c89a0886b83606de9a4e93eeee82a5554a3139d469c0e953982757bb3a5e",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 8 of 8 declared fields; primitive types and available nominal tokens (class='positive') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Ecoli4:schema",
+      "Ecoli4:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-6bdc09ba4d8fb585cbc2323636f8b0d69892576ae10adac4daff8db8bc3aa75d",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 8 of 8 declared fields; primitive types and available nominal tokens (class='positive') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Ecoli4:schema",
+      "Ecoli4:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-9bc8ffc1fb4c51bbd337a46e981996a9931b9b42c088c500fdb20a697d4e443d",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 8 of 8 declared fields; primitive types and available nominal tokens (class='positive') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Ecoli4:schema",
+      "Ecoli4:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-fb273608fb166a125ff166c029be4c45cb04a247781c392f10c551e9921fd1a5",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 8 of 8 declared fields; primitive types and available nominal tokens (class='positive') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Ecoli4:schema",
+      "Ecoli4:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-cd6c31ecdb8605bb9e6aa6dc7a9138d92bea3057ee69662ceaf5bfa40b237679",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 8 of 8 declared fields; primitive types and available nominal tokens (class='positive') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Ecoli4:schema",
+      "Ecoli4:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-89e04578828c64bdabc2e1020f475caa250e76865c5b317d4e284122b9f072c5",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 8 of 8 declared fields; primitive types and available nominal tokens (class='positive') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Ecoli4:schema",
+      "Ecoli4:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-9945059c72f60ea010a63e723ad4bc89f9b6e245e92fc3b9f63ae0e9c6fd2be5",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 8 of 8 declared fields; primitive types and available nominal tokens (class='positive') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Ecoli4:schema",
+      "Ecoli4:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-a9b8ff0489f9e2807c9c16228dfeb14d2beefced5a572e3bcb6cb0200c2dabb7",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 8 of 8 declared fields; primitive types and available nominal tokens (class='positive') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Ecoli4:schema",
+      "Ecoli4:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-4c30c30ccb096d3e17c4f399ec486e6be2c6845d3287274eee2972ebf5519fc2",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 8 of 8 declared fields; primitive types and available nominal tokens (class='positive') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Ecoli4:schema",
+      "Ecoli4:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-8128d9f6dff829039f7ae6c16477303b76f59f2de80d2ed030808a51d6499105",
+    "proposed_label": "INVALID",
+    "proposed_rationale": "Absent declared field(s): class. This is a declared-field/primitive-type violation; no physical relationship, rarity, TRAIN support, or machine judgment is used.",
+    "supporting_evidence_ids": [
+      "Ecoli4:schema"
+    ],
+    "uncertainty_or_ambiguity": "Specific schema evidence supports this proposed INVALID judgment. Original target mapping, physical meanings/units and cross-field constraints remain unresolved and are not asserted. Supervisor should inspect the cited declaration and original values."
+  },
+  {
+    "blinded_review_id": "blind-eb67fc6347b98649551a3548c975c90ba6af71fb6148b67f17297bd4fb397246",
+    "proposed_label": "INVALID",
+    "proposed_rationale": "Absent declared field(s): class. This is a declared-field/primitive-type violation; no physical relationship, rarity, TRAIN support, or machine judgment is used.",
+    "supporting_evidence_ids": [
+      "Ecoli4:schema"
+    ],
+    "uncertainty_or_ambiguity": "Specific schema evidence supports this proposed INVALID judgment. Original target mapping, physical meanings/units and cross-field constraints remain unresolved and are not asserted. Supervisor should inspect the cited declaration and original values."
+  },
+  {
+    "blinded_review_id": "blind-b64e5bc4bf8959888dfae001affee3447bd5ffe672e3ddc7e9a4449793fef41c",
+    "proposed_label": "INVALID",
+    "proposed_rationale": "Absent declared field(s): class. This is a declared-field/primitive-type violation; no physical relationship, rarity, TRAIN support, or machine judgment is used.",
+    "supporting_evidence_ids": [
+      "Ecoli4:schema"
+    ],
+    "uncertainty_or_ambiguity": "Specific schema evidence supports this proposed INVALID judgment. Original target mapping, physical meanings/units and cross-field constraints remain unresolved and are not asserted. Supervisor should inspect the cited declaration and original values."
+  },
+  {
+    "blinded_review_id": "blind-fe2e6e0ce26f64ad42088ad75476ab211a1ad6ec5e419e257bfa20b663358765",
+    "proposed_label": "INVALID",
+    "proposed_rationale": "Absent declared field(s): class. This is a declared-field/primitive-type violation; no physical relationship, rarity, TRAIN support, or machine judgment is used.",
+    "supporting_evidence_ids": [
+      "Ecoli4:schema"
+    ],
+    "uncertainty_or_ambiguity": "Specific schema evidence supports this proposed INVALID judgment. Original target mapping, physical meanings/units and cross-field constraints remain unresolved and are not asserted. Supervisor should inspect the cited declaration and original values."
+  },
+  {
+    "blinded_review_id": "blind-9c67af18b1575ae61f172ce5f4da4cb5db09411db220a41be72da2b3b05e2a02",
+    "proposed_label": "INVALID",
+    "proposed_rationale": "Absent declared field(s): class. This is a declared-field/primitive-type violation; no physical relationship, rarity, TRAIN support, or machine judgment is used.",
+    "supporting_evidence_ids": [
+      "Ecoli4:schema"
+    ],
+    "uncertainty_or_ambiguity": "Specific schema evidence supports this proposed INVALID judgment. Original target mapping, physical meanings/units and cross-field constraints remain unresolved and are not asserted. Supervisor should inspect the cited declaration and original values."
+  },
+  {
+    "blinded_review_id": "blind-f3fe4cf3c599d0d85fea914de3c6bff7a9ca608fc4ca8b94cf9206c1a8c372a0",
+    "proposed_label": "INVALID",
+    "proposed_rationale": "Absent declared field(s): aac, alm1, alm2, chg, gvh, lip, mcg. This is a declared-field/primitive-type violation; no physical relationship, rarity, TRAIN support, or machine judgment is used.",
+    "supporting_evidence_ids": [
+      "Ecoli4:schema"
+    ],
+    "uncertainty_or_ambiguity": "Specific schema evidence supports this proposed INVALID judgment. Original target mapping, physical meanings/units and cross-field constraints remain unresolved and are not asserted. Supervisor should inspect the cited declaration and original values."
+  },
+  {
+    "blinded_review_id": "blind-49542d67e3a8599325ed439dedc3bb7a3412b4ec414273b2b28c551852f68971",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 8 of 8 declared fields; primitive types and available nominal tokens (class='positive') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Ecoli4:schema",
+      "Ecoli4:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-3443d38ee3743144b349fbf8dbc1eec3531fd9673fe084c557225f23e8033961",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 8 of 8 declared fields; primitive types and available nominal tokens (class='positive') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Ecoli4:schema",
+      "Ecoli4:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-bc94b176b3ef01e1f7d8bdbb166890ec168f0e7f643e890f3c4b56a0098e7ed5",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 8 of 8 declared fields; primitive types and available nominal tokens (class='positive') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Ecoli4:schema",
+      "Ecoli4:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-6e963f1cf39f020d527de83cfa28b0cabf5a229f22c1764676e2f9d8162ac3f1",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 8 of 8 declared fields; primitive types and available nominal tokens (class='positive') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "Ecoli4:schema",
+      "Ecoli4:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-385fa4df90ce2da89202bc78b80b0ac6529d5ca4773e96771d513dfa054031b9",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 11 of 11 declared fields; primitive types and available nominal tokens (class='negative') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "page-blocks0:schema",
+      "page-blocks0:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-1dcd8eaf1e0bf33ce8281ca65d7586aca2efebc6001c7df9c47ed04e726f4aeb",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 11 of 11 declared fields; primitive types and available nominal tokens (class='negative') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "page-blocks0:schema",
+      "page-blocks0:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-5b584fff78358cd5fa54bb312f9764e3c0a1e013d5f16a7f79f0eed6bca165a1",
+    "proposed_label": "INVALID",
+    "proposed_rationale": "Lenght=55.1 is non-integral; the authoritative declaration is integer [1, 553]. This is a declared-field/primitive-type violation; no physical relationship, rarity, TRAIN support, or machine judgment is used.",
+    "supporting_evidence_ids": [
+      "page-blocks0:schema"
+    ],
+    "uncertainty_or_ambiguity": "Specific schema evidence supports this proposed INVALID judgment. Original target mapping, physical meanings/units and cross-field constraints remain unresolved and are not asserted. Supervisor should inspect the cited declaration and original values."
+  },
+  {
+    "blinded_review_id": "blind-4dda7d5315c4ade184feb088299247f114f9c0adfd108153c44308cd9fd93e08",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 11 of 11 declared fields; primitive types and available nominal tokens (class='negative') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "page-blocks0:schema",
+      "page-blocks0:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-e7a3542eca0b811b659f910b222be6f5adbd3b26f7e7fbff5c6c1ed82a9f1d2e",
+    "proposed_label": "INVALID",
+    "proposed_rationale": "Lenght=39.8 is non-integral; the authoritative declaration is integer [1, 553]. area=410.2 is non-integral; the authoritative declaration is integer [7, 143993]. This is a declared-field/primitive-type violation; no physical relationship, rarity, TRAIN support, or machine judgment is used.",
+    "supporting_evidence_ids": [
+      "page-blocks0:schema"
+    ],
+    "uncertainty_or_ambiguity": "Specific schema evidence supports this proposed INVALID judgment. Original target mapping, physical meanings/units and cross-field constraints remain unresolved and are not asserted. Supervisor should inspect the cited declaration and original values."
+  },
+  {
+    "blinded_review_id": "blind-cbb37ee6317e1e03171c4b8dad63eb20c8a41e113fc29ea1980627f3f8db3417",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 11 of 11 declared fields; primitive types and available nominal tokens (class='negative') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "page-blocks0:schema",
+      "page-blocks0:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-025a7855b954665fc33fcebcf2e87055f4a55ba459a78c8f11fd510c4aebf996",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 11 of 11 declared fields; primitive types and available nominal tokens (class='negative') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "page-blocks0:schema",
+      "page-blocks0:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-a36cdd486ecacbbf316534bca9e37f5c79d9d8f5eaf70ed3d9ad71dcab47fc82",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 11 of 11 declared fields; primitive types and available nominal tokens (class='negative') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "page-blocks0:schema",
+      "page-blocks0:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-b2776a7d1d65180f127998f2e77447e57bb9c968da3393eaeac959a70cef76cc",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 11 of 11 declared fields; primitive types and available nominal tokens (class='negative') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "page-blocks0:schema",
+      "page-blocks0:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-4c2c52531df07d4fb8d4ce62644b78c5b377fd6c059cbf1f3588553a3e0cf5a4",
+    "proposed_label": "INVALID",
+    "proposed_rationale": "height=9.5 is non-integral; the authoritative declaration is integer [1, 804]. This is a declared-field/primitive-type violation; no physical relationship, rarity, TRAIN support, or machine judgment is used.",
+    "supporting_evidence_ids": [
+      "page-blocks0:schema"
+    ],
+    "uncertainty_or_ambiguity": "Specific schema evidence supports this proposed INVALID judgment. Original target mapping, physical meanings/units and cross-field constraints remain unresolved and are not asserted. Supervisor should inspect the cited declaration and original values."
+  },
+  {
+    "blinded_review_id": "blind-425e9a5a8b10e8193ee3dc310d5b933320b41aa95745a62387ba75c2df5b90f9",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 11 of 11 declared fields; primitive types and available nominal tokens (class='negative') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "page-blocks0:schema",
+      "page-blocks0:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-757f35134fcee7373f62fcc279dcee462ca001b89ead501df15aa611db707079",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 11 of 11 declared fields; primitive types and available nominal tokens (class='negative') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "page-blocks0:schema",
+      "page-blocks0:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-8d9d9c8dc1a5efbf40776d67b7b6a8a32e4d32abf4d1f65582b0f9dd63957005",
+    "proposed_label": "INVALID",
+    "proposed_rationale": "height=8.5 is non-integral; the authoritative declaration is integer [1, 804]. Lenght=51.2 is non-integral; the authoritative declaration is integer [1, 553]. area=1120.5 is non-integral; the authoritative declaration is integer [7, 143993]. blackpix=150.2 is non-integral; the authoritative declaration is integer [1, 33017]. blackand=750.1 is non-integral; the authoritative declaration is integer [7, 46133]. This is a declared-field/primitive-type violation; no physical relationship, rarity, TRAIN support, or machine judgment is used.",
+    "supporting_evidence_ids": [
+      "page-blocks0:schema"
+    ],
+    "uncertainty_or_ambiguity": "Specific schema evidence supports this proposed INVALID judgment. Original target mapping, physical meanings/units and cross-field constraints remain unresolved and are not asserted. Supervisor should inspect the cited declaration and original values."
+  },
+  {
+    "blinded_review_id": "blind-d20f7d029b8ae3552fe49921cd5b3260fc05b43b47f11eac55f53d9b1c58ce5f",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 11 of 11 declared fields; primitive types and available nominal tokens (class='negative') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "page-blocks0:schema",
+      "page-blocks0:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-dcdb5a174a64d6735b55d5b26a621d0186fc201112123a02a48fa87dc538444d",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 11 of 11 declared fields; primitive types and available nominal tokens (class='negative') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "page-blocks0:schema",
+      "page-blocks0:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-6ed7e0595adfc4310e2f888c250b6abd8cc95c7f90eb02dc67a900b2f24f18b8",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 11 of 11 declared fields; primitive types and available nominal tokens (class='negative') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "page-blocks0:schema",
+      "page-blocks0:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-e4dafad3e17ffa98c7d978f11c5166276bd1a107176a165b1076f9f787bfbbd2",
+    "proposed_label": "INVALID",
+    "proposed_rationale": "Lenght=38.7 is non-integral; the authoritative declaration is integer [1, 553]. This is a declared-field/primitive-type violation; no physical relationship, rarity, TRAIN support, or machine judgment is used.",
+    "supporting_evidence_ids": [
+      "page-blocks0:schema"
+    ],
+    "uncertainty_or_ambiguity": "Specific schema evidence supports this proposed INVALID judgment. Original target mapping, physical meanings/units and cross-field constraints remain unresolved and are not asserted. Supervisor should inspect the cited declaration and original values."
+  },
+  {
+    "blinded_review_id": "blind-d4bbf3bd2efc5cf9f4dfdd0397b6209f029c710c79ef54a74c12ca396673111f",
+    "proposed_label": "INVALID",
+    "proposed_rationale": "Lenght=45.5 is non-integral; the authoritative declaration is integer [1, 553]. This is a declared-field/primitive-type violation; no physical relationship, rarity, TRAIN support, or machine judgment is used.",
+    "supporting_evidence_ids": [
+      "page-blocks0:schema"
+    ],
+    "uncertainty_or_ambiguity": "Specific schema evidence supports this proposed INVALID judgment. Original target mapping, physical meanings/units and cross-field constraints remain unresolved and are not asserted. Supervisor should inspect the cited declaration and original values."
+  },
+  {
+    "blinded_review_id": "blind-c74d858e266110e9f49a68c9e7aa1fe7a0e9b97a0160ffb5ab31cf4281d22d72",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 11 of 11 declared fields; primitive types and available nominal tokens (class='negative') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "page-blocks0:schema",
+      "page-blocks0:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-f60c14551b2bca253853a9a9076d8559b4d4867dc1ea0bdfdd5cb221602007a7",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 11 of 11 declared fields; primitive types and available nominal tokens (class='negative') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "page-blocks0:schema",
+      "page-blocks0:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-a13fa37a01d735c4fa527a449f7a3cdfcd4ebcdbb4225e9072f2e5186611daee",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 11 of 11 declared fields; primitive types and available nominal tokens (class='negative') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "page-blocks0:schema",
+      "page-blocks0:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-06d0a9e94abf1cf5a7e494b19749ce7a2a2d56166f4af5198b273c4c6a2d15db",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 11 of 11 declared fields; primitive types and available nominal tokens (class='positive') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "page-blocks0:schema",
+      "page-blocks0:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-2111e2a717d6085204abffaff8d7ca0af058c15b5940fcfe412d3dc5b332075d",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 11 of 11 declared fields; primitive types and available nominal tokens (class='positive') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "page-blocks0:schema",
+      "page-blocks0:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-f525c7917c87c6b8da05ec3d0b8ba0dd5872c470d2c04fe993c3a77dd760471e",
+    "proposed_label": "INVALID",
+    "proposed_rationale": "Lenght=22.5 is non-integral; the authoritative declaration is integer [1, 553]. This is a declared-field/primitive-type violation; no physical relationship, rarity, TRAIN support, or machine judgment is used.",
+    "supporting_evidence_ids": [
+      "page-blocks0:schema"
+    ],
+    "uncertainty_or_ambiguity": "Specific schema evidence supports this proposed INVALID judgment. Original target mapping, physical meanings/units and cross-field constraints remain unresolved and are not asserted. Supervisor should inspect the cited declaration and original values."
+  },
+  {
+    "blinded_review_id": "blind-f48778e52bae42c734c0455212a21d04a66132f6f15f3d6853f1200c95809f45",
+    "proposed_label": "INVALID",
+    "proposed_rationale": "Lenght=10.1 is non-integral; the authoritative declaration is integer [1, 553]. This is a declared-field/primitive-type violation; no physical relationship, rarity, TRAIN support, or machine judgment is used.",
+    "supporting_evidence_ids": [
+      "page-blocks0:schema"
+    ],
+    "uncertainty_or_ambiguity": "Specific schema evidence supports this proposed INVALID judgment. Original target mapping, physical meanings/units and cross-field constraints remain unresolved and are not asserted. Supervisor should inspect the cited declaration and original values."
+  },
+  {
+    "blinded_review_id": "blind-c98df88274a2f2d9b274a8cd6192d564639134304cde11935798877837fe2077",
+    "proposed_label": "INVALID",
+    "proposed_rationale": "height=1.5 is non-integral; the authoritative declaration is integer [1, 804]. This is a declared-field/primitive-type violation; no physical relationship, rarity, TRAIN support, or machine judgment is used.",
+    "supporting_evidence_ids": [
+      "page-blocks0:schema"
+    ],
+    "uncertainty_or_ambiguity": "Specific schema evidence supports this proposed INVALID judgment. Original target mapping, physical meanings/units and cross-field constraints remain unresolved and are not asserted. Supervisor should inspect the cited declaration and original values."
+  },
+  {
+    "blinded_review_id": "blind-151d3b7d02a2895d05bf9a0c4a99f261ba3498ac4d8a4d8f0a8b31369f1aa614",
+    "proposed_label": "INVALID",
+    "proposed_rationale": "Lenght=23.83 is non-integral; the authoritative declaration is integer [1, 553]. area=183.2 is non-integral; the authoritative declaration is integer [7, 143993]. This is a declared-field/primitive-type violation; no physical relationship, rarity, TRAIN support, or machine judgment is used.",
+    "supporting_evidence_ids": [
+      "page-blocks0:schema"
+    ],
+    "uncertainty_or_ambiguity": "Specific schema evidence supports this proposed INVALID judgment. Original target mapping, physical meanings/units and cross-field constraints remain unresolved and are not asserted. Supervisor should inspect the cited declaration and original values."
+  },
+  {
+    "blinded_review_id": "blind-7e92a9c0ab0862c24ae70543e68408154b4e481738ffb00146c8f0f0590388f9",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 11 of 11 declared fields; primitive types and available nominal tokens (class='negative') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "page-blocks0:schema",
+      "page-blocks0:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-4b79722ac82cdce9d5eac6ca85e1e4bb7c7ce702ffb1098a2c4265137ea89fb2",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 11 of 11 declared fields; primitive types and available nominal tokens (class='positive') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "page-blocks0:schema",
+      "page-blocks0:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-b04c593ed285838a6368eabbc51893d32ae1b6b4707586dc72138dc5c33a289b",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 11 of 11 declared fields; primitive types and available nominal tokens (class='positive') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "page-blocks0:schema",
+      "page-blocks0:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-622cf18baca73efe54d7fbcf77f5287812b2b64804770fc2fa1f4695d3daef88",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 11 of 11 declared fields; primitive types and available nominal tokens (class='positive') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "page-blocks0:schema",
+      "page-blocks0:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-6150ddecc44721f8ba1a4624d930c8faa25e358a7ef7c1a92f44b56ffd9dc574",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 11 of 11 declared fields; primitive types and available nominal tokens (class='positive') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "page-blocks0:schema",
+      "page-blocks0:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-1a1ed1968b3d1e7206576063f8454201263f80ad32a03bdfc1fb2d20204dab3a",
+    "proposed_label": "INVALID",
+    "proposed_rationale": "height=2.5 is non-integral; the authoritative declaration is integer [1, 804]. Lenght=51.1 is non-integral; the authoritative declaration is integer [1, 553]. area=300.5 is non-integral; the authoritative declaration is integer [7, 143993]. blackpix=110.5 is non-integral; the authoritative declaration is integer [1, 33017]. This is a declared-field/primitive-type violation; no physical relationship, rarity, TRAIN support, or machine judgment is used.",
+    "supporting_evidence_ids": [
+      "page-blocks0:schema"
+    ],
+    "uncertainty_or_ambiguity": "Specific schema evidence supports this proposed INVALID judgment. Original target mapping, physical meanings/units and cross-field constraints remain unresolved and are not asserted. Supervisor should inspect the cited declaration and original values."
+  },
+  {
+    "blinded_review_id": "blind-fbf625b0957183a72bae2007c795a9152110f79366a7ceb24bd4fd3d18c0194f",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 11 of 11 declared fields; primitive types and available nominal tokens (class='positive') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "page-blocks0:schema",
+      "page-blocks0:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-cf0c4290363288e72b75dadac28a3089a0122e18bb808aef06e66a44f5b56800",
+    "proposed_label": "INDETERMINATE",
+    "proposed_rationale": "Observed 11 of 11 declared fields; primitive types and available nominal tokens (class='positive') show no substantiated authoritative violation. This schema evidence does not positively establish record-level validity: original target mapping and physical/cross-field semantics remain unverified. Absence of a detected violation is insufficient for VALID.",
+    "supporting_evidence_ids": [
+      "page-blocks0:schema",
+      "page-blocks0:target-tokens"
+    ],
+    "uncertainty_or_ambiguity": "HIGH: insufficient authoritative evidence for a positive validity judgment; original target semantics, physical meanings/units and cross-field rules remain unresolved. INDETERMINATE is an explicit agent abstention, not an INVALID label or a contribution assessment."
+  },
+  {
+    "blinded_review_id": "blind-56be7d5bd44baf766d36dd2e17c95301b8fab584f31ee81cf026c3bedc7b152c",
+    "proposed_label": "INVALID",
+    "proposed_rationale": "Absent declared field(s): class. height=3.72 is non-integral; the authoritative declaration is integer [1, 804]. Lenght=17.26 is non-integral; the authoritative declaration is integer [1, 553]. area=42.43 is non-integral; the authoritative declaration is integer [7, 143993]. blackpix=23.99 is non-integral; the authoritative declaration is integer [1, 33017]. blackand=32.51 is non-integral; the authoritative declaration is integer [7, 46133]. This is a declared-field/primitive-type violation; no physical relationship, rarity, TRAIN support, or machine judgment is used.",
+    "supporting_evidence_ids": [
+      "page-blocks0:schema"
+    ],
+    "uncertainty_or_ambiguity": "Specific schema evidence supports this proposed INVALID judgment. Original target mapping, physical meanings/units and cross-field constraints remain unresolved and are not asserted. Supervisor should inspect the cited declaration and original values."
+  },
+  {
+    "blinded_review_id": "blind-92d908c1d24452c656b372cab47a8e974e7302e90e9cac011f18ebe40389051a",
+    "proposed_label": "INVALID",
+    "proposed_rationale": "Absent declared field(s): class. height=2.11 is non-integral; the authoritative declaration is integer [1, 804]. Lenght=21.58 is non-integral; the authoritative declaration is integer [1, 553]. area=18.52 is non-integral; the authoritative declaration is integer [7, 143993]. blackpix=11.98 is non-integral; the authoritative declaration is integer [1, 33017]. blackand=15.11 is non-integral; the authoritative declaration is integer [7, 46133]. This is a declared-field/primitive-type violation; no physical relationship, rarity, TRAIN support, or machine judgment is used.",
+    "supporting_evidence_ids": [
+      "page-blocks0:schema"
+    ],
+    "uncertainty_or_ambiguity": "Specific schema evidence supports this proposed INVALID judgment. Original target mapping, physical meanings/units and cross-field constraints remain unresolved and are not asserted. Supervisor should inspect the cited declaration and original values."
+  },
+  {
+    "blinded_review_id": "blind-64161fdf9d0971ebaf355f98cb504512e5ecd889af11f9c3e41b98db0cb0f5d7",
+    "proposed_label": "INVALID",
+    "proposed_rationale": "Absent declared field(s): class. height=1.9 is non-integral; the authoritative declaration is integer [1, 804]. Lenght=12.1 is non-integral; the authoritative declaration is integer [1, 553]. This is a declared-field/primitive-type violation; no physical relationship, rarity, TRAIN support, or machine judgment is used.",
+    "supporting_evidence_ids": [
+      "page-blocks0:schema"
+    ],
+    "uncertainty_or_ambiguity": "Specific schema evidence supports this proposed INVALID judgment. Original target mapping, physical meanings/units and cross-field constraints remain unresolved and are not asserted. Supervisor should inspect the cited declaration and original values."
+  },
+  {
+    "blinded_review_id": "blind-6d6df3c0838c51d1cadb0c558d28855bec5ce5f9205f168d876e20c595e1d173",
+    "proposed_label": "INVALID",
+    "proposed_rationale": "Absent declared field(s): class. Lenght=2.5 is non-integral; the authoritative declaration is integer [1, 553]. This is a declared-field/primitive-type violation; no physical relationship, rarity, TRAIN support, or machine judgment is used.",
+    "supporting_evidence_ids": [
+      "page-blocks0:schema"
+    ],
+    "uncertainty_or_ambiguity": "Specific schema evidence supports this proposed INVALID judgment. Original target mapping, physical meanings/units and cross-field constraints remain unresolved and are not asserted. Supervisor should inspect the cited declaration and original values. Descriptive source-support excursion(s): area=5.0, blackand=5.0. These do not establish invalidity."
+  },
+  {
+    "blinded_review_id": "blind-4a043cc73e1a93eea667c0572402d10f95e6f4660170b104c0b59aaed9cf40f9",
+    "proposed_label": "INVALID",
+    "proposed_rationale": "Absent declared field(s): class. height=2.5 is non-integral; the authoritative declaration is integer [1, 804]. Lenght=14.8 is non-integral; the authoritative declaration is integer [1, 553]. This is a declared-field/primitive-type violation; no physical relationship, rarity, TRAIN support, or machine judgment is used.",
+    "supporting_evidence_ids": [
+      "page-blocks0:schema"
+    ],
+    "uncertainty_or_ambiguity": "Specific schema evidence supports this proposed INVALID judgment. Original target mapping, physical meanings/units and cross-field constraints remain unresolved and are not asserted. Supervisor should inspect the cited declaration and original values."
+  }
+]

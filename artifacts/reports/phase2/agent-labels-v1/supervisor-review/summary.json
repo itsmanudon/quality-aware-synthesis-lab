@@ -1,0 +1,147 @@
+{
+  "ambiguous_records": 93,
+  "ambiguous_records_definition": "Agent INDETERMINATE proposals; unresolved domain semantics are separately recorded on all 120 rows.",
+  "annotator_type": "AGENT",
+  "blinded_answers_fingerprint": "7f501f731c77851296051c7ea51c534b1c5dbf3640cb3363bca8be1d4a9233dd",
+  "cohort_fingerprint": "b754ccee1f58ccfc0d89dfde176cb84d58993b93bc5e87a7059ce5e8885877a5",
+  "controls_distribution_method": "Descriptive counts joined only after proposals were sealed. No B2/B3-versus-human or agent accuracy analysis; no controls used for annotation.",
+  "creation_tool": "rcqasyn-phase2-v1",
+  "crosswalk_set_fingerprint": "a030da9a974f1e305ce7acdf257752f4f39bb8285afdf353f086e61ae6931acd",
+  "cryptographically_authenticated": false,
+  "dataset_control_distribution": {
+    "Abalone19": {
+      "proposed_label_counts": {
+        "INDETERMINATE": 35,
+        "INVALID": 5,
+        "VALID": 0
+      },
+      "recorded_control_distribution": {
+        "b1": {
+          "accepted": 40,
+          "rejected": 0
+        },
+        "b2": {
+          "accepted": 35,
+          "rejected": 5
+        },
+        "b3": {
+          "accepted": 40,
+          "rejected": 0
+        }
+      },
+      "records": 40,
+      "requested_class": {
+        "negative": 19,
+        "positive": 21
+      }
+    },
+    "Ecoli4": {
+      "proposed_label_counts": {
+        "INDETERMINATE": 34,
+        "INVALID": 6,
+        "VALID": 0
+      },
+      "recorded_control_distribution": {
+        "b1": {
+          "accepted": 40,
+          "rejected": 0
+        },
+        "b2": {
+          "accepted": 34,
+          "rejected": 6
+        },
+        "b3": {
+          "accepted": 39,
+          "rejected": 1
+        }
+      },
+      "records": 40,
+      "requested_class": {
+        "negative": 16,
+        "positive": 24
+      }
+    },
+    "page-blocks0": {
+      "proposed_label_counts": {
+        "INDETERMINATE": 24,
+        "INVALID": 16,
+        "VALID": 0
+      },
+      "recorded_control_distribution": {
+        "b1": {
+          "accepted": 40,
+          "rejected": 0
+        },
+        "b2": {
+          "accepted": 34,
+          "rejected": 6
+        },
+        "b3": {
+          "accepted": 40,
+          "rejected": 0
+        }
+      },
+      "records": 40,
+      "requested_class": {
+        "negative": 21,
+        "positive": 19
+      }
+    }
+  },
+  "descriptive_source_support_excursion_records": 2,
+  "external_paid_provider_calls": 0,
+  "fingerprint": "06c2ca29aeec6184b85bcaa0d29276b8d0067d39ba947508c32aa6b32eccd3b7",
+  "human_final_labels_populated": 0,
+  "insufficient_evidence_definition": "Insufficient to establish either VALID or INVALID; INVALID proposals have a specific sufficient schema violation.",
+  "missing_declared_field_records": 16,
+  "non_integral_integer_field_records": 16,
+  "overlap_count": 40,
+  "overlap_limitation": "Fixed overlap retained; no second rater or agreement statistic is claimed.",
+  "pending_research_ledger_fingerprint": "844c3e3f63d43e3fc5ece2861682bfc225c18175e2b6b7bedde27ed36657db79",
+  "phase1_freeze_sha": "341fc2ce647c180b0f4a34fdbdeb49a0acfdcbcc",
+  "production_approval": false,
+  "proposal_counts": {
+    "INDETERMINATE": 93,
+    "INVALID": 27,
+    "VALID": 0
+  },
+  "proposal_set_fingerprint": "68f8b34dbde12245b1da75105e06035f422ab91b5f21dffc816ae4ee53be094f",
+  "records_lacking_sufficient_authoritative_evidence": 93,
+  "remaining_uncertainties": [
+    {
+      "dataset_id": "page-blocks0",
+      "gaps": [
+        "original binary mapping",
+        "physical field meanings/units",
+        "cross-field hard constraints"
+      ],
+      "status": "RESEARCH_DECISION_REQUIRED"
+    },
+    {
+      "dataset_id": "Ecoli4",
+      "gaps": [
+        "original binary mapping",
+        "physical field meanings/units",
+        "cross-field hard constraints"
+      ],
+      "status": "RESEARCH_DECISION_REQUIRED"
+    },
+    {
+      "dataset_id": "Abalone19",
+      "gaps": [
+        "original binary mapping",
+        "physical field meanings/units",
+        "cross-field hard constraints"
+      ],
+      "status": "RESEARCH_DECISION_REQUIRED"
+    }
+  ],
+  "research_rubric_fingerprint": "1770f1503e8b7cbb0768b596e443fb0753a920d264247a52120be7c242b90d15",
+  "review_status": "PENDING_HUMAN_APPROVAL",
+  "sampling_limitation": "Recorded nonrepresentative cohort retained; historical ID-only diagnostic lookup biased strata. No resampling or population-wide inference.",
+  "schema_reason_counts_overlap": true,
+  "schema_version": "agent-proposal-review-summary-v1",
+  "total_proposals": 120,
+  "unresolved_domain_semantics_records": 120,
+  "validation_status": "READY_FOR_PERSONAL_SUPERVISOR_REVIEW"
+}
