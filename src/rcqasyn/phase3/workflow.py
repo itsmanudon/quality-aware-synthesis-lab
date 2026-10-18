@@ -51,6 +51,8 @@ def fit_train_only(specification: dict[str, Any], frame: pd.DataFrame,
 def read_results(path: Path) -> dict[str, Any]:
     value = read_bundle(path)
     verify_envelope(value, "m2-offline-evidence-v1")
+    if value["evidence_content_fingerprint"] != digest(value["evidence"]):
+        raise ValueError("evidence content fingerprint differs")
     config = M2Config.model_validate_json(json.dumps(value["configuration"]))
     seen = set()
     references = value["reference_populations"]

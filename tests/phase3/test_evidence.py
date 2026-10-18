@@ -24,7 +24,7 @@ def specification():
             {"name": "z", "type": "numerical", "source_declaration": "real [0, 2]"},
             {"name": "category", "type": "categorical", "documented_categories": ["a", "b", "c"]}],
         "target_semantics": {"target_column": "class", "literal_labels": ["positive", "negative"]},
-        "rules": [{"rule_id": "fixture:schema", "authority": "AUTHORITATIVE", "evidence": ["synthetic/schema"], "hard_rejection_allowed": True}]}})
+        "rules": [{"rule_id": "fixture:" + suffix, "authority": "AUTHORITATIVE", "evidence": ["synthetic/schema"], "hard_rejection_allowed": True} for suffix in ("schema", "declared-categories", "target-tokens")]}})
 
 
 @pytest.fixture
@@ -159,7 +159,7 @@ def test_statistics_cannot_grant_validity_or_nonfinite_scores(model):
 
 def test_evidence_bundle_reader_checks_completeness_bindings_and_seal(model, tmp_path):
     out = [r.model_dump(mode="json") for r in model.score(occurrence())]
-    data = {"configuration": model.config.model_dump(mode="json"), "evidence": out,
+    data = {"configuration": model.config.model_dump(mode="json"), "evidence": out, "evidence_content_fingerprint": digest(out),
             "candidate_bindings": [{k: occurrence()[k] for k in ("occurrence_id", "payload_sha256", "dataset_id")}],
             "reference_populations": {"fixture": {"train_reference_fingerprint": model.reference,
                                                     "specification_fingerprint": model.specification["fingerprint"]}}}
@@ -194,3 +194,20 @@ def test_scoring_does_not_modify_reference_or_candidate(model):
     records = copy.deepcopy(model.records)
     model.score(candidate)
     assert candidate == original and model.records == records
+
+
+def test_unverified_schema_rule_cannot_substantiate_invalidity(specification, records):
+    raw = copy.deepcopy(specification["specification"])
+    raw["rules"] = [{**r, "authority": "UNVERIFIED", "hard_rejection_allowed": False} for r in raw["rules"]]
+    artifact = envelope("dataset-specification-v1", {"specification": raw})
+    model = TrainEvidenceModel(artifact, (0, 1, 2, 3), records, M2Config())
+    row = model.score(occurrence(x=1.5))[0]
+    assert row.authoritative_validity == "NOT_ESTABLISHED"
+    assert row.status == "PARTIAL" and row.quantities["unverified_constraints"]
+    assert "UNAVAILABLE_AUTHORITATIVE_RULE" in row.reason_codes
+
+
+def test_direct_fit_rejects_changed_specification_with_stale_identity(specification, records):
+    specification["specification"]["features"][0]["name"] = "substituted"
+    with pytest.raises(ValueError, match="fingerprint"):
+        TrainEvidenceModel(specification, (0, 1, 2, 3), records, M2Config())

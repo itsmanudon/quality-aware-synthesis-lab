@@ -6,7 +6,7 @@ from typing import Any
 
 import numpy as np
 
-from rcqasyn.phase2.common import digest
+from rcqasyn.phase2.common import digest, verify_envelope
 
 from .contracts import M2Config, M2Evidence
 
@@ -27,6 +27,7 @@ class TrainEvidenceModel:
     config: M2Config
 
     def __post_init__(self) -> None:
+        verify_envelope(self.specification, "dataset-specification-v1")
         if len(self.row_ids) != len(self.records) or len(set(self.row_ids)) != len(self.row_ids):
             raise ValueError("TRAIN identities must be unique and match records")
         self.spec = self.specification["specification"]
@@ -115,11 +116,19 @@ class TrainEvidenceModel:
                 issues.append({"field": name, "reason": "NONINTEGRAL_DECLARED_INTEGER"})
         issues += [{"field": f, "reason": "UNDECLARED_FIELD"} for f in sorted(set(payload) - {f["name"] for f in fields})]
         authoritative = {r["rule_id"]: r for r in self.spec["rules"] if r["authority"] == "AUTHORITATIVE"}
+        supported, unverified = [], []
+        for issue in issues:
+            suffix = ("target-tokens" if issue["field"] == self.target else "declared-categories") if issue["reason"] == "UNDECLARED_NOMINAL_VALUE" else "schema"
+            rule_id = self.dataset + ":" + suffix
+            item = {**issue, "rule_id": rule_id}
+            rule = authoritative.get(rule_id)
+            (supported if rule and rule["hard_rejection_allowed"] else unverified).append(item)
+        issues = supported
         structural = self.evidence(occurrence, "authoritative_structure",
-            status="PARTIAL" if missing else "AVAILABLE",
+            status="PARTIAL" if missing or unverified else "AVAILABLE",
             authoritative_validity="INVALID" if issues else "NOT_ESTABLISHED",
-            quantities={"violations": issues, "preserved_null_fields": missing},
-            reason_codes=["AUTHORITATIVE_SCHEMA_VIOLATION"] if issues else ["NO_ESTABLISHED_VIOLATION_NOT_PROOF_OF_VALIDITY"],
+            quantities={"violations": issues, "preserved_null_fields": missing, "unverified_constraints": unverified},
+            reason_codes=(["AUTHORITATIVE_SCHEMA_VIOLATION"] if issues else ["NO_ESTABLISHED_VIOLATION_NOT_PROOF_OF_VALIDITY"]) + (["UNAVAILABLE_AUTHORITATIVE_RULE"] if unverified else []),
             unsupported_fields=missing, rule_or_model_evidence=authoritative,
             uncertainty="Only source-declared structural evidence. Original target semantics, physical "
             "meaning and cross-field constraints remain unresolved; no affirmative VALID decision.")
