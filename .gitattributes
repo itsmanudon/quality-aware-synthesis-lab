@@ -10,3 +10,9 @@ artifacts/reports/phase2/verification-v1/*.txt whitespace=-blank-at-eof
 
 # Phase-3 research bundles also retain exact sealed bytes.
 artifacts/reports/phase3/** -text
+
+# Preserve Matplotlib SVG path spacing inside immutable rendered figures.
+artifacts/reports/phase3/**/*.svg whitespace=-blank-at-eol
+
+# Captured closeout logs retain terminal blank lines.
+artifacts/reports/phase3/final-verification-v1/*.txt whitespace=-blank-at-eof
