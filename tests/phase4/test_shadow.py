@@ -232,3 +232,11 @@ def test_shadow_offline_replay_no_control_mutation_and_seal(m2, monkeypatch, tmp
     with pytest.raises(FileExistsError): write_bundle(tmp_path/"out", b)
     (tmp_path/"out"/"decisions.csv").write_text("tampered")
     with pytest.raises(ValueError): read_shadow(tmp_path/"out", inp)
+
+
+def test_cli_source_root_option():
+    from typer.testing import CliRunner
+
+    from rcqasyn.phase4.cli import app
+    result = CliRunner().invoke(app, ["shadow", "--help"])
+    assert result.exit_code == 0 and "source-root" in result.stdout
