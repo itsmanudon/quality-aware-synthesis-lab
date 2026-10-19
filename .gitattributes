@@ -31,3 +31,4 @@ artifacts/reports/phase5/final-verification-v1/*.txt whitespace=-blank-at-eof
 artifacts/reports/phase6/** -text
 artifacts/reports/phase6/**/*.svg whitespace=-blank-at-eol
 artifacts/reports/phase6/final-verification-v1/*.txt whitespace=-blank-at-eof
+artifacts/reports/phase6/final-verification-v1/*.log whitespace=-blank-at-eol
