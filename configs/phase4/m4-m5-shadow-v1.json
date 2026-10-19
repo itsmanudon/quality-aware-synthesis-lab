@@ -1,0 +1,57 @@
+{
+  "schema_version": "phase4-experiment-plan-v1",
+  "m2_input": "artifacts/reports/phase3/experiments-v2/baseline-k5-a10",
+  "normalization": "candidate-mid-ecdf-v1",
+  "reference": "Frozen historical candidate scores within dataset and family; no REAL TEST; not risk calibration",
+  "policies": [
+    {
+      "name": "structure-only",
+      "families": [],
+      "review_cutoff": 0.9
+    },
+    {
+      "name": "local-review",
+      "families": [
+        "local_support"
+      ],
+      "review_cutoff": 0.9
+    },
+    {
+      "name": "global-review",
+      "families": [
+        "cross_feature"
+      ],
+      "review_cutoff": 0.9
+    },
+    {
+      "name": "combined-review",
+      "families": [
+        "local_support",
+        "cross_feature"
+      ],
+      "review_cutoff": 0.9
+    },
+    {
+      "name": "combined-review-q80",
+      "families": [
+        "local_support",
+        "cross_feature"
+      ],
+      "review_cutoff": 0.8
+    },
+    {
+      "name": "combined-review-q95",
+      "families": [
+        "local_support",
+        "cross_feature"
+      ],
+      "review_cutoff": 0.95
+    }
+  ],
+  "combination": "max descriptive percentile / union of concerns; never independence multiplication",
+  "minimum_reference_size": 10,
+  "calibration": "INACTIVE_PENDING_CONFIRMED_HUMAN_LEDGER",
+  "calibration_method": "isotonic-increasing-v1",
+  "minimum_class_support": 5,
+  "declaration": "Fixed before Phase-4 outcome inspection; exploratory shadow thresholds, no guarantees or tuned weights"
+}

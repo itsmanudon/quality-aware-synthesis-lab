@@ -16,3 +16,8 @@ artifacts/reports/phase3/**/*.svg whitespace=-blank-at-eol
 
 # Captured closeout logs retain terminal blank lines.
 artifacts/reports/phase3/final-verification-v1/*.txt whitespace=-blank-at-eof
+
+# Preserve Phase-4 sealed bundles and generated plot/log bytes.
+artifacts/reports/phase4/** -text
+artifacts/reports/phase4/**/*.svg whitespace=-blank-at-eol
+artifacts/reports/phase4/final-verification-v1/*.txt whitespace=-blank-at-eof
