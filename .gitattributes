@@ -21,3 +21,8 @@ artifacts/reports/phase3/final-verification-v1/*.txt whitespace=-blank-at-eof
 artifacts/reports/phase4/** -text
 artifacts/reports/phase4/**/*.svg whitespace=-blank-at-eol
 artifacts/reports/phase4/final-verification-v1/*.txt whitespace=-blank-at-eof
+
+# Preserve sealed Phase-5 exploratory datasets, plots and logs.
+artifacts/reports/phase5/** -text
+artifacts/reports/phase5/**/*.svg whitespace=-blank-at-eol
+artifacts/reports/phase5/final-verification-v1/*.txt whitespace=-blank-at-eof
