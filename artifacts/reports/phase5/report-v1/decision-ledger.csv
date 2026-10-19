@@ -1,0 +1,7 @@
+decision,status,evidence
+Personal review of all 120 proposals,HUMAN_DECISION_PENDING,Preserved Phase-3 review-v2; no human-final labels or approved ledger exists
+Domain semantics and literal target mappings,HUMAN_DECISION_PENDING,"Three frozen specifications; unresolved physical meanings, mappings and cross-field constraints"
+"Radius, quota and objective adequacy",HUMAN_DECISION_PENDING,"Predeclared .05 radius, .01 near tolerance, availability-capped .5 quota and geometric trade-offs; no utility claim"
+Scientific acceptance of Phases 3/4/5,HUMAN_DECISION_PENDING,"Engineering completion, source-bound artifacts and reports; no scientific freeze"
+Future calibration and leakage-safe utility study,HUMAN_DECISION_PENDING,"Independent approved labels, sufficient classes and a separately approved validation/evaluation protocol required"
+Phase-6 repair authorization and final claims,HUMAN_DECISION_PENDING,"No repair implemented; future permitted edits, budgets, provenance and reevaluation must be justified"

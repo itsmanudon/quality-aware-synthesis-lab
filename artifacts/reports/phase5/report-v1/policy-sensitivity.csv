@@ -1,0 +1,7 @@
+dataset,policy,budget,eligible_n,selected_n,selected_jaccard_with_primary,unique_train_feature_coverage,shortfall
+Abalone19,combined-review-q80,56,148,56,0.6,0.9374251497005988,0
+Abalone19,combined-review-q95,56,184,56,0.7230769230769231,0.9491017964071856,0
+Ecoli4,combined-review-q80,70,131,70,0.5217391304347826,0.4795539033457249,0
+Ecoli4,combined-review-q95,70,178,70,0.7948717948717948,0.5092936802973977,0
+page-blocks0,combined-review-q80,49,97,49,0.53125,0.8687196110210696,0
+page-blocks0,combined-review-q95,49,126,49,0.75,0.9342440379717527,0

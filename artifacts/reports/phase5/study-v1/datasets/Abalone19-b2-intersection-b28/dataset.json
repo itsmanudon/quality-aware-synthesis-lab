@@ -1,0 +1,506 @@
+[
+  {
+    "occurrence_id": "occ-d4574c6b502104175b686be48d1e429e393a8e58224b406527592f2decd4c0d1",
+    "payload": {
+      "class": "negative",
+      "diameter": 0.35,
+      "height": 0.125,
+      "length": 0.475,
+      "sex": "I",
+      "shell_weight": 0.1355,
+      "shucked_weight": 0.1905,
+      "viscera_weight": 0.079,
+      "whole_weight": 0.4225
+    },
+    "payload_sha256": "285215058479823923b2272107754523e5d82cd3c0017f22b5dc33c511be8854",
+    "source_artifact": "artifacts/runs/m1-p1-real-Abalone19-gemma4-e4b-20260829/candidates_raw.jsonl",
+    "source_artifact_sha256": "113e5926cbe0337c691c656b36e0b4af82694f740e3403548a29bb9c0d2a04f4",
+    "source_occurrence_ordinal": 1
+  },
+  {
+    "occurrence_id": "occ-b4782a886f9d3fc823b37d8e196fd2e285f576acd92ad586d814350d675fce90",
+    "payload": {
+      "class": "negative",
+      "diameter": 0.425,
+      "height": 0.14,
+      "length": 0.515,
+      "sex": "F",
+      "shell_weight": 0.255,
+      "shucked_weight": 0.304,
+      "viscera_weight": 0.1725,
+      "whole_weight": 0.766
+    },
+    "payload_sha256": "e67baeaaac11e18072a82c4fa49fd5b179fb5eb84bf2f6f99e88d05c6a8da795",
+    "source_artifact": "artifacts/runs/m1-p1-real-Abalone19-gemma4-e4b-20260829/candidates_raw.jsonl",
+    "source_artifact_sha256": "113e5926cbe0337c691c656b36e0b4af82694f740e3403548a29bb9c0d2a04f4",
+    "source_occurrence_ordinal": 2
+  },
+  {
+    "occurrence_id": "occ-c78f382bf5860e2c7da7548af4f093d3144c47fda1bc32ab2ebfeaafc27430ff",
+    "payload": {
+      "class": "negative",
+      "diameter": 0.38,
+      "height": 0.1,
+      "length": 0.45,
+      "sex": "M",
+      "shell_weight": 0.18,
+      "shucked_weight": 0.22,
+      "viscera_weight": 0.1,
+      "whole_weight": 0.5
+    },
+    "payload_sha256": "992e03420acf40109cd83f9e7b6c8a6432b5cd6ef33ed932388616362ae1b81f",
+    "source_artifact": "artifacts/runs/m1-p1-real-Abalone19-gemma4-e4b-20260829/candidates_raw.jsonl",
+    "source_artifact_sha256": "113e5926cbe0337c691c656b36e0b4af82694f740e3403548a29bb9c0d2a04f4",
+    "source_occurrence_ordinal": 3
+  },
+  {
+    "occurrence_id": "occ-ffea4b45f5be49efa26dda10118854f912724ad7835a69e248f017113c63ac41",
+    "payload": {
+      "class": "negative",
+      "diameter": 0.5,
+      "height": 0.15,
+      "length": 0.6,
+      "sex": "I",
+      "shell_weight": 0.2,
+      "shucked_weight": 0.25,
+      "viscera_weight": 0.12,
+      "whole_weight": 0.6
+    },
+    "payload_sha256": "d47acf08bad49c9b1c1e074f031a39becc375c106a852098a19d5269242de017",
+    "source_artifact": "artifacts/runs/m1-p1-real-Abalone19-gemma4-e4b-20260829/candidates_raw.jsonl",
+    "source_artifact_sha256": "113e5926cbe0337c691c656b36e0b4af82694f740e3403548a29bb9c0d2a04f4",
+    "source_occurrence_ordinal": 4
+  },
+  {
+    "occurrence_id": "occ-fe091e2af39d2f1ae113954d86f437fe6d20ec4b91b1c5d24cd25ad06d4570d5",
+    "payload": {
+      "class": "negative",
+      "diameter": 0.3,
+      "height": 0.1,
+      "length": 0.4,
+      "sex": "F",
+      "shell_weight": 0.1,
+      "shucked_weight": 0.15,
+      "viscera_weight": 0.08,
+      "whole_weight": 0.3
+    },
+    "payload_sha256": "1b94bd79e1c127af4254ec95cda23a5597b3fd71c134f6d4d066d4a2156ab1f3",
+    "source_artifact": "artifacts/runs/m1-p1-real-Abalone19-gemma4-e4b-20260829/candidates_raw.jsonl",
+    "source_artifact_sha256": "113e5926cbe0337c691c656b36e0b4af82694f740e3403548a29bb9c0d2a04f4",
+    "source_occurrence_ordinal": 5
+  },
+  {
+    "occurrence_id": "occ-be514cbc1d43c971d43847685bba512ca46c289dbe8b94e20f5d9257ac94c1a9",
+    "payload": {
+      "class": "negative",
+      "diameter": 0.3,
+      "height": 0.1,
+      "length": 0.4,
+      "sex": "I",
+      "shell_weight": 0.1,
+      "shucked_weight": 0.15,
+      "viscera_weight": 0.05,
+      "whole_weight": 0.3
+    },
+    "payload_sha256": "194d435312beda6e147cd119aee889a74b8e378ae96c4b1e05ef0b525a6bc823",
+    "source_artifact": "artifacts/runs/m1-p1-real-Abalone19-gemma4-e4b-20260829/candidates_raw.jsonl",
+    "source_artifact_sha256": "113e5926cbe0337c691c656b36e0b4af82694f740e3403548a29bb9c0d2a04f4",
+    "source_occurrence_ordinal": 9
+  },
+  {
+    "occurrence_id": "occ-59dcf832e0e14fa81f7639908ccadebbb3481841eb48959f90aff6266f82d409",
+    "payload": {
+      "class": "negative",
+      "diameter": 0.4,
+      "height": 0.13,
+      "length": 0.5,
+      "sex": "F",
+      "shell_weight": 0.2,
+      "shucked_weight": 0.22,
+      "viscera_weight": 0.12,
+      "whole_weight": 0.55
+    },
+    "payload_sha256": "e3ac569b921a339e4afb4cb4594f2fafe80bd9e930ad0ac18b513fca87f5519e",
+    "source_artifact": "artifacts/runs/m1-p1-real-Abalone19-gemma4-e4b-20260829/candidates_raw.jsonl",
+    "source_artifact_sha256": "113e5926cbe0337c691c656b36e0b4af82694f740e3403548a29bb9c0d2a04f4",
+    "source_occurrence_ordinal": 10
+  },
+  {
+    "occurrence_id": "occ-ccfa7d3f3bbcc1ca08d956d2ae08e373d6ae6551d50ff5f546d35b81e9974c42",
+    "payload": {
+      "class": "negative",
+      "diameter": 0.2,
+      "height": 0.08,
+      "length": 0.3,
+      "sex": "M",
+      "shell_weight": 0.08,
+      "shucked_weight": 0.12,
+      "viscera_weight": 0.05,
+      "whole_weight": 0.25
+    },
+    "payload_sha256": "70f386ee4353d11fd8b0311cfbd7bb47e47817d8f4ceb656917e03627ac47598",
+    "source_artifact": "artifacts/runs/m1-p1-real-Abalone19-gemma4-e4b-20260829/candidates_raw.jsonl",
+    "source_artifact_sha256": "113e5926cbe0337c691c656b36e0b4af82694f740e3403548a29bb9c0d2a04f4",
+    "source_occurrence_ordinal": 13
+  },
+  {
+    "occurrence_id": "occ-b96e0bf4bdff58d1e531a6a3e728f380e9ed2824da4d47151c1f7097c7f471b9",
+    "payload": {
+      "class": "negative",
+      "diameter": 0.3,
+      "height": 0.1,
+      "length": 0.4,
+      "sex": "F",
+      "shell_weight": 0.1,
+      "shucked_weight": 0.15,
+      "viscera_weight": 0.06,
+      "whole_weight": 0.3
+    },
+    "payload_sha256": "b50e03eeba5b9555f2114cb03f0150e558b41177288094657a19293bce6d19e8",
+    "source_artifact": "artifacts/runs/m1-p1-real-Abalone19-gemma4-e4b-20260829/candidates_raw.jsonl",
+    "source_artifact_sha256": "113e5926cbe0337c691c656b36e0b4af82694f740e3403548a29bb9c0d2a04f4",
+    "source_occurrence_ordinal": 15
+  },
+  {
+    "occurrence_id": "occ-844baf073109ada25632c9b5ec00a7253d37d2818253cde1a39abf5a7416135e",
+    "payload": {
+      "class": "negative",
+      "diameter": 0.3,
+      "height": 0.1,
+      "length": 0.4,
+      "sex": "F",
+      "shell_weight": 0.1,
+      "shucked_weight": 0.2,
+      "viscera_weight": 0.08,
+      "whole_weight": 0.3
+    },
+    "payload_sha256": "8266286bab1a8b77e504199927452189e9ebbac94c69c6c9799ac42e8f9a9f93",
+    "source_artifact": "artifacts/runs/m1-p1-real-Abalone19-gemma4-e4b-20260829/candidates_raw.jsonl",
+    "source_artifact_sha256": "113e5926cbe0337c691c656b36e0b4af82694f740e3403548a29bb9c0d2a04f4",
+    "source_occurrence_ordinal": 20
+  },
+  {
+    "occurrence_id": "occ-802d7ee82219aafe3038fadecaec4476bc5a71c587c55d1a4fd9e248b07c97de",
+    "payload": {
+      "class": "negative",
+      "diameter": 0.32,
+      "height": 0.11,
+      "length": 0.45,
+      "sex": "I",
+      "shell_weight": 0.11,
+      "shucked_weight": 0.16,
+      "viscera_weight": 0.06,
+      "whole_weight": 0.35
+    },
+    "payload_sha256": "1d468fe4621681ab4f9e4686f6dc76a979326ab6b202c08e319bddced8274e7f",
+    "source_artifact": "artifacts/runs/m1-p1-real-Abalone19-gemma4-e4b-20260829/candidates_raw.jsonl",
+    "source_artifact_sha256": "113e5926cbe0337c691c656b36e0b4af82694f740e3403548a29bb9c0d2a04f4",
+    "source_occurrence_ordinal": 21
+  },
+  {
+    "occurrence_id": "occ-68c59de3e9a6c7b5b0d02c9f5b5a314dd1cec38b7962311afa04db5e881b3ac1",
+    "payload": {
+      "class": "negative",
+      "diameter": 0.48,
+      "height": 0.155,
+      "length": 0.6,
+      "sex": "M",
+      "shell_weight": 0.28,
+      "shucked_weight": 0.34,
+      "viscera_weight": 0.18,
+      "whole_weight": 0.85
+    },
+    "payload_sha256": "4e0fcf73e30d4b6fe68ab881c13ad4f7aeb25d0bf062f367f93812a0a88068fc",
+    "source_artifact": "artifacts/runs/m1-p1-real-Abalone19-gemma4-e4b-20260829/candidates_raw.jsonl",
+    "source_artifact_sha256": "113e5926cbe0337c691c656b36e0b4af82694f740e3403548a29bb9c0d2a04f4",
+    "source_occurrence_ordinal": 22
+  },
+  {
+    "occurrence_id": "occ-2641d99188ba43eb6d2177f930a02d61eb9769b99729fddbab2aa120971263ed",
+    "payload": {
+      "class": "negative",
+      "diameter": 0.21,
+      "height": 0.08,
+      "length": 0.3,
+      "sex": "F",
+      "shell_weight": 0.08,
+      "shucked_weight": 0.12,
+      "viscera_weight": 0.04,
+      "whole_weight": 0.21
+    },
+    "payload_sha256": "d723ae6c65c77d6df72e2a164664eaedee332200b2a9dad4c99e4a40421607d1",
+    "source_artifact": "artifacts/runs/m1-p1-real-Abalone19-gemma4-e4b-20260829/candidates_raw.jsonl",
+    "source_artifact_sha256": "113e5926cbe0337c691c656b36e0b4af82694f740e3403548a29bb9c0d2a04f4",
+    "source_occurrence_ordinal": 23
+  },
+  {
+    "occurrence_id": "occ-c481d9ed19bd2464ed9a42e17073f607b29368106d22d48012b0f97ab9363b11",
+    "payload": {
+      "class": "negative",
+      "diameter": 0.39,
+      "height": 0.135,
+      "length": 0.52,
+      "sex": "I",
+      "shell_weight": 0.18,
+      "shucked_weight": 0.22,
+      "viscera_weight": 0.1,
+      "whole_weight": 0.55
+    },
+    "payload_sha256": "a2ee71ef0fc0dacbbec18a16534ecc923c1ba878a58909ff635861c03d229d25",
+    "source_artifact": "artifacts/runs/m1-p1-real-Abalone19-gemma4-e4b-20260829/candidates_raw.jsonl",
+    "source_artifact_sha256": "113e5926cbe0337c691c656b36e0b4af82694f740e3403548a29bb9c0d2a04f4",
+    "source_occurrence_ordinal": 24
+  },
+  {
+    "occurrence_id": "occ-2e3ae2c7dfed5d65d832f5922ecab5ebf72f817b54b3e00a0c20fa460920a4f6",
+    "payload": {
+      "class": "negative",
+      "diameter": 0.38,
+      "height": 0.13,
+      "length": 0.49,
+      "sex": "M",
+      "shell_weight": 0.18,
+      "shucked_weight": 0.22,
+      "viscera_weight": 0.105,
+      "whole_weight": 0.55
+    },
+    "payload_sha256": "410e201ac29aabc20661a29e97c43d060926086be898aa3d552231940e4a6c1a",
+    "source_artifact": "artifacts/runs/m1-p1-real-Abalone19-gemma4-e4b-20260829/candidates_raw.jsonl",
+    "source_artifact_sha256": "113e5926cbe0337c691c656b36e0b4af82694f740e3403548a29bb9c0d2a04f4",
+    "source_occurrence_ordinal": 28
+  },
+  {
+    "occurrence_id": "occ-6cd4a34318d3665a6070391b13c5a3cb78e98043b2d45161436a1747d822f4b0",
+    "payload": {
+      "class": "negative",
+      "diameter": 0.5,
+      "height": 0.16,
+      "length": 0.61,
+      "sex": "I",
+      "shell_weight": 0.22,
+      "shucked_weight": 0.25,
+      "viscera_weight": 0.12,
+      "whole_weight": 0.6
+    },
+    "payload_sha256": "c7418579c748dd99c157e9fa5ac3c37126369217f1a9d601383b9ca75b7ea782",
+    "source_artifact": "artifacts/runs/m1-p1-real-Abalone19-gemma4-e4b-20260829/candidates_raw.jsonl",
+    "source_artifact_sha256": "113e5926cbe0337c691c656b36e0b4af82694f740e3403548a29bb9c0d2a04f4",
+    "source_occurrence_ordinal": 29
+  },
+  {
+    "occurrence_id": "occ-c95e206206898a60566df425aed774b3b7cdab3118f0b74dabded0173e8812bd",
+    "payload": {
+      "class": "negative",
+      "diameter": 0.2,
+      "height": 0.09,
+      "length": 0.35,
+      "sex": "F",
+      "shell_weight": 0.08,
+      "shucked_weight": 0.11,
+      "viscera_weight": 0.05,
+      "whole_weight": 0.25
+    },
+    "payload_sha256": "472c8d83c093e82faa0fe9040082f06d8e81f4b9a667edb6dc14e02bff30562b",
+    "source_artifact": "artifacts/runs/m1-p1-real-Abalone19-gemma4-e4b-20260829/candidates_raw.jsonl",
+    "source_artifact_sha256": "113e5926cbe0337c691c656b36e0b4af82694f740e3403548a29bb9c0d2a04f4",
+    "source_occurrence_ordinal": 30
+  },
+  {
+    "occurrence_id": "occ-b5a175306f2bad85927d1d18b82cafe1ebf9bf2df9bf1d23f420e19e04f58fd9",
+    "payload": {
+      "class": "negative",
+      "diameter": 0.25,
+      "height": 0.1,
+      "length": 0.35,
+      "sex": "I",
+      "shell_weight": 0.08,
+      "shucked_weight": 0.12,
+      "viscera_weight": 0.05,
+      "whole_weight": 0.25
+    },
+    "payload_sha256": "546904e6de9a180eca2bf5a283d8f8c5d5e0f40bea32236d51ebee4b150aab31",
+    "source_artifact": "artifacts/runs/m1-p1-real-Abalone19-gemma4-e4b-20260829/candidates_raw.jsonl",
+    "source_artifact_sha256": "113e5926cbe0337c691c656b36e0b4af82694f740e3403548a29bb9c0d2a04f4",
+    "source_occurrence_ordinal": 31
+  },
+  {
+    "occurrence_id": "occ-73a4a8561631fc58628539efd1d155d196bafe4a73bc30cb783ceee1b6e46c6f",
+    "payload": {
+      "class": "negative",
+      "diameter": 0.5,
+      "height": 0.15,
+      "length": 0.6,
+      "sex": "M",
+      "shell_weight": 0.2,
+      "shucked_weight": 0.25,
+      "viscera_weight": 0.12,
+      "whole_weight": 0.6
+    },
+    "payload_sha256": "eb4c6f94f2decf0d3169695e4e4d821d6d72e4f7638f5bda76a865623ea0e079",
+    "source_artifact": "artifacts/runs/m1-p1-real-Abalone19-gemma4-e4b-20260829/candidates_raw.jsonl",
+    "source_artifact_sha256": "113e5926cbe0337c691c656b36e0b4af82694f740e3403548a29bb9c0d2a04f4",
+    "source_occurrence_ordinal": 32
+  },
+  {
+    "occurrence_id": "occ-9aa40cf765aee61c359316af7a364c21986b4e617b479a6e54dded6afa1d7888",
+    "payload": {
+      "class": "negative",
+      "diameter": 0.3,
+      "height": 0.12,
+      "length": 0.45,
+      "sex": "F",
+      "shell_weight": 0.1,
+      "shucked_weight": 0.15,
+      "viscera_weight": 0.06,
+      "whole_weight": 0.31
+    },
+    "payload_sha256": "7ecfe83691d692bfa1a879bd98e1a4232089a8db3515bd6636795b45a4f69ffb",
+    "source_artifact": "artifacts/runs/m1-p1-real-Abalone19-gemma4-e4b-20260829/candidates_raw.jsonl",
+    "source_artifact_sha256": "113e5926cbe0337c691c656b36e0b4af82694f740e3403548a29bb9c0d2a04f4",
+    "source_occurrence_ordinal": 33
+  },
+  {
+    "occurrence_id": "occ-0c907932acd4ca2f5d823ebb9288a3e6d2e3e46da98b2a9fc83ee761dd84ac06",
+    "payload": {
+      "class": "negative",
+      "diameter": 0.4,
+      "height": 0.13,
+      "length": 0.5,
+      "sex": "I",
+      "shell_weight": 0.2,
+      "shucked_weight": 0.2,
+      "viscera_weight": 0.1,
+      "whole_weight": 0.5
+    },
+    "payload_sha256": "d151cab9a7097d4d686629dcf1dcf79b0d2e1738b3f50bb704102e2c099e2e40",
+    "source_artifact": "artifacts/runs/m1-p1-real-Abalone19-gemma4-e4b-20260829/candidates_raw.jsonl",
+    "source_artifact_sha256": "113e5926cbe0337c691c656b36e0b4af82694f740e3403548a29bb9c0d2a04f4",
+    "source_occurrence_ordinal": 34
+  },
+  {
+    "occurrence_id": "occ-918e2b25fa65a4eddc730b2d20f6f0ab3cafffa38b3cb36731a0476183910f98",
+    "payload": {
+      "class": "negative",
+      "diameter": 0.2,
+      "height": 0.09,
+      "length": 0.3,
+      "sex": "M",
+      "shell_weight": 0.05,
+      "shucked_weight": 0.09,
+      "viscera_weight": 0.04,
+      "whole_weight": 0.18
+    },
+    "payload_sha256": "982445d67dc6e33375b18873b28129dc1fc44f5416ca9dfeb8f9c5d791c4bdf5",
+    "source_artifact": "artifacts/runs/m1-p1-real-Abalone19-gemma4-e4b-20260829/candidates_raw.jsonl",
+    "source_artifact_sha256": "113e5926cbe0337c691c656b36e0b4af82694f740e3403548a29bb9c0d2a04f4",
+    "source_occurrence_ordinal": 35
+  },
+  {
+    "occurrence_id": "occ-e4a4f731ed37d07230865ca55df72a1dd08ca03825bffb1202e420d0b37e88c0",
+    "payload": {
+      "class": "negative",
+      "diameter": 0.38,
+      "height": 0.13,
+      "length": 0.5,
+      "sex": "M",
+      "shell_weight": 0.18,
+      "shucked_weight": 0.25,
+      "viscera_weight": 0.11,
+      "whole_weight": 0.5
+    },
+    "payload_sha256": "6d2aca21f035b56dc749b68152a2bb85faee2cb7c5e4d92dd265a82268638ccf",
+    "source_artifact": "artifacts/runs/m1-p1-real-Abalone19-gemma4-e4b-20260829/candidates_raw.jsonl",
+    "source_artifact_sha256": "113e5926cbe0337c691c656b36e0b4af82694f740e3403548a29bb9c0d2a04f4",
+    "source_occurrence_ordinal": 38
+  },
+  {
+    "occurrence_id": "occ-043d888d5070aed3a9ad4ab44a65ded64f1d3ea6219a615fc9dedaeb10fafc01",
+    "payload": {
+      "class": "negative",
+      "diameter": 0.25,
+      "height": 0.09,
+      "length": 0.35,
+      "sex": "I",
+      "shell_weight": 0.08,
+      "shucked_weight": 0.12,
+      "viscera_weight": 0.05,
+      "whole_weight": 0.25
+    },
+    "payload_sha256": "7421c4554a69b919ff7a5dc3eb5eaba507c428e529dcc1caf77681b795484998",
+    "source_artifact": "artifacts/runs/m1-p1-real-Abalone19-gemma4-e4b-20260829/candidates_raw.jsonl",
+    "source_artifact_sha256": "113e5926cbe0337c691c656b36e0b4af82694f740e3403548a29bb9c0d2a04f4",
+    "source_occurrence_ordinal": 39
+  },
+  {
+    "occurrence_id": "occ-11415c8f7568251487c31cc9c11e3c27ac275d6d06fa39cdb321c7faa49021c8",
+    "payload": {
+      "class": "negative",
+      "diameter": 0.5,
+      "height": 0.17,
+      "length": 0.6,
+      "sex": "F",
+      "shell_weight": 0.2,
+      "shucked_weight": 0.28,
+      "viscera_weight": 0.15,
+      "whole_weight": 0.6
+    },
+    "payload_sha256": "8b4d6912444b5ee92aacdb496381ad48861b4abfd97da5a25701e85921c8d2e2",
+    "source_artifact": "artifacts/runs/m1-p1-real-Abalone19-gemma4-e4b-20260829/candidates_raw.jsonl",
+    "source_artifact_sha256": "113e5926cbe0337c691c656b36e0b4af82694f740e3403548a29bb9c0d2a04f4",
+    "source_occurrence_ordinal": 40
+  },
+  {
+    "occurrence_id": "occ-4d47f5be3843e23ca0729f8acd7fc2b085f12f4dd91db6e1ecb494fee0c08f27",
+    "payload": {
+      "class": "negative",
+      "diameter": 0.28,
+      "height": 0.1,
+      "length": 0.38,
+      "sex": "I",
+      "shell_weight": 0.08,
+      "shucked_weight": 0.12,
+      "viscera_weight": 0.04,
+      "whole_weight": 0.24
+    },
+    "payload_sha256": "96011580587b4808b9b6af5ae473f57f48e3820943080328bc40182b871b9889",
+    "source_artifact": "artifacts/runs/m1-p1-real-Abalone19-gemma4-e4b-20260829/candidates_raw.jsonl",
+    "source_artifact_sha256": "113e5926cbe0337c691c656b36e0b4af82694f740e3403548a29bb9c0d2a04f4",
+    "source_occurrence_ordinal": 43
+  },
+  {
+    "occurrence_id": "occ-b50f517affe430e26562de297e0dcb8d63914dd6ddfb6eee410c494b2e214c12",
+    "payload": {
+      "class": "negative",
+      "diameter": 0.5,
+      "height": 0.15,
+      "length": 0.6,
+      "sex": "M",
+      "shell_weight": 0.3,
+      "shucked_weight": 0.4,
+      "viscera_weight": 0.1,
+      "whole_weight": 0.9
+    },
+    "payload_sha256": "fef74058388bc8d29fd9d31d8ecbe02d2bfbfd9073d6e55267da2bfe6a747d19",
+    "source_artifact": "artifacts/runs/m1-p1-real-Abalone19-gemma4-e4b-20260829/candidates_raw.jsonl",
+    "source_artifact_sha256": "113e5926cbe0337c691c656b36e0b4af82694f740e3403548a29bb9c0d2a04f4",
+    "source_occurrence_ordinal": 44
+  },
+  {
+    "occurrence_id": "occ-d7ffe2411c763a0b5c0c0973464a0c03ab4d040bff2df9e838c19becfe362371",
+    "payload": {
+      "class": "negative",
+      "diameter": 0.3,
+      "height": 0.11,
+      "length": 0.4,
+      "sex": "F",
+      "shell_weight": 0.1,
+      "shucked_weight": 0.15,
+      "viscera_weight": 0.05,
+      "whole_weight": 0.3
+    },
+    "payload_sha256": "dfae3d20602c9fd49285590a8ff2b695eede7680a36373001624e680f41699f0",
+    "source_artifact": "artifacts/runs/m1-p1-real-Abalone19-gemma4-e4b-20260829/candidates_raw.jsonl",
+    "source_artifact_sha256": "113e5926cbe0337c691c656b36e0b4af82694f740e3403548a29bb9c0d2a04f4",
+    "source_occurrence_ordinal": 45
+  }
+]

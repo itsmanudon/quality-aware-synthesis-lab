@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import copy
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -206,3 +207,43 @@ def test_cli_declares_required_source_option():
     from rcqasyn.phase5.cli import app
     result=CliRunner().invoke(app,["audit","--help"])
     assert result.exit_code==0 and "source-root" in result.stdout
+
+
+def test_unsupported_train_rows_are_explicit(fixture):
+    spec,_,frame,split,params,g=fixture
+    frame.loc[0,"x"]=None
+    split["train_fingerprint"]=_subset_fingerprint(frame,split["train_indices"])
+    reference=reference_from_frame(spec,frame,split,params)
+    assert reference["excluded_indices"] == [0]
+    other=Geometry(reference,g.occurrences,g.fields,g.target)
+    assert len(other.train)==3 and other.reference["supported_indices"]==[1,2,3]
+
+
+def test_study_resume_checks_cached_datasets(ctx,monkeypatch,tmp_path):
+    from rcqasyn.phase5 import workflow
+    for name in ("combined-review-q80","combined-review-q95"):
+        ctx.shadow["decisions"] += [{**r,"policy":{"name":name}} for r in list(ctx.shadow["decisions"]) if r["policy"]["name"]=="combined-review"]
+    monkeypatch.setattr(workflow,"load_context",lambda *args:ctx)
+    plan={"schema_version":"m7-plan-v1","phase4_input":"fixture","primary_policy":"combined-review",
+        "primary_strategies":list(STRATEGIES),"pool_availability":{"fixture":{"eligible":5,"classes":{"major":4,"minor":1},"unique_features":4}},
+        "budgets":{"fixture":[1,2,3]},"coverage_radius":.05,"near_duplicate_tolerance":.01,"quality_minority_quota_fraction":.5,"seed":42}
+    root=Path(__file__).resolve().parents[2]
+    a=workflow.run_study(root,tmp_path,tmp_path/"study",plan)
+    b=workflow.run_study(root,tmp_path,tmp_path/"study",plan)
+    assert a==b and a["total_constructed_datasets"]==17
+    assert all(r["audit_status"]=="PASS" for r in a["runs"])
+
+
+def test_actual_bounded_study_and_report_are_deterministic():
+    import runpy
+    root=Path(__file__).resolve().parents[2]
+    fn=runpy.run_path(str(root/"scripts/report_phase5.py"))["report_data"]
+    study=root/"artifacts/reports/phase5/study-v1"; replay=root/"artifacts/reports/phase5/study-replay-v1"
+    a=fn(study,replay)
+    assert a==fn(study,replay)
+    assert a["constructed_datasets"]==51 and a["replay_identical"] and a["shortfall_cases"]==0
+    for d in a["plan"]["budgets"]:
+        for b in a["plan"]["budgets"][d]:
+            rows=[r for r in a["primary"] if r["dataset"]==d and r["budget"]==b]
+            assert len(rows)==4 and all(r["selected_n"]==b for r in rows)
+    assert all(r["exact_duplicate_rate"]==0. for r in a["primary"] if r["strategy"]=="quality-coverage")
