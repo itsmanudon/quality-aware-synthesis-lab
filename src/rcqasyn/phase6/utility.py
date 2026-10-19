@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import subprocess
 import time
 from collections import Counter
 from pathlib import Path
@@ -30,7 +31,7 @@ def score_regime(real_train: pd.DataFrame, evaluation: pd.DataFrame, synthetic: 
         if synthetic.empty or synthetic[spec.target_column].nunique()<2:
             reason="UNAVAILABLE_SYNTHETIC_TRAINING_REQUIRES_BOTH_LITERAL_CLASSES"
     else:
-        minority=synthetic[synthetic[spec.target_column]==spec.minority_label] if not synthetic.empty else synthetic
+        minority=synthetic.loc[synthetic[spec.target_column]==spec.minority_label].copy() if not synthetic.empty else synthetic
         training=pd.concat([real_train,minority],ignore_index=True)
         if minority.empty: reason="UNAVAILABLE_NO_SYNTHETIC_MINORITY_AUGMENTATION"
     if reason:
@@ -100,6 +101,7 @@ def run_utility(root: Path, source: Path, core: Path, output: Path, plan: dict[s
                     rows.append({"dataset_id":d,"method":synthetic["name"],"source_fingerprint":synthetic["fingerprint"],
                         **score_regime(train,test,frame,spec,classifier,regime,plan["utility"]["seed"])})
     value=envelope("m9-classification-utility-v1",{"predeclared_plan_fingerprint":digest(plan),
+        "implementation_revision":subprocess.check_output(["git","rev-parse","HEAD"],cwd=root,text=True).strip(),
         "core_manifest_fingerprint":manifest["fingerprint"],"populations":populations,"results":rows,
         "result_content_fingerprint":digest(rows),"source_metric_module":"Frozen rcqasyn.metrics.utility._fit_score",
         "classifier_parameters":{name:model.get_params(deep=True) for name,model in resolve_estimators(plan["utility"]["seed"]).items()},
