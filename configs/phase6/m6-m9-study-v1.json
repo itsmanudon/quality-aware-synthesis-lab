@@ -1,0 +1,59 @@
+{
+  "schema_version": "m6-m9-plan-v1",
+  "phase5_parent": "7276fb150eda6248eaf64512eb9d197dfc5106b2",
+  "repair_policy": {
+    "version": "integer-half-even-max3-v1",
+    "max_edited_fields": 3,
+    "max_absolute_change": "0.5",
+    "rounding": "Decimal(str(finite JSON numeric value)); ROUND_HALF_EVEN; integral values unchanged",
+    "eligibility": "Only complete integer-only authoritative defects; refuse any other structural violation, null/unknown evidence, more than three fields or unsupported authoritative postcondition"
+  },
+  "evidence": "Restore recorded M2 parameters and TRAIN values; no fitting. Apply original frozen M4 reference distributions and combined-review q=.90 policy; never rerank reference members.",
+  "coverage": {
+    "strategies": [
+      "source-order",
+      "farthest-first",
+      "coverage-greedy",
+      "quality-coverage"
+    ],
+    "conditions": [
+      "original",
+      "repair-augmented"
+    ],
+    "budgets": {
+      "Abalone19": 56,
+      "Ecoli4": 70,
+      "page-blocks0": 49
+    },
+    "radius": 0.05,
+    "near_tolerance": 0.01,
+    "minority_quota_fraction": 0.5,
+    "parent_exclusivity": true,
+    "objective_changes": false
+  },
+  "utility": {
+    "classifiers": [
+      "logistic_regression",
+      "random_forest"
+    ],
+    "seed": 42,
+    "classifier_parameters": "Frozen rcqasyn.metrics.utility.resolve_estimators; no tuning",
+    "evaluation": "Fixed existing outer TEST, reused historical benchmark; descriptive only; no TEST-driven method or configuration selection",
+    "inner_validation": "Unavailable as an independent validation study: frozen historical generation/evidence/selection already use full TRAIN. No misleading inner holdout.",
+    "TRTR": "REAL TRAIN -> frozen REAL TEST, once per classifier/dataset",
+    "synthetic_sources": [
+      "B1-structural-complete",
+      "B2-structural-complete",
+      "B3-structural-complete",
+      "four original middle-budget M7 strategies",
+      "four repaired-pool middle-budget M7 strategies"
+    ],
+    "TSTR": "Purely synthetic -> fixed TEST; unavailable if training lacks both literal classes",
+    "HYBRID": "REAL TRAIN + only synthetic minority-literal-class records -> fixed TEST; unavailable if no synthetic minority records",
+    "metric_definitions": "Reuse frozen _fit_score: F1, average precision (pr_auc alias), balanced accuracy, MCC, AUROC; do not change definitions",
+    "repetitions": "One seed/split. Exact replay only; not independent repetitions or uncertainty intervals."
+  },
+  "no_provider_calls": true,
+  "human_label_evaluation": "PENDING_SUPERVISOR_REVIEW",
+  "scientific_status": "EXPLORATORY; NO SCIENTIFIC FREEZE OR NOVELTY/SIGNIFICANCE CLAIMS"
+}

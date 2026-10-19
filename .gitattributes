@@ -26,3 +26,8 @@ artifacts/reports/phase4/final-verification-v1/*.txt whitespace=-blank-at-eof
 artifacts/reports/phase5/** -text
 artifacts/reports/phase5/**/*.svg whitespace=-blank-at-eol
 artifacts/reports/phase5/final-verification-v1/*.txt whitespace=-blank-at-eof
+
+# Phase-6 sealed experiments, reproducibility evidence and plot bytes.
+artifacts/reports/phase6/** -text
+artifacts/reports/phase6/**/*.svg whitespace=-blank-at-eol
+artifacts/reports/phase6/final-verification-v1/*.txt whitespace=-blank-at-eof
