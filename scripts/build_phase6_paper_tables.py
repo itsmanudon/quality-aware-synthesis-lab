@@ -209,7 +209,7 @@ entries = re.split(r"\n(?=@)", (root / "paper/references.bib").read_text(encodin
 selected = [e for e in entries if re.match(r"@\w+\{([^,]+)", e).group(1) in keys]
 assert len(selected) == 8
 (paper / "references.bib").write_text(
-    ("\n\n".join(selected) + "\n").replace("Mihaela C. Stoian", "Mihaela Stoian"), encoding="utf-8"
+    ("\n\n".join(selected).rstrip() + "\n").replace("Mihaela C. Stoian", "Mihaela Stoian"), encoding="utf-8"
 )
 urls = {
     re.match(r"@\w+\{([^,]+)", e).group(1): re.search(r"url\s*=\s*\{([^}]+)", e).group(1)

@@ -1,0 +1,61 @@
+\section{Datasets and experimental setup}
+\input{tables/datasets}
+Only existing datasets/splits are used. Abalone19 has seven numerical and one nominal feature; Ecoli4 seven numerical; page-blocks0 ten numerical. Positive/negative are literal tokens, not inferred physical meanings. Few TEST positives make metrics sensitive. Historical exact-value TRAIN/TEST overlap is disclosed: disjoint row identities do not imply independent values.
+
+Phase 3 records five configurations with 1,803 evidence rows each. Phase 4 records six policies. Phase 5 records 51 datasets: four-strategy/three-budget comparisons, B2-intersection controls and cutoff sensitivities. Budgets derive in advance from fractions $.25,.50,.75$ of distinct eligible feature count: 28/56/84, 35/70/105 and 24/49/74. Phase 6 compares original/augmented pools at middle budgets, producing 24 constructions. No new providers, datasets or families are introduced.
+
+\subsection{Baselines and task-utility protocol}
+\input{tables/controls}
+New utility controls intersect recorded B1/B2/B3 acceptance with complete structure-compatible payloads. Filtering is named, not a redefinition of raw controls. Historical integration forms a DataFrame directly from candidate data; missing class can become NaN then the string \texttt{nan} in its scorer. Historical unfiltered results remain preserved, not silently endorsed as complete binary-record comparisons.
+
+TRTR trains real TRAIN; TSTR synthetic data only; HYBRID\_MINORITY real TRAIN plus synthetic positive-literal records. One-class synthetic data makes binary TSTR unavailable. No minority augmentation makes hybrid unavailable, not relabeled TRTR. No invalid records or invented labels create balance.
+
+Reuse frozen median-imputation, scaling and nominal encoding fitted on each actual training population. Models are logistic regression (liblinear, maximum 300 iterations) and 50-tree random forest, seed 42. The full matrix was committed before TEST scoring: two TRTR rows per dataset plus eleven sources, two models and two regimes, totaling 138. Models, metrics, rules and budgets were fixed before scores.
+
+Historical generation/evidence/selection use full TRAIN. An inner holdout would not be independent without rebuilding upstream steps; none is claimed. Comparisons use previously evaluated outer TEST descriptively. TEST never fits evidence, transformations, repair, selection, preprocessing or classifiers. No TEST-driven tuning follows. One split/seed is studied; replay is not repetition.
+
+\subsection{Metrics}
+For positive-literal confusion counts,
+\begin{align}
+F_1&=\frac{2TP}{2TP+FP+FN},&
+BA&=\frac12\left(\frac{TP}{TP+FN}+\frac{TN}{TN+FP}\right),\\
+MCC&=\frac{TP\,TN-FP\,FN}{\sqrt{(TP+FP)(TP+FN)(TN+FP)(TN+FN)}}.
+\end{align}
+Average precision is $AP=\sum_k(R_k-R_{k-1})P_k$; \texttt{pr\_auc} is an AP alias, not trapezoidal PR area. AUROC measures positive/negative ordering with half credit for ties. Undefined metrics retain reason/null behavior. These are task metrics, not human validity or agreement.
+
+\section{Results}
+\subsection{Structural evidence and dependence}
+\input{tables/evidence}
+Local/global evidence is highly dependent for Abalone19 and moderately correlated for the others, with distinct tail overlaps. Structural/B2 disagreements total 157; without human truth they are predicate disagreements, not model errors. Local/global evidence is available for 600 payloads; one Ecoli4 record lacks seven features.
+
+\input{tables/shadow}
+Combined $.90$ produces 451 provisional passes, 75 structural rejects and 75 review-required records. Sensitivities remain exploratory alternatives. No policy is declared scientifically optimal.
+
+\subsection{Construction and bounded repair}
+Source-order selection can omit minority records at matched budgets, making TSTR/augmentation unavailable. Weighting, quotas and diversity change distinct properties. The appendix gives primary budgets; all 51 original audits remain in their manifest.
+
+\input{tables/repair}
+Fifteen records lack class, one lacks features, and 64 have fractional integer fields; categories overlap. Twenty-six have multiple field violations. No invalid-primitive or unsupported-nominal case occurs here. Of fractional-field records, five also lack class and five require over three edits; ten are ineligible. Eleven further ineligible records belong to the other datasets.
+
+Figure~\ref{fig:repair} summarizes the outcomes. The 54 repairs edit 73 fields: 39 records need one edit, eleven two, four three. Changes range .1--.5, mean .3119, median .2. All become structurally compatible; 49 are provisional and five require review. Originals retain prior decisions. Restored M2 reproduces original evidence exactly, with zero maximum raw-score difference. No fitting/reranking occurs.
+
+\begin{figure}[ht]\centering\includegraphics[width=.85\linewidth]{figures/repair-outcomes.png}\caption{Repair outcomes by original occurrence; structural correction is not human validity.}\label{fig:repair}\end{figure}
+The largest observed absolute percentile shift is .0275 locally: page-blocks0 source occurrence 131 rounds height 4.5 to 4 and Lenght 32.5 to 32. Global percentile changes .0075; its action becomes provisional pass. This pool supplies no extreme evidence discontinuity. The report lists largest observed shifts without manufacturing a dramatic example.
+
+\small\input{tables/coverage}\normalsize
+Figure~\ref{fig:coverage} compares geometric coverage. The pool grows 451 to 500 through page-blocks0 (119 to 168). Original conditions exactly reproduce Phase 5. At page budget 49, quality-coverage selects 16 derived records: distinct-feature TRAIN coverage rises .9324 to .9370, near duplication falls .3265 to .1020, exact duplication remains zero. Source-order coverage slightly declines. Pool expansion does not guarantee a better fixed-budget set. The other datasets stay unchanged.
+
+\begin{figure}[ht]\centering\includegraphics[width=\linewidth]{figures/coverage-comparison.png}\caption{Matched budgets; coverage describes TRAIN geometry, not accuracy.}\label{fig:coverage}\end{figure}
+
+\subsection{Task utility and unavailable comparisons}
+\small\input{tables/utility}\normalsize
+Of 138 rows, 114 return results and 24 are unavailable. The six source-order populations, each with two models/two regimes, contain no positive-literal synthetic records. No favorable substitute replaces an unavailable result. Full controls and other strategies remain in CSV/JSON.
+
+Figure~\ref{fig:utility} shows the fixed logistic comparisons. Abalone19 TRTR F1 is zero for both models despite nonzero ranking metrics. Ecoli4 logistic TRTR reaches 1.0 on only four TEST positives, not proof of universal performance. Page quality-coverage logistic TSTR F1 falls .4464 to .3421 after repair-pool expansion while AP rises .5552 to .5716. Hybrid F1 remains .7150 and AP slightly falls. These mixed outcomes do not establish uniform improvement. No significance/interval is inferred from one split.
+
+\begin{figure}[ht]\centering\includegraphics[width=\linewidth]{figures/task-utility.png}\caption{Fixed logistic comparisons on reused historical TEST. Connected points identify datasets, not an ordered trend.}\label{fig:utility}\end{figure}
+
+\subsection{Reproducibility and runtime}
+Repair records, constructions and task payloads replay exactly in new locations. Runtime envelopes need not share fingerprints; substantive content does. M2 replay covers 601 occurrences/three families. The registry contains 258 entries across controls, configurations, policies, original constructions, repair, new constructions and utility. Original 51-dataset audit evidence is retained rather than rerun.
+
+Repair scoring takes about 2.590 seconds on this workstation, excluding context loading/construction. Utility runtime and dependencies are recorded; no hardware-general speed claim is made. Replay supplies no confidence interval. Final tests, static checks and historical hashes are recorded separately in closeout evidence.
