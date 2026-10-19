@@ -5,12 +5,23 @@ from pathlib import Path
 from typing import Any
 
 from rcqasyn.storage.artifacts import create_run_dir, write_json
-from rcqasyn.storage.ownership import bundle_lock, seal_bundle
+from rcqasyn.storage.ownership import bundle_lock, file_hash, seal_bundle, verify_seal
 
 from .annotations import annotation_protocol, packets
 from .cohort import build_cohort, validate_cohort
-from .common import csv_text, envelope, read_bundle, snapshot, verify_envelope, write_bundle
+from .common import (
+    csv_text,
+    digest,
+    envelope,
+    read_bundle,
+    snapshot,
+    source_path,
+    verify_envelope,
+    verify_sources,
+    write_bundle,
+)
 from .contracts import FREEZE
+from .historical_outputs import RESEARCH_CONFIGURATIONS, RESEARCH_SEAL_CATALOGS
 from .provenance import extract_crosswalk, validate_crosswalk
 from .specifications import specifications, validate_specifications
 
@@ -22,15 +33,52 @@ RUNS = (
 DEFAULT_OUTPUT = Path("artifacts/reports/phase2/gate-a-v3")
 
 
+def _verified_research_files(root: Path) -> set[str]:
+    """Recognize only pinned later versions, retaining every existing seal check."""
+    covered: set[str] = set()
+    for relative, expected_catalog in RESEARCH_SEAL_CATALOGS.items():
+        directory = source_path(root, relative)
+        if not directory.exists():
+            continue  # Frozen SOURCE-only roots remain valid.
+        seals = sorted(directory.rglob("FINALIZED.json"))
+        catalog = {p.relative_to(directory).as_posix(): file_hash(p) for p in seals}
+        if digest(catalog) != expected_catalog:
+            raise ValueError(f"registered research seal catalog changed: {relative}")
+        for seal in seals:
+            verify_seal(seal.parent)
+            names = [*json.loads(seal.read_text(encoding="utf-8"))["files"], "FINALIZED.json"]
+            covered.update((seal.parent / name).relative_to(root).as_posix() for name in names)
+    for relative, expected in RESEARCH_CONFIGURATIONS.items():
+        path = source_path(root, relative)
+        if path.exists():
+            if digest(json.loads(path.read_text(encoding="utf-8"))) != expected:
+                raise ValueError(f"registered research configuration changed: {relative}")
+            covered.add(relative)
+    return covered
+
+
 def historical_inventory(root: Path) -> dict[str, str]:
-    """Snapshot original evidence only; Phase-2 derivatives have a separate namespace."""
+    """Original SOURCE files, plus rejection visibility for unregistered additions."""
+    research_files = _verified_research_files(root)
     files = []
     for name in ("data", "artifacts/runs", "artifacts/reports", "test-results",
                  "configs", "prompts"):
         for path in (root / name).rglob("*"):
-            if path.is_file() and "phase2" not in path.relative_to(root).parts:
+            if (path.is_file() and "phase2" not in path.relative_to(root).parts
+                    and path.relative_to(root).as_posix() not in research_files):
                 files.append(path)
     return snapshot(root, files)
+
+
+def validate_historical_inventory(root: Path, inventory: dict[str, Any]) -> None:
+    """Strict original-path/hash membership; registered outputs are verified separately."""
+    verify_envelope(inventory, "historical-integrity-v1")
+    expected = inventory["source_files"]
+    if inventory["file_count"] != len(expected):
+        raise ValueError("historical inventory count contradicts recorded paths")
+    verify_sources(root, expected)
+    if historical_inventory(root) != expected:
+        raise ValueError("original historical file set or checksums changed")
 
 
 def derivative_destination(root: Path, output: Path) -> Path:
@@ -163,9 +211,7 @@ def validate_preparation(root: Path, output: Path) -> dict[str, Any]:
             or read_bundle(output / "private-map") != private):
         raise ValueError("blinded packet membership/projection mismatch")
     inventory = read_bundle(output / "historical-integrity")
-    verify_envelope(inventory, "historical-integrity-v1")
-    if historical_inventory(root) != inventory["source_files"]:
-        raise ValueError("original historical file set or checksums changed")
+    validate_historical_inventory(root, inventory)
     return {**result, "historical_files": inventory["file_count"],
             "dataset_specifications": len(specs["specifications"]),
             "cohort_status": "PENDING_INDEPENDENT_VERIFICATION",
