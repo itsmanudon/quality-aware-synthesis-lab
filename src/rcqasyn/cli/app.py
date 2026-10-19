@@ -38,6 +38,7 @@ from rcqasyn.metrics import utility_metrics
 from rcqasyn.phase2.cli import app as phase2_app
 from rcqasyn.phase3.cli import app as phase3_app
 from rcqasyn.phase4.cli import app as phase4_app
+from rcqasyn.phase5.cli import app as phase5_app
 from rcqasyn.storage.artifacts import read_json, write_json
 from rcqasyn.storage.ownership import assert_writable
 
@@ -53,6 +54,7 @@ app.add_typer(human_review_app, name="human-review")
 app.add_typer(phase2_app, name="phase2")
 app.add_typer(phase3_app, name="phase3")
 app.add_typer(phase4_app, name="phase4")
+app.add_typer(phase5_app, name="phase5")
 
 
 def _display_counts(values: dict[str, int]) -> str:
