@@ -75,6 +75,13 @@ def synthetic_sources(ctx: Context, core: Path, dataset: str) -> list[dict[str,A
     return result
 
 
+def utility_csv_rows(rows: list[dict[str,Any]]) -> list[dict[str,Any]]:
+    return [{**{k:v for k,v in row.items() if k!="evaluation_result"},
+             "status":row["evaluation_result"]["status"], "reason":row["evaluation_result"].get("reason"),
+             "metric_reasons":row["evaluation_result"].get("metric_reasons",{}),
+             **{metric:row["evaluation_result"].get(metric) for metric in METRICS}} for row in rows]
+
+
 def run_utility(root: Path, source: Path, core: Path, output: Path, plan: dict[str,Any]) -> dict[str,Any]:
     start=time.perf_counter(); ctx=load_context(root,source)
     manifest=read_bundle(core/"manifest")
@@ -110,5 +117,5 @@ def run_utility(root: Path, source: Path, core: Path, output: Path, plan: dict[s
         "test_previously_evaluated":True,"human_validity_metrics_computed":False,
         "independent_repetitions":1,"replay_is_not_an_independent_repetition":True,
         "runtime_seconds":time.perf_counter()-start})
-    write_bundle(output,value,{"utility.csv":csv_text([{k:v for k,v in r.items() if k!="evaluation_result"}|r["evaluation_result"] for r in rows])})
+    write_bundle(output,value,{"utility.csv":csv_text(utility_csv_rows(rows))})
     return value

@@ -71,3 +71,11 @@ def test_cli_source_root_option():
     from rcqasyn.phase6.cli import app
     result=CliRunner().invoke(app,["core","--help"])
     assert result.exit_code==0 and "source-root" in result.stdout
+
+
+def test_export_schema_preserves_unavailable_reasons():
+    from rcqasyn.phase2.common import csv_text
+    rows=[{"method":"ok","evaluation_result":{"status":"ok","f1":.5}},
+          {"method":"missing","evaluation_result":{"status":"unavailable","reason":"single class","f1":None}}]
+    text=csv_text(utility.utility_csv_rows(rows))
+    assert "single class" in text and "reason" in text and "unavailable" in text
