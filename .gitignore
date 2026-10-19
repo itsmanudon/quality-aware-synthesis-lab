@@ -59,3 +59,7 @@ literature/papers/*.pdf
 *.pt
 .ollama/
 .DS_Store
+
+# Superseded unapproved Phase-2 checkout-format preparation; retain locally only.
+artifacts/reports/phase2/gate-a-v1/
+artifacts/reports/phase2/gate-a-v2/

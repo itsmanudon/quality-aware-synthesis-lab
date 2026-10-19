@@ -1,0 +1,10 @@
+dataset,control,original_accepted,original_n,utility_structural_complete_n,symmetric_difference_from_combined_pass
+Abalone19,B1,200,200,195,30
+Abalone19,B2,138,200,138,78
+Abalone19,B3,200,200,195,30
+Ecoli4,B1,201,201,195,39
+Ecoli4,B2,174,201,174,54
+Ecoli4,B3,200,201,195,38
+page-blocks0,B1,200,200,136,81
+page-blocks0,B2,175,200,116,96
+page-blocks0,B3,200,200,136,81

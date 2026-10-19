@@ -1,0 +1,7 @@
+decision,status,dependency
+Personal review of all 120 labels,PENDING_SUPERVISOR,Source-bound reviewed ledger plus explicit fingerprint confirmation; agent proposals are not ground truth
+"Target mappings, physical meanings and cross-field semantics",PENDING_SUPERVISOR,Authoritative sources and approved specification version; keep nine grouped semantic gaps explicit
+Ground-truth calibration eligibility and partitioning,PENDING_SUPERVISOR,"Confirmed independent labels, adequate VALID/INVALID support and separated calibration/evaluation IDs"
+Official decision thresholds,PENDING_SUPERVISOR,Current q=.8/.9/.95 are fixed exploratory heuristics; no empirically tuned official threshold
+Scientific acceptance of Phase 3 and Phase 4,PENDING_SUPERVISOR,"Review assumptions, reports, selected-cohort and historical TRAIN/TEST overlap limits"
+Final scientific claims and independent acceptance,PENDING_SUPERVISOR,"Human evidence and scientific assessment; no validated correctness, novelty or risk guarantee claimed"

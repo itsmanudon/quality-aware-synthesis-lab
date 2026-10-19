@@ -1,0 +1,6 @@
+dataset,direction,recorded_b2_reason,count
+Abalone19,B2_reject_no_M2_flag,duplicate,57
+Ecoli4,B2_reject_no_M2_flag,duplicate,21
+page-blocks0,B2_reject_no_M2_flag,configured deterministic severity rejection,1
+page-blocks0,B2_reject_no_M2_flag,duplicate,19
+page-blocks0,M2_flag_B2_accept,all configured deterministic checks passed,59

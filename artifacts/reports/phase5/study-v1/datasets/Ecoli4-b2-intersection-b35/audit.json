@@ -1,0 +1,9 @@
+{
+  "constructed_dataset_fingerprint": "19872f71f092d4e2753ed5f282bbd3b88fa38e9342f35be49cea19a4b0e9c3c7",
+  "human_validity_approval": "PENDING_SUPERVISOR_REVIEW",
+  "no_repair_performed": true,
+  "schema_version": "m7-dataset-audit-v1",
+  "selected_n": 35,
+  "shortfall": 0,
+  "status": "PASS"
+}

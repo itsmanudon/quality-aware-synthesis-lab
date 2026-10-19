@@ -1,3 +1,34 @@
 # CSV cells may contain preserved multiline provider output whose internal blank
 # lines include spaces. Do not treat those data bytes as patch whitespace errors.
 *.csv whitespace=-blank-at-eol
+
+# Phase-2 seals bind exact serialized bytes across Windows and Unix checkouts.
+artifacts/reports/phase2/** -text
+
+# Preserve captured terminal logs, including their final blank line.
+artifacts/reports/phase2/verification-v1/*.txt whitespace=-blank-at-eof
+
+# Phase-3 research bundles also retain exact sealed bytes.
+artifacts/reports/phase3/** -text
+
+# Preserve Matplotlib SVG path spacing inside immutable rendered figures.
+artifacts/reports/phase3/**/*.svg whitespace=-blank-at-eol
+
+# Captured closeout logs retain terminal blank lines.
+artifacts/reports/phase3/final-verification-v1/*.txt whitespace=-blank-at-eof
+
+# Preserve Phase-4 sealed bundles and generated plot/log bytes.
+artifacts/reports/phase4/** -text
+artifacts/reports/phase4/**/*.svg whitespace=-blank-at-eol
+artifacts/reports/phase4/final-verification-v1/*.txt whitespace=-blank-at-eof
+
+# Preserve sealed Phase-5 exploratory datasets, plots and logs.
+artifacts/reports/phase5/** -text
+artifacts/reports/phase5/**/*.svg whitespace=-blank-at-eol
+artifacts/reports/phase5/final-verification-v1/*.txt whitespace=-blank-at-eof
+
+# Phase-6 sealed experiments, reproducibility evidence and plot bytes.
+artifacts/reports/phase6/** -text
+artifacts/reports/phase6/**/*.svg whitespace=-blank-at-eol
+artifacts/reports/phase6/final-verification-v1/*.txt whitespace=-blank-at-eof
+artifacts/reports/phase6/final-verification-v1/*.log whitespace=-blank-at-eol

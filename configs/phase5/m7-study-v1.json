@@ -1,0 +1,68 @@
+{
+  "schema_version": "m7-plan-v1",
+  "phase4_input": "artifacts/reports/phase4/shadow-v1",
+  "primary_policy": "combined-review",
+  "primary_strategies": [
+    "source-order",
+    "farthest-first",
+    "coverage-greedy",
+    "quality-coverage"
+  ],
+  "budget_rule": "floor(f * U_d), f in [.25,.50,.75]; U_d=distinct feature payloads in complete primary provisional pool; minimum 1; same budgets across methods",
+  "budgets": {
+    "Abalone19": [
+      28,
+      56,
+      84
+    ],
+    "Ecoli4": [
+      35,
+      70,
+      105
+    ],
+    "page-blocks0": [
+      24,
+      49,
+      74
+    ]
+  },
+  "pool_availability": {
+    "Abalone19": {
+      "classes": {
+        "negative": 92,
+        "positive": 78
+      },
+      "eligible": 170,
+      "unique_features": 113
+    },
+    "Ecoli4": {
+      "classes": {
+        "negative": 91,
+        "positive": 71
+      },
+      "eligible": 162,
+      "unique_features": 141
+    },
+    "page-blocks0": {
+      "classes": {
+        "negative": 63,
+        "positive": 56
+      },
+      "eligible": 119,
+      "unique_features": 99
+    }
+  },
+  "coverage_radius": 0.05,
+  "near_duplicate_tolerance": 0.01,
+  "quality_minority_quota_fraction": 0.5,
+  "quality_constraints": "Primary provisional eligibility; complete original labeled payload; no repeated feature payload. Minority quota first, capped by available distinct minority feature payloads. Weighted class-balanced TRAIN-region coverage, then fewer near neighbors, larger separation, smaller uncalibrated concern, source order.",
+  "coverage_reference": "Distinct TRAIN (feature values, literal class) regions; uniform regions for C, equal total weight per represented literal TRAIN class for D; also report row-weighted and unique-feature coverage",
+  "minority_rule": "Least frequent literal TRAIN class; lexicographic token tie-break; no target-semantic inference",
+  "controls": "B2-accepted INTERSECT primary provisional pool, source-order at same budgets; B1/B3 intersections identical to primary and reported without redundant runs",
+  "sensitivities": "quality-coverage on frozen combined-review-q80 and combined-review-q95 pools, primary middle budget only; no admission changes",
+  "seed": 42,
+  "seed_usage": "Identity only; no randomized operation",
+  "tie_break": "Deterministic source occurrence order, then occurrence ID; greedy numeric keys rounded to 12 decimals",
+  "stopping": "Stop at exact requested budget or explicit eligible/distinct-feature exhaustion; no zero-gain early stop; record shortfall",
+  "declaration": "Predeclared before coverage/diversity outcome inspection. Exploratory geometric design; no utility, risk, validity or novelty guarantee."
+}

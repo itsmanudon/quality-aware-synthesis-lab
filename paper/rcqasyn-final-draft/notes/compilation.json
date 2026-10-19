@@ -1,0 +1,15 @@
+{
+  "status": "COMPILED_AND_VISUALLY_INSPECTED",
+  "pages": 13,
+  "pdf_sha256": "8c130ffc8e9519556492363716eeecf6ee5b79cad28bc29472bd3429ec89a4cb",
+  "compiler": "Installed Codex Tectonic; no compiler installation or package download",
+  "desktop_attempts": [
+    "Compilation timed out",
+    "success"
+  ],
+  "terminal_export": "tectonic --only-cached --untrusted --keep-logs --outdir TEMP/rcqasyn-phase6-paper-build main.tex",
+  "cache": "Existing desktop compiler cache; TECTONIC_CACHE_DIR",
+  "inspection": "All 13 pages rendered via bundled Poppler and visually inspected in contact sheets; no clipped tables/figures, missing glyph boxes or unresolved references observed",
+  "warnings": "Underfull hboxes in bibliography/body and Fontconfig default-config warning; no overfull boxes or undefined references/citations in final log",
+  "pdf_reproduction": "Experimental result content is deterministic. PDF timestamps are not claimed byte-identical across fresh typesetting."
+}

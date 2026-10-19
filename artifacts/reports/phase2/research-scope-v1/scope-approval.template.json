@@ -1,0 +1,19 @@
+{
+  "approval_provenance": "",
+  "cohort_fingerprint": "b754ccee1f58ccfc0d89dfde176cb84d58993b93bc5e87a7059ce5e8885877a5",
+  "crosswalk_fingerprints": [
+    "3304be98d627bf5b9bb46f46e3f43f6ecbaae883ef0899aa2361dc0bdb6384f2",
+    "4df77104a1638c5948da314813b17f104490c2bfed4fd8f289e65bc65b4d8116",
+    "61ae1ac58af59581317855d3aab30a338a1a4d9e5c066eaabfcbc7aaa689f588"
+  ],
+  "decision": "PENDING_SUPERVISOR_APPROVAL",
+  "implementation_owner_reference": "",
+  "population_kind": "research",
+  "protocol_fingerprint": "47fd0f0c929754c3bbe463f375b1dc996d159156a00d0428766f58e6f769a84f",
+  "purpose": "COHORT_AND_RUBRIC_ONLY",
+  "research_rubric_fingerprint": "1770f1503e8b7cbb0768b596e443fb0753a920d264247a52120be7c242b90d15",
+  "schema_version": "research-scope-approval-v1",
+  "scientific_decisions": "",
+  "specifications_fingerprint": "5e1c669d8fa3e41ffd41ef940089bb986171aafc1ba54159601122e3d53890b2",
+  "supervisor_reference": ""
+}

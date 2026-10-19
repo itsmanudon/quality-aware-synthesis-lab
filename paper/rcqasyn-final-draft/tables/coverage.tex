@@ -1,0 +1,36 @@
+\begin{longtable}{lrrrrr}
+\caption{Matched middle-budget construction. C: distinct-feature TRAIN coverage; D: exact duplicate rate; N: near-duplicate rate. O: original pool; R: repair-augmented pool.}\label{tab:coverage}\\
+\toprule
+Dataset / strategy / pool & n & Derived & C & D & N \\
+\midrule
+\endfirsthead
+\toprule
+Dataset / strategy / pool & n & Derived & C & D & N \\
+\midrule
+\endhead
+page-blocks0 / source-order / O & 49 & 0 & 0.9139 & 0.2653 & 0.5918 \\
+page-blocks0 / source-order / R & 49 & 11 & 0.9099 & 0.1837 & 0.5918 \\
+page-blocks0 / farthest-first / O & 49 & 0 & 0.9324 & 0.0000 & 0.0000 \\
+page-blocks0 / farthest-first / R & 49 & 11 & 0.9359 & 0.0000 & 0.0000 \\
+page-blocks0 / coverage-greedy / O & 49 & 0 & 0.9324 & 0.1633 & 0.4490 \\
+page-blocks0 / coverage-greedy / R & 49 & 9 & 0.9370 & 0.0816 & 0.4082 \\
+page-blocks0 / quality-coverage / O & 49 & 0 & 0.9324 & 0.0000 & 0.3265 \\
+page-blocks0 / quality-coverage / R & 49 & 16 & 0.9370 & 0.0000 & 0.1020 \\
+Ecoli4 / source-order / O & 70 & 0 & 0.4164 & 0.2000 & 0.3857 \\
+Ecoli4 / source-order / R & 70 & 0 & 0.4164 & 0.2000 & 0.3857 \\
+Ecoli4 / farthest-first / O & 70 & 0 & 0.4684 & 0.0000 & 0.0000 \\
+Ecoli4 / farthest-first / R & 70 & 0 & 0.4684 & 0.0000 & 0.0000 \\
+Ecoli4 / coverage-greedy / O & 70 & 0 & 0.5056 & 0.1143 & 0.2429 \\
+Ecoli4 / coverage-greedy / R & 70 & 0 & 0.5056 & 0.1143 & 0.2429 \\
+Ecoli4 / quality-coverage / O & 70 & 0 & 0.5056 & 0.0000 & 0.0000 \\
+Ecoli4 / quality-coverage / R & 70 & 0 & 0.5056 & 0.0000 & 0.0000 \\
+Abalone19 / source-order / O & 56 & 0 & 0.6225 & 0.3571 & 0.6250 \\
+Abalone19 / source-order / R & 56 & 0 & 0.6225 & 0.3571 & 0.6250 \\
+Abalone19 / farthest-first / O & 56 & 0 & 0.9401 & 0.0000 & 0.0000 \\
+Abalone19 / farthest-first / R & 56 & 0 & 0.9401 & 0.0000 & 0.0000 \\
+Abalone19 / coverage-greedy / O & 56 & 0 & 0.9479 & 0.1071 & 0.2679 \\
+Abalone19 / coverage-greedy / R & 56 & 0 & 0.9479 & 0.1071 & 0.2679 \\
+Abalone19 / quality-coverage / O & 56 & 0 & 0.9479 & 0.0000 & 0.0000 \\
+Abalone19 / quality-coverage / R & 56 & 0 & 0.9479 & 0.0000 & 0.0000 \\
+\bottomrule
+\end{longtable}
