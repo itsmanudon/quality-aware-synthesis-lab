@@ -1,5 +1,6 @@
 import json
 from pathlib import Path
+from typing import Annotated
 
 import typer
 
@@ -12,7 +13,7 @@ app = typer.Typer(help="Uncalibrated descriptive evidence fusion and offline sha
 
 
 @app.command("shadow")
-def shadow_command(output: Path, source_root: Path = typer.Option(...),
+def shadow_command(output: Path, source_root: Annotated[Path, typer.Option()],
                    plan: Path = Path("configs/phase4/m4-m5-shadow-v1.json")) -> None:
     root = discover_project_root()
     namespace = (root/"artifacts/reports/phase4").resolve()

@@ -240,3 +240,46 @@ def test_cli_source_root_option():
     from rcqasyn.phase4.cli import app
     result = CliRunner().invoke(app, ["shadow", "--help"])
     assert result.exit_code == 0 and "source-root" in result.stdout
+
+
+def test_source_reference_membership_checked(m2, monkeypatch, tmp_path):
+    cohort = {"fingerprint": m2["cohort_fingerprint"]}
+    cws = [{"fingerprint": "d"*64, "records": m2["candidate_bindings"]}]
+    specs = {"fingerprint": "e"*64, "specifications": [
+        {"fingerprint": "a"*64, "specification": {"dataset_id": "fixture"}}]}
+    monkeypatch.setattr(workflow, "load_preparation", lambda _: (cohort, cws, {}, specs))
+    path = tmp_path/"data/manifests/fixture/split_manifest.json"
+    path.parent.mkdir(parents=True)
+    path.write_text(json.dumps({"train_indices": [0, 1], "train_fingerprint": "f"*64}))
+    assert len(workflow.validate_input(m2, tmp_path, tmp_path)) == 20
+    m2["reference_populations"]["fixture"]["train_indices"] = [2, 3]
+    with pytest.raises(ValueError, match="TEST"):
+        workflow.validate_input(m2, tmp_path, tmp_path)
+
+
+def test_future_review_payload_mismatch_refused(m2, monkeypatch, tmp_path):
+    monkeypatch.setattr(calibration, "confirm_research_ledger", lambda *a: {"fixture_gate": True})
+    monkeypatch.setattr(calibration, "read_results", lambda _: m2)
+    cohort = {"population_kind": "research", "fingerprint": "c"*64}
+    cws = [{"fingerprint": "d"*64, "records": m2["candidate_bindings"]}]
+    path = tmp_path/"data/manifests/fixture/split_manifest.json"
+    path.parent.mkdir(parents=True)
+    path.write_text(json.dumps({"train_indices": [0, 1], "train_fingerprint": "f"*64}))
+    ledger = {"rows": [{"occurrence_id": "fixture:0", "dataset_id": "fixture", "payload_sha256": "0"*64, "human_final_label": "VALID"}]}
+    with pytest.raises(ValueError, match="source mismatch"):
+        calibration.fit_confirmed_research(tmp_path, cohort, cws,
+            {"specifications_fingerprint": "e"*64}, {}, [], ledger, {}, harmonize(m2)["vectors"],
+            ["fixture:0"], ["fixture:1"], "fixture", m2_path=tmp_path)
+
+
+def test_report_content_determinism_and_population_identity():
+    import runpy
+    root = Path(__file__).resolve().parents[2]
+    report = runpy.run_path(str(root/"scripts/report_phase4.py"))["report_data"]
+    path = root/"artifacts/reports/phase4/shadow-v1"
+    replay = root/"artifacts/reports/phase4/shadow-replay-v1"
+    a = report(root, path, replay)
+    assert a == report(root, path, replay)
+    assert a["candidate_count"] == 601 and a["decision_count"] == 3606
+    assert a["replay_identical"] and a["calibration"]["calibrator"] is None
+    assert all(sum(r[action] for action in ("REJECT_STRUCTURAL", "REVIEW_REQUIRED", "PROVISIONAL_PASS", "ABSTAIN")) == r["n"] for r in a["results"])

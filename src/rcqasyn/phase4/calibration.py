@@ -5,6 +5,7 @@ separate entry point and never establish eligibility for a real population.
 """
 from __future__ import annotations
 
+import json
 from collections import Counter
 from pathlib import Path
 from typing import Any
@@ -111,6 +112,12 @@ def fit_confirmed_research(source: Path, cohort: dict[str, Any], crosswalks: lis
     if cohort["population_kind"] != "research":
         raise ValueError("fixture scope cannot approve a real research calibrator")
     m2 = read_results(m2_path)
+    for dataset, ref in m2["reference_populations"].items():
+        split = json.loads((source/f"data/manifests/{dataset}/split_manifest.json").read_text())
+        if (ref["train_indices"] != split["train_indices"]
+                or ref["recorded_train_fingerprint"] != split["train_fingerprint"]
+                or ref["statistical_fit_uses_test"] is not False):
+            raise ValueError("calibration evidence has foreign TRAIN or REAL TEST reference")
     expected = [{k: r[k] for k in ("occurrence_id", "payload_sha256", "dataset_id")}
                 for cw in crosswalks for r in cw["records"]]
     if (m2["candidate_bindings"] != expected or m2["cohort_fingerprint"] != cohort["fingerprint"]
