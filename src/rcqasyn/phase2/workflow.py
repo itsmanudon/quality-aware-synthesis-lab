@@ -21,6 +21,7 @@ from .common import (
     write_bundle,
 )
 from .contracts import FREEZE
+from .empirical_outputs import verified_empirical_files
 from .historical_outputs import RESEARCH_CONFIGURATIONS, RESEARCH_SEAL_CATALOGS
 from .provenance import extract_crosswalk, validate_crosswalk
 from .specifications import specifications, validate_specifications
@@ -35,7 +36,7 @@ DEFAULT_OUTPUT = Path("artifacts/reports/phase2/gate-a-v3")
 
 def _verified_research_files(root: Path) -> set[str]:
     """Recognize only pinned later versions, retaining every existing seal check."""
-    covered: set[str] = set()
+    covered: set[str] = verified_empirical_files(root)
     for relative, expected_catalog in RESEARCH_SEAL_CATALOGS.items():
         directory = source_path(root, relative)
         if not directory.exists():
