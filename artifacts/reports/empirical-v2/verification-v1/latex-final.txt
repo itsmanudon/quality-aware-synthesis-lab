@@ -41,7 +41,7 @@ warning: main.bbl:136: Underfull \hbox (badness 4205) in paragraph at lines 127-
 warning: main.bbl:136: Underfull \hbox (badness 3417) in paragraph at lines 127--136
 note: Running xdvipdfmx ...
 warning: warnings were issued by the TeX engine; use --print and/or --keep-logs for details.
+note: Writing `main.blg` (194 B)
 note: Writing `main.pdf` (150.7802734375 KiB)
 note: Writing `main.log` (28.357421875 KiB)
-note: Writing `main.blg` (194 B)
 note: Skipped writing 3 intermediate files (use --keep-intermediates to keep them)
