@@ -100,6 +100,8 @@ def test_degenerate_mcc_is_counted_undefined():
     assert interval(result["mcc"])["lower"] is None
     assert np.all(result["f1"] == 0)
     assert wilson(1, 1)[0] < .21 and wilson(4, 4)[0] < .52
+    assert "method" not in interval(result["mcc"])  # Preserve compared method identity.
+    assert interval(result["mcc"])["interval_method"] == "stratified paired percentile"
 
 
 @pytest.mark.parametrize("change", ["order", "label", "duplicate"])

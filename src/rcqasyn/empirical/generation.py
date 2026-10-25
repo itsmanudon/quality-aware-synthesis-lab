@@ -63,7 +63,7 @@ def generate(train: pd.DataFrame, spec: Any, method: str, budget: int,
                   if scaler is not None else None,
                   "payload_fingerprint": digest(generated.to_dict(orient="records"))}
     if method == "RandomOverSampler":
-        provenance["copied_train_row_ids"] = [int(train.index[i]) for i in
+        provenance["copied_train_row_ids"] = [int(train.index.to_list()[int(i)]) for i in
                                                 sampler.sample_indices_[len(train):]]
     return generated, provenance
 

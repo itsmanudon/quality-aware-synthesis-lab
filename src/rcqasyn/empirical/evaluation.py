@@ -157,5 +157,5 @@ def interval(values: np.ndarray, confidence: float = .95) -> dict[str, Any]:
     bounds = [float(v) for v in np.quantile(good, [alpha, 1-alpha])] if len(good) else [None, None]
     return {"lower": bounds[0], "upper": bounds[1], "valid_replicates": len(good),
             "undefined_replicates": len(values)-len(good), "confidence": confidence,
-            "method": "stratified paired percentile",
+            "interval_method": "stratified paired percentile",
             "status": "ok" if len(good) else "undefined"}
