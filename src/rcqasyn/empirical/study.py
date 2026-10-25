@@ -128,7 +128,7 @@ class Study:
                                    "selected_payload_fingerprint": digest([r["payload"] for r in records]),
                                    **measured})
         return pd.DataFrame([r["payload"] for r in records],
-                            columns=[f["name"] for f in g.fields]+[g.target])
+                            columns=pd.Index([f["name"] for f in g.fields]+[g.target]))
 
     def population(self, track: str, loaded: Any, split: dict[str, Any],
                    train: pd.DataFrame, test: pd.DataFrame, seed: int) -> dict[str, Any]:

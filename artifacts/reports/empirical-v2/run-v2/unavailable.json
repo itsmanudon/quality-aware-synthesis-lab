@@ -1,0 +1,164 @@
+[
+  {
+    "dataset_id": "Abalone19",
+    "method": "SMOTE",
+    "reason": "INCOMPATIBLE_DECLARED_FEATURE_TYPES; use declared counterpart",
+    "split_fingerprint": "287933d773ae7b8dffc702f1680cb81edbe423a0d3e559c88c9d98f1dbc29d0e",
+    "split_seed": 42,
+    "status": "unavailable",
+    "track": "A"
+  },
+  {
+    "dataset_id": "Ecoli4",
+    "method": "SMOTENC",
+    "reason": "INCOMPATIBLE_DECLARED_FEATURE_TYPES; use declared counterpart",
+    "split_fingerprint": "e7d82d6f397d96c3b4e99c65b203b6092f51c5b179997f498d5619b2945c4b73",
+    "split_seed": 42,
+    "status": "unavailable",
+    "track": "A"
+  },
+  {
+    "dataset_id": "page-blocks0",
+    "method": "SMOTENC",
+    "reason": "INCOMPATIBLE_DECLARED_FEATURE_TYPES; use declared counterpart",
+    "split_fingerprint": "1a608a3bd41e248b2befb98fec9bb5d490112d01707b4e4f7afabd864d6bd3fe",
+    "split_seed": 42,
+    "status": "unavailable",
+    "track": "A"
+  },
+  {
+    "dataset_id": "Abalone19",
+    "method": "SMOTE",
+    "reason": "INCOMPATIBLE_DECLARED_FEATURE_TYPES; use declared counterpart",
+    "split_fingerprint": "85cf1a963136bd42213ba72275435548abdff2010e565e8568bda29df3b32717",
+    "split_seed": 13,
+    "status": "unavailable",
+    "track": "B"
+  },
+  {
+    "dataset_id": "Abalone19",
+    "method": "SMOTE",
+    "reason": "INCOMPATIBLE_DECLARED_FEATURE_TYPES; use declared counterpart",
+    "split_fingerprint": "d90704f822034a3b18505cbec75796a1eceda8ab8b705b77bfe2691a22fe8753",
+    "split_seed": 29,
+    "status": "unavailable",
+    "track": "B"
+  },
+  {
+    "dataset_id": "Abalone19",
+    "method": "SMOTE",
+    "reason": "INCOMPATIBLE_DECLARED_FEATURE_TYPES; use declared counterpart",
+    "split_fingerprint": "92871bd8da20ec79ef330566ca635873e05250b37b408369f0d92ffd251b670e",
+    "split_seed": 43,
+    "status": "unavailable",
+    "track": "B"
+  },
+  {
+    "dataset_id": "Abalone19",
+    "method": "SMOTE",
+    "reason": "INCOMPATIBLE_DECLARED_FEATURE_TYPES; use declared counterpart",
+    "split_fingerprint": "64db56684ffcaea4c15b562da304f29f68e26c7827c3e283da3526631b1e2030",
+    "split_seed": 61,
+    "status": "unavailable",
+    "track": "B"
+  },
+  {
+    "dataset_id": "Abalone19",
+    "method": "SMOTE",
+    "reason": "INCOMPATIBLE_DECLARED_FEATURE_TYPES; use declared counterpart",
+    "split_fingerprint": "6289df9dca6c882235565bba013b839adb256b0ddaecb3515db8378602a59104",
+    "split_seed": 79,
+    "status": "unavailable",
+    "track": "B"
+  },
+  {
+    "dataset_id": "Ecoli4",
+    "method": "SMOTENC",
+    "reason": "INCOMPATIBLE_DECLARED_FEATURE_TYPES; use declared counterpart",
+    "split_fingerprint": "e6eed9ed5db76312d8d757312bd53ff372755fb585ad3f9b465ad71c14120e5b",
+    "split_seed": 13,
+    "status": "unavailable",
+    "track": "B"
+  },
+  {
+    "dataset_id": "Ecoli4",
+    "method": "SMOTENC",
+    "reason": "INCOMPATIBLE_DECLARED_FEATURE_TYPES; use declared counterpart",
+    "split_fingerprint": "d6b37a7459c24f8472d83fd979e1f2ef2b3e6beae58cdc11738e91fd19303ff8",
+    "split_seed": 29,
+    "status": "unavailable",
+    "track": "B"
+  },
+  {
+    "dataset_id": "Ecoli4",
+    "method": "SMOTENC",
+    "reason": "INCOMPATIBLE_DECLARED_FEATURE_TYPES; use declared counterpart",
+    "split_fingerprint": "1ed925fbaeca8db333ff1271d3e717bfb0f3c779f3f028cc076505603738f94b",
+    "split_seed": 43,
+    "status": "unavailable",
+    "track": "B"
+  },
+  {
+    "dataset_id": "Ecoli4",
+    "method": "SMOTENC",
+    "reason": "INCOMPATIBLE_DECLARED_FEATURE_TYPES; use declared counterpart",
+    "split_fingerprint": "d72346e762cdbe7db2f38ef4de7335cbf68a32a70340e81ef3ed5f24fd90ac4e",
+    "split_seed": 61,
+    "status": "unavailable",
+    "track": "B"
+  },
+  {
+    "dataset_id": "Ecoli4",
+    "method": "SMOTENC",
+    "reason": "INCOMPATIBLE_DECLARED_FEATURE_TYPES; use declared counterpart",
+    "split_fingerprint": "ca69f3a98d715892e9fa749bc57a0023f644cb63d55d64cbc14435db15beb032",
+    "split_seed": 79,
+    "status": "unavailable",
+    "track": "B"
+  },
+  {
+    "dataset_id": "page-blocks0",
+    "method": "SMOTENC",
+    "reason": "INCOMPATIBLE_DECLARED_FEATURE_TYPES; use declared counterpart",
+    "split_fingerprint": "f26b11d6392b7d30cae0e1bb48314195a09af6fad8a1cb03bd9d214acb87d211",
+    "split_seed": 13,
+    "status": "unavailable",
+    "track": "B"
+  },
+  {
+    "dataset_id": "page-blocks0",
+    "method": "SMOTENC",
+    "reason": "INCOMPATIBLE_DECLARED_FEATURE_TYPES; use declared counterpart",
+    "split_fingerprint": "e4d230d10c9d386ecdab2fb7e32a51eedd2abafa24fe1cf8e73f4d39a1d86f98",
+    "split_seed": 29,
+    "status": "unavailable",
+    "track": "B"
+  },
+  {
+    "dataset_id": "page-blocks0",
+    "method": "SMOTENC",
+    "reason": "INCOMPATIBLE_DECLARED_FEATURE_TYPES; use declared counterpart",
+    "split_fingerprint": "1a2a33c55c03c9e71814ff7b075fb39ca60a1e6cacad54c41e88397b039f231d",
+    "split_seed": 43,
+    "status": "unavailable",
+    "track": "B"
+  },
+  {
+    "dataset_id": "page-blocks0",
+    "method": "SMOTENC",
+    "reason": "INCOMPATIBLE_DECLARED_FEATURE_TYPES; use declared counterpart",
+    "split_fingerprint": "08d02cdf99332fe62354b0aec12de1478a40806b9c4b5dc81b876fb23af52a6c",
+    "split_seed": 61,
+    "status": "unavailable",
+    "track": "B"
+  },
+  {
+    "dataset_id": "page-blocks0",
+    "method": "SMOTENC",
+    "reason": "INCOMPATIBLE_DECLARED_FEATURE_TYPES; use declared counterpart",
+    "split_fingerprint": "9acd0f010916c3cd7f35b8427cab01b29e42e93660dab365ad065b9c656234d4",
+    "split_seed": 79,
+    "status": "unavailable",
+    "track": "B"
+  }
+]

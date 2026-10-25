@@ -29,6 +29,13 @@ def number(value: Any) -> str:
     return "--" if value is None or pd.isna(value) else f"{value:.3f}"
 
 
+def method_label(method: str) -> str:
+    return {"REAL_TRAIN": "Real", "CLASS_WEIGHTED_LR": "Weighted LR",
+            "RandomOverSampler+b": "ROS+b", "SMOTE+b": "SMOTE+b", "SMOTENC+b": "SMOTENC+b",
+            "schema/random": "Schema random", "combined/random": "Admitted random",
+            "combined/quality-coverage": "Curated Q"}.get(method, method)
+
+
 def main(root: Path, run: Path, output: Path, paper: Path) -> None:
     if output.exists():
         raise FileExistsError("fresh report directory required")
@@ -103,7 +110,7 @@ def main(root: Path, run: Path, output: Path, paper: Path) -> None:
                      (r["method"].startswith(method+"/s") or r["method"] == method)]
             if not group:
                 raise ValueError("missing ablation table source")
-            def mean(field: str) -> str:
+            def mean(field: str, group: list[dict[str, Any]] = group) -> str:
                 values = [r[field] for r in group if r.get(field) is not None]
                 return number(np.mean(values)) if values else "--"
             ablation_rows.append([tex(dataset) if method == "raw-labeled/random" else "",
@@ -123,7 +130,7 @@ def main(root: Path, run: Path, output: Path, paper: Path) -> None:
                 ["REAL_TRAIN", "CLASS_WEIGHTED_LR", "RandomOverSampler+b", "SMOTE+b", "SMOTENC+b"]]
     table("external", "Historical external training baselines. ROS and SMOTE/NC append b minority rows. LR: logistic regression; RF: random forest. These differ from candidate curation.",
           ["Dataset / method", "Model", "$+n$", "F1", "AP", "BA", "MCC"],
-          [[tex(r["dataset_id"]+" / "+r["method"]), "LR" if r["classifier"] == "logistic_regression" else "RF",
+          [[tex(r["dataset_id"]+" / "+method_label(r["method"])), "LR" if r["classifier"] == "logistic_regression" else "RF",
             str(r.get("synthetic_input_n", 0)), *[number(r.get(m)) for m in
             ["f1", "average_precision", "balanced_accuracy", "mcc"]]] for r in ext_rows],
           {"file": "results.json", "rows": [digest(r) for r in ext_rows]})
@@ -155,7 +162,7 @@ def main(root: Path, run: Path, output: Path, paper: Path) -> None:
                                          "schema/random", "combined/random", "combined/quality-coverage"]]
     table("repeated", r"Offline replication: five repeated stratified holdouts, logistic regression, mean $\pm$ sample SD. Real and weighted are TRTR; other methods are hybrid minority augmentation. No historical candidates are reused.",
           ["Dataset / method", "$k$", "F1", "AP", "BA", "MCC"],
-          [[tex(r["dataset_id"]+" / "+r["method"]), str(r["completed"]),
+          [[tex(r["dataset_id"]+" / "+method_label(r["method"])), str(r["completed"]),
             *[number(r[m+"_mean"])+r" $\pm$ "+number(r[m+"_std"])
               for m in ["f1", "average_precision", "balanced_accuracy", "mcc"]]] for r in repeated_rows],
           {"file": "split-summary.json", "rows": [digest(r) for r in repeated_rows]})
