@@ -32,3 +32,9 @@ artifacts/reports/phase6/** -text
 artifacts/reports/phase6/**/*.svg whitespace=-blank-at-eol
 artifacts/reports/phase6/final-verification-v1/*.txt whitespace=-blank-at-eof
 artifacts/reports/phase6/final-verification-v1/*.log whitespace=-blank-at-eol
+
+# Empirical evidence binds raw hashes across checkouts.
+artifacts/reports/empirical-v2/** -text whitespace=cr-at-eol
+# Raw compiler/test transcripts retain terminal spaces and final blank lines.
+artifacts/reports/empirical-v2/verification-v1/*.txt whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol
+artifacts/reports/empirical-v2/verification-v1/*.xml whitespace=cr-at-eol,-blank-at-eof,-blank-at-eol

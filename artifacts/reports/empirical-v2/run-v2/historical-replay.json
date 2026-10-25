@@ -1,0 +1,968 @@
+[
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "Abalone19",
+    "matches": true,
+    "method": "REAL_TRAIN",
+    "regime": "TRTR"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "Abalone19",
+    "matches": true,
+    "method": "REAL_TRAIN",
+    "regime": "TRTR"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "Abalone19",
+    "matches": true,
+    "method": "B1-structural-complete",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "Abalone19",
+    "matches": true,
+    "method": "B1-structural-complete",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "Abalone19",
+    "matches": true,
+    "method": "B1-structural-complete",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "Abalone19",
+    "matches": true,
+    "method": "B1-structural-complete",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "Abalone19",
+    "matches": true,
+    "method": "B2-structural-complete",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "Abalone19",
+    "matches": true,
+    "method": "B2-structural-complete",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "Abalone19",
+    "matches": true,
+    "method": "B2-structural-complete",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "Abalone19",
+    "matches": true,
+    "method": "B2-structural-complete",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "Abalone19",
+    "matches": true,
+    "method": "B3-structural-complete",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "Abalone19",
+    "matches": true,
+    "method": "B3-structural-complete",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "Abalone19",
+    "matches": true,
+    "method": "B3-structural-complete",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "Abalone19",
+    "matches": true,
+    "method": "B3-structural-complete",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "Abalone19",
+    "matches": true,
+    "method": "source-order:original",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "Abalone19",
+    "matches": true,
+    "method": "source-order:original",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "Abalone19",
+    "matches": true,
+    "method": "source-order:original",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "Abalone19",
+    "matches": true,
+    "method": "source-order:original",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "Abalone19",
+    "matches": true,
+    "method": "source-order:repair-augmented",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "Abalone19",
+    "matches": true,
+    "method": "source-order:repair-augmented",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "Abalone19",
+    "matches": true,
+    "method": "source-order:repair-augmented",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "Abalone19",
+    "matches": true,
+    "method": "source-order:repair-augmented",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "Abalone19",
+    "matches": true,
+    "method": "farthest-first:original",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "Abalone19",
+    "matches": true,
+    "method": "farthest-first:original",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "Abalone19",
+    "matches": true,
+    "method": "farthest-first:original",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "Abalone19",
+    "matches": true,
+    "method": "farthest-first:original",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "Abalone19",
+    "matches": true,
+    "method": "farthest-first:repair-augmented",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "Abalone19",
+    "matches": true,
+    "method": "farthest-first:repair-augmented",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "Abalone19",
+    "matches": true,
+    "method": "farthest-first:repair-augmented",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "Abalone19",
+    "matches": true,
+    "method": "farthest-first:repair-augmented",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "Abalone19",
+    "matches": true,
+    "method": "coverage-greedy:original",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "Abalone19",
+    "matches": true,
+    "method": "coverage-greedy:original",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "Abalone19",
+    "matches": true,
+    "method": "coverage-greedy:original",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "Abalone19",
+    "matches": true,
+    "method": "coverage-greedy:original",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "Abalone19",
+    "matches": true,
+    "method": "coverage-greedy:repair-augmented",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "Abalone19",
+    "matches": true,
+    "method": "coverage-greedy:repair-augmented",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "Abalone19",
+    "matches": true,
+    "method": "coverage-greedy:repair-augmented",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "Abalone19",
+    "matches": true,
+    "method": "coverage-greedy:repair-augmented",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "Abalone19",
+    "matches": true,
+    "method": "quality-coverage:original",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "Abalone19",
+    "matches": true,
+    "method": "quality-coverage:original",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "Abalone19",
+    "matches": true,
+    "method": "quality-coverage:original",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "Abalone19",
+    "matches": true,
+    "method": "quality-coverage:original",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "Abalone19",
+    "matches": true,
+    "method": "quality-coverage:repair-augmented",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "Abalone19",
+    "matches": true,
+    "method": "quality-coverage:repair-augmented",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "Abalone19",
+    "matches": true,
+    "method": "quality-coverage:repair-augmented",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "Abalone19",
+    "matches": true,
+    "method": "quality-coverage:repair-augmented",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "Ecoli4",
+    "matches": true,
+    "method": "REAL_TRAIN",
+    "regime": "TRTR"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "Ecoli4",
+    "matches": true,
+    "method": "REAL_TRAIN",
+    "regime": "TRTR"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "Ecoli4",
+    "matches": true,
+    "method": "B1-structural-complete",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "Ecoli4",
+    "matches": true,
+    "method": "B1-structural-complete",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "Ecoli4",
+    "matches": true,
+    "method": "B1-structural-complete",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "Ecoli4",
+    "matches": true,
+    "method": "B1-structural-complete",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "Ecoli4",
+    "matches": true,
+    "method": "B2-structural-complete",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "Ecoli4",
+    "matches": true,
+    "method": "B2-structural-complete",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "Ecoli4",
+    "matches": true,
+    "method": "B2-structural-complete",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "Ecoli4",
+    "matches": true,
+    "method": "B2-structural-complete",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "Ecoli4",
+    "matches": true,
+    "method": "B3-structural-complete",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "Ecoli4",
+    "matches": true,
+    "method": "B3-structural-complete",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "Ecoli4",
+    "matches": true,
+    "method": "B3-structural-complete",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "Ecoli4",
+    "matches": true,
+    "method": "B3-structural-complete",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "Ecoli4",
+    "matches": true,
+    "method": "source-order:original",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "Ecoli4",
+    "matches": true,
+    "method": "source-order:original",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "Ecoli4",
+    "matches": true,
+    "method": "source-order:original",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "Ecoli4",
+    "matches": true,
+    "method": "source-order:original",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "Ecoli4",
+    "matches": true,
+    "method": "source-order:repair-augmented",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "Ecoli4",
+    "matches": true,
+    "method": "source-order:repair-augmented",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "Ecoli4",
+    "matches": true,
+    "method": "source-order:repair-augmented",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "Ecoli4",
+    "matches": true,
+    "method": "source-order:repair-augmented",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "Ecoli4",
+    "matches": true,
+    "method": "farthest-first:original",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "Ecoli4",
+    "matches": true,
+    "method": "farthest-first:original",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "Ecoli4",
+    "matches": true,
+    "method": "farthest-first:original",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "Ecoli4",
+    "matches": true,
+    "method": "farthest-first:original",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "Ecoli4",
+    "matches": true,
+    "method": "farthest-first:repair-augmented",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "Ecoli4",
+    "matches": true,
+    "method": "farthest-first:repair-augmented",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "Ecoli4",
+    "matches": true,
+    "method": "farthest-first:repair-augmented",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "Ecoli4",
+    "matches": true,
+    "method": "farthest-first:repair-augmented",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "Ecoli4",
+    "matches": true,
+    "method": "coverage-greedy:original",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "Ecoli4",
+    "matches": true,
+    "method": "coverage-greedy:original",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "Ecoli4",
+    "matches": true,
+    "method": "coverage-greedy:original",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "Ecoli4",
+    "matches": true,
+    "method": "coverage-greedy:original",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "Ecoli4",
+    "matches": true,
+    "method": "coverage-greedy:repair-augmented",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "Ecoli4",
+    "matches": true,
+    "method": "coverage-greedy:repair-augmented",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "Ecoli4",
+    "matches": true,
+    "method": "coverage-greedy:repair-augmented",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "Ecoli4",
+    "matches": true,
+    "method": "coverage-greedy:repair-augmented",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "Ecoli4",
+    "matches": true,
+    "method": "quality-coverage:original",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "Ecoli4",
+    "matches": true,
+    "method": "quality-coverage:original",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "Ecoli4",
+    "matches": true,
+    "method": "quality-coverage:original",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "Ecoli4",
+    "matches": true,
+    "method": "quality-coverage:original",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "Ecoli4",
+    "matches": true,
+    "method": "quality-coverage:repair-augmented",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "Ecoli4",
+    "matches": true,
+    "method": "quality-coverage:repair-augmented",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "Ecoli4",
+    "matches": true,
+    "method": "quality-coverage:repair-augmented",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "Ecoli4",
+    "matches": true,
+    "method": "quality-coverage:repair-augmented",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "page-blocks0",
+    "matches": true,
+    "method": "REAL_TRAIN",
+    "regime": "TRTR"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "page-blocks0",
+    "matches": true,
+    "method": "REAL_TRAIN",
+    "regime": "TRTR"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "page-blocks0",
+    "matches": true,
+    "method": "B1-structural-complete",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "page-blocks0",
+    "matches": true,
+    "method": "B1-structural-complete",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "page-blocks0",
+    "matches": true,
+    "method": "B1-structural-complete",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "page-blocks0",
+    "matches": true,
+    "method": "B1-structural-complete",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "page-blocks0",
+    "matches": true,
+    "method": "B2-structural-complete",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "page-blocks0",
+    "matches": true,
+    "method": "B2-structural-complete",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "page-blocks0",
+    "matches": true,
+    "method": "B2-structural-complete",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "page-blocks0",
+    "matches": true,
+    "method": "B2-structural-complete",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "page-blocks0",
+    "matches": true,
+    "method": "B3-structural-complete",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "page-blocks0",
+    "matches": true,
+    "method": "B3-structural-complete",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "page-blocks0",
+    "matches": true,
+    "method": "B3-structural-complete",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "page-blocks0",
+    "matches": true,
+    "method": "B3-structural-complete",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "page-blocks0",
+    "matches": true,
+    "method": "source-order:original",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "page-blocks0",
+    "matches": true,
+    "method": "source-order:original",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "page-blocks0",
+    "matches": true,
+    "method": "source-order:original",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "page-blocks0",
+    "matches": true,
+    "method": "source-order:original",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "page-blocks0",
+    "matches": true,
+    "method": "source-order:repair-augmented",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "page-blocks0",
+    "matches": true,
+    "method": "source-order:repair-augmented",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "page-blocks0",
+    "matches": true,
+    "method": "source-order:repair-augmented",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "page-blocks0",
+    "matches": true,
+    "method": "source-order:repair-augmented",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "page-blocks0",
+    "matches": true,
+    "method": "farthest-first:original",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "page-blocks0",
+    "matches": true,
+    "method": "farthest-first:original",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "page-blocks0",
+    "matches": true,
+    "method": "farthest-first:original",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "page-blocks0",
+    "matches": true,
+    "method": "farthest-first:original",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "page-blocks0",
+    "matches": true,
+    "method": "farthest-first:repair-augmented",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "page-blocks0",
+    "matches": true,
+    "method": "farthest-first:repair-augmented",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "page-blocks0",
+    "matches": true,
+    "method": "farthest-first:repair-augmented",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "page-blocks0",
+    "matches": true,
+    "method": "farthest-first:repair-augmented",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "page-blocks0",
+    "matches": true,
+    "method": "coverage-greedy:original",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "page-blocks0",
+    "matches": true,
+    "method": "coverage-greedy:original",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "page-blocks0",
+    "matches": true,
+    "method": "coverage-greedy:original",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "page-blocks0",
+    "matches": true,
+    "method": "coverage-greedy:original",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "page-blocks0",
+    "matches": true,
+    "method": "coverage-greedy:repair-augmented",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "page-blocks0",
+    "matches": true,
+    "method": "coverage-greedy:repair-augmented",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "page-blocks0",
+    "matches": true,
+    "method": "coverage-greedy:repair-augmented",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "page-blocks0",
+    "matches": true,
+    "method": "coverage-greedy:repair-augmented",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "page-blocks0",
+    "matches": true,
+    "method": "quality-coverage:original",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "page-blocks0",
+    "matches": true,
+    "method": "quality-coverage:original",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "page-blocks0",
+    "matches": true,
+    "method": "quality-coverage:original",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "page-blocks0",
+    "matches": true,
+    "method": "quality-coverage:original",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "page-blocks0",
+    "matches": true,
+    "method": "quality-coverage:repair-augmented",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "logistic_regression",
+    "dataset_id": "page-blocks0",
+    "matches": true,
+    "method": "quality-coverage:repair-augmented",
+    "regime": "HYBRID_MINORITY"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "page-blocks0",
+    "matches": true,
+    "method": "quality-coverage:repair-augmented",
+    "regime": "TSTR"
+  },
+  {
+    "classifier": "random_forest",
+    "dataset_id": "page-blocks0",
+    "matches": true,
+    "method": "quality-coverage:repair-augmented",
+    "regime": "HYBRID_MINORITY"
+  }
+]

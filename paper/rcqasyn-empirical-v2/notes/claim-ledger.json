@@ -1,0 +1,52 @@
+{
+  "external_integer_noncompliance": {
+    "generated_n": 49,
+    "noncompliant_n": 46,
+    "selector": {
+      "dataset_id": "page-blocks0",
+      "method": "SMOTE+b",
+      "track": "A"
+    },
+    "source": "artifacts/reports/empirical-v2/run-v2/results.json"
+  },
+  "fresh_split_summary": {
+    "interpretation": "mean and sample SD over all five predeclared fresh holdouts; offline curation only",
+    "source": "artifacts/reports/empirical-v2/run-v2/split-summary.json"
+  },
+  "historical_coverage": {
+    "fields": [
+      "unique_train_coverage",
+      "exact_duplicate_rate",
+      "near_duplicate_rate"
+    ],
+    "source": "artifacts/reports/phase6/report-v2/coverage.csv"
+  },
+  "limits": [
+    "Historical TEST already used and exact-feature overlap disclosed",
+    "No human semantic ground truth or calibration",
+    "Five holdouts overlap",
+    "Minority-only offline pools preclude pure TSTR",
+    "No superiority or significance claim",
+    "Repair changes pool and selection together"
+  ],
+  "structural_counts": {
+    "claims": [
+      601,
+      75,
+      54,
+      21,
+      64,
+      200
+    ],
+    "source": "artifacts/reports/phase6/report-v2/report.md; phase6/core-v1/repairs"
+  },
+  "utility_and_intervals": {
+    "files": [
+      "results.json",
+      "bootstrap.json",
+      "paired-differences.json"
+    ],
+    "protocol_commit": "91619f1",
+    "source": "artifacts/reports/empirical-v2/run-v2"
+  }
+}

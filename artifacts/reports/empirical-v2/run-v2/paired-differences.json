@@ -1,0 +1,3698 @@
+[
+  {
+    "confidence": 0.95,
+    "dataset_id": "Abalone19",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:repair-augmented",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "lower": 0.0,
+    "metric": "f1",
+    "replicates": 2000,
+    "right": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Abalone19",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:repair-augmented",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "lower": 0.0,
+    "metric": "average_precision",
+    "replicates": 2000,
+    "right": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Abalone19",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:repair-augmented",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "lower": 0.0,
+    "metric": "balanced_accuracy",
+    "replicates": 2000,
+    "right": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Abalone19",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:repair-augmented",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "lower": 0.0,
+    "metric": "mcc",
+    "replicates": 2000,
+    "right": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Abalone19",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "lower": -0.006810230674255553,
+    "metric": "f1",
+    "replicates": 2000,
+    "right": [
+      "schema/random/s13",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.01954542117759992,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Abalone19",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "lower": -0.026310588547727998,
+    "metric": "average_precision",
+    "replicates": 2000,
+    "right": [
+      "schema/random/s13",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.000490628509217458,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Abalone19",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "lower": -0.04166666666666663,
+    "metric": "balanced_accuracy",
+    "replicates": 2000,
+    "right": [
+      "schema/random/s13",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.3007246376811594,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Abalone19",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "lower": -0.017388919949866827,
+    "metric": "mcc",
+    "replicates": 2000,
+    "right": [
+      "schema/random/s13",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.10247964645002952,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Abalone19",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "lower": -0.0029300185425059663,
+    "metric": "f1",
+    "replicates": 2000,
+    "right": [
+      "combined/random/s13",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.025835259087974047,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Abalone19",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "lower": -0.0023729541728454043,
+    "metric": "average_precision",
+    "replicates": 2000,
+    "right": [
+      "combined/random/s13",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0020008133163570384,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Abalone19",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "lower": 0.027762681159420217,
+    "metric": "balanced_accuracy",
+    "replicates": 2000,
+    "right": [
+      "combined/random/s13",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.3756038647342995,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Abalone19",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "lower": 0.005794684860611986,
+    "metric": "mcc",
+    "replicates": 2000,
+    "right": [
+      "combined/random/s13",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.12923718034903775,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Abalone19",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:repair-augmented",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "lower": 0.0,
+    "metric": "f1",
+    "replicates": 2000,
+    "right": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Abalone19",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:repair-augmented",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "lower": 0.0,
+    "metric": "average_precision",
+    "replicates": 2000,
+    "right": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Abalone19",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:repair-augmented",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "lower": 0.0,
+    "metric": "balanced_accuracy",
+    "replicates": 2000,
+    "right": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Abalone19",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:repair-augmented",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "lower": null,
+    "metric": "mcc",
+    "replicates": 2000,
+    "right": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "status": "undefined",
+    "undefined_replicates": 2000,
+    "upper": null,
+    "valid_replicates": 0
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Abalone19",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "lower": 0.0,
+    "metric": "f1",
+    "replicates": 2000,
+    "right": [
+      "schema/random/s13",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Abalone19",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "lower": -0.026023990162058665,
+    "metric": "average_precision",
+    "replicates": 2000,
+    "right": [
+      "schema/random/s13",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0038708136278920676,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Abalone19",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "lower": 0.0,
+    "metric": "balanced_accuracy",
+    "replicates": 2000,
+    "right": [
+      "schema/random/s13",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Abalone19",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "lower": null,
+    "metric": "mcc",
+    "replicates": 2000,
+    "right": [
+      "schema/random/s13",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "status": "undefined",
+    "undefined_replicates": 2000,
+    "upper": null,
+    "valid_replicates": 0
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Abalone19",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "lower": 0.0,
+    "metric": "f1",
+    "replicates": 2000,
+    "right": [
+      "combined/random/s13",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Abalone19",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "lower": -0.01284772371412932,
+    "metric": "average_precision",
+    "replicates": 2000,
+    "right": [
+      "combined/random/s13",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": -0.001537062068762234,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Abalone19",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "lower": 0.0,
+    "metric": "balanced_accuracy",
+    "replicates": 2000,
+    "right": [
+      "combined/random/s13",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Abalone19",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "lower": null,
+    "metric": "mcc",
+    "replicates": 2000,
+    "right": [
+      "combined/random/s13",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "status": "undefined",
+    "undefined_replicates": 2000,
+    "upper": null,
+    "valid_replicates": 0
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Abalone19",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "lower": 0.0,
+    "metric": "f1",
+    "replicates": 2000,
+    "right": [
+      "REAL_TRAIN",
+      "logistic_regression",
+      "TRTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Abalone19",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "lower": -0.024233221627390538,
+    "metric": "average_precision",
+    "replicates": 2000,
+    "right": [
+      "REAL_TRAIN",
+      "logistic_regression",
+      "TRTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.011722220367255712,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Abalone19",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "lower": 0.0,
+    "metric": "balanced_accuracy",
+    "replicates": 2000,
+    "right": [
+      "REAL_TRAIN",
+      "logistic_regression",
+      "TRTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Abalone19",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "lower": null,
+    "metric": "mcc",
+    "replicates": 2000,
+    "right": [
+      "REAL_TRAIN",
+      "logistic_regression",
+      "TRTR"
+    ],
+    "status": "undefined",
+    "undefined_replicates": 2000,
+    "upper": null,
+    "valid_replicates": 0
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Abalone19",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:repair-augmented",
+      "random_forest",
+      "TSTR"
+    ],
+    "lower": 0.0,
+    "metric": "f1",
+    "replicates": 2000,
+    "right": [
+      "quality-coverage:original",
+      "random_forest",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Abalone19",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:repair-augmented",
+      "random_forest",
+      "TSTR"
+    ],
+    "lower": 0.0,
+    "metric": "average_precision",
+    "replicates": 2000,
+    "right": [
+      "quality-coverage:original",
+      "random_forest",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Abalone19",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:repair-augmented",
+      "random_forest",
+      "TSTR"
+    ],
+    "lower": 0.0,
+    "metric": "balanced_accuracy",
+    "replicates": 2000,
+    "right": [
+      "quality-coverage:original",
+      "random_forest",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Abalone19",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:repair-augmented",
+      "random_forest",
+      "TSTR"
+    ],
+    "lower": 0.0,
+    "metric": "mcc",
+    "replicates": 2000,
+    "right": [
+      "quality-coverage:original",
+      "random_forest",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Abalone19",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "TSTR"
+    ],
+    "lower": -0.0037391142527055687,
+    "metric": "f1",
+    "replicates": 2000,
+    "right": [
+      "schema/random/s13",
+      "random_forest",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.024876054535083545,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Abalone19",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "TSTR"
+    ],
+    "lower": -0.002085570428392292,
+    "metric": "average_precision",
+    "replicates": 2000,
+    "right": [
+      "schema/random/s13",
+      "random_forest",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.009498127448464531,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Abalone19",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "TSTR"
+    ],
+    "lower": -0.023550724637681153,
+    "metric": "balanced_accuracy",
+    "replicates": 2000,
+    "right": [
+      "schema/random/s13",
+      "random_forest",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.3206672705314009,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Abalone19",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "TSTR"
+    ],
+    "lower": -0.009805781734307505,
+    "metric": "mcc",
+    "replicates": 2000,
+    "right": [
+      "schema/random/s13",
+      "random_forest",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.11244296873347043,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Abalone19",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "TSTR"
+    ],
+    "lower": -0.008303918267213483,
+    "metric": "f1",
+    "replicates": 2000,
+    "right": [
+      "combined/random/s13",
+      "random_forest",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.015271045723727492,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Abalone19",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "TSTR"
+    ],
+    "lower": -0.00043712413564830476,
+    "metric": "average_precision",
+    "replicates": 2000,
+    "right": [
+      "combined/random/s13",
+      "random_forest",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.016841504196464397,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Abalone19",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "TSTR"
+    ],
+    "lower": -0.04106280193236722,
+    "metric": "balanced_accuracy",
+    "replicates": 2000,
+    "right": [
+      "combined/random/s13",
+      "random_forest",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.2180102657004831,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Abalone19",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "TSTR"
+    ],
+    "lower": -0.019329802879662572,
+    "metric": "mcc",
+    "replicates": 2000,
+    "right": [
+      "combined/random/s13",
+      "random_forest",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.07519360487511587,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Abalone19",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:repair-augmented",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "lower": 0.0,
+    "metric": "f1",
+    "replicates": 2000,
+    "right": [
+      "quality-coverage:original",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Abalone19",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:repair-augmented",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "lower": 0.0,
+    "metric": "average_precision",
+    "replicates": 2000,
+    "right": [
+      "quality-coverage:original",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Abalone19",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:repair-augmented",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "lower": 0.0,
+    "metric": "balanced_accuracy",
+    "replicates": 2000,
+    "right": [
+      "quality-coverage:original",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Abalone19",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:repair-augmented",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "lower": 0.0,
+    "metric": "mcc",
+    "replicates": 2000,
+    "right": [
+      "quality-coverage:original",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 709,
+    "upper": 0.0,
+    "valid_replicates": 1291
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Abalone19",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "lower": 0.0,
+    "metric": "f1",
+    "replicates": 2000,
+    "right": [
+      "schema/random/s13",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Abalone19",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "lower": -0.15241519922677624,
+    "metric": "average_precision",
+    "replicates": 2000,
+    "right": [
+      "schema/random/s13",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.014337088257429593,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Abalone19",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "lower": -0.0018115942028985588,
+    "metric": "balanced_accuracy",
+    "replicates": 2000,
+    "right": [
+      "schema/random/s13",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Abalone19",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "lower": null,
+    "metric": "mcc",
+    "replicates": 2000,
+    "right": [
+      "schema/random/s13",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "status": "undefined",
+    "undefined_replicates": 2000,
+    "upper": null,
+    "valid_replicates": 0
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Abalone19",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "lower": 0.0,
+    "metric": "f1",
+    "replicates": 2000,
+    "right": [
+      "combined/random/s13",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Abalone19",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "lower": -0.021755704169768245,
+    "metric": "average_precision",
+    "replicates": 2000,
+    "right": [
+      "combined/random/s13",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.08995336959942994,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Abalone19",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "lower": -0.0018115942028985588,
+    "metric": "balanced_accuracy",
+    "replicates": 2000,
+    "right": [
+      "combined/random/s13",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Abalone19",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "lower": null,
+    "metric": "mcc",
+    "replicates": 2000,
+    "right": [
+      "combined/random/s13",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "status": "undefined",
+    "undefined_replicates": 2000,
+    "upper": null,
+    "valid_replicates": 0
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Abalone19",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "lower": 0.0,
+    "metric": "f1",
+    "replicates": 2000,
+    "right": [
+      "REAL_TRAIN",
+      "random_forest",
+      "TRTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Abalone19",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "lower": -0.020516217184489396,
+    "metric": "average_precision",
+    "replicates": 2000,
+    "right": [
+      "REAL_TRAIN",
+      "random_forest",
+      "TRTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.1180280860237617,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Abalone19",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "lower": -0.0018115942028985588,
+    "metric": "balanced_accuracy",
+    "replicates": 2000,
+    "right": [
+      "REAL_TRAIN",
+      "random_forest",
+      "TRTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Abalone19",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "lower": null,
+    "metric": "mcc",
+    "replicates": 2000,
+    "right": [
+      "REAL_TRAIN",
+      "random_forest",
+      "TRTR"
+    ],
+    "status": "undefined",
+    "undefined_replicates": 2000,
+    "upper": null,
+    "valid_replicates": 0
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Ecoli4",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:repair-augmented",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "lower": 0.0,
+    "metric": "f1",
+    "replicates": 2000,
+    "right": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Ecoli4",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:repair-augmented",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "lower": 0.0,
+    "metric": "average_precision",
+    "replicates": 2000,
+    "right": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Ecoli4",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:repair-augmented",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "lower": 0.0,
+    "metric": "balanced_accuracy",
+    "replicates": 2000,
+    "right": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Ecoli4",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:repair-augmented",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "lower": 0.0,
+    "metric": "mcc",
+    "replicates": 2000,
+    "right": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Ecoli4",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "lower": -0.15270413573700953,
+    "metric": "f1",
+    "replicates": 2000,
+    "right": [
+      "schema/random/s13",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": -0.03584229390681004,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Ecoli4",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "lower": -0.5244740456911507,
+    "metric": "average_precision",
+    "replicates": 2000,
+    "right": [
+      "schema/random/s13",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": -0.08264471897211835,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Ecoli4",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "lower": -0.134920634920635,
+    "metric": "balanced_accuracy",
+    "replicates": 2000,
+    "right": [
+      "schema/random/s13",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": -0.039682539682539764,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Ecoli4",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "lower": -0.1666768146533399,
+    "metric": "mcc",
+    "replicates": 2000,
+    "right": [
+      "schema/random/s13",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": -0.04555848437944517,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Ecoli4",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "lower": -0.026208026208026203,
+    "metric": "f1",
+    "replicates": 2000,
+    "right": [
+      "combined/random/s13",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.013077692274248922,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Ecoli4",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "lower": -0.007262638026224959,
+    "metric": "average_precision",
+    "replicates": 2000,
+    "right": [
+      "combined/random/s13",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.14846524565956967,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Ecoli4",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "lower": -0.0319444444444442,
+    "metric": "balanced_accuracy",
+    "replicates": 2000,
+    "right": [
+      "combined/random/s13",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.015873015873015928,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Ecoli4",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "lower": -0.03385771871922544,
+    "metric": "mcc",
+    "replicates": 2000,
+    "right": [
+      "combined/random/s13",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.01690033640061228,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Ecoli4",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:repair-augmented",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "lower": 0.0,
+    "metric": "f1",
+    "replicates": 2000,
+    "right": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Ecoli4",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:repair-augmented",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "lower": 0.0,
+    "metric": "average_precision",
+    "replicates": 2000,
+    "right": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Ecoli4",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:repair-augmented",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "lower": 0.0,
+    "metric": "balanced_accuracy",
+    "replicates": 2000,
+    "right": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Ecoli4",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:repair-augmented",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "lower": 0.0,
+    "metric": "mcc",
+    "replicates": 2000,
+    "right": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Ecoli4",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "lower": 0.0,
+    "metric": "f1",
+    "replicates": 2000,
+    "right": [
+      "schema/random/s13",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Ecoli4",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "lower": 0.0,
+    "metric": "average_precision",
+    "replicates": 2000,
+    "right": [
+      "schema/random/s13",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Ecoli4",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "lower": 0.0,
+    "metric": "balanced_accuracy",
+    "replicates": 2000,
+    "right": [
+      "schema/random/s13",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Ecoli4",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "lower": 0.0,
+    "metric": "mcc",
+    "replicates": 2000,
+    "right": [
+      "schema/random/s13",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Ecoli4",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "lower": 0.0,
+    "metric": "f1",
+    "replicates": 2000,
+    "right": [
+      "combined/random/s13",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Ecoli4",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "lower": 0.0,
+    "metric": "average_precision",
+    "replicates": 2000,
+    "right": [
+      "combined/random/s13",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Ecoli4",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "lower": 0.0,
+    "metric": "balanced_accuracy",
+    "replicates": 2000,
+    "right": [
+      "combined/random/s13",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Ecoli4",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "lower": 0.0,
+    "metric": "mcc",
+    "replicates": 2000,
+    "right": [
+      "combined/random/s13",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Ecoli4",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "lower": 0.0,
+    "metric": "f1",
+    "replicates": 2000,
+    "right": [
+      "REAL_TRAIN",
+      "logistic_regression",
+      "TRTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Ecoli4",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "lower": 0.0,
+    "metric": "average_precision",
+    "replicates": 2000,
+    "right": [
+      "REAL_TRAIN",
+      "logistic_regression",
+      "TRTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Ecoli4",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "lower": 0.0,
+    "metric": "balanced_accuracy",
+    "replicates": 2000,
+    "right": [
+      "REAL_TRAIN",
+      "logistic_regression",
+      "TRTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Ecoli4",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "lower": 0.0,
+    "metric": "mcc",
+    "replicates": 2000,
+    "right": [
+      "REAL_TRAIN",
+      "logistic_regression",
+      "TRTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Ecoli4",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:repair-augmented",
+      "random_forest",
+      "TSTR"
+    ],
+    "lower": 0.0,
+    "metric": "f1",
+    "replicates": 2000,
+    "right": [
+      "quality-coverage:original",
+      "random_forest",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Ecoli4",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:repair-augmented",
+      "random_forest",
+      "TSTR"
+    ],
+    "lower": 0.0,
+    "metric": "average_precision",
+    "replicates": 2000,
+    "right": [
+      "quality-coverage:original",
+      "random_forest",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Ecoli4",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:repair-augmented",
+      "random_forest",
+      "TSTR"
+    ],
+    "lower": 0.0,
+    "metric": "balanced_accuracy",
+    "replicates": 2000,
+    "right": [
+      "quality-coverage:original",
+      "random_forest",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Ecoli4",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:repair-augmented",
+      "random_forest",
+      "TSTR"
+    ],
+    "lower": 0.0,
+    "metric": "mcc",
+    "replicates": 2000,
+    "right": [
+      "quality-coverage:original",
+      "random_forest",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Ecoli4",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "TSTR"
+    ],
+    "lower": -0.05747679045092836,
+    "metric": "f1",
+    "replicates": 2000,
+    "right": [
+      "schema/random/s13",
+      "random_forest",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.05747126436781608,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Ecoli4",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "TSTR"
+    ],
+    "lower": -0.4568824404761904,
+    "metric": "average_precision",
+    "replicates": 2000,
+    "right": [
+      "schema/random/s13",
+      "random_forest",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.19999999999999996,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Ecoli4",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "TSTR"
+    ],
+    "lower": -0.03968253968253965,
+    "metric": "balanced_accuracy",
+    "replicates": 2000,
+    "right": [
+      "schema/random/s13",
+      "random_forest",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.03968253968253965,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Ecoli4",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "TSTR"
+    ],
+    "lower": -0.05815908867352501,
+    "metric": "mcc",
+    "replicates": 2000,
+    "right": [
+      "schema/random/s13",
+      "random_forest",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.059673744594114286,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Ecoli4",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "TSTR"
+    ],
+    "lower": -0.12125087189025802,
+    "metric": "f1",
+    "replicates": 2000,
+    "right": [
+      "combined/random/s13",
+      "random_forest",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.20238215731636783,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Ecoli4",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "TSTR"
+    ],
+    "lower": -0.4462544642857143,
+    "metric": "average_precision",
+    "replicates": 2000,
+    "right": [
+      "combined/random/s13",
+      "random_forest",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.16077251552794997,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Ecoli4",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "TSTR"
+    ],
+    "lower": -0.06349206349206349,
+    "metric": "balanced_accuracy",
+    "replicates": 2000,
+    "right": [
+      "combined/random/s13",
+      "random_forest",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.34325396825396826,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Ecoli4",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "TSTR"
+    ],
+    "lower": -0.11733666942888155,
+    "metric": "mcc",
+    "replicates": 2000,
+    "right": [
+      "combined/random/s13",
+      "random_forest",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.3431652950006575,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Ecoli4",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:repair-augmented",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "lower": 0.0,
+    "metric": "f1",
+    "replicates": 2000,
+    "right": [
+      "quality-coverage:original",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Ecoli4",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:repair-augmented",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "lower": 0.0,
+    "metric": "average_precision",
+    "replicates": 2000,
+    "right": [
+      "quality-coverage:original",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Ecoli4",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:repair-augmented",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "lower": 0.0,
+    "metric": "balanced_accuracy",
+    "replicates": 2000,
+    "right": [
+      "quality-coverage:original",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Ecoli4",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:repair-augmented",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "lower": 0.0,
+    "metric": "mcc",
+    "replicates": 2000,
+    "right": [
+      "quality-coverage:original",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Ecoli4",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "lower": 0.0,
+    "metric": "f1",
+    "replicates": 2000,
+    "right": [
+      "schema/random/s13",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Ecoli4",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "lower": 0.0,
+    "metric": "average_precision",
+    "replicates": 2000,
+    "right": [
+      "schema/random/s13",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Ecoli4",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "lower": 0.0,
+    "metric": "balanced_accuracy",
+    "replicates": 2000,
+    "right": [
+      "schema/random/s13",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Ecoli4",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "lower": 0.0,
+    "metric": "mcc",
+    "replicates": 2000,
+    "right": [
+      "schema/random/s13",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Ecoli4",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "lower": 0.0,
+    "metric": "f1",
+    "replicates": 2000,
+    "right": [
+      "combined/random/s13",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Ecoli4",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "lower": 0.0,
+    "metric": "average_precision",
+    "replicates": 2000,
+    "right": [
+      "combined/random/s13",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Ecoli4",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "lower": 0.0,
+    "metric": "balanced_accuracy",
+    "replicates": 2000,
+    "right": [
+      "combined/random/s13",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Ecoli4",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "lower": 0.0,
+    "metric": "mcc",
+    "replicates": 2000,
+    "right": [
+      "combined/random/s13",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Ecoli4",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "lower": 0.0,
+    "metric": "f1",
+    "replicates": 2000,
+    "right": [
+      "REAL_TRAIN",
+      "random_forest",
+      "TRTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 1.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Ecoli4",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "lower": 0.0,
+    "metric": "average_precision",
+    "replicates": 2000,
+    "right": [
+      "REAL_TRAIN",
+      "random_forest",
+      "TRTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Ecoli4",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "lower": 0.0,
+    "metric": "balanced_accuracy",
+    "replicates": 2000,
+    "right": [
+      "REAL_TRAIN",
+      "random_forest",
+      "TRTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.5,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "Ecoli4",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "lower": 0.0,
+    "metric": "mcc",
+    "replicates": 2000,
+    "right": [
+      "REAL_TRAIN",
+      "random_forest",
+      "TRTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 125,
+    "upper": 0.5114957895408028,
+    "valid_replicates": 1875
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "page-blocks0",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:repair-augmented",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "lower": -0.13497634684215565,
+    "metric": "f1",
+    "replicates": 2000,
+    "right": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": -0.07388696876858708,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "page-blocks0",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:repair-augmented",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "lower": -0.007122775672415751,
+    "metric": "average_precision",
+    "replicates": 2000,
+    "right": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.04931374781468494,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "page-blocks0",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:repair-augmented",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "lower": -0.06714140386571721,
+    "metric": "balanced_accuracy",
+    "replicates": 2000,
+    "right": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": -0.02390527357942163,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "page-blocks0",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:repair-augmented",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "lower": -0.14575474496731214,
+    "metric": "mcc",
+    "replicates": 2000,
+    "right": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": -0.07549603647750786,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "page-blocks0",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "lower": -0.07403923890447756,
+    "metric": "f1",
+    "replicates": 2000,
+    "right": [
+      "schema/random/s13",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.05868090027056984,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "page-blocks0",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "lower": 0.006744401228543128,
+    "metric": "average_precision",
+    "replicates": 2000,
+    "right": [
+      "schema/random/s13",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.18977252820779003,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "page-blocks0",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "lower": 0.013382638787966849,
+    "metric": "balanced_accuracy",
+    "replicates": 2000,
+    "right": [
+      "schema/random/s13",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.10165957437145767,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "page-blocks0",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "lower": -0.07730352342929048,
+    "metric": "mcc",
+    "replicates": 2000,
+    "right": [
+      "schema/random/s13",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.06977944366578355,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "page-blocks0",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "lower": -0.04494933140740217,
+    "metric": "f1",
+    "replicates": 2000,
+    "right": [
+      "combined/random/s13",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.10735226037847244,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "page-blocks0",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "lower": 0.10442138576168403,
+    "metric": "average_precision",
+    "replicates": 2000,
+    "right": [
+      "combined/random/s13",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.33108553853020806,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "page-blocks0",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "lower": 0.049494872656590576,
+    "metric": "balanced_accuracy",
+    "replicates": 2000,
+    "right": [
+      "combined/random/s13",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.14263120367679127,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "page-blocks0",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "lower": -0.052216103844706464,
+    "metric": "mcc",
+    "replicates": 2000,
+    "right": [
+      "combined/random/s13",
+      "logistic_regression",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.11175738765881237,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "page-blocks0",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:repair-augmented",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "lower": 0.0,
+    "metric": "f1",
+    "replicates": 2000,
+    "right": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "page-blocks0",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:repair-augmented",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "lower": -0.004551978708264492,
+    "metric": "average_precision",
+    "replicates": 2000,
+    "right": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": -7.127578890291727e-05,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "page-blocks0",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:repair-augmented",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "lower": 0.0,
+    "metric": "balanced_accuracy",
+    "replicates": 2000,
+    "right": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "page-blocks0",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:repair-augmented",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "lower": 0.0,
+    "metric": "mcc",
+    "replicates": 2000,
+    "right": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "page-blocks0",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "lower": -0.02110135116848672,
+    "metric": "f1",
+    "replicates": 2000,
+    "right": [
+      "schema/random/s13",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "page-blocks0",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "lower": -0.006048834430721173,
+    "metric": "average_precision",
+    "replicates": 2000,
+    "right": [
+      "schema/random/s13",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0018906532964676516,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "page-blocks0",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "lower": -0.013392857142857206,
+    "metric": "balanced_accuracy",
+    "replicates": 2000,
+    "right": [
+      "schema/random/s13",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "page-blocks0",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "lower": -0.01969184711963168,
+    "metric": "mcc",
+    "replicates": 2000,
+    "right": [
+      "schema/random/s13",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "page-blocks0",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "lower": 0.0,
+    "metric": "f1",
+    "replicates": 2000,
+    "right": [
+      "combined/random/s13",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "page-blocks0",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "lower": -0.0003672598970196422,
+    "metric": "average_precision",
+    "replicates": 2000,
+    "right": [
+      "combined/random/s13",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0038293482380257534,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "page-blocks0",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "lower": 0.0,
+    "metric": "balanced_accuracy",
+    "replicates": 2000,
+    "right": [
+      "combined/random/s13",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "page-blocks0",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "lower": 0.0,
+    "metric": "mcc",
+    "replicates": 2000,
+    "right": [
+      "combined/random/s13",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "page-blocks0",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "lower": -0.019510373219005808,
+    "metric": "f1",
+    "replicates": 2000,
+    "right": [
+      "REAL_TRAIN",
+      "logistic_regression",
+      "TRTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.020202987940614123,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "page-blocks0",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "lower": -0.012817956592130747,
+    "metric": "average_precision",
+    "replicates": 2000,
+    "right": [
+      "REAL_TRAIN",
+      "logistic_regression",
+      "TRTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0077259441788931705,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "page-blocks0",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "lower": -0.013392857142857095,
+    "metric": "balanced_accuracy",
+    "replicates": 2000,
+    "right": [
+      "REAL_TRAIN",
+      "logistic_regression",
+      "TRTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.013392857142857206,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "page-blocks0",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "logistic_regression",
+      "HYBRID_MINORITY"
+    ],
+    "lower": -0.018728090107148036,
+    "metric": "mcc",
+    "replicates": 2000,
+    "right": [
+      "REAL_TRAIN",
+      "logistic_regression",
+      "TRTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.01929435036584773,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "page-blocks0",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:repair-augmented",
+      "random_forest",
+      "TSTR"
+    ],
+    "lower": -0.04825495223512373,
+    "metric": "f1",
+    "replicates": 2000,
+    "right": [
+      "quality-coverage:original",
+      "random_forest",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": -0.00507377386696758,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "page-blocks0",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:repair-augmented",
+      "random_forest",
+      "TSTR"
+    ],
+    "lower": -0.03520436941391022,
+    "metric": "average_precision",
+    "replicates": 2000,
+    "right": [
+      "quality-coverage:original",
+      "random_forest",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.09287023991587223,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "page-blocks0",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:repair-augmented",
+      "random_forest",
+      "TSTR"
+    ],
+    "lower": -0.04916618224095337,
+    "metric": "balanced_accuracy",
+    "replicates": 2000,
+    "right": [
+      "quality-coverage:original",
+      "random_forest",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.002597732887661741,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "page-blocks0",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:repair-augmented",
+      "random_forest",
+      "TSTR"
+    ],
+    "lower": -0.06680381264607153,
+    "metric": "mcc",
+    "replicates": 2000,
+    "right": [
+      "quality-coverage:original",
+      "random_forest",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": -0.001494966390064599,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "page-blocks0",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "TSTR"
+    ],
+    "lower": -0.23400343925685588,
+    "metric": "f1",
+    "replicates": 2000,
+    "right": [
+      "schema/random/s13",
+      "random_forest",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": -0.11366419139354034,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "page-blocks0",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "TSTR"
+    ],
+    "lower": -0.12108860590814043,
+    "metric": "average_precision",
+    "replicates": 2000,
+    "right": [
+      "schema/random/s13",
+      "random_forest",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.019345413635249185,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "page-blocks0",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "TSTR"
+    ],
+    "lower": -0.05291120930824001,
+    "metric": "balanced_accuracy",
+    "replicates": 2000,
+    "right": [
+      "schema/random/s13",
+      "random_forest",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.028809516240371976,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "page-blocks0",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "TSTR"
+    ],
+    "lower": -0.23744244882976387,
+    "metric": "mcc",
+    "replicates": 2000,
+    "right": [
+      "schema/random/s13",
+      "random_forest",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": -0.10403931460057794,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "page-blocks0",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "TSTR"
+    ],
+    "lower": -0.1671622914962496,
+    "metric": "f1",
+    "replicates": 2000,
+    "right": [
+      "combined/random/s13",
+      "random_forest",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": -0.06219311572435182,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "page-blocks0",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "TSTR"
+    ],
+    "lower": 0.009948813731472295,
+    "metric": "average_precision",
+    "replicates": 2000,
+    "right": [
+      "combined/random/s13",
+      "random_forest",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.14006589441331005,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "page-blocks0",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "TSTR"
+    ],
+    "lower": -0.043696523942740824,
+    "metric": "balanced_accuracy",
+    "replicates": 2000,
+    "right": [
+      "combined/random/s13",
+      "random_forest",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.03474524505885778,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "page-blocks0",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "TSTR"
+    ],
+    "lower": -0.16418013268971535,
+    "metric": "mcc",
+    "replicates": 2000,
+    "right": [
+      "combined/random/s13",
+      "random_forest",
+      "TSTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": -0.04080497876990256,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "page-blocks0",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:repair-augmented",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "lower": -0.012090484042157533,
+    "metric": "f1",
+    "replicates": 2000,
+    "right": [
+      "quality-coverage:original",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.034748490945674,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "page-blocks0",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:repair-augmented",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "lower": -0.008774323212704938,
+    "metric": "average_precision",
+    "replicates": 2000,
+    "right": [
+      "quality-coverage:original",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.008578191791194975,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "page-blocks0",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:repair-augmented",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "lower": -0.008419924429588721,
+    "metric": "balanced_accuracy",
+    "replicates": 2000,
+    "right": [
+      "quality-coverage:original",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.0267857142857143,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "page-blocks0",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:repair-augmented",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "lower": -0.012451303962516494,
+    "metric": "mcc",
+    "replicates": 2000,
+    "right": [
+      "quality-coverage:original",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.03707614901220844,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "page-blocks0",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "lower": -0.022249050200631806,
+    "metric": "f1",
+    "replicates": 2000,
+    "right": [
+      "schema/random/s13",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.030254412225126797,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "page-blocks0",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "lower": -0.029030998154042798,
+    "metric": "average_precision",
+    "replicates": 2000,
+    "right": [
+      "schema/random/s13",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.026502044220313242,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "page-blocks0",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "lower": -0.021812781572445816,
+    "metric": "balanced_accuracy",
+    "replicates": 2000,
+    "right": [
+      "schema/random/s13",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.022321428571428603,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "page-blocks0",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "lower": -0.022572691679530358,
+    "metric": "mcc",
+    "replicates": 2000,
+    "right": [
+      "schema/random/s13",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.03270925694275417,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "page-blocks0",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "lower": -0.03511781168186334,
+    "metric": "f1",
+    "replicates": 2000,
+    "right": [
+      "combined/random/s13",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.023107546433914924,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "page-blocks0",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "lower": -0.02859002837788634,
+    "metric": "average_precision",
+    "replicates": 2000,
+    "right": [
+      "combined/random/s13",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.016013960144401124,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "page-blocks0",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "lower": -0.026785714285714305,
+    "metric": "balanced_accuracy",
+    "replicates": 2000,
+    "right": [
+      "combined/random/s13",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.017857142857142905,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "page-blocks0",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "lower": -0.03766939058843395,
+    "metric": "mcc",
+    "replicates": 2000,
+    "right": [
+      "combined/random/s13",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.025212976494336303,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "page-blocks0",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "lower": -0.028879177922559472,
+    "metric": "f1",
+    "replicates": 2000,
+    "right": [
+      "REAL_TRAIN",
+      "random_forest",
+      "TRTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.015373825314659556,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "page-blocks0",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "lower": -0.036204723444037606,
+    "metric": "average_precision",
+    "replicates": 2000,
+    "right": [
+      "REAL_TRAIN",
+      "random_forest",
+      "TRTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.00493881215786932,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "page-blocks0",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "lower": -0.02678571428571419,
+    "metric": "balanced_accuracy",
+    "replicates": 2000,
+    "right": [
+      "REAL_TRAIN",
+      "random_forest",
+      "TRTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.008928571428571397,
+    "valid_replicates": 2000
+  },
+  {
+    "confidence": 0.95,
+    "dataset_id": "page-blocks0",
+    "interval_method": "stratified paired percentile",
+    "left": [
+      "quality-coverage:original",
+      "random_forest",
+      "HYBRID_MINORITY"
+    ],
+    "lower": -0.029166406342706064,
+    "metric": "mcc",
+    "replicates": 2000,
+    "right": [
+      "REAL_TRAIN",
+      "random_forest",
+      "TRTR"
+    ],
+    "status": "ok",
+    "undefined_replicates": 0,
+    "upper": 0.016490633742991215,
+    "valid_replicates": 2000
+  }
+]

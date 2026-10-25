@@ -1,0 +1,42 @@
+\begin{longtable}{lrrrrrrr}
+\caption{Consolidated historical ablations. Q denotes unchanged quality-coverage selection. Random rows average five seeds; complete per-seed data accompany the paper. F1 is logistic pure TSTR; -- means unavailable.}\label{tab:ablations}\\
+\toprule
+Dataset & Method & Pool & $n$ & Coverage & Exact & Near & F1 \\
+\midrule\endfirsthead
+\toprule
+Dataset & Method & Pool & $n$ & Coverage & Exact & Near & F1 \\
+\midrule\endhead
+Abalone19 & Raw labeled random & 195 & 56 & 0.799 & 0.171 & 0.443 & 0.029 \\
+ & Schema random & 195 & 56 & 0.799 & 0.171 & 0.443 & 0.029 \\
+ & Admitted random & 170 & 56 & 0.833 & 0.236 & 0.493 & 0.022 \\
+ & Structure + Q selection & 195 & 56 & 0.951 & 0.000 & 0.000 & 0.030 \\
+ & Structure/local + Q & 177 & 56 & 0.950 & 0.000 & 0.000 & 0.031 \\
+ & Structure/global + Q & 177 & 56 & 0.948 & 0.000 & 0.000 & 0.031 \\
+ & Structure/local/global + Q & 170 & 56 & 0.948 & 0.000 & 0.000 & 0.031 \\
+ & Admitted source order & 170 & 56 & 0.622 & 0.357 & 0.625 & -- \\
+ & Admitted farthest first & 170 & 56 & 0.940 & 0.000 & 0.000 & 0.035 \\
+ & Admitted coverage greedy & 170 & 56 & 0.948 & 0.107 & 0.268 & 0.030 \\
+ & Repair pool + Q & 170 & 56 & 0.948 & 0.000 & 0.000 & 0.031 \\
+Ecoli4 & Raw labeled random & 195 & 70 & 0.422 & 0.097 & 0.180 & 0.253 \\
+ & Schema random & 195 & 70 & 0.422 & 0.097 & 0.180 & 0.253 \\
+ & Admitted random & 162 & 70 & 0.439 & 0.117 & 0.197 & 0.217 \\
+ & Structure + Q selection & 195 & 70 & 0.509 & 0.000 & 0.000 & 0.216 \\
+ & Structure/local + Q & 175 & 70 & 0.509 & 0.000 & 0.000 & 0.195 \\
+ & Structure/global + Q & 177 & 70 & 0.506 & 0.000 & 0.000 & 0.229 \\
+ & Structure/local/global + Q & 162 & 70 & 0.506 & 0.000 & 0.000 & 0.205 \\
+ & Admitted source order & 162 & 70 & 0.416 & 0.200 & 0.386 & -- \\
+ & Admitted farthest first & 162 & 70 & 0.468 & 0.000 & 0.000 & 0.200 \\
+ & Admitted coverage greedy & 162 & 70 & 0.506 & 0.114 & 0.243 & 0.108 \\
+ & Repair pool + Q & 162 & 70 & 0.506 & 0.000 & 0.000 & 0.205 \\
+page-blocks0 & Raw labeled random & 195 & 49 & 0.905 & 0.061 & 0.559 & 0.390 \\
+ & Schema random & 136 & 49 & 0.889 & 0.069 & 0.559 & 0.477 \\
+ & Admitted random & 119 & 49 & 0.914 & 0.082 & 0.702 & 0.535 \\
+ & Structure + Q selection & 136 & 49 & 0.934 & 0.000 & 0.286 & 0.202 \\
+ & Structure/local + Q & 120 & 49 & 0.932 & 0.000 & 0.327 & 0.446 \\
+ & Structure/global + Q & 120 & 49 & 0.934 & 0.000 & 0.327 & 0.448 \\
+ & Structure/local/global + Q & 119 & 49 & 0.932 & 0.000 & 0.327 & 0.446 \\
+ & Admitted source order & 119 & 49 & 0.914 & 0.265 & 0.592 & -- \\
+ & Admitted farthest first & 119 & 49 & 0.932 & 0.000 & 0.000 & 0.550 \\
+ & Admitted coverage greedy & 119 & 49 & 0.932 & 0.163 & 0.449 & 0.627 \\
+ & Repair pool + Q & 168 & 49 & 0.937 & 0.000 & 0.102 & 0.342 \\
+\bottomrule\end{longtable}

@@ -63,3 +63,8 @@ literature/papers/*.pdf
 # Superseded unapproved Phase-2 checkout-format preparation; retain locally only.
 artifacts/reports/phase2/gate-a-v1/
 artifacts/reports/phase2/gate-a-v2/
+
+# Retain development and replay study outputs locally; commit the canonical run
+# and the substantive replay comparison instead of duplicate evidence bundles.
+artifacts/reports/empirical-v2/run-v1/
+artifacts/reports/empirical-v2/replay-v1/

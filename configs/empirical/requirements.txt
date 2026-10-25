@@ -1,0 +1,3 @@
+# Install with the existing Python 3.12 project environment; no dependency upgrades.
+imbalanced-learn==0.14.2
+sklearn-compat==0.1.6
