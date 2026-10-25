@@ -1,5 +1,10 @@
 # Milestones
 
+> Historical milestone plan. For implemented M2/M4/M5/M7/M6 components and the
+> completed six-phase/Empirical v2 release, use the
+> [current repository guide](REPOSITORY_GUIDE.md). These original goals are retained;
+> they do not imply every proposed extension or calibrated validity was implemented.
+
 - **M0 — Foundation (current):** repository, reproducibility, typed contracts, protocol
   interfaces, configuration, storage, literature inventory, CLI, and tests.
 - **M1 — Baseline harness:** B1/B2/B3 implementations and a common benchmark harness.

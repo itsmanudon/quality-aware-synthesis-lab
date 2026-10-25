@@ -1,5 +1,11 @@
 # Research plan
 
+> Historical M0.1 proposal. Current evidence covers three core datasets and the
+> completed six-phase/Empirical v2 implementation; see the
+> [current repository guide](REPOSITORY_GUIDE.md) and [canonical paper](../paper/README.md).
+> The planned datasets, baselines and novelty language below are not current results.
+> Human-label experiments and validity calibration are outside the active paper scope.
+
 RC-QASyn is a proposed research program, not a claim of results. The primary proposed
 contributions are: (1) calibrated heterogeneous evidence fusion; (2) risk-calibrated
 control; (3) dependency-aware localized repair; and (4) marginal coverage optimization.

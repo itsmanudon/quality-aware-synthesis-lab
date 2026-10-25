@@ -1,5 +1,11 @@
 # Architecture
 
+> Historical M0/M1 design document. All six engineering phases and Empirical v2
+> are now complete; see the [current repository guide](REPOSITORY_GUIDE.md).
+> The future-stage language below records the original scope. Current fusion is
+> descriptive; human-label experiments and validity calibration are outside the
+> active paper scope.
+
 ```mermaid
 flowchart LR
   S[Specification] --> G[Generation]

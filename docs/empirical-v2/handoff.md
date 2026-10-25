@@ -1,5 +1,11 @@
 # RC-QASyn empirical revision - supervisor handoff
 
+> Historical pre-merge handoff. Empirical v2 was subsequently merged, pushed and
+> engineering-frozen at `359b004f7a0f8b3702c3729607786e09de0ac263`, with 1,824
+> passing tests / 14 warnings. See [current release status](../REPOSITORY_GUIDE.md)
+> and the [current reproduction guide](../REPRODUCE_EMPIRICAL_V2.md) for frozen SOURCE
+> setup and separate report/paper output paths. Original handoff text is retained below.
+
 **RC-QASyn EMPIRICAL REVISION COMPLETE - UPDATED MANUSCRIPT READY FOR SUPERVISOR REVIEW**
 
 Branch: `research/empirical-evidence-v2`.
