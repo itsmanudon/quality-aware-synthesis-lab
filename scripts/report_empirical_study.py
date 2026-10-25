@@ -15,6 +15,8 @@ import pandas as pd
 
 from rcqasyn.empirical.study import file_hash, write_json
 from rcqasyn.phase2.common import digest
+from rcqasyn.phase2.workflow import load_preparation
+from rcqasyn.phase5.geometry import complete_record
 
 
 def read(path: Path) -> Any:
@@ -95,6 +97,35 @@ def main(root: Path, run: Path, output: Path, paper: Path) -> None:
                              "source_row_hash": digest(old)})
     write_json(output/"consolidated-ablations.json", consolidated)
     pd.DataFrame(consolidated).to_csv(output/"consolidated-ablations.csv", index=False)
+    # Record structural outcomes separately from geometry and utility, using the
+    # already approved completeness predicate on the exact selected payloads.
+    _, crosswalks, _, specifications = load_preparation(root/"artifacts/reports/phase2/gate-a-v3")
+    original = {r["occurrence_id"]: r["payload"] for cw in crosswalks for r in cw["records"]}
+    specs = {s["specification"]["dataset_id"]: s["specification"] for s in specifications["specifications"]}
+    offline = {}
+    for path in (run/"replication").glob("*.json"):
+        offline.update({r["occurrence_id"]: r["payload"] for r in read(path)["candidate_records"]})
+    compliance = []
+    for row in constructions:
+        payloads = original if row["track"] == "A" else offline
+        compatible = sum(complete_record(payloads[i], specs[row["dataset_id"]]) for i in row["selected_ids"])
+        compliance.append({k: row[k] for k in ["track", "dataset_id", "split_seed", "method", "budget_achieved"]}
+                          | {"structural_complete_n": compatible,
+                             "structural_noncompliant_n": row["budget_achieved"]-compatible,
+                             "structural_complete_rate": compatible/row["budget_achieved"] if row["budget_achieved"] else None,
+                             "construction_row_fingerprint": digest(row)})
+    pd.DataFrame(compliance).to_csv(output/"selection-structural-compliance.csv", index=False)
+    random_summary = []
+    for dataset in ["Abalone19", "Ecoli4", "page-blocks0"]:
+        for method in ["raw-labeled/random", "schema/random", "combined/random"]:
+            group = [r for r in consolidated if r["dataset_id"] == dataset and r["method"].startswith(method+"/s")]
+            item = {"dataset_id": dataset, "method": method, "selection_seeds": len(group)}
+            for field in ["unique_train_feature_coverage", "exact_duplicate_rate", "near_duplicate_rate", "f1_tstr_lr", "ap_tstr_lr"]:
+                vals = [r[field] for r in group if r.get(field) is not None]
+                item[field+"_mean"] = float(np.mean(vals)) if vals else None
+                item[field+"_std"] = float(np.std(vals, ddof=1)) if len(vals) > 1 else None
+            random_summary.append(item)
+    write_json(output/"random-selection-summary.json", random_summary)
     ablation_rows, ablation_sources = [], []
     datasets = ["Abalone19", "Ecoli4", "page-blocks0"]
     labels = {"raw-labeled/random": "Raw labeled random", "schema/random": "Schema random",
@@ -170,6 +201,20 @@ def main(root: Path, run: Path, output: Path, paper: Path) -> None:
     pd.DataFrame([{k: r.get(k) for k in ["track", "dataset_id", "split_seed", "method", "classifier", "regime",
                     "test_positive_n", "test_negative_n", "tp", "fp", "tn", "fn", "recall_wilson95"]}
                   for r in confusions]).to_csv(output/"confusions.csv", index=False)
+    primary_confusions = [r for r in confusions if r["track"] == "A" and r["method"] in
+                          ["REAL_TRAIN", "quality-coverage:original", "quality-coverage:repair-augmented"]
+                          and r["regime"] == ("TRTR" if r["method"] == "REAL_TRAIN" else "TSTR")]
+    table("confusions", "Historical primary predictions: class denominators and confusion counts. Q and Q repair use pure TSTR; Real uses TRTR.",
+          ["Dataset / method", "Model", "$n_+$", "$n_-$", "TP", "FP", "TN", "FN"],
+          [[tex(r["dataset_id"]+" / "+{"REAL_TRAIN": "Real", "quality-coverage:original": "Q",
+                    "quality-coverage:repair-augmented": "Q repair"}[r["method"]]),
+            "LR" if r["classifier"] == "logistic_regression" else "RF",
+            *[str(r[k]) for k in ["test_positive_n", "test_negative_n", "tp", "fp", "tn", "fn"]]]
+           for r in primary_confusions], {"file": "results.json", "rows": [digest(r) for r in primary_confusions]})
+    ledger["datasets"] = {"source_table": "paper/rcqasyn-final-draft/tables/datasets.tex",
+                           "source_sha256": file_hash(root/"paper/rcqasyn-final-draft/tables/datasets.tex"),
+                           "source_ledger": "paper/rcqasyn-final-draft/notes/table-evidence.json",
+                           "source_ledger_sha256": file_hash(root/"paper/rcqasyn-final-draft/notes/table-evidence.json")}
     # Split-wise paired differences retain each seed, rather than compare independent averages.
     split_pairs = []
     for row in results:

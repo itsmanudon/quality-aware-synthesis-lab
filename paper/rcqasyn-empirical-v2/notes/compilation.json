@@ -1,0 +1,36 @@
+{
+  "command": "TECTONIC_CACHE_DIR=artifacts/test-tmp/tectonic-cache; tectonic --only-cached --untrusted --keep-logs main.tex",
+  "compiler": "Installed Codex Tectonic; cached final rebuild",
+  "human_declarations": "Authors, affiliations, CRediT, funding, conflicts and ethics/venue wording remain for human completion.",
+  "inspection": "All 13 final pages rendered at 90 dpi and visually inspected in four contact sheets; architecture, seven tables, plots, citations and page boundaries reviewed. No clipping, missing glyphs or unresolved citations observed.",
+  "overfull_boxes": 0,
+  "page_format": "A4",
+  "pages": 13,
+  "pdf_sha256": "c8f181efdb256242c6e867df5d6ee8ab531fe38a58414b94ca2ad883cbaa41b0",
+  "resource_note": "Desktop compile succeeded. Export used a separate local TeX-resource cache; no package/library upgrades.",
+  "source_hashes": {
+    "figures/architecture.tex": "f888da8cc81f9e4759c2426cc027e19f8491dc3696fb466f5aed1d11d72d467b",
+    "main.tex": "8ba627baa3207f774ac112e8ccbd5012adbf9573a5ca3f8a2e25d1080a82abc4",
+    "references.bib": "49eeb2dcf029701eb7087983fa428a55b5a13afbcbf46e59b6510b820cd65be1",
+    "sections/01-introduction.tex": "d120ae71455890cf50a4769efdc3edc844d3722afb27c3d93f42ad9813dd217a",
+    "sections/02-methods.tex": "f2fb2543c202325ba7cb947b31d8fa225ddb38f3b342e760a517e471eeeb72ac",
+    "sections/03-design.tex": "0cd31554f24be345afdbee9a49f572ad767bd7b3339d2399f4e96b2c357a87d2",
+    "sections/04-results.tex": "0ae923d8e6bdfcc0bd49afe915dfd16dddf6fd01232abb6cd09c3737645f5339",
+    "sections/05-discussion.tex": "1733d9858c1ce89d755c0ec27cd815248dae235130914007729b8bd932a8347c",
+    "sections/06-supplement.tex": "51b99fa8eaf93efdf1266d1805934b3aedffd79d840dffd663633a16ee2a72f8",
+    "tables/ablations.tex": "377d27af3eff30092d68ea1b99941ef204f95e777ef4c3ed37adf19599f6ed29",
+    "tables/bootstrap.tex": "a5b4925da55dfdc5c7c60c173a450ec4f378399b90e342a6c80f343f4655c5b6",
+    "tables/confusions.tex": "32b398de5fcd4517df0530dc9e5e122b1c2ac00f1b738f4be8fb314544731574",
+    "tables/datasets.tex": "1984b1c5e6817cdfcc4577e244102a11a54837ac748beb6582262561b80af94a",
+    "tables/external.tex": "4163acc0e567fb07816cf0baeaa20b62b74012cc8c0a5d67ad5e0f38dde3c5a6",
+    "tables/paired.tex": "a660213cefb03c2fcc586f3551fa54acbe4fbf97caef1d105b11dde21f9f3644",
+    "tables/repeated.tex": "bbac2586461b0d4794db9885d4226300989a953a78a2431c22bd3bb20c744f43"
+  },
+  "status": "COMPILED_AND_ALL_PAGES_VISUALLY_INSPECTED",
+  "undefined_citations": 0,
+  "undefined_references": 0,
+  "warnings": [
+    "inputenc ignored by UTF-8 engine",
+    "Underfull bibliography boxes"
+  ]
+}

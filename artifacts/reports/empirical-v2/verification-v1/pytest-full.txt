@@ -1,0 +1,78 @@
+........................................................................ [  3%]
+........................................................................ [  7%]
+........................................................................ [ 11%]
+........................................................................ [ 15%]
+........................................................................ [ 19%]
+........................................................................ [ 23%]
+........................................................................ [ 27%]
+........................................................................ [ 31%]
+........................................................................ [ 35%]
+........................................................................ [ 39%]
+........................................................................ [ 43%]
+........................................................................ [ 47%]
+........................................................................ [ 51%]
+........................................................................ [ 55%]
+........................................................................ [ 59%]
+........................................................................ [ 63%]
+........................................................................ [ 67%]
+........................................................................ [ 71%]
+........................................................................ [ 75%]
+........................................................................ [ 79%]
+........................................................................ [ 83%]
+........................................................................ [ 87%]
+........................................................................ [ 91%]
+........................................................................ [ 95%]
+................................................................F....... [ 99%]
+...............                                                          [100%]
+================================== FAILURES ===================================
+_____________ test_actual_source_derived_audit_without_model_fit ______________
+
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000028BDB541D30>
+
+    def test_actual_source_derived_audit_without_model_fit(monkeypatch):
+        def forbidden(*args, **kwargs):
+            raise AssertionError("M2 constructor/fitting must not run")
+    
+        monkeypatch.setattr(TrainEvidenceModel, "__init__", forbidden)
+>       result = audit_core(ROOT, SOURCE, BASE / "core-v1")
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+tests\phase6\test_results.py:29: 
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+src\rcqasyn\phase6\audit.py:16: in audit_core
+    ctx = load_context(root, source)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+src\rcqasyn\phase5\workflow.py:47: in load_context
+    validate_preparation(source, preparation)
+src\rcqasyn\phase2\workflow.py:204: in validate_preparation
+    validate_crosswalk(root, crosswalk)
+src\rcqasyn\phase2\provenance.py:166: in validate_crosswalk
+    verify_sources(root, value["source_files"])
+_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _
+
+root = WindowsPath('D:/Github Repos/quality-aware-synthesis-lab-empirical')
+sources = {'artifacts/runs/m1-p1-real-page-blocks0-gemma4-e4b-20260829/b2_b3_disagreements.csv': '58952e61158c02ba0c58b18a4081f2...a4-e4b-20260829/baselines/b1/decisions.jsonl': '0bbf2eb3a5141a18d13abc564db8082986973021a3ba86657afdd4e4139ad61b', ...}
+
+    def verify_sources(root: Path, sources: dict[str, str]) -> None:
+        for relative, expected in sources.items():
+            if file_hash(source_path(root, relative)) != expected:
+>               raise ValueError(f"source integrity mismatch: {relative}")
+E               ValueError: source integrity mismatch: artifacts/runs/m1-p1-real-page-blocks0-gemma4-e4b-20260829/b2_b3_disagreements.csv
+
+src\rcqasyn\phase2\common.py:60: ValueError
+============================== warnings summary ===============================
+tests/m1/test_phase1_boundaries.py: 10 warnings
+  D:\Github Repos\quality-aware-synthesis-lab\.venv\Lib\site-packages\sklearn\metrics\_classification.py:2939: UserWarning: y_pred contains classes not in y_true
+    warnings.warn("y_pred contains classes not in y_true")
+
+tests/m1/test_phase1_boundaries.py::test_fresh_provider_and_judge_inputs_ignore_test_only_changes
+tests/m1/test_phase1_boundaries.py::test_fresh_provider_and_judge_inputs_ignore_test_only_changes
+tests/m1/test_phase1_boundaries.py::test_fresh_provider_and_judge_inputs_ignore_test_only_changes
+tests/m1/test_phase1_boundaries.py::test_fresh_provider_and_judge_inputs_ignore_test_only_changes
+  D:\Github Repos\quality-aware-synthesis-lab\.venv\Lib\site-packages\sklearn\metrics\_classification.py:1879: UndefinedMetricWarning: F-score is ill-defined and being set to 0.0 due to no true nor predicted samples. Use `zero_division` parameter to control this behavior.
+    _warn_prf(average, modifier, f"{metric.capitalize()} is", result.shape[0])
+
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+=========================== short test summary info ===========================
+FAILED tests/phase6/test_results.py::test_actual_source_derived_audit_without_model_fit
+1 failed, 1814 passed, 14 warnings in 652.28s (0:10:52)

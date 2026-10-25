@@ -1,0 +1,47 @@
+note: using only cached resource files
+note: Running TeX ...
+Fontconfig error: Cannot load default config file: No such file: (null)
+warning: tables/external:2: Underfull \hbox (badness 1642) in paragraph at lines 2--2
+note: Running BibTeX on main.aux ...
+note: Rerunning TeX because bibtex was run ...
+warning: tables/external:2: Underfull \hbox (badness 1642) in paragraph at lines 2--2
+warning: main.bbl:115: Underfull \hbox (badness 4713) in paragraph at lines 107--115
+warning: main.bbl:115: Underfull \hbox (badness 1845) in paragraph at lines 107--115
+warning: main.bbl:115: Underfull \hbox (badness 6510) in paragraph at lines 107--115
+warning: main.bbl:115: Underfull \hbox (badness 3838) in paragraph at lines 107--115
+warning: main.bbl:124: Underfull \hbox (badness 1874) in paragraph at lines 118--124
+warning: main.bbl:124: Underfull \hbox (badness 2096) in paragraph at lines 118--124
+warning: main.bbl:136: Underfull \hbox (badness 3471) in paragraph at lines 127--136
+warning: main.bbl:136: Underfull \hbox (badness 1776) in paragraph at lines 127--136
+warning: main.bbl:136: Underfull \hbox (badness 4205) in paragraph at lines 127--136
+warning: main.bbl:136: Underfull \hbox (badness 3417) in paragraph at lines 127--136
+note: Rerunning TeX because "main.aux" changed ...
+warning: tables/external:2: Underfull \hbox (badness 1642) in paragraph at lines 2--2
+warning: main.bbl:115: Underfull \hbox (badness 4713) in paragraph at lines 107--115
+warning: main.bbl:115: Underfull \hbox (badness 1845) in paragraph at lines 107--115
+warning: main.bbl:115: Underfull \hbox (badness 6510) in paragraph at lines 107--115
+warning: main.bbl:115: Underfull \hbox (badness 3838) in paragraph at lines 107--115
+warning: main.bbl:124: Underfull \hbox (badness 1874) in paragraph at lines 118--124
+warning: main.bbl:124: Underfull \hbox (badness 2096) in paragraph at lines 118--124
+warning: main.bbl:136: Underfull \hbox (badness 3471) in paragraph at lines 127--136
+warning: main.bbl:136: Underfull \hbox (badness 1776) in paragraph at lines 127--136
+warning: main.bbl:136: Underfull \hbox (badness 4205) in paragraph at lines 127--136
+warning: main.bbl:136: Underfull \hbox (badness 3417) in paragraph at lines 127--136
+note: Rerunning TeX because "main.aux" changed ...
+warning: tables/external:2: Underfull \hbox (badness 1642) in paragraph at lines 2--2
+warning: main.bbl:115: Underfull \hbox (badness 4713) in paragraph at lines 107--115
+warning: main.bbl:115: Underfull \hbox (badness 1845) in paragraph at lines 107--115
+warning: main.bbl:115: Underfull \hbox (badness 6510) in paragraph at lines 107--115
+warning: main.bbl:115: Underfull \hbox (badness 3838) in paragraph at lines 107--115
+warning: main.bbl:124: Underfull \hbox (badness 1874) in paragraph at lines 118--124
+warning: main.bbl:124: Underfull \hbox (badness 2096) in paragraph at lines 118--124
+warning: main.bbl:136: Underfull \hbox (badness 3471) in paragraph at lines 127--136
+warning: main.bbl:136: Underfull \hbox (badness 1776) in paragraph at lines 127--136
+warning: main.bbl:136: Underfull \hbox (badness 4205) in paragraph at lines 127--136
+warning: main.bbl:136: Underfull \hbox (badness 3417) in paragraph at lines 127--136
+note: Running xdvipdfmx ...
+warning: warnings were issued by the TeX engine; use --print and/or --keep-logs for details.
+note: Writing `main.pdf` (150.7802734375 KiB)
+note: Writing `main.log` (28.357421875 KiB)
+note: Writing `main.blg` (194 B)
+note: Skipped writing 3 intermediate files (use --keep-intermediates to keep them)

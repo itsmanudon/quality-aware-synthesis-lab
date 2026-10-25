@@ -1,0 +1,9 @@
+{
+  "canonical_revision": "b7acdc8f2d59121c68cb4e590f478d5cab3762a7",
+  "note": "Runtime and revision-bearing manifests differ; all saved substantive files compared.",
+  "output_files_compared": 609,
+  "output_hash_mismatches": [],
+  "replay_revision": "4322a3d7ffba48d0dfe2885113b8ea6dfcccc9dd",
+  "result_content_fingerprint": "031ab9b924dc28c2daf67c5c414fcfd84042c2e6caafa3b098db55c1ec348bbd",
+  "same_substantive_results": true
+}

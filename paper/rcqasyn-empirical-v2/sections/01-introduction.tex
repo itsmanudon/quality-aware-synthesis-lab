@@ -1,0 +1,31 @@
+\begin{abstract}
+Among 601 historical synthetic tabular candidate occurrences from three imbalanced classification datasets, 75 (12.5\%) violate source-declared structural requirements; page-blocks0 accounts for 64 violations among 200 candidates (32\%). RC-QASyn makes these defects, statistical support and dataset contribution separately auditable through provenance, schema checks, local and global TRAIN evidence, descriptive admission, fixed-budget construction and bounded integer repair. All 54 eligible repairs become structurally compliant; 21 rejected records remain ineligible. At matched budgets, quality-coverage selection raises distinct-feature TRAIN coverage over source order from 0.622 to 0.948 on Abalone19 and from 0.416 to 0.506 on Ecoli4, with zero exact duplicates. Improved geometry does not ensure improved classification: expanding the repaired page-blocks0 pool lowers logistic pure-synthetic F1 from 0.446 to 0.342 (paired conditional 95\% difference interval: $[-0.135,-0.074]$). A separate train-only offline study uses five fresh stratified splits per dataset. Curated augmentation yields mean F1 $0.758\pm0.166$ on Ecoli4 versus $0.848\pm0.119$ for real-only training; gains on page-blocks0 are small and random curation remains competitive. Saved predictions support 2,000-resample paired intervals. These results establish reproducible structural and geometric effects with mixed utility outcomes, without independently establishing complete semantic validity.
+\end{abstract}
+\noindent\textbf{Keywords:} synthetic tabular data; curation; coverage; bounded repair; imbalanced learning.
+
+\section{Introduction}
+A generated record can be readable and numerically plausible while omitting its class, violating an integer declaration or duplicating another record. These failures occur in the studied population: 75 of 601 candidates violate authoritative structure, including 64 of 200 page-blocks0 records. These are rates for this historical generation campaign, not estimates for LLM outputs generally. They motivate checking what a record contains before interpreting distributional resemblance or downstream usefulness.
+
+Three questions remain distinct. Does a candidate comply with justified source declarations? How well does it resemble TRAIN observations locally and globally? What does it contribute to a selected dataset and its classifier? A distant observation may be legitimate, a compliant record may be redundant, and a diverse subset may train a worse classifier. RC-QASyn addresses these distinctions with an auditable curation system.
+
+We ask: to what extent do structural filtering, heterogeneous evidence, coverage-aware selection and bounded repair improve measurable synthetic-data characteristics and downstream classification utility compared with simple alternatives? The revision combines a controlled historical study with a separate offline replication. Annotation experiments and validity calibrators are outside the active scope.
+
+The contributions are:
+\begin{enumerate}
+\item Auditable separation of source-schema compliance, local/global statistical support and dataset contribution, linked to immutable candidate identities.
+\item Evidence-aware fixed-budget construction evaluated against random, source-order, farthest-first and coverage-greedy controls, with coverage and redundancy measurements.
+\item Source-preserving bounded integer repair, controlled reevaluation and matched-budget measurement of structural, geometric and utility changes.
+\item Empirical analysis of agreement and disagreement between geometry and classification, strengthened by paired prediction uncertainty and split-specific offline generation.
+\end{enumerate}
+These are integration and empirical contributions. Distances, covariance regularization, greedy selection, oversampling and bootstrap methods are established components; no new optimality guarantee is claimed.
+
+\section{Related work}
+CTGAN, TabDDPM and GReaT model tabular generation through conditional adversarial, diffusion and language-model approaches \citep{xu2019ctgan,kotelnikov2023tabddpm,borisov2023great}. RC-QASyn curates an existing candidate stream. The historical generator is not retrained here, and offline experiments do not reproduce its LLM behavior.
+
+Synthetic-data evaluation can distinguish fidelity, diversity and generalization \citep{alaa2022faithful}. Our TRAIN coverage and duplication rates are narrower diagnostics, without that work's probabilistic or privacy interpretation. Constraint-aware models incorporate explicit constraints into generation \citep{stoian2024realistic}. RC-QASyn checks justified declarations after generation and permits a narrower integer-only correction.
+
+Greedy coverage and diversity-based subset selection have substantial prior literature \citep{nemhauser1978submodular,sener2018coreset}. We reuse these ideas with traceable admission, class quotas and duplicate suppression. Classical unconstrained greedy guarantees do not automatically extend to the combined lexicographic selector.
+
+SMOTE interpolates minority observations \citep{chawla2002smote}. We use established imbalanced-learn implementations, including mixed-type SMOTENC \citep{lemaitre2017imbalanced}. Oversampling is a generation/training baseline, random candidate selection is a curation control, and class weighting changes classifier training. They answer different questions.
+
+Calibration concerns agreement between confidence and observed outcomes \citep{guo2017calibration}; candidate percentiles lack that interpretation. Bootstrap inference depends on its resampling design \citep{efron1979bootstrap}, and supplementary Wilson recall intervals address small positive counts \citep{brown2001interval}. Synthetic-data surveys and LLM-judge studies motivate traceability while limiting what recorded critic decisions establish \citep{long2024survey,zheng2023judging}.
