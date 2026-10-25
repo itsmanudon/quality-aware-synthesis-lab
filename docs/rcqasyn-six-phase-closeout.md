@@ -1,5 +1,10 @@
 # Six-phase research prototype closeout
 
+> Historical closeout before Empirical v2 and the main-branch merge. The canonical
+> [paper](../paper/README.md), [results and engineering status](REPOSITORY_GUIDE.md)
+> supersede its release-status wording. Historical review decisions remain preserved;
+> human-label experiments and validity calibration are outside the active paper scope.
+
 Engineering completion and exploratory experiment reproducibility are distinct from scientific acceptance. Phase 2 personal review remains pending; no scientific freeze or real-cohort validity calibration is approved.
 
 | Phase | Implemented evidence and outputs | Scientific status |

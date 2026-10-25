@@ -1,118 +1,140 @@
 # RC-QASyn: Risk-Calibrated Quality-Aware Synthetic Dataset Construction
 
-## Research problem
+RC-QASyn is a research prototype for constructing tabular synthetic datasets from
+traceable evidence, explicit admission decisions, bounded repairs and coverage-aware
+selection. All six engineering phases and **Empirical v2 are complete**.
 
-Synthetic records can satisfy a narrow schema while still carrying factual, logical,
-privacy, fairness, distributional, or downstream-utility problems. RC-QASyn studies how
-to make those different properties visible and traceable when constructing a dataset.
+**Start here:** [canonical manuscript PDF](paper/rcqasyn-empirical-v2/main.pdf)
+([editable LaTeX](paper/rcqasyn-empirical-v2/main.tex)),
+[empirical report](artifacts/reports/empirical-v2/report-v3/report.md),
+[reproduction guide](docs/REPRODUCE_EMPIRICAL_V2.md),
+[repository map](docs/REPOSITORY_GUIDE.md).
 
-## Core thesis / hypothesis
+## Motivation and contributions
 
-The working hypothesis is that independent, heterogeneous evidence with calibration and
-explicit risk-aware actions can support more reliable synthetic-data decisions than a
-single aggregate quality score. This is a proposed research direction, not a result or
-novelty claim.
+A record can satisfy a schema yet provide weak coverage, repeat existing records or
+reduce downstream utility. RC-QASyn keeps structural compliance, statistical concern,
+uncertainty and dataset contribution distinct so that construction decisions can be
+audited. Its contribution is empirical integration with explicit limits:
 
-## Current scope
+1. **Source-bound evidence:** preserved candidate occurrences, dataset specifications
+   and TRAIN-only heterogeneous evidence retain their provenance. See the
+   [Phase-2 workflow](docs/phase2-research-workflow.md) and
+   [Phase-3 evidence methods](docs/phase3-m2-methods.md).
+2. **Explicit admission and construction:** descriptive fusion and provisional
+   admission feed four matched-budget selectors, with coverage and redundancy
+   reported separately. See [fusion/admission](docs/phase4-m4-m5-methods.md) and
+   [construction](docs/phase5-m7-coverage-methods.md).
+3. **Bounded repair with lineage:** eligible integer defects can be repaired and
+   revalidated without inventing missing labels or features; parent records remain
+   preserved. See [repair and utility methods](docs/phase6-m6-m9-methods.md).
+4. **Reproducible comparative evidence:** external training baselines, five fresh
+   offline splits per dataset, saved predictions and paired bootstrap intervals expose
+   mixed and negative results. See the [pre-scoring protocol](docs/empirical-v2/protocol.md)
+   and [canonical run manifest](artifacts/reports/empirical-v2/run-v2/manifest.json).
 
-Milestone 1 adds a configuration-driven local dataset registry, TRAIN-only profiles and
-stratified splits, versioned prompts, replay and OpenAI-compatible provider adapters,
-and three strictly paired baselines. B1 accepts every parseable raw candidate; B2 uses
-independent deterministic validators; B3 uses exactly one judge with a static threshold,
-no calibration, and no rule/judge evidence fusion. The offline replay is a real run of
-the same evaluation architecture and never makes a network or paid call. Pure recorded-response replay does not render unsafe legacy contexts.
+## Six-phase architecture
 
-The development fixture is non-sensitive and is not KEEL data or scientific evidence.
-M1.1 official KEEL raw archives remain ignored; their source and hashes are recorded in
-`data/manifests/<id>/source.json` locally. See [docs/datasets.md](docs/datasets.md),
-[docs/generation-protocol.md](docs/generation-protocol.md), and [docs/baselines.md](docs/baselines.md).
+| Phase | Implemented role |
+| --- | --- |
+| 1: generation/evaluation | One persisted candidate pool; B1 accepts parseable candidates, B2 deterministic rules, B3 one judge; split and utility contracts |
+| 2: provenance/specification | Occurrence crosswalks, source declarations, dataset specifications and review provenance |
+| 3: heterogeneous evidence (M2) | Structural, local and global statistical evidence with availability and limitations |
+| 4: fusion/admission (M4/M5) | Descriptive dependent fusion, explicit refusal of unsupported calibration and provisional admission policies |
+| 5: construction (M7) | Source order, farthest first, coverage greedy and quality-coverage selection using TRAIN geometry |
+| 6: repair/utility (M6/M9) | Bounded repair, revalidation, parent exclusivity, matched-budget construction and downstream evaluation |
 
-## Separation from imbalance-synthesis-lab
+Empirical v2 extends the evaluation across these phases. Fusion scores are
+uncalibrated descriptive indices; a provisional pass does not establish semantic validity.
 
-RC-QASyn is an independent package and has no runtime dependency on
-`imbalance-synthesis-lab`. Any future comparison is an explicitly documented experiment,
-not an implicit code or data dependency.
+## Datasets and experimental scope
 
-## Eventual architecture
+| KEEL dataset | Source rows | Historical candidate occurrences | Features |
+| --- | ---: | ---: | --- |
+| Abalone19 | 4,174 | 200 | 7 numerical, 1 categorical |
+| Ecoli4 | 336 | 201 | 7 numerical |
+| page-blocks0 | 5,472 | 200 | 10 numerical |
 
-`Specification → Generation → Independent Validators → Evidence Fusion → Risk-Aware
-Controller → Repair/Revalidate/Regenerate → Dataset Optimizer → Audit → Downstream Utility`
+Source declarations and acquisition details are in [dataset documentation](docs/datasets.md)
+and [source manifests](data/manifests). The historical study uses the original splits
+and generated candidates. The fresh study uses five stratified 80/20 splits per dataset
+with TRAIN-only SMOTENC, SMOTE or RandomOverSampler pools as declared in the protocol.
+It is an **offline curation study**, not a repetition of the original LLM generation campaign.
 
-The stages are future extension points behind the contracts; M0.1 does not implement
-them.
+## Key results
 
-## Module philosophy
+| Observation | Saved evidence |
+| --- | --- |
+| 601 historical occurrences; 75 structural violations; 54 eligible repairs, all structurally repaired; 21 ineligible | [Repair summary and records](artifacts/reports/phase6/core-v1/repairs/artifact.json) |
+| 894 utility comparisons: 678 successful, 216 explicitly unavailable; all 138 historical utility rows replay | [Run manifest](artifacts/reports/empirical-v2/run-v2/manifest.json), [complete results](artifacts/reports/empirical-v2/run-v2/results.csv) |
+| 15 fresh split populations; five per dataset, with every split retained | [Populations](artifacts/reports/empirical-v2/run-v2/populations.json), [split summary](artifacts/reports/empirical-v2/run-v2/split-summary.json) |
+| 216 endpoint intervals and 168 paired-difference intervals from 2,000 stratified resamples | [Endpoint intervals](artifacts/reports/empirical-v2/run-v2/bootstrap.json), [paired differences](artifacts/reports/empirical-v2/run-v2/paired-differences.json) |
+| Page-blocks0 historical logistic pure-TSTR F1 falls from 0.4464 to 0.3421 after repair-pool expansion and reselection | [Utility rows](artifacts/reports/empirical-v2/run-v2/results.csv), [paired intervals](artifacts/reports/empirical-v2/run-v2/paired-differences.json) |
+| Fresh-split logistic F1, mean ± sample SD: Ecoli4 real 0.848 ± 0.119 vs curated augmentation 0.758 ± 0.166; page-blocks0 real 0.728 ± 0.026 vs curated 0.738 ± 0.028 | [Five-split report](artifacts/reports/empirical-v2/report-v3/report.md) |
 
-Contracts are strict, typed, serializable, versioned, and provenance-aware. Interfaces
-are Protocols only, while test doubles remain in tests. Storage is deterministic and
-atomic. Random IDs, content IDs, and named cryptographic seed derivation are distinct
-reproducibility concepts.
+Coverage and redundancy gains do not imply uniform utility gains. Classical training
+baselines and candidate curation answer different questions; unavailable comparisons
+and their reasons are retained in the evidence.
 
-## Quality vs risk vs uncertainty
+## Inspect results first
 
-Quality asks whether a specified property is satisfied. Risk asks about the consequence
-of accepting a candidate or dataset. Uncertainty records confidence, disagreement, or
-missing evidence. Dataset contribution asks about marginal coverage, redundancy, and
-utility. These concepts remain separate fields and are not silently collapsed.
+Reading the paper and saved results needs no raw datasets, model fitting or paid API
+calls. From the repository root in PowerShell:
 
-## Installation
-
-```bash
-python3.12 -m venv .venv
-source .venv/bin/activate
-python -m pip install -e '.[dev]'
+```powershell
+Get-Content artifacts/reports/empirical-v2/report-v3/report.md
+Get-Content artifacts/reports/empirical-v2/run-v2/manifest.json
+Get-Content -Raw artifacts/reports/empirical-v2/run-v2/results.json | ConvertFrom-Json |
+    Group-Object status | Select-Object Name, Count
 ```
 
-The package targets Python `>=3.12,<3.13` and uses a standard setuptools src layout.
+For experiments and tests, use **Python 3.12** (`>=3.12,<3.13`), Git and the declared
+dependencies. A fresh Windows environment can be installed with:
 
-## CLI
-
-```bash
-rcqasyn --help
-rcqasyn doctor
-rcqasyn papers index
-rcqasyn datasets list
-rcqasyn datasets inspect dev-small
-rcqasyn baselines replay --config configs/experiments/replay.yaml
-python -m rcqasyn --help
+```powershell
+py -3.12 -m venv .venv
+& .venv/Scripts/python.exe -m pip install -e '.[dev,research]' -r configs/empirical/requirements.txt
 ```
 
-`doctor` and `papers index` accept `--root` and `--config` for temporary project roots.
-The index is deterministic and records filename, relative POSIX path, SHA-256, and size.
+Raw KEEL `.dat` files are external, ignored inputs. Restore exact files at the registry
+paths and verify their SHA-256 values before execution. Do not regenerate or overwrite
+the committed manifests. The [reproduction guide](docs/REPRODUCE_EMPIRICAL_V2.md)
+provides source hashes, the required frozen SOURCE checkout, fresh output destinations,
+report/paper build instructions and test commands. Full execution requires these local
+inputs; saved-result inspection does not.
 
-## Structure
+## Tests and reproducibility status
 
-- `src/rcqasyn/contracts`: Pydantic v2 domain contracts.
-- `src/rcqasyn/interfaces`: Protocol-only extension points.
-- `src/rcqasyn/config`, `storage`, `literature`, `utils`, and `cli`: foundation services.
-- `configs/base.yaml` and `configs/{datasets,generators,validators,experiments}`:
-  typed registry and experiment configurations.
-- `literature/papers`, `literature/notes`, and `literature/paper_inventory.csv`: local
-  research memory and deterministic inventory; supplied PDFs are locally preserved and
-  ignored by Git by default for licensing/repository-size reasons.
-- `docs`: architecture, contracts, research plan, literature protocol, milestones, and
-  future artifact conventions.
+The Empirical v2 engineering freeze is
+`359b004f7a0f8b3702c3729607786e09de0ac263`: **1,824 tests passed, 14 known warnings**;
+20 focused empirical tests and 33 source/replay smoke tests passed. Maintained-code
+Ruff, Pyright and diff checks passed. Release verification matched 609 replay output
+hashes and 1,565 protected historical files. This documentation revision reuses that
+full-suite evidence; executable source and scientific inputs are unchanged.
 
-## Milestone status
+The earlier [verification archive](artifacts/reports/empirical-v2/verification-v1)
+records 1,815 tests before the nine release-compatibility tests were added. Its original
+logs remain preserved; the [repository guide](docs/REPOSITORY_GUIDE.md) distinguishes
+that archive from the merged engineering freeze.
 
-M0.1 foundation behavior remains supported. M1 baseline generation/evaluation is
-implemented and executable offline. Advanced calibrated fusion, repair/regeneration,
-RAG/factual verification, embeddings, privacy/fairness validation, and alpha/beta
-metrics remain explicitly deferred.
+## Navigation and historical versions
 
-## Phase 1 evaluation stabilization
+- [Repository guide](docs/REPOSITORY_GUIDE.md): modules, configurations, tests and evidence.
+- [Manuscript landing page](paper/README.md): canonical paper, sources and build instructions.
+- [Earlier six-phase manuscript](paper/rcqasyn-final-draft/main.pdf) and
+  [historical v0.1 source](paper/main.tex): retained earlier versions.
+- [Original candidate streams](artifacts/runs), [Phase-6 report](artifacts/reports/phase6/report-v2/report.md)
+  and [historical review material](docs/human-review.md): preserved provenance.
 
-M1 now distinguishes scientific specifications from executions, guards TRAIN-only
-provider contexts, persists raw calls before parsing, seals finalized bundles, and
-reports component failures and metric availability explicitly. See
-[the executable behavior and compatibility guide](docs/phase1-stabilization.md).
+## Scientific limits and status
 
-## Reproducibility
+The system establishes neither independent semantic validity nor validity calibration.
+Human-label experiments and validity calibration are outside the active paper scope.
+Historical TEST reuse, value overlap, small positive counts and overlapping fresh
+holdouts limit inference. Bootstrap intervals condition on fitted models and observed
+TEST strata; split SD measures a different source of variation. Offline page-blocks0
+replication preserves integer structure through resampling and adds no new support.
 
-Reproducibility depends on a Python 3.12 environment, resolved YAML configuration, root
-seed, Git state, content hashes, and versioned run/artifact records. Future runs must
-retain their manifest, resolved configuration, lifecycle events, and schema versions.
-No claim about dataset quality or research performance is made by this foundation.
-See [docs/reproducibility-and-artifacts.md](docs/reproducibility-and-artifacts.md) for
-the tracked-artifact policy, large-artifact transfer procedure, and cross-device resume
-checklist.
+Engineering and Empirical v2 are complete. Author identities, affiliations, CRediT,
+funding, conflicts, ethics/venue declarations and final scientific acceptance require
+human decisions. No publication acceptance or state-of-the-art superiority is claimed.

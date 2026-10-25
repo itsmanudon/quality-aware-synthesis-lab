@@ -1,61 +1,65 @@
-# RC-QASyn manuscript
+# RC-QASyn manuscripts
 
-This directory contains PAPER v0.1 of **Risk-Calibrated Quality-Aware
-Synthetic Dataset Construction**. It is an anonymous, neutral-template draft:
-development diagnostics are not final results, human annotation is in progress,
-and the proposed M2+ components have not been implemented.
+## Canonical: Empirical v2
 
-## Build
+The current professor-review manuscript is **RC-QASyn Empirical v2**:
 
-Use a conventional LaTeX installation with `latexmk`, `pdflatex`, and BibTeX:
+- [PDF: 13 A4 pages](rcqasyn-empirical-v2/main.pdf).
+- [Editable LaTeX](rcqasyn-empirical-v2/main.tex),
+  [sections](rcqasyn-empirical-v2/sections), [tables](rcqasyn-empirical-v2/tables)
+  and [editable architecture figure](rcqasyn-empirical-v2/figures/architecture.tex).
+- [Bibliography](rcqasyn-empirical-v2/references.bib) and
+  [verified-reference notes](rcqasyn-empirical-v2/notes/references-verified.json).
+- [Table provenance](rcqasyn-empirical-v2/notes/table-evidence.json),
+  [claim ledger](rcqasyn-empirical-v2/notes/claim-ledger.json) and
+  [compilation/visual-inspection record](rcqasyn-empirical-v2/notes/compilation.json).
 
-```text
-cd paper
-latexmk -pdf main.tex
+Numerical sources are [run-v2](../artifacts/reports/empirical-v2/run-v2/manifest.json)
+and [report-v3](../artifacts/reports/empirical-v2/report-v3/report.md), under the
+[pre-scoring protocol](../docs/empirical-v2/protocol.md). The manuscript reports mixed
+utility effects and conditional uncertainty. Human-label experiments and validity
+calibration are outside its active scope. Final author/institutional declarations and
+academic acceptance remain human decisions.
+
+## Build the existing manuscript
+
+LaTeX is separate from the Python dependencies. The recorded release compiled with
+Tectonic; this environment provides **Tectonic 0.17.0+20260731** through
+`CODEX_TECTONIC_PATH`. The command below uses its verified `--outdir` option to keep
+build outputs outside the canonical paper. Run from the repository root in PowerShell:
+
+```powershell
+$paperSource = (Resolve-Path paper/rcqasyn-empirical-v2).Path
+$paperBuild = Join-Path ([System.IO.Path]::GetTempPath()) ('rcqasyn-paper-' + [guid]::NewGuid())
+New-Item -ItemType Directory -Path $paperBuild | Out-Null
+$tectonic = if ($env:CODEX_TECTONIC_PATH) { $env:CODEX_TECTONIC_PATH } else { 'tectonic' }
+Push-Location $paperSource
+try {
+    & $tectonic --untrusted --keep-logs --outdir $paperBuild main.tex
+    if ($LASTEXITCODE -ne 0) { throw 'Tectonic build failed' }
+} finally { Pop-Location }
+Write-Output (Join-Path $paperBuild 'main.pdf')
 ```
 
-Clean generated files with:
+On a fresh machine, install Tectonic separately and put it on PATH; its first build
+may fetch TeX resources. With a populated cache, add `--only-cached` and, if needed,
+set `TECTONIC_CACHE_DIR` to that existing cache. The release inspection found no
+overfull boxes or unresolved references/citations; benign inputenc and underfull
+bibliography warnings are recorded. PDF timestamps need not replay byte-for-byte.
 
-```text
-latexmk -C
-```
+To regenerate numerical tables/figures from saved results, use the
+[reproduction guide](../docs/REPRODUCE_EMPIRICAL_V2.md). The reporter writes into its
+`--paper` destination, so the guide uses a separate copy of the manuscript.
 
-LaTeX is intentionally not a Python package dependency. The Legion used to
-initialize this draft did not have a LaTeX toolchain, so collaborators should
-compile after pulling and report actionable warnings rather than suppressing
-them.
+## Preserved earlier versions
 
-## File ownership
+| Version | Location | Role |
+| --- | --- | --- |
+| Empirical v2 | [Current source and PDF](rcqasyn-empirical-v2) | Canonical professor-review revision; external baselines, repeated splits and uncertainty |
+| Six-phase draft | [Earlier source](rcqasyn-final-draft/main.tex), [PDF](rcqasyn-final-draft/main.pdf) | Earlier engineering closeout manuscript based on Phase-6 evidence |
+| PAPER v0.1 | [Historical source](main.tex), [sections](sections), [notes](notes) | Original proposal/development draft; statements about unimplemented M2+ or pending annotation describe that period |
 
-Keep `main.tex` limited to document setup and section inclusion. Most edits
-belong in `sections/`; reusable table and figure sources belong in `tables/`
-and `figures/`. The files under `notes/` are manuscript-control records and do
-not appear in the compiled paper. In particular,
-`notes/future_experiment_tables.tex` preserves detailed experiment-planning
-shells that are intentionally excluded from the professor draft.
-
-`PITCH_TLDR.md` is the team briefing for a professor meeting, and
-`PITCH_ONE_PAGE.md` is its one-page companion. They summarize the manuscript
-but are not evidence sources; update artifact-backed numbers in the manuscript
-and evidence map first.
-
-Suggested ownership for concurrent drafting:
-
-- Author A: Introduction, Problem Formulation, and Proposed Framework.
-- Author B: Related Work and BibTeX verification.
-- Author C: Experimental Methodology, datasets, metrics, and reproducibility.
-- Professor or senior author: framing, contribution claims, and final
-  methodology review.
-
-Suggested branches are `paper/introduction`, `paper/related-work`, and
-`paper/methodology`. Avoid multiple authors rewriting `main.tex`; integrate
-section branches with ordinary reviews and resolve scientific wording in the
-section file that owns it.
-
-## Evidence discipline
-
-Use committed artifacts and manifests before source/configuration, current
-documentation, verified literature notes, and primary papers. Record material
-claims in `notes/claim_ledger.md` and their sources in
-`notes/evidence_map.md`. Never convert pilot observations into final
-superiority or significance claims.
+Earlier tables, figures, references, pitch notes and evidence ledgers remain in place.
+Use each version's own evidence map when interpreting its claims. Historical human
+review artifacts do not become approved labels through this documentation update.
+For current code and evidence navigation, see the [repository guide](../docs/REPOSITORY_GUIDE.md).
