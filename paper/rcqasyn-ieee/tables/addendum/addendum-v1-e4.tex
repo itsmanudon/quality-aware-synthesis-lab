@@ -1,0 +1,28 @@
+\begin{table}[!t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\caption{Exploratory addendum, declared after the main study. Addendum v1 across-dataset summary: dataset-level mean difference and split wins/ties/losses over five fresh splits.}
+\label{tab:addendum-v1-e4}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lllrrr}
+\toprule
+Comparison & Clf & Metric & Datasets $+/-/0$ & Splits W/T/L & Median diff. \\
+\midrule
+QC $-$ adm. random & LR & AP & 3/4/1 & 17/7/16 & -0.001 \\
+QC $-$ adm. random & LR & F1 & 4/1/3 & 11/22/7 & +0.001 \\
+QC $-$ adm. random & RF & AP & 5/3/0 & 19/6/15 & +0.002 \\
+QC $-$ adm. random & RF & F1 & 6/2/0 & 15/15/10 & +0.013 \\
+QC $-$ real only & LR & AP & 3/5/0 & 18/6/16 & -0.000 \\
+QC $-$ real only & LR & F1 & 5/1/2 & 15/15/10 & +0.006 \\
+QC $-$ real only & RF & AP & 5/3/0 & 17/5/18 & +0.002 \\
+QC $-$ real only & RF & F1 & 5/2/1 & 18/11/11 & +0.027 \\
+Best aug. $-$ real only$^\ast$ & LR & AP & 6/2/1 & 25/9/11 & +0.003 \\
+Best aug. $-$ real only$^\ast$ & LR & F1 & 6/1/2 & 18/17/10 & +0.006 \\
+Best aug. $-$ real only$^\ast$ & RF & AP & 8/1/0 & 23/6/16 & +0.021 \\
+Best aug. $-$ real only$^\ast$ & RF & F1 & 7/2/0 & 28/9/8 & +0.035 \\
+\bottomrule
+\end{tabular}}
+
+\vspace{2pt}\parbox{\linewidth}{\scriptsize $^\ast$Best method chosen on the same TEST splits; optimistic by construction.}
+\end{table}
