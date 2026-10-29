@@ -1,0 +1,124 @@
+{
+  "schema_version": "exploratory-addendum-v1",
+  "label": "EXPLORATORY ADDENDUM, DECLARED AFTER THE MAIN STUDY. Never merged into canonical empirical-v2 tables. No significance or state-of-the-art claim.",
+  "declared_on": "2026-10-29",
+  "declaration_rule": "Every setting below is committed before any addendum score is computed and is never changed after scoring begins. One execution; every row reported, including unavailable rows and unfavourable results.",
+  "branch": "exploratory-addendum-v1",
+  "branch_base_sha": "8190b1c1ea0e7d9607c2ea40e586703d9248e727",
+  "canonical_protocol": {
+    "path": "configs/empirical/protocol-v1.json",
+    "sha256": "f83dd0c70da95c431a3c91737825d488167338a9291584bbe597491f3935bb60",
+    "document": "docs/empirical-v2/protocol.md",
+    "document_sha256": "eeb2fbb2b59b4c6db7375a3ab3c960e55919d13992ffe17a9510aeb2cd0531f6",
+    "run": "artifacts/reports/empirical-v2/run-v2",
+    "historical_source_sha": "244a9bfd490a03a35c4be5cb3b83354e425795fc"
+  },
+  "unchanged_from_protocol_v1": {
+    "split_seeds": [13, 29, 43, 61, 79],
+    "selection_seeds": [13, 29, 43, 61, 79],
+    "classifier_seed": 42,
+    "classifiers": ["logistic_regression", "random_forest"],
+    "test_size": 0.2,
+    "evidence_k": 5,
+    "oversampling_k": "min(5, n_train_minority - 1)",
+    "shrinkage": 0.1,
+    "ridge": 1e-8,
+    "admission_q": 0.9,
+    "radius": 0.05,
+    "near_tolerance": 0.01,
+    "paid_providers": false,
+    "llm_generation": false,
+    "human_annotation": "OUT_OF_SCOPE"
+  },
+  "classifiers": ["logistic_regression", "random_forest"],
+  "split_seeds": [13, 29, 43, 61, 79],
+  "selection_seeds": [13, 29, 43, 61, 79],
+  "metrics": {
+    "utility_primary": ["f1", "average_precision", "mcc"],
+    "utility_retained": ["balanced_accuracy", "auroc", "tp", "fp", "tn", "fn", "test_positive_n", "test_negative_n"],
+    "coverage_primary": "unique_train_feature_coverage (TRAIN distinct-feature coverage at radius 0.05)",
+    "coverage_secondary": "class_balanced_region_coverage",
+    "redundancy": ["exact_duplicate_rate", "near_duplicate_rate (tolerance 0.01)"]
+  },
+  "E1": {
+    "name": "Fresh-split offline curation on new KEEL datasets (Track B design)",
+    "datasets": ["yeast3", "yeast4", "vehicle0", "segment0", "ecoli1", "winequality-red-4", "abalone9-18"],
+    "unavailable_datasets": {
+      "winequality-red-4": "SOURCE_ARCHIVE_EMPTY: the supplied winequality-red-4.zip is 0 bytes and the authorized URL https://sci2s.ugr.es/keel/dataset/data/imbalanced/winequality-red-4.zip returned an empty body on 2026-10-29. No mirror or guessed URL is used. All E1/E4 rows for this dataset are recorded unavailable."
+    },
+    "split": "existing make_split(loaded, split_seed), stratified 80/20; every transformation, generator and evidence model fitted on that split's TRAIN only",
+    "budget_rule": "b = min(70, max(30, round(0.5 * n_train_minority))) computed per split; round is Python round (half to even)",
+    "pool_multiple": 4,
+    "pool_classes": "minority only",
+    "generator_rule": "SMOTENC when the dataset declares any nominal feature, otherwise SMOTE, including integer-declared datasets. Existing rcqasyn.empirical.generation.generate: TRAIN StandardScaler before interpolation, inverse transform after, never rounded.",
+    "generators": {
+      "yeast3": "SMOTE",
+      "yeast4": "SMOTE",
+      "vehicle0": "SMOTE",
+      "segment0": "SMOTE",
+      "ecoli1": "SMOTE",
+      "abalone9-18": "SMOTENC"
+    },
+    "evidence_and_admission": "existing rcqasyn.empirical.generation.fresh_geometry unchanged (M2 refit on split TRAIN, midrank local/global indices, q=0.90 combined admission, M7 geometry)",
+    "curators": ["schema/random", "combined/random", "combined/source-order", "combined/farthest-first", "combined/coverage-greedy", "combined/quality-coverage"],
+    "random_curator_seed": "the split seed, exactly as run-v2 Track B; across five splits the selection seeds are 13, 29, 43, 61, 79",
+    "minority_quota_fraction": 0.5,
+    "minority_quota_note": "Inert for minority-only pools; kept at the canonical value.",
+    "comparators": ["REAL_TRAIN (TRTR, both classifiers)", "CLASS_WEIGHTED_LR (TRTR, logistic regression only)", "RandomOverSampler+b (HYBRID_MINORITY)", "SMOTE+b or SMOTENC+b (HYBRID_MINORITY)"],
+    "regimes": "curators scored as TSTR and HYBRID_MINORITY via the existing Study.score; TSTR is recorded unavailable because minority-only pools hold one class",
+    "structural_noncompliance": "count of generated candidates failing complete_record (integer, category, label checks) per split pool and for SMOTE/SMOTENC+b comparators; never coerced",
+    "shortfall": "a curator whose eligible pool is smaller than b is recorded MATCHED_BUDGET_SHORTFALL/unavailable, never compensated"
+  },
+  "E1_repair": {
+    "name": "E1 with existing schema checks plus bounded repair",
+    "applies_when": "dataset declares at least one integer numerical feature; otherwise every candidate is NOT_NEEDED and the variant is recorded NOT_APPLICABLE (identical to E1)",
+    "expected_applicable_datasets": ["vehicle0"],
+    "policy": "existing rcqasyn.phase6.repair.propose_repair unchanged: integer-half-even-max3-v1 (<=3 integer fields, <=0.5 absolute edit per field, Decimal ROUND_HALF_EVEN; no label invention, imputation or category substitution)",
+    "structural_evidence": "authoritative_structure evidence from the split's refit TrainEvidenceModel (same object fresh_geometry uses)",
+    "pool_construction": "each REPAIR_ELIGIBLE candidate is replaced at its ordinal by its repaired payload; ineligible candidates are retained unchanged and remain schema-invalid; then fresh_geometry, admission, curators and scoring run exactly as E1 on that pool",
+    "generator_seed_and_budget": "identical to E1 for the same split"
+  },
+  "E2": {
+    "name": "Historical Track A quality-coverage with minority quota at the real TRAIN class ratio",
+    "datasets": ["Abalone19", "Ecoli4", "page-blocks0"],
+    "budgets": {"Abalone19": 56, "Ecoli4": 70, "page-blocks0": 49},
+    "pool": "combined-review admitted pool (rcqasyn.phase5.workflow.pool), identical to canonical selection/quality-coverage/s42",
+    "change_from_canonical": "minority quota = floor(b * TRAIN minority fraction) instead of floor(0.5 * b)",
+    "train_minority_fraction": "positives / rows in the historical split TRAIN (data/manifests/<id>/split_manifest.json, root seed 42); implemented by SelectionConfig.minority_quota_fraction = that fraction, since select() uses int(budget * fraction)",
+    "other_selection_settings": "radius 0.05, near tolerance 0.01, concerns = Phase-4 uncalibrated_max, as canonical",
+    "regimes": ["TSTR", "HYBRID_MINORITY"],
+    "comparisons": ["canonical selection/quality-coverage/s42", "canonical combined/random/s13..s79 (mean of five seeds)"],
+    "comparison_source": "primary: the canonical comparators re-scored in this addendum's environment (same code, seeds and pools); run-v2 values are reported beside them with the maximum absolute difference"
+  },
+  "E3": {
+    "name": "B2 control at an equal budget (historical Track A)",
+    "datasets": ["Abalone19", "Ecoli4", "page-blocks0"],
+    "budgets": {"Abalone19": 56, "Ecoli4": 70, "page-blocks0": 49},
+    "pool": "historical occurrences whose recorded B2 control decision is accepted AND complete_record under the dataset specification; no Phase-4 admission applied",
+    "selection": "uniform random subset of size b: numpy default_rng(seed).permutation(pool)[:b], seeds 13, 29, 43, 61, 79 (same construct() as canonical random rows)",
+    "shortfall": "pool smaller than b is recorded MATCHED_BUDGET_SHORTFALL/unavailable",
+    "regimes": ["TSTR", "HYBRID_MINORITY"],
+    "comparison": "canonical selection/quality-coverage/s42 at the same b (same-environment re-score, with run-v2 values reported)"
+  },
+  "E4": {
+    "name": "Across-dataset summary of fresh-split curation",
+    "datasets": "run-v2 Track B (Abalone19, Ecoli4, page-blocks0; canonical budgets 56/70/49 and canonical generators, read from run-v2/results.csv, not recomputed) plus E1 datasets (winequality-red-4 recorded unavailable)",
+    "classifiers": ["logistic_regression", "random_forest"],
+    "metrics": ["f1", "average_precision"],
+    "comparisons": {
+      "QC_minus_admitted_random": "combined/quality-coverage HYBRID_MINORITY minus combined/random HYBRID_MINORITY, paired by split",
+      "QC_minus_real_only": "combined/quality-coverage HYBRID_MINORITY minus REAL_TRAIN TRTR, paired by split",
+      "best_augmentation_minus_real_only": "per dataset, classifier and metric, the HYBRID_MINORITY method (six curators, RandomOverSampler+b, SMOTE+b or SMOTENC+b) with the highest five-split mean among methods available on all five splits, minus REAL_TRAIN TRTR. Selected on the same TEST splits, therefore optimistic by construction."
+    },
+    "dataset_level_difference": "mean over splits where both sides have status ok; the number of paired splits is reported; a dataset with zero paired splits is unavailable for that comparison",
+    "win_tie_loss": "per split: difference > 0 win, == 0 tie, < 0 loss (exact comparison, no tolerance)",
+    "wilcoxon": "scipy.stats.wilcoxon on dataset-level mean differences per (comparison, classifier, metric); two-sided, zero_method='wilcox', method='auto'; exploratory, no multiplicity adjustment, no significance claim",
+    "test_positives": "report TEST positive count for every dataset and split"
+  },
+  "environment": {
+    "python": "3.12 project venv; dependency versions pinned to artifacts/reports/empirical-v2/verification-v1/dependencies.txt (numpy 2.5.2, pandas 2.3.3, scipy 1.18.1, scikit-learn 1.9.0, imbalanced-learn 0.14.2, sklearn-compat 0.1.6)",
+    "platform_note": "Canonical run-v2 was produced on Windows; this addendum runs on macOS. Cross-platform last-bit floating differences are possible and are measured for the Track A comparators, not assumed away.",
+    "historical_source": "separate git worktree at 244a9bf with recorded bytes restored by scripts/restore_source_bytes.py (only exact recorded-hash reconstructions are written)"
+  },
+  "outputs": "artifacts/reports/exploratory-addendum-v1/: manifest.json, results.csv (run-v2 results.csv columns), results.json, constructions.json, populations.json, unavailable.json, summary.json, summary.md, slide-numbers.md"
+}

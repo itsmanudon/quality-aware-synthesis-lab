@@ -1,0 +1,24 @@
+dataset_id: vehicle0
+display_name: KEEL vehicle0
+raw_path: data/raw/vehicle0/vehicle0.dat
+accepted_filenames: [vehicle0.dat]
+format: keel_dat
+target_column: class
+feature_columns: [compactness, circularity, distance_circularity, radius_ratio, praxis_aspect_ratio, max_length_aspect_ratio, scatter_ratio, elongatedness, praxis_rectangular, length_rectangular, major_variance, minor_variance, gyration_radius, major_skewness, minor_skewness, minor_kurtosis, major_kurtosis, hollows_ratio]
+categorical_columns: []
+numerical_columns: [compactness, circularity, distance_circularity, radius_ratio, praxis_aspect_ratio, max_length_aspect_ratio, scatter_ratio, elongatedness, praxis_rectangular, length_rectangular, major_variance, minor_variance, gyration_radius, major_skewness, minor_skewness, minor_kurtosis, major_kurtosis, hollows_ratio]
+missing_policy: preserve_as_null
+minority_label: positive
+task_type: classification
+source_url: https://sci2s.ugr.es/keel/dataset/data/imbalanced/vehicle0.zip
+preprocessing: [none_declared]
+metadata:
+  identity_provenance: KEEL imbalanced archive vehicle0.zip supplied locally for the exploratory addendum; source page not independently verified
+  schema_provenance: KEEL declaration from vehicle0.dat header (numerical declarations ['integer']; nominal none)
+  label_provenance: KEEL class declaration in vehicle0.dat; minority class token positive
+  statistics_provenance: raw file inspection recorded in data/manifests/vehicle0
+  addendum_scope: exploratory-addendum-v1 only; not part of the canonical empirical-v2 study
+split:
+  test_size: 0.2
+  seed_offset: 0
+  stratify: true

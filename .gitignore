@@ -68,3 +68,15 @@ artifacts/reports/phase2/gate-a-v2/
 # and the substantive replay comparison instead of duplicate evidence bundles.
 artifacts/reports/empirical-v2/run-v1/
 artifacts/reports/empirical-v2/replay-v1/
+
+# Exploratory addendum v1 lives outside protected historical paths. Raw KEEL files and
+# the large per-split evidence stay local (archived in artifacts/archives/, hash in
+# addendum/v1/RELOCATION.json); compact results are tracked.
+addendum/v1/data/raw/
+addendum/v1/report/generation/
+addendum/v1/report/predictions/
+addendum/v1/report/replication/
+
+addendum/v2/report/generation/
+addendum/v2/report/predictions/
+addendum/v2/report/replication/

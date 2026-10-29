@@ -1,0 +1,24 @@
+dataset_id: ecoli1
+display_name: KEEL ecoli1
+raw_path: data/raw/ecoli1/ecoli1.dat
+accepted_filenames: [ecoli1.dat]
+format: keel_dat
+target_column: class
+feature_columns: [mcg, gvh, lip, chg, aac, alm1, alm2]
+categorical_columns: []
+numerical_columns: [mcg, gvh, lip, chg, aac, alm1, alm2]
+missing_policy: preserve_as_null
+minority_label: positive
+task_type: classification
+source_url: https://sci2s.ugr.es/keel/dataset/data/imbalanced/ecoli1.zip
+preprocessing: [none_declared]
+metadata:
+  identity_provenance: KEEL imbalanced archive ecoli1.zip supplied locally for the exploratory addendum; source page not independently verified
+  schema_provenance: KEEL declaration from ecoli1.dat header (numerical declarations ['real']; nominal none)
+  label_provenance: KEEL class declaration in ecoli1.dat; minority class token positive
+  statistics_provenance: raw file inspection recorded in data/manifests/ecoli1
+  addendum_scope: exploratory-addendum-v1 only; not part of the canonical empirical-v2 study
+split:
+  test_size: 0.2
+  seed_offset: 0
+  stratify: true

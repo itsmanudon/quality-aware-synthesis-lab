@@ -1,0 +1,123 @@
+{
+  "schema_version": "exploratory-addendum-v2",
+  "label": "EXPLORATORY ADDENDUM, DECLARED AFTER THE MAIN STUDY. Published-method benchmark inside the RC-QASyn pipeline. Re-implementations of curation principles are not the authors' code. No significance, superiority or state-of-the-art claim.",
+  "declared_on": "2026-10-29",
+  "declaration_rule": "Every setting below is committed before any v2 score is computed and is never changed after scoring begins. One execution; every row reported, including unavailable rows and unfavourable results.",
+  "source_request": {"path": "addendum/v2/brief.md", "sha256": "db0d02a1a4a2f569c4a0ee735d19edcb07ca6dba40e54102ca7ccd0e85653d8f"},
+  "builds_on": {
+    "addendum_v1_settings": "addendum/v1/addendum-v1.json (declared ce4d7fc)",
+    "addendum_v1_relocation": "bc841a8",
+    "canonical_protocol": "configs/empirical/protocol-v1.json (sha256 f83dd0c70da95c431a3c91737825d488167338a9291584bbe597491f3935bb60)",
+    "canonical_run": "artifacts/reports/empirical-v2/run-v2",
+    "historical_source_sha": "244a9bfd490a03a35c4be5cb3b83354e425795fc"
+  },
+  "adaptations_from_brief": [
+    "Settings and outputs live in addendum/v2/ instead of configs/empirical/ and artifacts/reports/, which are protected historical paths.",
+    "Nine datasets, not ten: winequality-red-4 is unavailable (empty archive at the authorized URL; see addendum v1).",
+    "vehicle0 has no structurally complete candidate, so every curator, including the two re-implemented ones, is unavailable there; oversampler comparators still run.",
+    "Re-implemented curators select from the structurally complete 4b pool (identical to the raw 4b pool on every dataset except vehicle0), because the pipeline never trains on schema-invalid rows.",
+    "SMOTE-ENN and SMOTE-Tomek are attempted with an SMOTENC oversampling step on nominal datasets; imbalanced-learn's cleaning step requires numeric input, so a library error is recorded as unavailable. Borderline-SMOTE and ADASYN have no nominal path in imbalanced-learn 0.14.2 and are declared unavailable on nominal datasets.",
+    "The literature sanity check adds the three other datasets present in the same source table (yeast3, yeast4, abalone9-18) and that table's ADASYN, SMOTEENN and SMOTE-TOMEK columns, as context only."
+  ],
+  "classifiers": ["logistic_regression", "random_forest"],
+  "classifier_seed": 42,
+  "split_seeds": [13, 29, 43, 61, 79],
+  "metrics": ["f1", "average_precision", "balanced_accuracy", "mcc", "auroc"],
+  "headline_metrics": ["f1", "average_precision"],
+  "datasets": {
+    "canonical": {
+      "ids": ["Abalone19", "Ecoli4", "page-blocks0"],
+      "registry_root": "historical SOURCE worktree at 244a9bf (as run-v2)",
+      "budgets": {"Abalone19": 56, "Ecoli4": 70, "page-blocks0": 49},
+      "pool_generators": {"Abalone19": "SMOTENC", "Ecoli4": "SMOTE", "page-blocks0": "RandomOverSampler"}
+    },
+    "new": {
+      "ids": ["yeast3", "yeast4", "vehicle0", "segment0", "ecoli1", "abalone9-18"],
+      "registry_root": "addendum/v1",
+      "budget_rule": "b = min(70, max(30, round(0.5 * n_train_minority))) per split (addendum v1 rule)",
+      "pool_generators": {"yeast3": "SMOTE", "yeast4": "SMOTE", "vehicle0": "SMOTE", "segment0": "SMOTE", "ecoli1": "SMOTE", "abalone9-18": "SMOTENC"}
+    },
+    "unavailable": {"winequality-red-4": "SOURCE_ARCHIVE_EMPTY (addendum v1)"},
+    "nominal": ["Abalone19", "abalone9-18"]
+  },
+  "pools": {
+    "construction": "existing rcqasyn.empirical.generation.generate(train, spec, generator, 4b, split_seed) on make_split(loaded, split_seed) TRAIN, minority only, then fresh_geometry unchanged",
+    "identity_check": "the rebuilt pool payload_fingerprint is compared with the recorded one (run-v2/replication/<id>-<seed>.json for canonical datasets, addendum/v1/report/replication/E1-<id>-<seed>.json for new datasets); a mismatch is recorded and reported, and the rebuilt pool is used for every method so that all comparisons share one environment"
+  },
+  "methods": {
+    "existing_comparators": "Study.external unchanged: REAL_TRAIN (TRTR, both classifiers), CLASS_WEIGHTED_LR (logistic only), RandomOverSampler+b and SMOTE+b or SMOTENC+b (HYBRID_MINORITY, random_state = split seed as in run-v2)",
+    "existing_curators": ["schema/random", "combined/random", "combined/source-order", "combined/farthest-first", "combined/coverage-greedy", "combined/quality-coverage"],
+    "existing_curator_note": "random curators use the split seed; all curators scored on TSTR (recorded unavailable, one-class pool) and HYBRID_MINORITY via Study.score, as in run-v2 and addendum v1",
+    "published_oversamplers": {
+      "library": "imbalanced-learn 0.14.2",
+      "methods": {
+        "SMOTE-ENN": "imblearn.combine.SMOTEENN(smote=SMOTE(k_neighbors=k, random_state=42), random_state=42); default EditedNearestNeighbours cleaning (Batista et al. 2004)",
+        "SMOTE-Tomek": "imblearn.combine.SMOTETomek(smote=SMOTE(k_neighbors=k, random_state=42), random_state=42); default TomekLinks cleaning (Batista et al. 2004)",
+        "Borderline-SMOTE": "imblearn.over_sampling.BorderlineSMOTE(kind='borderline-1', k_neighbors=k, m_neighbors=10 default, random_state=42) (Han et al. 2005)",
+        "ADASYN": "imblearn.over_sampling.ADASYN(n_neighbors=k, random_state=42) (He et al. 2008)"
+      },
+      "k": "min(5, n_train_minority - 1)",
+      "nominal_datasets": "SMOTE-ENN and SMOTE-Tomek use SMOTENC(categorical_features=declared nominal columns, k_neighbors=k, random_state=42) as the oversampling step; any library exception is recorded as unavailable with its message. Borderline-SMOTE and ADASYN: unavailable, NO_NOMINAL_PATH_IN_IMBALANCED_LEARN",
+      "settings": {
+        "full": "sampling_strategy='auto' (minority resampled to the majority count before any cleaning)",
+        "+b": "sampling_strategy={positive: n_train_minority + b} (b as for the dataset and split); cleaning methods may then remove rows of either class"
+      },
+      "scaling": "numerical columns scaled by a TRAIN StandardScaler before resampling and inverse-transformed after, exactly as the existing generate(); output never rounded; retained original rows carry floating round-trip error of order 1e-15",
+      "training_population": "the sampler output (cleaned real TRAIN plus generated minority rows). Rows use regime label TRTR with category 'published-oversampler'; the final training class counts are recorded in training_class_counts",
+      "failure": "any sampler exception (for example ADASYN with no majority neighbours) is recorded as unavailable with its message; a sampler that generates zero rows is scored and flagged generated_minority_net = 0"
+    },
+    "reimplemented_curators": {
+      "label": "re-implementation of the principle, not the authors' code",
+      "input_pool": "structurally complete candidates of the split's 4b pool (fresh_geometry 'schema' pool)",
+      "budget": "b; fewer eligible candidates than b is MATCHED_BUDGET_SHORTFALL/unavailable",
+      "encoding": "one-hot encoding of declared nominal columns fitted on real TRAIN (handle_unknown='ignore'); numerical columns passed through unscaled",
+      "CLLM-style": {
+        "reference": "Seedat et al., ICML 2024",
+        "model": "sklearn GradientBoostingClassifier(n_estimators=100, random_state=42), other parameters default, fitted on real TRAIN (both classes) only",
+        "checkpoints": "staged_predict_proba after estimators 10, 20, ..., 100",
+        "scores": "p = probability of the candidate's assigned class (positive) at each checkpoint; confidence = mean p; aleatoric = mean p(1-p)",
+        "selection": "keep candidates with aleatoric <= pool median; rank kept by confidence descending (ties by pool ordinal); take top b; if fewer than b are kept, fill from the rest by confidence descending and record the fill count"
+      },
+      "discriminator-realism": {
+        "reference": "realism component of RUBRIC (Yu et al. 2026) and sample-level auditing (Alaa et al., ICML 2022)",
+        "model": "sklearn RandomForestClassifier(n_estimators=200, random_state=42), other parameters default",
+        "data": "real TRAIN minority rows labelled 1, pool candidates labelled 0",
+        "scores": "5-fold out-of-fold probability of label 1 (StratifiedKFold(n_splits=5, shuffle=True, random_state=42), cross_val_predict method='predict_proba') for each pool candidate",
+        "selection": "top b pool candidates by probability descending (ties by pool ordinal)"
+      },
+      "scoring": "TSTR and HYBRID_MINORITY via Study.score, as for the existing curators; geometry (coverage, redundancy) measured with the existing metrics()"
+    }
+  },
+  "reporting": {
+    "pairwise": "per dataset and classifier: quality-coverage (combined/quality-coverage, HYBRID_MINORITY) minus each new method, mean and sample SD over paired splits of the per-split difference, for F1 and AP, with exact win/tie/loss counts; existing key comparators (combined/random, combined/farthest-first, REAL_TRAIN) reported the same way",
+    "method_availability": "a method is available on a dataset for ranking only if all five splits are status ok; dataset-level value = mean over the five splits",
+    "rankings": {
+      "R1_curators": "eight curators (six existing plus CLLM-style and discriminator-realism) over every dataset where all eight are available",
+      "R2_all": "combined/quality-coverage, combined/random, combined/farthest-first, CLLM-style, discriminator-realism, REAL_TRAIN, RandomOverSampler+b, SMOTE+b (SMOTENC+b on nominal datasets), and the eight published oversampler settings, over every dataset where all sixteen are available (complete case)",
+      "rank_rule": "per dataset, classifier and metric, rank 1 = highest mean; ties receive average ranks (scipy.stats.rankdata on negated values); average over datasets",
+      "excluded": "CLASS_WEIGHTED_LR is logistic-only and is reported but not ranked"
+    },
+    "tests": "per ranking, classifier and metric: scipy.stats.friedmanchisquare across methods with datasets as blocks; per method: scipy.stats.wilcoxon of dataset-level quality-coverage minus method differences over datasets where both are available (two-sided, zero_method='wilcox', method='auto'). Exploratory, no multiplicity adjustment, no significance claim.",
+    "literature_sanity_check": {
+      "source": "Newaz and Haq, arXiv 2208.09619, Table 7 (ROC-AUC %, random forest, 10-fold stratified cross-validation), read from the arXiv PDF on 2026-10-29",
+      "values": {
+        "yeast3": {"unsampled": 83.75, "SMOTE": 90.01, "ADASYN": 90.57, "SMOTEENN": 91.85, "SMOTE-TOMEK": 89.66},
+        "page-blocks0": {"unsampled": 90.78, "SMOTE": 92.74, "ADASYN": 92.66, "SMOTEENN": 93.68, "SMOTE-TOMEK": 92.49},
+        "Ecoli4": {"unsampled": 85.00, "SMOTE": 89.35, "ADASYN": 89.19, "SMOTEENN": 91.21, "SMOTE-TOMEK": 91.85},
+        "abalone9-18": {"unsampled": 57.11, "SMOTE": 71.85, "ADASYN": 69.63, "SMOTEENN": 70.13, "SMOTE-TOMEK": 68.96},
+        "yeast4": {"unsampled": 56.83, "SMOTE": 72.03, "ADASYN": 70.17, "SMOTEENN": 75.98, "SMOTE-TOMEK": 70.31},
+        "Abalone19": {"unsampled": 50.00, "SMOTE": 50.00, "ADASYN": 56.85, "SMOTEENN": 50.00, "SMOTE-TOMEK": 55.22}
+      },
+      "ours": "five-split mean AUROC x 100 for REAL_TRAIN, SMOTE+b (SMOTENC+b on nominal), ADASYN/full, SMOTE-ENN/full and SMOTE-Tomek/full, random forest (closest classifier) and logistic regression",
+      "judgement": "context only, different protocol; report whether the sign of (SMOTE minus unsampled) agrees with theirs per dataset, nothing more"
+    },
+    "reproduction_checks": "re-scored existing comparators and curators compared with addendum v1 E1 rows (same environment) and run-v2 Track B rows (cross-platform); maximum absolute metric differences reported"
+  },
+  "outputs": {
+    "directory": "addendum/v2/report/",
+    "files": ["manifest.json", "results.csv (run-v2 results.csv columns)", "results.json", "constructions.json", "populations.json", "unavailable.json", "pools.json", "reproduction.json", "summary.json", "summary.md"],
+    "local_only": "generation/, predictions/, replication/ evidence (gitignored, hashed in manifest.json)",
+    "tables": "addendum/v2/report/tables/: benchmark-curators.tex, benchmark-oversamplers.tex, benchmark-ranks.tex, addendum-datasets.tex, generated by script from saved results; captions start 'Exploratory addendum, declared after the main study'",
+    "ieee_draft": "sections/04b-addendum.tex with only a \\subsection{Exploratory addendum} heading, \\input lines and '% AUTHORS: write the paragraph here' comments; no paper prose; BibTeX for cited methods verified against DOI/arXiv; the PDF is not built here (authors format and build)"
+  }
+}

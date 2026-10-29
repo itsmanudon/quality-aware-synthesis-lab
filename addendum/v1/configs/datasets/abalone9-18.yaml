@@ -1,0 +1,24 @@
+dataset_id: abalone9-18
+display_name: KEEL abalone9-18
+raw_path: data/raw/abalone9-18/abalone9-18.dat
+accepted_filenames: [abalone9-18.dat]
+format: keel_dat
+target_column: class
+feature_columns: [sex, length, diameter, height, whole_weight, shucked_weight, viscera_weight, shell_weight]
+categorical_columns: [sex]
+numerical_columns: [length, diameter, height, whole_weight, shucked_weight, viscera_weight, shell_weight]
+missing_policy: preserve_as_null
+minority_label: positive
+task_type: classification
+source_url: https://sci2s.ugr.es/keel/dataset/data/imbalanced/abalone9-18.zip
+preprocessing: [none_declared]
+metadata:
+  identity_provenance: KEEL imbalanced archive abalone9-18.zip supplied locally for the exploratory addendum; source page not independently verified
+  schema_provenance: KEEL declaration from abalone9-18.dat header (numerical declarations ['real']; nominal ['sex'])
+  label_provenance: KEEL class declaration in abalone9-18.dat; minority class token positive
+  statistics_provenance: raw file inspection recorded in data/manifests/abalone9-18
+  addendum_scope: exploratory-addendum-v1 only; not part of the canonical empirical-v2 study
+split:
+  test_size: 0.2
+  seed_offset: 0
+  stratify: true
