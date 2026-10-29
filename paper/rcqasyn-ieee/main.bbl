@@ -225,4 +225,14 @@ H.~He, Y.~Bai, E.~A. Garcia, and S.~Li, ``{ADASYN}: Adaptive synthetic sampling
 A.~Newaz and F.~S. Haq, ``A novel hybrid sampling framework for imbalanced
   learning,'' arXiv preprint arXiv:2208.09619, 2022.
 
+\bibitem{alcala2011keel}
+\BIBentryALTinterwordspacing
+J.~Alcal{\'a}-Fdez, A.~Fern{\'a}ndez, J.~Luengo, J.~Derrac, S.~Garc{\'i}a,
+  L.~S{\'a}nchez, and F.~Herrera, ``{KEEL} data-mining software tool: Data set
+  repository, integration of algorithms and experimental analysis framework,''
+  \emph{Journal of Multiple-Valued Logic and Soft Computing}, vol.~17, no.
+  2--3, pp. 255--287, 2011. [Online]. Available:
+  \url{https://sci2s.ugr.es/keel/imbalanced.php}
+\BIBentrySTDinterwordspacing
+
 \end{thebibliography}
