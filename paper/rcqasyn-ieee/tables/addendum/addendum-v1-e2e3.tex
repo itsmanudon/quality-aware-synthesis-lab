@@ -1,0 +1,28 @@
+\begin{table*}[!t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\caption{Exploratory addendum, declared after the main study. Addendum v1 historical-split designs at fixed budgets: canonical quality-coverage (QC, quota $0.5b$), QC with the real-ratio quota (E2), admitted random (mean of five seeds) and random subsets of the B2-accepted pool (E3, mean of five seeds).}
+\label{tab:addendum-v1-e2e3}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{llrrrrrrrr}
+\toprule
+Dataset & Design & Quota & Cov. & Near dup. & LR TSTR F1 & LR Hyb. F1 & RF TSTR F1 & RF Hyb. F1 & LR Hyb. AP \\
+\midrule
+Abalone19 & QC & 28 & .948 & .000 & .031 & .000 & .030 & .000 & .017 \\
+Abalone19 & QC real ratio (E2) & 0 & .948 & .000 & .029 & .000 & .027 & .000 & .018 \\
+Abalone19 & Adm. random & -- & .833 & .493 & .022 & .000 & .030 & .000 & .021 \\
+Abalone19 & B2 random (E3) & -- & .853 & .232 & .026 & .000 & .030 & .000 & .015 \\
+\midrule
+Ecoli4 & QC & 35 & .506 & .000 & .205 & 1.000 & .296 & 1.000 & 1.000 \\
+Ecoli4 & QC real ratio (E2) & 4 & .506 & .000 & .190 & 1.000 & .250 & 1.000 & 1.000 \\
+Ecoli4 & Adm. random & -- & .439 & .197 & .217 & .933 & .231 & 1.000 & 1.000 \\
+Ecoli4 & B2 random (E3) & -- & .419 & .049 & .213 & .933 & .271 & 1.000 & 1.000 \\
+\midrule
+page-blocks0 & QC & 24 & .932 & .327 & .446 & .715 & .342 & .863 & .744 \\
+page-blocks0 & QC real ratio (E2) & 5 & .932 & .000 & .593 & .722 & .631 & .873 & .747 \\
+page-blocks0 & Adm. random & -- & .914 & .702 & .535 & .715 & .475 & .869 & .743 \\
+page-blocks0 & B2 random (E3) & -- & .905 & .506 & .421 & .715 & .438 & .867 & .744 \\
+\bottomrule
+\end{tabular}}
+\end{table*}

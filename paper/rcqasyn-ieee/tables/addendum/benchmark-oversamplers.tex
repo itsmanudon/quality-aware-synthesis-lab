@@ -1,0 +1,59 @@
+\begin{table*}[!t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\caption{Exploratory addendum, declared after the main study. Mean F1 and AP of real-only training, class weighting, existing oversamplers, four published oversamplers (imbalanced-learn 0.14.2; full balancing and $+b$ rows) and quality-coverage.}
+\label{tab:addendum-oversamplers}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lrrrrrrrrrrrrr}
+\toprule
+Dataset & Real only & CW-LR & ROS+$b$ & SMOTE(NC)+$b$ & SMOTE-ENN full & SMOTE-ENN +$b$ & SMOTE-Tomek full & SMOTE-Tomek +$b$ & B-SMOTE full & B-SMOTE +$b$ & ADASYN full & ADASYN +$b$ & QC (ours) \\
+\midrule
+\multicolumn{14}{l}{\textit{LR, mean F1 over five splits}} \\
+Abalone19 & .000 & \textbf{.051} & .000 & .000 & -- & -- & -- & -- & -- & -- & -- & -- & .000 \\
+Ecoli4 & \textbf{.848} & .695 & .745 & .758 & .711 & .758 & .745 & .758 & .700 & .723 & .688 & .740 & .758 \\
+page-blocks0 & .728 & .708 & .738 & .736 & .693 & \textbf{.761} & .699 & .743 & .665 & .738 & .628 & -- & .738 \\
+yeast3 & .776 & .660 & .770 & .778 & .648 & .779 & .676 & .776 & .634 & \textbf{.782} & .641 & .776 & .782 \\
+yeast4 & .101 & .235 & .147 & .154 & .209 & .099 & .231 & .200 & \textbf{.282} & .201 & .217 & .222 & .158 \\
+vehicle0 & .927 & .923 & .931 & .929 & .892 & .907 & .922 & .931 & .919 & .930 & .918 & \textbf{.934} & -- \\
+segment0 & .988 & .965 & .988 & .988 & \textbf{.991} & .988 & \textbf{.991} & .988 & .931 & .986 & .938 & .989 & .988 \\
+ecoli1 & .751 & .746 & .754 & .749 & .749 & .737 & .749 & .745 & \textbf{.760} & .730 & .757 & .744 & .758 \\
+abalone9-18 & .672 & .471 & .666 & .636 & -- & -- & -- & -- & -- & -- & -- & -- & \textbf{.679} \\
+\midrule
+\multicolumn{14}{l}{\textit{LR, mean AP over five splits}} \\
+Abalone19 & .042 & \textbf{.045} & .040 & .041 & -- & -- & -- & -- & -- & -- & -- & -- & .044 \\
+Ecoli4 & .944 & .923 & .908 & .944 & .896 & \textbf{.947} & .901 & .940 & .897 & .922 & .903 & .903 & .934 \\
+page-blocks0 & \textbf{.800} & .788 & .800 & .800 & .789 & .794 & .790 & .800 & .752 & .800 & .748 & -- & .800 \\
+yeast3 & .813 & .809 & .807 & .809 & .805 & .811 & .807 & \textbf{.814} & .795 & .810 & .801 & .808 & .808 \\
+yeast4 & .313 & .251 & .308 & .309 & .242 & \textbf{.338} & .259 & .329 & .312 & .323 & .254 & .307 & .305 \\
+vehicle0 & .982 & .976 & .980 & .981 & .927 & .921 & \textbf{.984} & .981 & .981 & .983 & .980 & .981 & -- \\
+segment0 & .976 & .981 & .977 & .977 & .985 & .973 & .986 & .977 & \textbf{.997} & .983 & .996 & .983 & .978 \\
+ecoli1 & .866 & .870 & \textbf{.874} & .870 & .842 & .842 & .867 & .867 & .870 & .872 & .868 & .865 & .865 \\
+abalone9-18 & .771 & \textbf{.777} & .772 & .766 & -- & -- & -- & -- & -- & -- & -- & -- & .775 \\
+\midrule
+\multicolumn{14}{l}{\textit{RF, mean F1 over five splits}} \\
+Abalone19 & \textbf{.000} & -- & \textbf{.000} & \textbf{.000} & -- & -- & -- & -- & -- & -- & -- & -- & \textbf{.000} \\
+Ecoli4 & .600 & -- & .743 & .819 & \textbf{.836} & .776 & .800 & .786 & .724 & .743 & .798 & .798 & .786 \\
+page-blocks0 & .893 & -- & .885 & \textbf{.901} & .830 & .856 & .865 & .895 & .864 & .896 & .850 & -- & .885 \\
+yeast3 & .775 & -- & .783 & .777 & .778 & .771 & .804 & .786 & .792 & \textbf{.807} & .788 & .795 & .801 \\
+yeast4 & .236 & -- & .243 & .165 & .329 & .103 & \textbf{.433} & .185 & .425 & .234 & .405 & .188 & .268 \\
+vehicle0 & .928 & -- & .927 & .927 & .877 & .884 & .920 & .928 & .924 & \textbf{.931} & .907 & .928 & -- \\
+segment0 & .992 & -- & .991 & .991 & .989 & .989 & .991 & .992 & .992 & .994 & .994 & \textbf{.994} & .991 \\
+ecoli1 & .726 & -- & .771 & .738 & .787 & .772 & \textbf{.820} & .760 & .806 & .789 & .797 & .776 & .754 \\
+abalone9-18 & .347 & -- & .373 & .374 & -- & -- & -- & -- & -- & -- & -- & -- & \textbf{.388} \\
+\midrule
+\multicolumn{14}{l}{\textit{RF, mean AP over five splits}} \\
+Abalone19 & .029 & -- & .026 & .028 & -- & -- & -- & -- & -- & -- & -- & -- & \textbf{.033} \\
+Ecoli4 & .828 & -- & .866 & .841 & \textbf{.925} & .846 & .880 & .878 & .884 & .859 & .910 & .863 & .882 \\
+page-blocks0 & .925 & -- & .920 & .924 & .915 & .902 & .917 & .921 & .912 & .925 & .909 & -- & \textbf{.926} \\
+yeast3 & .868 & -- & .851 & \textbf{.876} & .850 & .836 & .849 & .858 & .810 & .860 & .808 & .849 & .859 \\
+yeast4 & .387 & -- & .364 & .349 & .352 & .332 & .421 & .403 & \textbf{.435} & .382 & .368 & .355 & .407 \\
+vehicle0 & \textbf{.984} & -- & .982 & .983 & .931 & .951 & .974 & .982 & .980 & .980 & .975 & .979 & -- \\
+segment0 & 1.000 & -- & 1.000 & 1.000 & 1.000 & .992 & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 & \textbf{1.000} & 1.000 \\
+ecoli1 & .833 & -- & .864 & .853 & .738 & \textbf{.875} & .848 & .855 & .800 & .829 & .846 & .844 & .820 \\
+abalone9-18 & .545 & -- & \textbf{.557} & .522 & -- & -- & -- & -- & -- & -- & -- & -- & .554 \\
+\bottomrule
+\end{tabular}}
+
+\vspace{2pt}\parbox{\textwidth}{\scriptsize Bold: best in row. --: unavailable (no nominal path, library error or no structurally complete candidate; CW-LR is logistic only). SMOTE-ENN/Tomek may remove rows; final counts are in results.}
+\end{table*}
