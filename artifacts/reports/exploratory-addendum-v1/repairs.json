@@ -1,0 +1,69 @@
+[
+  {
+    "addendum_label": "EXPLORATORY_ADDENDUM_DECLARED_AFTER_MAIN_STUDY",
+    "budget": 70,
+    "candidates_n": 280,
+    "dataset_id": "vehicle0",
+    "outcomes": {
+      "REPAIR_INELIGIBLE": 280,
+      "reason:MORE_THAN_THREE_INTEGER_FIELDS": 280
+    },
+    "split_fingerprint": "c825cc152b6b1fddcb63dc3eb70c652a36c1c244bf35a32d3adf08f140b06c94",
+    "split_seed": 13,
+    "track": "E1-repair"
+  },
+  {
+    "addendum_label": "EXPLORATORY_ADDENDUM_DECLARED_AFTER_MAIN_STUDY",
+    "budget": 70,
+    "candidates_n": 280,
+    "dataset_id": "vehicle0",
+    "outcomes": {
+      "REPAIR_INELIGIBLE": 280,
+      "reason:MORE_THAN_THREE_INTEGER_FIELDS": 280
+    },
+    "split_fingerprint": "35900f525fe64d5be1fe6fd2b7b8b201bb373c84645526cbb9ee8597a38aa111",
+    "split_seed": 29,
+    "track": "E1-repair"
+  },
+  {
+    "addendum_label": "EXPLORATORY_ADDENDUM_DECLARED_AFTER_MAIN_STUDY",
+    "budget": 70,
+    "candidates_n": 280,
+    "dataset_id": "vehicle0",
+    "outcomes": {
+      "REPAIR_ELIGIBLE": 2,
+      "REPAIR_INELIGIBLE": 278,
+      "reason:MORE_THAN_THREE_INTEGER_FIELDS": 278
+    },
+    "split_fingerprint": "11981029b1c23446f209b4f3c39dae58723889f8ea72b9d0b32166e9f69feb54",
+    "split_seed": 43,
+    "track": "E1-repair"
+  },
+  {
+    "addendum_label": "EXPLORATORY_ADDENDUM_DECLARED_AFTER_MAIN_STUDY",
+    "budget": 70,
+    "candidates_n": 280,
+    "dataset_id": "vehicle0",
+    "outcomes": {
+      "REPAIR_ELIGIBLE": 4,
+      "REPAIR_INELIGIBLE": 276,
+      "reason:MORE_THAN_THREE_INTEGER_FIELDS": 276
+    },
+    "split_fingerprint": "a4171cc9243439c7e6382c8c1210116571b5d5421dc6d03fa28b87ec83b91d78",
+    "split_seed": 61,
+    "track": "E1-repair"
+  },
+  {
+    "addendum_label": "EXPLORATORY_ADDENDUM_DECLARED_AFTER_MAIN_STUDY",
+    "budget": 70,
+    "candidates_n": 280,
+    "dataset_id": "vehicle0",
+    "outcomes": {
+      "REPAIR_INELIGIBLE": 280,
+      "reason:MORE_THAN_THREE_INTEGER_FIELDS": 280
+    },
+    "split_fingerprint": "35e53b788095ea0aeae84fe15aeafb09a25fca3200a2694c2a3b4fd9e8b9c3bc",
+    "split_seed": 79,
+    "track": "E1-repair"
+  }
+]
