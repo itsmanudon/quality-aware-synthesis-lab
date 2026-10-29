@@ -1,6 +1,6 @@
 """Summarize the exploratory addendum from saved outputs only; never fits or re-scores.
 
-Implements the E4 definitions declared in configs/empirical/addendum-v1.json. Every row,
+Implements the E4 definitions declared in addendum/v1/addendum-v1.json. Every row,
 including unavailable ones, is counted; nothing here selects settings or reruns a design.
 """
 from __future__ import annotations
@@ -58,7 +58,7 @@ class Report:
         self.pools = load(run/"pools.json")
         self.repairs = load(run/"repairs.json")
         self.unavailable = load(run/"unavailable.json")
-        self.config = load(ROOT/"configs/empirical/addendum-v1.json")
+        self.config = load(ROOT/"addendum/v1/addendum-v1.json")
         self.canonical = load(RUN_V2/"results.json")
         self.canonical_constructions = load(RUN_V2/"constructions.json")
         self.datasets_new = self.config["E1"]["datasets"]
@@ -277,7 +277,7 @@ class Report:
                 "inputs": {"run_manifest_sha256": sha(self.run/"manifest.json"),
                            "run_results_sha256": sha(self.run/"results.json"),
                            "run_v2_results_sha256": sha(RUN_V2/"results.json"),
-                           "addendum_protocol_sha256": sha(ROOT/"configs/empirical/addendum-v1.json")},
+                           "addendum_protocol_sha256": sha(ROOT/"addendum/v1/addendum-v1.json")},
                 "run": {k: manifest[k] for k in ["status_counts", "rows_by_track",
                                                  "declaration_commit", "implementation_revision",
                                                  "reproduction_rows",
@@ -304,7 +304,7 @@ class Report:
 
 def markdown(s: dict[str, Any], conclusion: str) -> str:
     lines = ["# RC-QASyn exploratory addendum v1", "",
-             (f"> **{LABEL}** Settings were committed in `configs/empirical/addendum-v1.json` "
+             (f"> **{LABEL}** Settings were committed at `configs/empirical/addendum-v1.json` (now `addendum/v1/addendum-v1.json`) "
              f"(commit `{s['run']['declaration_commit'][:7]}`) before any score; one execution "
              f"(implementation `{s['run']['implementation_revision'][:7]}`). Every row is counted, "
              "including unavailable rows. No significance or state-of-the-art claim."), "",

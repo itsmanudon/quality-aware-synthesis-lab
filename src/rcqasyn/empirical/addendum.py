@@ -36,7 +36,11 @@ from .generation import fresh_geometry, generate
 from .study import Study, file_hash, write_json
 
 FROZEN_SOURCE = "244a9bfd490a03a35c4be5cb3b83354e425795fc"
-CONFIG = "configs/empirical/addendum-v1.json"
+# The addendum is a self-contained project root outside every protected historical path
+# (data/, configs/, artifacts/reports/ ...), so the canonical inventory and crosswalk
+# snapshots never see it. Its layout mirrors the root the canonical builders expect.
+ADDENDUM = "addendum/v1"
+CONFIG = ADDENDUM+"/addendum-v1.json"
 LABEL = "EXPLORATORY_ADDENDUM_DECLARED_AFTER_MAIN_STUDY"
 
 
@@ -61,13 +65,14 @@ class Addendum(Study):
         self.pools: list[dict[str, Any]] = []
         self.repairs: list[dict[str, Any]] = []
         self.registry = DatasetRegistry(project_root=source)
-        self.new_registry = DatasetRegistry(project_root=root)
+        self.addendum = root/ADDENDUM
+        self.new_registry = DatasetRegistry(project_root=self.addendum)
         self.ctx = load_context(root, source)
         self.new_datasets = [d for d in self.config["E1"]["datasets"]
                              if d not in self.config["E1"]["unavailable_datasets"]]
         for dataset in self.new_datasets:
             # The existing builder verifies the recorded split, source checksum and raw schema.
-            self.ctx.specifications[dataset] = dataset_specification(root, dataset)
+            self.ctx.specifications[dataset] = dataset_specification(self.addendum, dataset)
         output.mkdir(parents=True)
 
     def construct_config(self, g: Any, eligible: list[int], concern: dict[int, float],
@@ -281,7 +286,7 @@ class Addendum(Study):
         data: dict[str, Any] = {}
         for dataset in [*self.config["E2"]["datasets"], *self.new_datasets]:
             registry = self.registry if dataset in self.config["E2"]["datasets"] else self.new_registry
-            root = self.source if registry is self.registry else self.root
+            root = self.source if registry is self.registry else self.addendum
             raw = registry.resolve_path(registry.get(dataset))
             data[dataset] = {"raw_path": raw.relative_to(root).as_posix(),
                              "raw_sha256": file_hash(raw),
@@ -290,7 +295,7 @@ class Addendum(Study):
                              "source_manifest": json.loads((root/f"data/manifests/{dataset}/source.json")
                                                            .read_text("utf-8"))}
         for dataset in self.config["E1"]["unavailable_datasets"]:
-            archive = self.root/f"data/raw/{dataset}/{dataset}.zip"
+            archive = self.addendum/f"data/raw/{dataset}/{dataset}.zip"
             data[dataset] = {"status": "unavailable", "archive_size_bytes": archive.stat().st_size
                              if archive.exists() else None,
                              "archive_sha256": file_hash(archive) if archive.exists() else None}
@@ -299,7 +304,9 @@ class Addendum(Study):
                     "addendum_protocol_path": CONFIG,
                     "addendum_protocol_sha256": file_hash(self.root/CONFIG),
                     "addendum_protocol_fingerprint": digest(self.config),
-                    "declaration_commit": git("log", "-n1", "--format=%H", "--", CONFIG),
+                    # Follow the relocation back to the commit that first added the settings.
+                    "declaration_commit": git("log", "--follow", "--diff-filter=A", "--format=%H",
+                                              "--", CONFIG).splitlines()[-1],
                     "implementation_revision": git("rev-parse", "HEAD"),
                     "implementation_worktree_clean": git("status", "--porcelain", "--", "src",
                                                          "scripts", "configs") == "",

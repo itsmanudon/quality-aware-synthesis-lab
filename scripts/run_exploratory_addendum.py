@@ -1,4 +1,4 @@
-"""Run the exploratory addendum declared in configs/empirical/addendum-v1.json (once)."""
+"""Run the exploratory addendum declared in addendum/v1/addendum-v1.json (once)."""
 from __future__ import annotations
 
 import argparse
