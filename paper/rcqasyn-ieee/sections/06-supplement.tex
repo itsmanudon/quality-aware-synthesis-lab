@@ -1,0 +1,14 @@
+\section{Class denominators and confusion counts}
+\input{tables/confusions}
+\section{Paired repair intervals}
+\input{tables/paired}
+All primary pairs for both classifiers and available regimes are in \texttt{paired-differences.json}. Undefined counts remain per endpoint. \texttt{confusions.csv} retains confusion counts and Wilson recall bounds for every successful result.
+
+\section{Evidence map and reproduction}
+The protocol is \path{docs/empirical-v2/protocol.md}; machine settings are in \path{configs/empirical/protocol-v1.json}. Canonical evidence is \path{artifacts/reports/empirical-v2/run-v2}. The report includes consolidated ablations, split-wise paired differences and confusions. A development run is explicitly superseded for an interval-metadata naming defect; its scores never selected configurations.
+
+With this revision's \texttt{src} on PYTHONPATH, run \texttt{scripts/run\_empirical\_study.py} using a fresh output directory and frozen checkout as \texttt{--source-root}. \texttt{scripts/report\_empirical\_study.py} reads saved evidence without refitting. Exact commands, pinned dependencies and verification are in \texttt{docs/empirical-v2/handoff.md}.
+
+The manifest binds revisions, code hashes, protocol identity, dependencies, runtime and output hashes. Population records retain exact TRAIN/TEST identities, source/dataset fingerprints, class counts and overlap diagnostics. Generator files retain fitted TRAIN identities, scaler parameters, seeds and generated payloads. Existing M2/M7 use fresh split-specific populations. Predictions preserve actual/predicted classes, positive scores and row identity; compressed index arrays preserve paired resamples.
+
+The cell ledger \texttt{notes/table-evidence.json} links rendered values to input fields, row fingerprints and aggregation rules. Original M2, M4 and M6/M7 sensitivities remain unchanged. Individual seeds, every split, both classifiers, unavailable cases and budget checks accompany the paper. Full regression/static checks, replay and historical integrity are reported separately; replay is not another independent split.

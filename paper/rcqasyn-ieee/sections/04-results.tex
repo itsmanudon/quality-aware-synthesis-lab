@@ -1,0 +1,42 @@
+\section{Results}
+\subsection{RQ1--RQ2: structure and complementary support}
+There are 75 structural rejects (12.48\%): five of 200 Abalone19, six of 201 Ecoli4 and 64 of 200 page-blocks0. Fifteen records lack class, one lacks features and 64 have fractional-integer fields; categories overlap. Twenty-six violate multiple fields. No unsupported nominal value or invalid numerical primitive appears in this population.
+
+Local/global Spearman correlations are $.908$, $.488$ and $.621$ for Abalone19, Ecoli4 and page-blocks0, with respectively 14, 30 and two tail-disagreement cases. The scores are related but do not identify identical concerns. Combined admission yields 170, 162 and 119 provisional passes, versus 195, 195 and 136 with structure only. Existing local/global, $k$/shrinkage and cutoff sensitivities are reused unchanged. These results establish distinct statistical information and eligibility, not semantic-error detection performance.
+
+\subsection{RQ3: matched-budget ablations}
+\input{tables/ablations}
+Table~\ref{tab:ablations} consolidates structure, local/global admission, selection and repair. Every construction reaches its declared budget. Random rows average all five seeds; individual results and variability accompany the paper. Raw-labeled controls remove class/feature-incomplete records explicitly.
+
+Quality-coverage increases distinct-feature TRAIN coverage over source order from $.6225$ to $.9479$ on Abalone19 and $.4164$ to $.5056$ on Ecoli4, with zero exact/near redundancy on both. Farthest-first removes redundancy but has lower Ecoli4 coverage ($.4684$). Coverage-greedy reaches $.5056$ with exact duplication $.1143$. These metrics distinguish different selection behavior. Combined eligibility, quotas and coverage objectives prevent interpreting this comparison as the isolated causal effect of an evidence score.
+Structure-only admission followed by the same quality selector slightly exceeds full-admission coverage on Abalone19 ($.951$ versus $.948$) and Ecoli4 ($.509$ versus $.506$). On page-blocks0, full admission instead improves logistic pure-TSTR F1 over structure only ($.446$ versus $.202$). Additional evidence therefore changes outcomes without producing monotonic gains across datasets or metrics.
+
+\begin{figure}[!t]\centering\includegraphics[width=\linewidth]{figures/coverage.pdf}
+\caption{Historical fixed-budget distinct-feature TRAIN coverage. Random bars average five selection seeds; admitted selectors share the same pool.}\label{fig:coverage}\end{figure}
+
+\subsection{RQ4: bounded repair}
+All 54 eligible repairs become structurally compliant; 21 rejected records are ineligible. Repairs edit 73 fields: 39 records require one edit, eleven two and four three. Absolute changes range $.1$--$.5$, mean $.3119$. Five fractional-integer records also lack class and five require over three edits; neither group is repaired. Eleven further ineligible records belong to Abalone19/Ecoli4.
+
+Under unchanged admission, 49 derived versions provisionally pass and five require review. The page-blocks0 admitted pool grows 119 to 168. At budget 49, quality-coverage selects 16 derived records: distinct-feature coverage rises $.9324$ to $.9370$, near duplication falls $.3265$ to $.1020$ and exact duplication remains zero. Source-order coverage slightly declines; other datasets are unchanged. Expanded pools therefore have method-dependent effects.
+
+\subsection{RQ5: utility and external comparators}
+All 138 historical utility rows reproduce within $10^{-12}$, including 24 unavailable cases. The expanded study contains 894 utility rows: 678 successful and 216 explicitly unavailable, without execution failures or budget shortfalls. Complete files retain both classifiers, regimes, class counts, confusion counts and metrics. Eighteen additional method/type incompatibilities are listed separately.
+
+\input{tables/external}
+External training baselines retain actual training populations and generated structural-compliance counts. Standard SMOTE's page-blocks0 outputs are not integer-coerced. Class weighting changes the training objective without generating records. These interventions are not matched candidate-curation alternatives.
+In the historical page-blocks0 SMOTE baseline, 46 of 49 generated rows fail the integer structural contract; all remain computationally evaluable numerical augmentation records, and this incompatibility is explicit rather than repaired silently.
+
+For historical page-blocks0 logistic pure TSTR, repair-pool expansion changes F1 from $.4464$ to $.3421$, while AP changes $.5552$ to $.5716$. Hybrid F1 stays $.7150$. This negative result accompanies improved coverage and near redundancy: geometric gains do not ensure utility gains.
+
+\subsection{RQ6: conditional uncertainty and fresh-split stability}
+\input{tables/bootstrap}
+The 216 endpoint and 168 paired-difference intervals derive from saved predictions. Page-blocks0 logistic repair-minus-original F1 is approximately $-.1043$, with conditional interval $[-.1350,-.0739]$; AP difference is $.0165$, interval $[-.0071,.0493]$. F1 decreases consistently under this conditional resampling design, while AP direction is less stable. These remain descriptive intervals on reused historical TEST.
+
+Ecoli4 logistic TRTR predicts perfectly on only four positive and 63 negative TEST records, yielding conditional F1 interval $[1,1]$. Its Wilson positive-recall interval is approximately $[.510,1]$. Resampling perfect observed predictions cannot establish universal performance. Abalone19 has only six positive TEST examples; resampling adds no independent positive observations.
+
+\input{tables/repeated}
+All 15 split-specific runs complete. Ecoli4 logistic F1 is $.8476\pm.1186$ for real-only training and $.7581\pm.1659$ for quality-curated augmentation. Admitted random has the same mean F1 there, though ranking metrics differ. Abalone19 logistic F1 stays zero under real-only and the declared augmentation methods; balanced logistic loss reaches $.0506\pm.0095$. On page-blocks0, real-only F1 is $.7284\pm.0256$, quality-curated augmentation $.7383\pm.0283$ and admitted random $.7409\pm.0270$. These outcomes do not show a uniform augmentation benefit or superiority over simple curation.
+
+\begin{figure}[!t]\centering\includegraphics[width=\linewidth]{figures/repeated-f1.pdf}
+\caption{Every fresh-split logistic F1 value; black bars show five-split means. Real-only and hybrid regimes are distinct. The page-blocks0 pool generator is ROS.}\label{fig:repeated}\end{figure}
+Split-wise paired differences use identical evaluation records. Pure TSTR on offline minority-only pools is unavailable, never renamed hybrid augmentation.

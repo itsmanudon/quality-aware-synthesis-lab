@@ -1,0 +1,45 @@
+\section{Methodology}
+Let $T$ denote REAL TRAIN, $E$ REAL TEST and $G=\{(o_i,x_i,y_i)\}$ the candidate stream. Occurrence identity distinguishes physical records even when payloads are equal. Source files, ordinals, payload hashes, specifications and experiment identities link each selected record to its inputs. Missing class remains missing; generation conditioning never supplies an absent payload label.
+
+\begin{figure*}[!t]\centering\resizebox{\textwidth}{!}{\input{figures/architecture}}
+\caption{RC-QASyn architecture. Structure and statistical support are separate. Optional repair creates derived versions and repeats checks. B1/B2/B3 remain frozen controls. REAL TEST enters only evaluation. Dashed arrows denote provenance or optional reevaluation.}\label{fig:architecture}\end{figure*}
+
+\subsection{Authoritative structure and statistical evidence}
+Specifications identify required features/class, numerical primitives, nominal values, integer declarations and permitted fields. Supported violations can reject. Observed ranges do not become universal physical bounds. Existing checks are reused without adding a validator family.
+
+For $p$ features, the TRAIN-scaled mixed distance is
+\begin{equation}
+d(x,t)=\frac1p\sum_j\delta_j(x_j,t_j),\quad
+\delta_j=\begin{cases}\min(|x_j-t_j|/R_j,1),&\text{numeric},R_j>0,\\
+\mathbf1[x_j\ne t_j],&\text{nominal or }R_j=0.
+\end{cases}
+\end{equation}
+Here $R_j$ is TRAIN span and class is excluded. Local support $L_k(x)$ averages distances to the nearest $\min(k,|T_s|)$ supported TRAIN observations, with row-identity tie breaking; primary $k=5$.
+
+Global consistency scales numerical features by TRAIN median/IQR, falling back to span then one, and one-hot encodes TRAIN categories. For encoded dimension $D$, covariance $S$ and mean $\mu$,
+\begin{equation}
+\Sigma=(1-\alpha)S+\alpha\operatorname{diag}(S)+\lambda I,\qquad
+Q(x)=\sqrt{\max(0,(z-\mu)^\top\Sigma^{-1}(z-\mu))/D}.
+\end{equation}
+Primary $\alpha=.10$, $\lambda=10^{-8}$. Unsupported evidence and unseen TRAIN categories remain explicit. Existing sensitivities vary $k$ or shrinkage.
+
+\subsection{Descriptive combination and admission}
+For dataset/family candidate-score reference $A_f$, use
+\begin{equation}
+u_f(s)=\bigl(\#\{a<s\}+\tfrac12\#\{a=s\}\bigr)/|A_f|.
+\end{equation}
+Larger ranks indicate weaker support. Combined concern is $\max(u_L,u_Q)$ with both components required, an uncalibrated index rather than a validity probability. No independence assumption or learned fusion weight is introduced.
+
+Admission rejects authoritative defects, abstains when required evidence is unavailable, requests review for partial structure or concern at least $q=.90$, and otherwise provisionally passes. Structure/local/global policies form ablations; combined $q=.80,.95$ are historical sensitivities. Track A preserves historical models and ranks, including for derived queries. Track B reconstructs scores and reference ranks separately for each new TRAIN-fitted candidate pool.
+
+\subsection{Coverage-aware construction}
+Let $\mathcal R$ be distinct TRAIN feature/class regions and $h_t(S)=\mathbf1[\min_{s\in S}d(s,t)\le .05]$. Uniform coverage averages $h_t$ over regions; balanced coverage assigns each class-$y$ region weight $1/(K n_y)$. Distinct-feature TRAIN coverage is reported separately.
+
+At budget $b$, source order selects earliest occurrences; farthest-first maximizes minimum selected-set separation; coverage-greedy maximizes uniform marginal coverage. Quality-coverage prohibits repeated feature payloads, fills a feasible minority quota $\lfloor .5b\rfloor$ first, and uses the unchanged lexicographic objective: balanced marginal coverage, fewer neighbors within $.01$, greater separation, lower concern, then stable source order. Exact redundancy is $1-u/n$ for $u$ unique full payloads among $n$ selections. Near redundancy is the fraction with another selected record within $.01$, unavailable for $n<2$.
+
+\subsection{Bounded structural repair}
+Only fractional finite values in source-declared integer fields can change. Decimal half-to-even rounding must satisfy
+\begin{equation}
+|J|\le3,\quad |x'_j-x_j|\le .5\ (j\in J),\qquad x'_j=x_j\ (j\notin J).
+\end{equation}
+Missing targets/features, category substitutions and imputation are excluded. More than three required edits refuses the whole record. Derived identities bind parent, policy, specification and payload; originals remain immutable. Frozen evidence and admission rescore repairs, and parent exclusivity prevents counting versions twice. Expanded-pool comparisons measure repair plus subsequent reselection, rather than the isolated effect of a numerical edit.
