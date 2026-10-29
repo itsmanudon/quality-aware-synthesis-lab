@@ -1,0 +1,24 @@
+dataset_id: yeast4
+display_name: KEEL yeast4
+raw_path: data/raw/yeast4/yeast4.dat
+accepted_filenames: [yeast4.dat]
+format: keel_dat
+target_column: class
+feature_columns: [mcg, gvh, alm, mit, erl, pox, vac, nuc]
+categorical_columns: []
+numerical_columns: [mcg, gvh, alm, mit, erl, pox, vac, nuc]
+missing_policy: preserve_as_null
+minority_label: positive
+task_type: classification
+source_url: https://sci2s.ugr.es/keel/dataset/data/imbalanced/yeast4.zip
+preprocessing: [none_declared]
+metadata:
+  identity_provenance: KEEL imbalanced archive yeast4.zip supplied locally for the exploratory addendum; source page not independently verified
+  schema_provenance: KEEL declaration from yeast4.dat header (numerical declarations ['real']; nominal none)
+  label_provenance: KEEL class declaration in yeast4.dat; minority class token positive
+  statistics_provenance: raw file inspection recorded in data/manifests/yeast4
+  addendum_scope: exploratory-addendum-v1 only; not part of the canonical empirical-v2 study
+split:
+  test_size: 0.2
+  seed_offset: 0
+  stratify: true
