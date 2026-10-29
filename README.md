@@ -2,13 +2,19 @@
 
 RC-QASyn is a research prototype for constructing tabular synthetic datasets from
 traceable evidence, explicit admission decisions, bounded repairs and coverage-aware
-selection. All six engineering phases and **Empirical v2 are complete**.
+selection. All six engineering phases and **Empirical v2 are complete**. Two
+**exploratory addenda**, declared after the main study, extend the evaluation to nine
+datasets and to published curation and oversampling methods; the IEEE conference
+version of the paper reports them in a separate subsection.
 
 **Start here:** [canonical manuscript PDF](paper/rcqasyn-empirical-v2/main.pdf)
 ([editable LaTeX](paper/rcqasyn-empirical-v2/main.tex)),
 [empirical report](artifacts/reports/empirical-v2/report-v3/report.md),
 [reproduction guide](docs/REPRODUCE_EMPIRICAL_V2.md),
 [repository map](docs/REPOSITORY_GUIDE.md).
+The IEEE conference draft, with authors, the addendum and declarations, is
+[here (PDF)](paper/rcqasyn-ieee/main.pdf) ([LaTeX](paper/rcqasyn-ieee/main.tex));
+the addenda themselves are indexed in [addendum/README.md](addendum/README.md).
 
 ## Motivation and contributions
 
@@ -61,6 +67,11 @@ and generated candidates. The fresh study uses five stratified 80/20 splits per 
 with TRAIN-only SMOTENC, SMOTE or RandomOverSampler pools as declared in the protocol.
 It is an **offline curation study**, not a repetition of the original LLM generation campaign.
 
+The exploratory addendum adds six KEEL datasets under the same fresh-split design:
+yeast3, yeast4, vehicle0, segment0, ecoli1 and abalone9-18. A seventh, winequality-red-4,
+is unavailable because its source archive is empty. Their configurations and manifests
+live under [addendum/v1](addendum/v1), outside the protected historical paths.
+
 ## Key results
 
 | Observation | Saved evidence |
@@ -75,6 +86,21 @@ It is an **offline curation study**, not a repetition of the original LLM genera
 Coverage and redundancy gains do not imply uniform utility gains. Classical training
 baselines and candidate curation answer different questions; unavailable comparisons
 and their reasons are retained in the evidence.
+
+## Exploratory addenda
+
+Both addenda were declared in a committed settings file before any score was computed,
+executed once and kept out of the canonical tables. Tests are exploratory, without
+multiplicity adjustment or significance claims.
+
+| Addendum | Question | Outcome | Saved evidence |
+| --- | --- | --- | --- |
+| v1 | Nine datasets, real-ratio minority quota, equal-budget B2 | Quality-coverage covers more TRAIN support than admitted random selection on all five new datasets with usable pools, but shows no consistent F1 gain (median +0.001 LR, +0.013 RF; Wilcoxon p 0.19–1.00). vehicle0's SMOTE pool breaks integer declarations in all 1,400 candidates. | [Summary](addendum/v1/report/summary.md), [results](addendum/v1/report/results.csv), [settings](addendum/v1/addendum-v1.json) |
+| v2 | Benchmark against re-implemented CLLM-style and discriminator-realism curators and four imbalanced-learn oversamplers | No curator dominates (Friedman p 0.21–0.65). Full-balancing SMOTE-Tomek and ADASYN rank best for random-forest F1. No comparison of quality-coverage with any method reaches p < 0.05. | [Summary](addendum/v2/report/summary.md), [results](addendum/v2/report/results.csv), [settings](addendum/v2/addendum-v2.json) |
+
+The learned curators re-implement published principles, not the authors' code.
+Reproduction commands and the local-only evidence archive are described in
+[addendum/v1/README.md](addendum/v1/README.md).
 
 ## Inspect results first
 
@@ -117,10 +143,20 @@ records 1,815 tests before the nine release-compatibility tests were added. Its 
 logs remain preserved; the [repository guide](docs/REPOSITORY_GUIDE.md) distinguishes
 that archive from the merged engineering freeze.
 
+The exploratory addenda add code only behind new entry points
+(`src/rcqasyn/empirical/addendum*.py`, `scripts/*exploratory_addendum*.py`). Their
+macOS verification of the merged `main` gave 1,384 passed, 435 skipped and 5 failed,
+the same failures as before the merge and all platform-specific (linked-directory
+discovery, process-race reservation and a last-bit floating-point audit comparison).
+Pyright reported no errors. Ruff is clean on `src`, `scripts`, `tests` and
+`experiments`; its only findings are in preserved Phase-2 artifact scripts, which stay
+unedited.
+
 ## Navigation and historical versions
 
 - [Repository guide](docs/REPOSITORY_GUIDE.md): modules, configurations, tests and evidence.
-- [Manuscript landing page](paper/README.md): canonical paper, sources and build instructions.
+- [Manuscript landing page](paper/README.md): canonical paper, IEEE conference version, sources and build instructions.
+- [Exploratory addenda](addendum/README.md): declared settings, results and reproduction notes.
 - [Earlier six-phase manuscript](paper/rcqasyn-final-draft/main.pdf) and
   [historical v0.1 source](paper/main.tex): retained earlier versions.
 - [Original candidate streams](artifacts/runs), [Phase-6 report](artifacts/reports/phase6/report-v2/report.md)
@@ -135,6 +171,12 @@ holdouts limit inference. Bootstrap intervals condition on fitted models and obs
 TEST strata; split SD measures a different source of variation. Offline page-blocks0
 replication preserves integer structure through resampling and adds no new support.
 
-Engineering and Empirical v2 are complete. Author identities, affiliations, CRediT,
-funding, conflicts, ethics/venue declarations and final scientific acceptance require
-human decisions. No publication acceptance or state-of-the-art superiority is claimed.
+The exploratory addenda were designed after the main results were known, several of
+their KEEL datasets share sources, and their learned-curation baselines are
+re-implementations. They show no utility advantage of quality-coverage over random
+selection or published methods.
+
+Engineering, Empirical v2 and the exploratory addenda are complete. The IEEE draft
+carries the authors, affiliations, contributions and the institute's declarations;
+venue choice and final scientific acceptance remain human decisions. No publication
+acceptance or state-of-the-art superiority is claimed.

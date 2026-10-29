@@ -14,7 +14,7 @@ canonical empirical-v2 tables, protocol-v1, run-v2/report-v3 or the approved man
 
 This directory is a self-contained project root. It sits outside the protected historical
 paths (`data/`, `configs/`, `artifacts/reports/`, `artifacts/runs/`, `test-results/`,
-`prompts/`), so a checkout of this branch can still serve as historical SOURCE.
+`prompts/`), so a checkout of `main` can still serve as historical SOURCE.
 
 Reproduce (Python 3.12 venv, pinned versions in `artifacts/reports/empirical-v2/verification-v1/dependencies.txt`):
 

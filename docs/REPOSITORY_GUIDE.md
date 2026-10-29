@@ -17,6 +17,7 @@ implemented; the M labels below describe components, not six additional phases.
 | Phase 5: M7 construction | [TRAIN geometry](../src/rcqasyn/phase5/geometry.py), [selection](../src/rcqasyn/phase5/selection.py), [workflow](../src/rcqasyn/phase5/workflow.py) | [Methods](phase5-m7-coverage-methods.md), [study configuration](../configs/phase5/m7-study-v1.json) |
 | Phase 6: M6 repair / M9 utility | [repair](../src/rcqasyn/phase6/repair.py), [study](../src/rcqasyn/phase6/study.py), [utility](../src/rcqasyn/phase6/utility.py) | [Methods](phase6-m6-m9-methods.md), [study configuration](../configs/phase6/m6-m9-study-v1.json) |
 | Empirical v2: external baselines, fresh splits, uncertainty | [study](../src/rcqasyn/empirical/study.py), [offline generation](../src/rcqasyn/empirical/generation.py), [evaluation](../src/rcqasyn/empirical/evaluation.py) | [Protocol](empirical-v2/protocol.md), [machine matrix](../configs/empirical/protocol-v1.json), [pinned additions](../configs/empirical/requirements.txt) |
+| Exploratory addenda v1/v2 (declared after the main study) | [addendum v1](../src/rcqasyn/empirical/addendum.py), [addendum v2](../src/rcqasyn/empirical/addendum_v2.py), [runners and reporters](../scripts), [source-byte restore](../scripts/restore_source_bytes.py) | [Index](../addendum/README.md), [v1 settings](../addendum/v1/addendum-v1.json), [v2 settings](../addendum/v2/addendum-v2.json) |
 
 Shared [contracts](../src/rcqasyn/contracts), [interfaces](../src/rcqasyn/interfaces),
 [storage](../src/rcqasyn/storage), [dataset services](../src/rcqasyn/datasets) and
@@ -58,6 +59,11 @@ the documented bounded integer repair, not every repair/regeneration idea in ear
 | Structural compliance and test denominators | [selection compliance](../artifacts/reports/empirical-v2/report-v3/selection-structural-compliance.csv), [confusions/Wilson recall](../artifacts/reports/empirical-v2/report-v3/confusions.csv) |
 | Unavailable method/type comparisons | [explicit ledger](../artifacts/reports/empirical-v2/run-v2/unavailable.json), plus reason fields in all utility rows |
 
+The [exploratory addenda](../addendum/README.md) have their own saved results under
+`addendum/v1/report` and `addendum/v2/report`. They are exploratory, declared after
+the main study and never merged into the canonical tables above. They sit outside the
+protected historical paths, so they do not change the frozen inventory.
+
 The manuscript has its own [cell provenance](../paper/rcqasyn-empirical-v2/notes/table-evidence.json)
 and [claim ledger](../paper/rcqasyn-empirical-v2/notes/claim-ledger.json).
 Run-v2 is canonical; report-v3 is the current rendering. Earlier report-v1/report-v2
@@ -91,7 +97,8 @@ navigation, commands and artifact preservation.
 ## Manuscripts and historical documents
 
 Use the [manuscript landing page](../paper/README.md) for the canonical Empirical v2
-paper, sources, bibliography and build instructions. The
+paper, the [IEEE conference version](../paper/rcqasyn-ieee) with the exploratory
+addenda, sources, bibliography and build instructions. The
 [six-phase draft](../paper/rcqasyn-final-draft) and [v0.1 source](../paper/main.tex)
 remain accessible with their own evidence and references.
 
@@ -102,6 +109,7 @@ does not describe current M2/M4/M5/M7/M6 implementation status. The
 Empirical v2. Historical human-review plans remain archived; human-label experiments
 and validity calibration are outside this paper's active scope.
 
-All six engineering phases and Empirical v2 are complete. Accurate author,
-affiliation, CRediT, funding, conflict, ethics and venue declarations, institutional
-review and final scientific acceptance remain separate human decisions.
+All six engineering phases, Empirical v2 and the exploratory addenda are complete.
+The IEEE draft carries the authors, affiliations, contributions and the institute's
+declarations; venue choice, institutional review and final scientific acceptance
+remain separate human decisions.

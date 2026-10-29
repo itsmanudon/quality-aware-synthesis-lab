@@ -15,11 +15,17 @@ This is a **research foundation, not a product and not a results claim**. The RE
 asserting novelty or performance. Preserve that tone in code comments, docstrings, and
 docs you write.
 
-Current implemented scope: **M0 (foundation) + M1 (paired baseline harness)**.
-Everything from M2 onward — calibrated evidence fusion, risk-aware control, localized
-repair, coverage optimization, RAG/factual verification, privacy/fairness validators,
-alpha-precision/beta-recall, embeddings — is **explicitly deferred**. Do not implement
-those unless asked; the `src/rcqasyn/interfaces/` Protocols are the placeholders.
+Current implemented scope: all six engineering phases (the M1 harness, M2
+evidence, M4/M5 descriptive fusion and admission, M7 construction and M6/M9 bounded
+repair and utility), the Empirical v2 study and two exploratory addenda. See
+`docs/REPOSITORY_GUIDE.md` for the map. Still out of scope: calibrated validity
+probabilities, risk-aware control, RAG/factual verification, privacy/fairness
+validators and human-label experiments. Do not implement those unless asked. The
+sections below on M0/M1 describe the original harness and remain accurate for it.
+
+Exploratory work goes in a new declared version under `addendum/` (outside the
+protected historical paths `data/`, `configs/`, `artifacts/reports/`, `artifacts/runs/`,
+`test-results/` and `prompts/`), never as a rerun of a declared version.
 
 ## Environment and setup
 

@@ -18,8 +18,40 @@ Numerical sources are [run-v2](../artifacts/reports/empirical-v2/run-v2/manifest
 and [report-v3](../artifacts/reports/empirical-v2/report-v3/report.md), under the
 [pre-scoring protocol](../docs/empirical-v2/protocol.md). The manuscript reports mixed
 utility effects and conditional uncertainty. Human-label experiments and validity
-calibration are outside its active scope. Final author/institutional declarations and
-academic acceptance remain human decisions.
+calibration are outside its active scope. Author names and institutional
+declarations are in the IEEE version below; academic acceptance remains a human decision.
+
+## IEEE conference version
+
+[`rcqasyn-ieee`](rcqasyn-ieee) is the IEEE conference-format version of the paper
+([PDF, 15 pages](rcqasyn-ieee/main.pdf), [LaTeX](rcqasyn-ieee/main.tex)). Compared
+with Empirical v2 it adds:
+
+- the four authors and their affiliation;
+- a separate subsection reporting the two exploratory addenda
+  ([sections/04b-addendum.tex](rcqasyn-ieee/sections/04b-addendum.tex), with
+  [generated tables](rcqasyn-ieee/tables/addendum) copied from
+  [addendum/v2/report/tables](../addendum/v2/report/tables));
+- revised Limitations and Future work, and an abstract and conclusion that mention
+  the addendum;
+- the institute's declarations, last in the paper
+  ([sections/07-declarations.tex](rcqasyn-ieee/sections/07-declarations.tex)).
+
+The addendum results stay out of the canonical tables. The Empirical v2 manuscript
+below is unchanged.
+
+Build it with any TeX distribution that provides `IEEEtran`, for example from the
+repository root:
+
+```bash
+cd paper/rcqasyn-ieee
+pdflatex main && bibtex main && pdflatex main && pdflatex main
+```
+
+Build in a copy if you do not want to replace the committed `main.pdf` and
+`main.bbl`. For Overleaf, upload a zip of the folder (without `main.pdf`), set the
+compiler to pdfLaTeX and the main document to `main.tex`. Overleaf edits do not
+return to this repository on their own.
 
 ## Build the existing manuscript
 
@@ -55,6 +87,7 @@ To regenerate numerical tables/figures from saved results, use the
 
 | Version | Location | Role |
 | --- | --- | --- |
+| IEEE conference | [Source and PDF](rcqasyn-ieee) | Conference-format version of Empirical v2 with authors, the exploratory addenda and declarations |
 | Empirical v2 | [Current source and PDF](rcqasyn-empirical-v2) | Canonical professor-review revision; external baselines, repeated splits and uncertainty |
 | Six-phase draft | [Earlier source](rcqasyn-final-draft/main.tex), [PDF](rcqasyn-final-draft/main.pdf) | Earlier engineering closeout manuscript based on Phase-6 evidence |
 | PAPER v0.1 | [Historical source](main.tex), [sections](sections), [notes](notes) | Original proposal/development draft; statements about unimplemented M2+ or pending annotation describe that period |
