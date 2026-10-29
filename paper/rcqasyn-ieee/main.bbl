@@ -208,4 +208,21 @@ L.~Zheng, W.-L. Chiang, Y.~Sheng, S.~Zhuang, Z.~Wu, Y.~Zhuang, Z.~Lin, Z.~Li,
   \url{https://proceedings.neurips.cc/paper_files/paper/2023/hash/91f18a1287b398d378ef22505bf41832-Abstract-Datasets_and_Benchmarks.html}
 \BIBentrySTDinterwordspacing
 
+\bibitem{han2005borderline}
+H.~Han, W.-Y. Wang, and B.-H. Mao, ``Borderline-{SMOTE}: A new over-sampling
+  method in imbalanced data sets learning,'' in \emph{Advances in Intelligent
+  Computing}, ser. Lecture Notes in Computer Science.\hskip 1em plus 0.5em
+  minus 0.4em\relax Berlin, Heidelberg: Springer, 2005, pp. 878--887.
+
+\bibitem{he2008adasyn}
+H.~He, Y.~Bai, E.~A. Garcia, and S.~Li, ``{ADASYN}: Adaptive synthetic sampling
+  approach for imbalanced learning,'' in \emph{2008 IEEE International Joint
+  Conference on Neural Networks (IEEE World Congress on Computational
+  Intelligence)}.\hskip 1em plus 0.5em minus 0.4em\relax IEEE, 2008, pp.
+  1322--1328.
+
+\bibitem{newaz2022hybrid}
+A.~Newaz and F.~S. Haq, ``A novel hybrid sampling framework for imbalanced
+  learning,'' arXiv preprint arXiv:2208.09619, 2022.
+
 \end{thebibliography}
