@@ -1,0 +1,55 @@
+\begin{table*}[!t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\caption{Exploratory addendum, declared after the main study. Mean F1 and AP of the eight curators (hybrid training: real TRAIN plus $b$ selected candidates).}
+\label{tab:addendum-curators}
+\resizebox{\textwidth}{!}{%
+\begin{tabular}{lrrrrrrrr}
+\toprule
+Dataset & Schema rand. & Adm. rand. & Source order & Farthest-first & Cov.-greedy & QC (ours) & CLLM-style$^\dagger$ & Disc.-realism$^\dagger$ \\
+\midrule
+\multicolumn{9}{l}{\textit{LR, mean F1 over five splits}} \\
+Abalone19 & \textbf{.000} & \textbf{.000} & \textbf{.000} & \textbf{.000} & \textbf{.000} & \textbf{.000} & \textbf{.000} & \textbf{.000} \\
+Ecoli4 & .758 & .758 & .758 & .758 & .758 & .758 & \textbf{.826} & .758 \\
+page-blocks0 & .736 & \textbf{.741} & .738 & .738 & .740 & .738 & .736 & .739 \\
+yeast3 & .773 & .769 & .779 & .773 & \textbf{.782} & \textbf{.782} & .771 & .779 \\
+yeast4 & .152 & .150 & .154 & \textbf{.203} & .158 & .158 & .180 & .185 \\
+segment0 & \textbf{.988} & \textbf{.988} & \textbf{.988} & \textbf{.988} & \textbf{.988} & \textbf{.988} & \textbf{.988} & \textbf{.988} \\
+ecoli1 & .760 & .745 & .749 & .750 & .762 & .758 & .742 & \textbf{.762} \\
+abalone9-18 & .676 & .677 & \textbf{.684} & .670 & .670 & .679 & .671 & .659 \\
+\midrule
+\multicolumn{9}{l}{\textit{LR, mean AP over five splits}} \\
+Abalone19 & .041 & .047 & .046 & .047 & .045 & .044 & \textbf{.050} & .042 \\
+Ecoli4 & \textbf{.944} & .934 & .934 & .934 & .934 & .934 & \textbf{.944} & .937 \\
+page-blocks0 & .800 & .799 & .799 & .800 & .799 & .800 & \textbf{.800} & .799 \\
+yeast3 & .813 & .809 & .807 & .809 & .807 & .808 & \textbf{.813} & .813 \\
+yeast4 & .311 & .319 & .311 & .327 & .306 & .305 & \textbf{.331} & .322 \\
+segment0 & .977 & .977 & .977 & .978 & .977 & \textbf{.978} & .974 & .977 \\
+ecoli1 & .861 & .862 & \textbf{.868} & .864 & .867 & .865 & .864 & .861 \\
+abalone9-18 & .774 & .780 & .771 & .780 & .781 & .775 & \textbf{.783} & .780 \\
+\midrule
+\multicolumn{9}{l}{\textit{RF, mean F1 over five splits}} \\
+Abalone19 & .000 & \textbf{.057} & .000 & .000 & .000 & .000 & .000 & .000 \\
+Ecoli4 & .786 & .748 & \textbf{.819} & .800 & .762 & .786 & .743 & .790 \\
+page-blocks0 & .890 & \textbf{.893} & .892 & .891 & .886 & .885 & .890 & .885 \\
+yeast3 & .775 & .790 & .787 & .794 & \textbf{.810} & .801 & .781 & .794 \\
+yeast4 & .246 & .245 & .240 & .238 & .210 & .268 & \textbf{.335} & .199 \\
+segment0 & .991 & .989 & .989 & \textbf{.991} & \textbf{.991} & \textbf{.991} & .989 & .989 \\
+ecoli1 & .775 & .736 & .771 & \textbf{.782} & .773 & .754 & .748 & .762 \\
+abalone9-18 & .348 & .373 & .402 & .370 & \textbf{.406} & .388 & .313 & .392 \\
+\midrule
+\multicolumn{9}{l}{\textit{RF, mean AP over five splits}} \\
+Abalone19 & .040 & \textbf{.070} & .034 & .030 & .037 & .033 & .039 & .041 \\
+Ecoli4 & .884 & .872 & \textbf{.895} & .882 & .870 & .882 & .811 & .883 \\
+page-blocks0 & .922 & .922 & .924 & .925 & .924 & .926 & \textbf{.929} & .924 \\
+yeast3 & .859 & .867 & .855 & .873 & .858 & .859 & .875 & \textbf{.875} \\
+yeast4 & .406 & .379 & .401 & .415 & .364 & .407 & .383 & \textbf{.421} \\
+segment0 & 1.000 & 1.000 & \textbf{1.000} & 1.000 & 1.000 & 1.000 & 1.000 & 1.000 \\
+ecoli1 & .867 & .862 & .857 & .860 & .840 & .820 & .868 & \textbf{.870} \\
+abalone9-18 & .480 & .533 & .511 & .551 & \textbf{.567} & .554 & .497 & .518 \\
+\bottomrule
+\end{tabular}}
+
+\vspace{2pt}\parbox{\textwidth}{\scriptsize Bold: best in row. $^\dagger$Re-implementation of the published principle, not the authors' code. vehicle0 omitted: no structurally complete candidate.}
+\end{table*}

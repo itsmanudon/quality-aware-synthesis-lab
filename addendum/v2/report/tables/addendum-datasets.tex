@@ -1,0 +1,24 @@
+\begin{table}[!t]
+\centering
+\scriptsize
+\setlength{\tabcolsep}{3pt}
+\caption{Exploratory addendum, declared after the main study. Datasets. IR = majority/minority; $b$ = selection budget; TEST positives are per split (five stratified 80/20 splits).}
+\label{tab:addendum-datasets}
+\resizebox{\linewidth}{!}{%
+\begin{tabular}{lrrrcrcl}
+\toprule
+Dataset & Rows & Min. & IR & Nom. & $b$ & TEST pos. & Pool gen. \\
+\midrule
+Abalone19 & 4174 & 32 & 129.4 & yes & 56 & 6 & SMOTENC \\
+Ecoli4 & 336 & 20 & 15.8 & no & 70 & 4 & SMOTE \\
+page-blocks0 & 5472 & 559 & 8.8 & no & 49 & 112 & RandomOverSampler \\
+yeast3 & 1484 & 163 & 8.1 & no & 65 & 33 & SMOTE \\
+yeast4 & 1484 & 51 & 28.1 & no & 30 & 10 & SMOTE \\
+vehicle0 & 846 & 199 & 3.3 & no & 70 & 40 & SMOTE \\
+segment0 & 2308 & 329 & 6.0 & no & 70 & 66 & SMOTE \\
+ecoli1 & 336 & 77 & 3.4 & no & 31 & 15 & SMOTE \\
+abalone9-18 & 731 & 42 & 16.4 & yes & 30 & 8 & SMOTENC \\
+winequality-red-4 & \multicolumn{7}{l}{unavailable (empty source archive)} \\
+\bottomrule
+\end{tabular}}
+\end{table}
