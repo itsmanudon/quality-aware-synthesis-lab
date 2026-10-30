@@ -120,6 +120,48 @@ W.~M. Stevenson, A.~Gerdes, L.~Galke~Poech, and A.~D. Lautrup, ``Curating the
   of tabular data,'' in \emph{Proceedings of the AAAI/ACM Conference on AI,
   Ethics, and Society}, vol.~9, no.~4, 2026, pp. 2450--2461.
 
+\bibitem{guo2017calibration}
+\BIBentryALTinterwordspacing
+C.~Guo, G.~Pleiss, Y.~Sun, and K.~Q. Weinberger, ``On calibration of modern
+  neural networks,'' in \emph{Proceedings of the 34th International Conference
+  on Machine Learning}, ser. Proceedings of Machine Learning Research,
+  vol.~70.\hskip 1em plus 0.5em minus 0.4em\relax PMLR, 2017, pp. 1321--1330.
+  [Online]. Available: \url{https://proceedings.mlr.press/v70/guo17a.html}
+\BIBentrySTDinterwordspacing
+
+\bibitem{efron1979bootstrap}
+\BIBentryALTinterwordspacing
+B.~Efron, ``Bootstrap methods: Another look at the jackknife,'' \emph{The
+  Annals of Statistics}, vol.~7, no.~1, pp. 1--26, 1979. [Online]. Available:
+  \url{https://doi.org/10.1214/aos/1176344552}
+\BIBentrySTDinterwordspacing
+
+\bibitem{brown2001interval}
+\BIBentryALTinterwordspacing
+L.~D. Brown, T.~T. Cai, and A.~DasGupta, ``Interval estimation for a binomial
+  proportion,'' \emph{Statistical Science}, vol.~16, no.~2, pp. 101--133, 2001.
+  [Online]. Available: \url{https://doi.org/10.1214/ss/1009213286}
+\BIBentrySTDinterwordspacing
+
+\bibitem{long2024survey}
+\BIBentryALTinterwordspacing
+L.~Long, R.~Wang, R.~Xiao, J.~Zhao, X.~Ding, G.~Chen, and H.~Wang, ``On
+  {LLM}s-driven synthetic data generation, curation, and evaluation: A
+  survey,'' in \emph{Findings of the Association for Computational Linguistics:
+  ACL 2024}.\hskip 1em plus 0.5em minus 0.4em\relax Association for
+  Computational Linguistics, 2024, pp. 11\,065--11\,082. [Online]. Available:
+  \url{https://aclanthology.org/2024.findings-acl.658/}
+\BIBentrySTDinterwordspacing
+
+\bibitem{zheng2023judging}
+\BIBentryALTinterwordspacing
+L.~Zheng, W.-L. Chiang, Y.~Sheng, S.~Zhuang, Z.~Wu, Y.~Zhuang, Z.~Lin, Z.~Li,
+  D.~Li, E.~P. Xing, H.~Zhang, J.~E. Gonzalez, and I.~Stoica, ``Judging
+  {LLM}-as-a-judge with {MT}-bench and chatbot arena,'' in \emph{Advances in
+  Neural Information Processing Systems}, vol.~36, 2023. [Online]. Available:
+  \url{https://proceedings.neurips.cc/paper_files/paper/2023/hash/91f18a1287b398d378ef22505bf41832-Abstract-Datasets_and_Benchmarks.html}
+\BIBentrySTDinterwordspacing
+
 \bibitem{breck2019validation}
 E.~Breck, N.~Polyzotis, S.~Roy, S.~E. Whang, and M.~Zinkevich, ``Data
   validation for machine learning,'' in \emph{Proceedings of Machine Learning
@@ -164,48 +206,6 @@ G.~Lema{\^i}tre, F.~Nogueira, and C.~K. Aridas, ``Imbalanced-learn: A python
   toolbox to tackle the curse of imbalanced datasets in machine learning,''
   \emph{Journal of Machine Learning Research}, vol.~18, no.~17, pp. 1--5, 2017.
   [Online]. Available: \url{https://www.jmlr.org/papers/v18/16-365.html}
-\BIBentrySTDinterwordspacing
-
-\bibitem{guo2017calibration}
-\BIBentryALTinterwordspacing
-C.~Guo, G.~Pleiss, Y.~Sun, and K.~Q. Weinberger, ``On calibration of modern
-  neural networks,'' in \emph{Proceedings of the 34th International Conference
-  on Machine Learning}, ser. Proceedings of Machine Learning Research,
-  vol.~70.\hskip 1em plus 0.5em minus 0.4em\relax PMLR, 2017, pp. 1321--1330.
-  [Online]. Available: \url{https://proceedings.mlr.press/v70/guo17a.html}
-\BIBentrySTDinterwordspacing
-
-\bibitem{efron1979bootstrap}
-\BIBentryALTinterwordspacing
-B.~Efron, ``Bootstrap methods: Another look at the jackknife,'' \emph{The
-  Annals of Statistics}, vol.~7, no.~1, pp. 1--26, 1979. [Online]. Available:
-  \url{https://doi.org/10.1214/aos/1176344552}
-\BIBentrySTDinterwordspacing
-
-\bibitem{brown2001interval}
-\BIBentryALTinterwordspacing
-L.~D. Brown, T.~T. Cai, and A.~DasGupta, ``Interval estimation for a binomial
-  proportion,'' \emph{Statistical Science}, vol.~16, no.~2, pp. 101--133, 2001.
-  [Online]. Available: \url{https://doi.org/10.1214/ss/1009213286}
-\BIBentrySTDinterwordspacing
-
-\bibitem{long2024survey}
-\BIBentryALTinterwordspacing
-L.~Long, R.~Wang, R.~Xiao, J.~Zhao, X.~Ding, G.~Chen, and H.~Wang, ``On
-  {LLM}s-driven synthetic data generation, curation, and evaluation: A
-  survey,'' in \emph{Findings of the Association for Computational Linguistics:
-  ACL 2024}.\hskip 1em plus 0.5em minus 0.4em\relax Association for
-  Computational Linguistics, 2024, pp. 11\,065--11\,082. [Online]. Available:
-  \url{https://aclanthology.org/2024.findings-acl.658/}
-\BIBentrySTDinterwordspacing
-
-\bibitem{zheng2023judging}
-\BIBentryALTinterwordspacing
-L.~Zheng, W.-L. Chiang, Y.~Sheng, S.~Zhuang, Z.~Wu, Y.~Zhuang, Z.~Lin, Z.~Li,
-  D.~Li, E.~P. Xing, H.~Zhang, J.~E. Gonzalez, and I.~Stoica, ``Judging
-  {LLM}-as-a-judge with {MT}-bench and chatbot arena,'' in \emph{Advances in
-  Neural Information Processing Systems}, vol.~36, 2023. [Online]. Available:
-  \url{https://proceedings.neurips.cc/paper_files/paper/2023/hash/91f18a1287b398d378ef22505bf41832-Abstract-Datasets_and_Benchmarks.html}
 \BIBentrySTDinterwordspacing
 
 \bibitem{han2005borderline}
