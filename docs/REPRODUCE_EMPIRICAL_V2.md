@@ -17,7 +17,7 @@ Get-Content -Raw artifacts/reports/empirical-v2/run-v2/results.json | ConvertFro
 ```
 
 Expected: **894 rows**, with **678 `ok`** and **216 `unavailable`**. Read the
-[PDF](../paper/rcqasyn-empirical-v2/main.pdf),
+[PDF](../paper/rcqasyn-ieee/main.pdf),
 [split summary](../artifacts/reports/empirical-v2/run-v2/split-summary.json),
 [endpoint intervals](../artifacts/reports/empirical-v2/run-v2/bootstrap.json) and
 [paired differences](../artifacts/reports/empirical-v2/run-v2/paired-differences.json).
@@ -123,7 +123,11 @@ destination for diagnosis and choose another fresh destination for a retry.
 
 The [reporter](../scripts/report_empirical_study.py) reads saved evidence and never
 fits a model, but **writes generated tables, figures and notes into `--paper`**.
-Use a separate paper copy and fresh report directory. This example reads the canonical
+Use a separate paper copy and fresh report directory. The Empirical v2 manuscript
+this step renders into, and the six-phase draft table the reporter hashes, were removed
+from the working tree on 2026-10-31; run this step from a checkout of commit `18d8d6b`
+(for example `git worktree add <path> 18d8d6b`), the last commit that contains them.
+This example reads the canonical
 run; set `$reportInput = $newRun` to inspect an optional new execution instead.
 
 ```powershell

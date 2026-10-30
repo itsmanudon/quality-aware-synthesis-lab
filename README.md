@@ -7,14 +7,13 @@ selection. All six engineering phases and **Empirical v2 are complete**. Two
 datasets and to published curation and oversampling methods; the IEEE conference
 version of the paper reports them in a separate subsection.
 
-**Start here:** [canonical manuscript PDF](paper/rcqasyn-empirical-v2/main.pdf)
-([editable LaTeX](paper/rcqasyn-empirical-v2/main.tex)),
+**Start here:** [manuscript PDF](paper/rcqasyn-ieee/main.pdf)
+([editable LaTeX](paper/rcqasyn-ieee/main.tex)),
 [empirical report](artifacts/reports/empirical-v2/report-v3/report.md),
 [reproduction guide](docs/REPRODUCE_EMPIRICAL_V2.md),
 [repository map](docs/REPOSITORY_GUIDE.md).
-The IEEE conference draft, with authors, the addendum and declarations, is
-[here (PDF)](paper/rcqasyn-ieee/main.pdf) ([LaTeX](paper/rcqasyn-ieee/main.tex));
-the addenda themselves are indexed in [addendum/README.md](addendum/README.md).
+The manuscript is the IEEE conference version, with authors, the addendum and
+declarations; the addenda themselves are indexed in [addendum/README.md](addendum/README.md).
 
 ## Motivation and contributions
 
@@ -155,10 +154,10 @@ unedited.
 ## Navigation and historical versions
 
 - [Repository guide](docs/REPOSITORY_GUIDE.md): modules, configurations, tests and evidence.
-- [Manuscript landing page](paper/README.md): canonical paper, IEEE conference version, sources and build instructions.
+- [Manuscript landing page](paper/README.md): the paper, its sources and build instructions.
 - [Exploratory addenda](addendum/README.md): declared settings, results and reproduction notes.
-- [Earlier six-phase manuscript](paper/rcqasyn-final-draft/main.pdf) and
-  [historical v0.1 source](paper/main.tex): retained earlier versions.
+- Earlier manuscripts (Empirical v2, six-phase and v0.1 drafts) are in git history up
+  to commit `18d8d6b`; see the [manuscript landing page](paper/README.md).
 - [Original candidate streams](artifacts/runs), [Phase-6 report](artifacts/reports/phase6/report-v2/report.md)
   and [historical review material](docs/human-review.md): preserved provenance.
 

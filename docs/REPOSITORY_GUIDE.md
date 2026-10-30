@@ -1,7 +1,7 @@
 # RC-QASyn repository guide
 
 Empirical v2 is the canonical research revision. Start with the
-[paper PDF](../paper/rcqasyn-empirical-v2/main.pdf),
+[paper PDF](../paper/rcqasyn-ieee/main.pdf),
 [readable report](../artifacts/reports/empirical-v2/report-v3/report.md) and
 [reproduction guide](REPRODUCE_EMPIRICAL_V2.md). All six engineering phases are
 implemented; the M labels below describe components, not six additional phases.
@@ -64,8 +64,7 @@ The [exploratory addenda](../addendum/README.md) have their own saved results un
 the main study and never merged into the canonical tables above. They sit outside the
 protected historical paths, so they do not change the frozen inventory.
 
-The manuscript has its own [cell provenance](../paper/rcqasyn-empirical-v2/notes/table-evidence.json)
-and [claim ledger](../paper/rcqasyn-empirical-v2/notes/claim-ledger.json).
+Table cells trace through the report-v3 [cell ledger](../artifacts/reports/empirical-v2/report-v3/table-evidence.json).
 Run-v2 is canonical; report-v3 is the current rendering. Earlier report-v1/report-v2
 remain preserved. [Run-version notes](empirical-v2/run-status.md) identify development
 run-v1 (a metadata defect) and the ignored local replay; neither replaces run-v2.
@@ -96,11 +95,11 @@ navigation, commands and artifact preservation.
 
 ## Manuscripts and historical documents
 
-Use the [manuscript landing page](../paper/README.md) for the canonical Empirical v2
-paper, the [IEEE conference version](../paper/rcqasyn-ieee) with the exploratory
-addenda, sources, bibliography and build instructions. The
-[six-phase draft](../paper/rcqasyn-final-draft) and [v0.1 source](../paper/main.tex)
-remain accessible with their own evidence and references.
+Use the [manuscript landing page](../paper/README.md) for the paper (the
+[IEEE conference version](../paper/rcqasyn-ieee) with the exploratory addenda), its
+sources, bibliography and build instructions. Earlier manuscripts (Empirical v2,
+six-phase and v0.1 drafts) were removed from the working tree and remain in git
+history up to commit `18d8d6b`.
 
 [Architecture](architecture.md), [milestones](milestones.md) and
 [research plan](research-plan.md) preserve early design goals. Their deferred language

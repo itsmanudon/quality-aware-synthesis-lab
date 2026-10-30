@@ -1,4 +1,0 @@
-$pdf_mode = 1;
-$bibtex_use = 2;
-$pdflatex = 'pdflatex %O -interaction=nonstopmode -halt-on-error %S';
-$clean_ext = 'bbl blg run.xml synctex.gz';

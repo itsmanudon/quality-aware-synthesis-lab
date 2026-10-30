@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import importlib.util
 import os
-import re
 from pathlib import Path
 
 import pytest
@@ -114,24 +113,6 @@ def test_guarded_real_record_immutable(tmp_path):
     write_bundle(output, value)
     with pytest.raises(FileExistsError):
         write_bundle(output, {**value, "changed": True})
-
-
-def test_manuscript_cells_and_citations_trace_to_sources(report):
-    import json
-
-    paper = ROOT / "paper/rcqasyn-final-draft"
-    ledger = json.loads((paper / "notes/table-evidence.json").read_text())
-    assert ledger["report_fingerprint"] == report["fingerprint"]
-    for table in ledger["tables"].values():
-        assert digest(table["rows"]) == table["canonical_rows_fingerprint"]
-    verified = json.loads((paper / "notes/references-verified.json").read_text())["references"]
-    cites = set()
-    for path in (paper / "sections").glob("*.tex"):
-        for group in re.findall(r"\\citep\{([^}]+)\}", path.read_text()):
-            cites.update(group.split(","))
-    assert cites == set(verified) and len(cites) == 8
-    text = "\n".join(p.read_text() for p in (paper / "sections").glob("*.tex"))
-    assert "INDETERMINATE" in text and "no human-final approvals" in text.lower()
 
 
 def test_deterministic_report_rendering(report):
