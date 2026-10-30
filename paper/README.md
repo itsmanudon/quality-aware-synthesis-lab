@@ -24,10 +24,15 @@ declarations are in the IEEE version below; academic acceptance remains a human 
 ## IEEE conference version
 
 [`rcqasyn-ieee`](rcqasyn-ieee) is the IEEE conference-format version of the paper
-([PDF, 15 pages](rcqasyn-ieee/main.pdf), [LaTeX](rcqasyn-ieee/main.tex)). Compared
+([PDF, 18 pages](rcqasyn-ieee/main.pdf), [LaTeX](rcqasyn-ieee/main.tex)). Compared
 with Empirical v2 it adds:
 
-- the four authors and their affiliation;
+- the four authors and their affiliation, with Priyanka Bhatt marked as reviewer and
+  supervisor;
+- shorter prose and seven multi-panel figures drawn from saved evidence by
+  [`scripts/build_ieee_figures.py`](../scripts/build_ieee_figures.py) (read-only; run
+  it from the repository root inside the venv to redraw them); the bootstrap,
+  fresh-split and most addendum tables moved to the appendix;
 - a separate subsection reporting the two exploratory addenda
   ([sections/04b-addendum.tex](rcqasyn-ieee/sections/04b-addendum.tex), with
   [generated tables](rcqasyn-ieee/tables/addendum) copied from

@@ -1,45 +1,37 @@
 \section{Methodology}
-Let $T$ denote REAL TRAIN, $E$ REAL TEST and $G=\{(o_i,x_i,y_i)\}$ the candidate stream. Occurrence identity distinguishes physical records even when payloads are equal. Source files, ordinals, payload hashes, specifications and experiment identities link each selected record to its inputs. Missing class remains missing; generation conditioning never supplies an absent payload label.
+Let $T$ denote REAL TRAIN, $E$ REAL TEST and $G=\{(o_i,x_i,y_i)\}$ the candidate stream. Occurrence identity distinguishes physical records with equal payloads, and source files, ordinals, payload hashes, specifications and experiment identities link each selected record to its inputs. A missing class stays missing; generation conditioning never supplies it.
 
 \begin{figure*}[!t]\centering\resizebox{\textwidth}{!}{\input{figures/architecture}}
-\caption{RC-QASyn architecture. Structure and statistical support are separate. Optional repair creates derived versions and repeats checks. B1/B2/B3 remain frozen controls. REAL TEST enters only evaluation. Dashed arrows denote provenance or optional reevaluation.}\label{fig:architecture}\end{figure*}
+\caption{RC-QASyn architecture. Structure and statistical support are separate; optional repair creates derived versions and repeats checks. B1/B2/B3 remain frozen controls, and REAL TEST enters only evaluation. Dashed arrows denote provenance or optional reevaluation.}\label{fig:architecture}\end{figure*}
 
-\subsection{Authoritative structure and statistical evidence}
-Specifications identify required features/class, numerical primitives, nominal values, integer declarations and permitted fields. Supported violations can reject. Observed ranges do not become universal physical bounds. Existing checks are reused without adding a validator family.
-
-For $p$ features, the TRAIN-scaled mixed distance is
+\subsection{Structure and statistical evidence}
+Specifications declare required features and class, numerical primitives, nominal values, integer fields and permitted fields. Supported violations can reject; observed ranges are not treated as physical bounds. For $p$ features, the TRAIN-scaled mixed distance is
 \begin{equation}
 d(x,t)=\frac1p\sum_j\delta_j(x_j,t_j),\quad
 \delta_j=\begin{cases}\min(|x_j-t_j|/R_j,1),&\text{numeric},R_j>0,\\
-\mathbf1[x_j\ne t_j],&\text{nominal or }R_j=0.
+\mathbf1[x_j\ne t_j],&\text{nominal or }R_j=0,
 \end{cases}
 \end{equation}
-Here $R_j$ is TRAIN span and class is excluded. Local support $L_k(x)$ averages distances to the nearest $\min(k,|T_s|)$ supported TRAIN observations, with row-identity tie breaking; primary $k=5$.
-
-Global consistency scales numerical features by TRAIN median/IQR, falling back to span then one, and one-hot encodes TRAIN categories. For encoded dimension $D$, covariance $S$ and mean $\mu$,
+where $R_j$ is the TRAIN span and class is excluded. Local support $L_k(x)$ averages distances to the nearest $\min(k,|T_s|)$ supported TRAIN observations (ties broken by row identity; primary $k=5$). Global consistency scales numerical features by TRAIN median/IQR (falling back to span, then one), one-hot encodes TRAIN categories and, for encoded dimension $D$, covariance $S$ and mean $\mu$, uses
 \begin{equation}
 \Sigma=(1-\alpha)S+\alpha\operatorname{diag}(S)+\lambda I,\qquad
-Q(x)=\sqrt{\max(0,(z-\mu)^\top\Sigma^{-1}(z-\mu))/D}.
+Q(x)=\sqrt{\max(0,(z-\mu)^\top\Sigma^{-1}(z-\mu))/D},
 \end{equation}
-Primary $\alpha=.10$, $\lambda=10^{-8}$. Unsupported evidence and unseen TRAIN categories remain explicit. Existing sensitivities vary $k$ or shrinkage.
+with primary $\alpha=.10$, $\lambda=10^{-8}$. Unsupported evidence and unseen categories stay explicit.
 
 \subsection{Descriptive combination and admission}
-For dataset/family candidate-score reference $A_f$, use
+For the reference set $A_f$ of candidate scores in a dataset and evidence family,
 \begin{equation}
-u_f(s)=\bigl(\#\{a<s\}+\tfrac12\#\{a=s\}\bigr)/|A_f|.
+u_f(s)=\bigl(\#\{a<s\}+\tfrac12\#\{a=s\}\bigr)/|A_f|,
 \end{equation}
-Larger ranks indicate weaker support. Combined concern is $\max(u_L,u_Q)$ with both components required, an uncalibrated index rather than a validity probability. No independence assumption or learned fusion weight is introduced.
-
-Admission rejects authoritative defects, abstains when required evidence is unavailable, requests review for partial structure or concern at least $q=.90$, and otherwise provisionally passes. Structure/local/global policies form ablations; combined $q=.80,.95$ are historical sensitivities. Track A preserves historical models and ranks, including for derived queries. Track B reconstructs scores and reference ranks separately for each new TRAIN-fitted candidate pool.
+where larger ranks mean weaker support. Combined concern $\max(u_L,u_Q)$ requires both components and is an uncalibrated index, not a validity probability; no independence assumption or learned weight is used. Admission rejects authoritative defects, abstains when required evidence is missing, requests review for partial structure or concern of at least $q=.90$, and otherwise provisionally passes. Structure, local and global policies form ablations, and $q=.80,.95$ are historical sensitivities. Track A keeps historical models and ranks, including for derived queries; Track B recomputes them for each new TRAIN-fitted pool.
 
 \subsection{Coverage-aware construction}
-Let $\mathcal R$ be distinct TRAIN feature/class regions and $h_t(S)=\mathbf1[\min_{s\in S}d(s,t)\le .05]$. Uniform coverage averages $h_t$ over regions; balanced coverage assigns each class-$y$ region weight $1/(K n_y)$. Distinct-feature TRAIN coverage is reported separately.
-
-At budget $b$, source order selects earliest occurrences; farthest-first maximizes minimum selected-set separation; coverage-greedy maximizes uniform marginal coverage. Quality-coverage prohibits repeated feature payloads, fills a feasible minority quota $\lfloor .5b\rfloor$ first, and uses the unchanged lexicographic objective: balanced marginal coverage, fewer neighbors within $.01$, greater separation, lower concern, then stable source order. Exact redundancy is $1-u/n$ for $u$ unique full payloads among $n$ selections. Near redundancy is the fraction with another selected record within $.01$, unavailable for $n<2$.
+Let $\mathcal R$ be the distinct TRAIN feature/class regions and $h_t(S)=\mathbf1[\min_{s\in S}d(s,t)\le .05]$. Uniform coverage averages $h_t$ over regions, balanced coverage weights each class-$y$ region by $1/(K n_y)$, and distinct-feature TRAIN coverage is reported separately. At budget $b$, source order takes the earliest occurrences, farthest-first maximizes minimum separation and coverage-greedy maximizes uniform marginal coverage. Quality-coverage forbids repeated feature payloads, first fills a feasible minority quota $\lfloor .5b\rfloor$, and then ranks lexicographically by balanced marginal coverage, fewer neighbours within $.01$, greater separation, lower concern and source order. Exact redundancy is $1-u/n$ for $u$ unique payloads among $n$ selections; near redundancy is the fraction of selections with another within $.01$.
 
 \subsection{Bounded structural repair}
 Only fractional finite values in source-declared integer fields can change. Decimal half-to-even rounding must satisfy
 \begin{equation}
 |J|\le3,\quad |x'_j-x_j|\le .5\ (j\in J),\qquad x'_j=x_j\ (j\notin J).
 \end{equation}
-Missing targets/features, category substitutions and imputation are excluded. More than three required edits refuses the whole record. Derived identities bind parent, policy, specification and payload; originals remain immutable. Frozen evidence and admission rescore repairs, and parent exclusivity prevents counting versions twice. Expanded-pool comparisons measure repair plus subsequent reselection, rather than the isolated effect of a numerical edit.
+Missing targets or features, category substitution and imputation are excluded, and a record needing more than three edits is refused. Derived identities bind parent, policy, specification and payload; originals stay immutable, frozen evidence and admission rescore repairs, and parent exclusivity prevents double counting. Expanded-pool comparisons therefore measure repair plus reselection, not the isolated effect of one edit.
