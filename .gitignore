@@ -80,3 +80,7 @@ addendum/v1/report/replication/
 addendum/v2/report/generation/
 addendum/v2/report/predictions/
 addendum/v2/report/replication/
+
+# Study v3 local run outputs and fetched data
+study/v3/runs/
+study/v3/data/

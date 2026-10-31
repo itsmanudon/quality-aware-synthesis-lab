@@ -1,0 +1,50 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pytest:*)",
+      "Bash(python -m pytest:*)",
+      "Bash(ruff check:*)",
+      "Bash(pyright:*)",
+      "Bash(python scripts/record_test_run.py:*)",
+      "Bash(rcqasyn:*)",
+      "Bash(python -m rcqasyn:*)",
+      "Bash(python -m study.v3:*)",
+      "Bash(python study/v3/:*)",
+      "Bash(ollama list:*)",
+      "Bash(ollama ps:*)",
+      "Bash(ollama pull:*)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git show:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git switch study-v3:*)",
+      "Bash(git branch:*)"
+    ],
+    "deny": [
+      "Bash(git push:*)",
+      "Bash(git merge:*)",
+      "Bash(git rebase:*)",
+      "Bash(git reset --hard:*)",
+      "Bash(git clean:*)",
+      "Bash(rm -rf:*)",
+      "Edit(./data/**)",
+      "Edit(./configs/**)",
+      "Edit(./prompts/**)",
+      "Edit(./artifacts/reports/**)",
+      "Edit(./artifacts/runs/**)",
+      "Edit(./test-results/**)",
+      "Edit(./addendum/**)",
+      "Write(./data/**)",
+      "Write(./configs/**)",
+      "Write(./prompts/**)",
+      "Write(./artifacts/reports/**)",
+      "Write(./artifacts/runs/**)",
+      "Write(./test-results/**)",
+      "Write(./addendum/**)",
+      "Read(./.env)",
+      "Read(./.env.*)"
+    ]
+  }
+}
