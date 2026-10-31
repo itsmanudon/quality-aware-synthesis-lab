@@ -5,11 +5,11 @@ Updated by the agent at the end of every session. Gates are approved only by the
 | Field | Value |
 | --- | --- |
 | Phase | 2 · Utility-aware selection — started 2026-11-01 (Gate 1 passed) |
-| Last finished step | Gate 1 decisions recorded |
-| Runs in progress | none |
+| Last finished step | Phase 2 utility-selection screen (`6c4a87d`) |
+| Runs in progress | qwen2.5:7b-instruct LLM pools, split 13 x 5 folds x 8 dev datasets (`runs/phase2/llm/progress-qwen2.5_7b-instruct.json`, log `runs/phase2/llm-qwen.log`); resumable |
 | API spend so far | Anthropic $0.000153 of $5 · OpenAI $0.000067 of $4 · Meta $0.000212 of $140 (`budget.jsonl`, 9 lines; no API calls in Phase 1) |
 | Blockers | none; benchmark data complete (40/40) |
-| Next step | Phase 2: cross-fit folds, then the two utility terms |
+| Next step | Evaluate LLM pools (`phase2_llm.py`, quota ablation), export the blinded label sample, then the five-learner cross-fit check (GPU, after generation) |
 
 ## Phase 0 checklist
 
@@ -165,6 +165,37 @@ The user approved starting Phase 1 and the paced fetch on 2026-10-31.
 - `repair_variants.integer_rounding_v3`: a new, separately reported variant.
 - `scope_decision`: criterion kept; a miss is reported as found; gate diagnostics are a secondary contribution.
 
+## Phase 2: progress (2026-11-01; dev datasets, 5-fold cross-fit inside TRAIN, TEST never used)
+
+**Code.**
+- `crossfit.py`: 5 stratified folds per outer TRAIN; each fold's threshold is chosen on the other 4 folds (U2's rule).
+- `utility.py`: the two approved terms. "u2" assigns each candidate to its nearest inner minority anchor and scores it as difficulty percentile x group stability. "boundary" is the majority share among 5 inner neighbours, ranked by closeness to beta.
+- `u2_phase2.py`: per fold, the anchor table and U2 pools at fixed alpha 0.5 and tau 0.5. Nothing is tuned on the held-out fold.
+- `repair_v3.py`: `integer-round-all-half-even-v3`.
+- `phase2.py` / `phase2_report.py`: the screen and its report.
+- `llm_pools.py`, `phase2_llm.py`, `label_sample.py`: local LLM pools, quota ablation, blinded sample.
+- `phase2_clf.py` / `u2_crossfit.py`: five-learner check.
+
+**Screen** (`report/phase2/selection/`, `6c4a87d`; LR and RF at frozen defaults).
+- Every design is within about +/-0.01 median F1 of random selection from the same pool.
+- **Boundary term (top 50%, then QC)** is the only design positive for both classifiers on most datasets:
+  - smote pool, beta 0.25: +0.003 LR, +0.008 RF (6 of 7 datasets each);
+  - union pool, beta 0.5: +0.008 LR, +0.003 RF (5 of 7).
+- **U2 difficulty x stability** is neutral to negative: union/u2/top is -0.007 LR and -0.017 RF (1 of 7 positive).
+- **Ranking reproducibility** across split-seed halves {13, 29} vs {43, 61, 79}, as Spearman correlation:
+  - smote pool: 0.05-0.14;
+  - union pool: 0.49 (LR) and 0.71 (RF).
+
+  Picking the best of 16 designs therefore partly picks noise. The five-learner check is the next filter.
+- **SMOTE+b minus REAL** (cross-fit, tuned threshold): +0.002 LR, +0.009 RF on 6 SMOTE datasets.
+- **Rounding variant on vehicle0:** made 6,400 of 6,400 smote and 16,496 of 16,496 union candidates structurally complete (0 before). vehicle0 is the only dev dataset with integer declarations.
+- **U2 pools at the default alpha and tau:** all 400 fold pools ok.
+
+**Declared scale choices (Phase 2).**
+- LLM pools: one local model (qwen2.5:7b-instruct), split seed 13 only, all 5 folds x 8 datasets. Measured throughput is about 4 min per fold, so all 5 splits x 3 models would take several days.
+- The v3 prompt lives in `study/v3/prompt_templates/`, because the permission settings deny writes under any `prompts/` directory. `protocol.json` records its path and SHA-256.
+- First trial pool (Ecoli4 s13 f0): 120/120 parsed with exact keys; 103 admitted; 3 exact copies of prompt reference rows (a copying diagnostic) despite the instruction not to copy.
+
 ## Gates
 
 | Gate | Status | Approved by | Date | Protocol SHA-256 / commit |
@@ -200,3 +231,7 @@ The user approved starting Phase 1 and the paced fetch on 2026-10-31.
   - Phase 1 steps 1-4 and the five-learner ablation: `257f862`, `4465ef6`, `8f4ba2f`, `186e647`, `ea0f5d1`, `ea8c865`.
   - No API calls; spend unchanged.
   - Stopped at Gate 1.
+- 2026-11-01 (session 5): user approved Gate 1 decisions 1-5.
+  - Commits: `1f0e681`, `a2fa2f7`, `93dad15`, `7da9dc3`, `c91546d`, `6c4a87d`.
+  - Phase 2 screen done. LLM generation running.
+  - No API calls (local Ollama calls logged at $0).
