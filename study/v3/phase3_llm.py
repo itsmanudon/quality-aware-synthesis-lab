@@ -45,7 +45,7 @@ def _max_tokens(spec_model: Any, count: int, n_features: int) -> int:
     if spec_model.provider in ("meta", "openai") and spec_model.defaults.get(
             "reasoning_effort") not in (None, "none"):
         need += 2048  # reasoning tokens count against the completion budget
-    return int(min(32000, need))
+    return int(min(16000, need))
 
 
 def unit_requests(model: str, dataset: str, seed: int, out: Path) -> tuple[Path, list[dict]]:

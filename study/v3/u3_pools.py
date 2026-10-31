@@ -193,13 +193,16 @@ def main() -> int:
     parser.add_argument("--jobs", type=Path, required=True)
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--only", nargs="*", default=None, help="dataset ids")
+    parser.add_argument("--device", default="auto",
+                        help="U2 DEVICE; cpu keeps the GPU free for local LLM generation")
     args = parser.parse_args()
     commit = u2_bridge.check_pin()
     bundle_sha = u2_bridge.materialize(u2_bridge.bundle_sources(), args.out / "runtime")
     from portable_ugo import benchmark as bench  # type: ignore[import-not-found]
 
     config = bench._configuration({"OUTPUT_DIR": str(args.out / "unused"),
-                                   "DATA_HOME": str(args.out / "unused")})
+                                   "DATA_HOME": str(args.out / "unused"),
+                                   "DEVICE": args.device})
     jobs = [j for j in json.loads(args.jobs.read_text(encoding="utf-8"))
             if not args.only or j["dataset_id"] in args.only]
     units = args.out / "units"

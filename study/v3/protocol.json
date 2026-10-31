@@ -67,7 +67,22 @@
         "status": "draft (Phase 2); frozen at Gate 2"
       },
       "prompt_note": "new versioned prompt (never editing prompts/); kept in study/v3/prompt_templates/ because the permission settings deny writes under any prompts/ directory; same prompt and TRAIN-only context for all generators",
-      "pool_size": "4 x record budget per dataset/split"
+      "pool_size": "4 x record budget per dataset/split",
+      "phase3": {
+        "pool_factor": 4,
+        "minority_share": 1.0,
+        "batch_size": 10,
+        "minority_share_reason": "training is HYBRID_MINORITY (inner TRAIN + selected minority rows), so generated majority rows would never enter training; the Phase 2 quota ablation is reported separately",
+        "context": "inner TRAIN (outer TRAIN minus the 20% VALIDATION carve); 3 reference rows per class",
+        "pilot_datasets": [
+          "oml1464",
+          "oml1053",
+          "oml42477",
+          "oml45558",
+          "oml43"
+        ],
+        "pilot_rule": "first 5 benchmark ids in SHA-256 order of 'study-v3-pilot:<id>'"
+      }
     },
     "non_llm": [
       "U2 (FlowGMM gate) and paper-derived UGO from ml_ugo@a6710ea (UGO_30_Datasets.ipynb sha256 a888d9708a9f36db36c6febd65314a2464d175cbb59a632e68d363aa4ab9e541), SMOTE/SMOTENC"

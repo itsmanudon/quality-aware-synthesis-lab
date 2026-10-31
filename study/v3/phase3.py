@@ -323,7 +323,11 @@ def curate_unit(dataset: str, seed: int, u2_dir: Path, llm_dir: Path | None,
         if output.get("status") != "ok":
             unit["unavailable"][name] = output.get("reason", "MISSING")
             continue
-        add(name, _records(_u2_frame(output, spec), spec), {"n": output["n"]})
+        # Generators that may stop short (UGO, U2's gate rejects without refilling) are
+        # evaluated with what they produced; the equal-budget rule binds the curators.
+        unit["methods"][name] = {"add": _records(_u2_frame(output, spec), spec),
+                                 "remove_ids": [], "info": {"n": output["n"],
+                                                            "budget": budget}}
     return unit
 
 
