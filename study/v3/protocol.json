@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "protocol_id": "study-v3",
-  "status": "Gate 0 decisions recorded 2026-10-31 (user). Not frozen; freezing (with SHA-256 recorded in STATUS.md) happens at Gate 2.",
+  "status": "Gate 0 decisions recorded 2026-10-31; Gate 1 decisions recorded 2026-11-01 (user). Not frozen; freezing (with SHA-256 recorded in STATUS.md) happens at Gate 2.",
   "drafted_on": "2026-10-31",
   "question": "Does the merged method (U2/LLM/SMOTE candidates -> RC-QASyn quality gate -> utility-aware selection) improve minority-class F1 on REAL TEST over tuned no oversampling and over U2 alone, across the 40 benchmark datasets?",
   "claims_policy": "Only the tests declared under 'statistics' may be reported as tests. No state-of-the-art wording. Exact-match diagnostics are copying diagnostics, not privacy results. A miss is reported as found.",
@@ -29,9 +29,10 @@
       61,
       79
     ],
-    "validation": "stratified 20% of TRAIN, carved per outer split; every tuning choice uses validation only",
+    "validation": "stratified 5-fold cross-fitting inside each outer TRAIN (folds ordered by SHA-256, seed derive_seed(split_seed, 'study-v3-crossfit:<dataset>')); every tuning choice is fitted on 4 folds and scored on the held-out fold, over all 5 folds; replaces the single 20% carve (user, Gate 1, 2026-11-01)",
     "test": "REAL TEST used only for final evaluation; no benchmark TEST metric for the merged method before Gate 2",
-    "u2_comparability_note": "U2's own benchmark uses seeds 42/43/44 with the same 80/20 + 20% validation fractions; Study v3 reruns U2/UGO on the Study v3 seeds rather than reusing U2's published numbers"
+    "u2_comparability_note": "U2's own benchmark uses seeds 42/43/44 with the same 80/20 + 20% validation fractions; Study v3 reruns U2/UGO on the Study v3 seeds rather than reusing U2's published numbers",
+    "validation_phase1": "Phase 1 used one stratified 20% carve of TRAIN (study/v3/phase1.py carve_validation); kept for its recorded results only"
   },
   "generators": {
     "llm": {
@@ -111,7 +112,18 @@
     "KNN-Shapley on validation",
     "boundary / borderline score"
   ],
-  "utility_term_selected": null,
+  "utility_term_selected": {
+    "terms": [
+      "U2 anchor difficulty percentile x group stability (U2 eqs. 5-8), computed by the pinned ml_ugo code",
+      "boundary / borderline score"
+    ],
+    "dropped": {
+      "KNN-Shapley on validation": "Phase 1 honest oracle gain about 0: no stable validation signal to learn",
+      "FlowGMM compatibility as admission column": "not carried as a utility term (at most two terms); FlowGMM still acts inside the u2_flow_gate generator",
+      "CLLM-style confidence": "not a utility term; stays a Phase 3 comparator curator"
+    },
+    "decision": "user, Gate 1, 2026-11-01"
+  },
   "classifiers": {
     "names": [
       "logistic_regression",
@@ -149,5 +161,13 @@
     "RAG/factual verification",
     "privacy/fairness validators"
   ],
-  "human_labels": "team labels a blinded sample; the agent prepares files only and never fills label columns"
+  "human_labels": "team labels a blinded sample; the agent prepares files only and never fills label columns",
+  "repair_variants": {
+    "frozen": "existing bounded repair (<= 3 fields), unchanged",
+    "integer_rounding_v3": "new, separately reported variant: round every integer-declared numeric field half-even; never widens the frozen <= 3-field bound (user, Gate 1, 2026-11-01)"
+  },
+  "ablations_phase2": {
+    "quota_and_llm_pool": "fresh small LLM pools from dev inner TRAIN, local Ollama only (no API spend), after the v3 generation prompt is drafted (user, Gate 1, 2026-11-01)"
+  },
+  "scope_decision": "success criterion kept as declared; a miss is reported as found; gate diagnostics (structure, pool shortfall, copying) added as a secondary contribution (user, Gate 1, 2026-11-01)"
 }

@@ -4,12 +4,12 @@ Updated by the agent at the end of every session. Gates are approved only by the
 
 | Field | Value |
 | --- | --- |
-| Phase | 1 · Diagnose — done; stopped at **Gate 1** (user picks the utility terms for Phase 2) |
-| Last finished step | Phase 1 five-learner ablation (`ea8c865`); Gate 1 findings written below |
+| Phase | 2 · Utility-aware selection — started 2026-11-01 (Gate 1 passed) |
+| Last finished step | Gate 1 decisions recorded |
 | Runs in progress | none |
 | API spend so far | Anthropic $0.000153 of $5 · OpenAI $0.000067 of $4 · Meta $0.000212 of $140 (`budget.jsonl`, 9 lines; no API calls in Phase 1) |
 | Blockers | none; benchmark data complete (40/40) |
-| Next step | User: Gate 1 decisions 1-5 below (utility terms, validation design, quota/LLM-pool ablation, vehicle0 repair, scope) |
+| Next step | Phase 2: cross-fit folds, then the two utility terms |
 
 ## Phase 0 checklist
 
@@ -158,12 +158,19 @@ The user approved starting Phase 1 and the paced fetch on 2026-10-31.
 4. **vehicle0 repair.** On fresh pools, 0 of 6,400 SMOTE-family and UGO candidates and 0 of 2,027 U2 candidates are repair-eligible under the frozen <=3-field rule. Any rule that rescues them must touch more than 3 integer fields. Proposal: declare "round every integer-declared field half-even" as a new, separately reported variant, and never silently widen the existing bound.
 5. **Scope and claims.** On present evidence, the success criterion proposed for Gate 2 (the merged method beats tuned no oversampling and U2 with Holm p < 0.05) looks unlikely to be met. Proposal: keep it as declared, report a miss as found, and add the gate diagnostics (structure, shortfall, copying) as a secondary contribution. This is your call.
 
+**User answers (2026-11-01).** Yes to 1-5, as proposed. Recorded in `protocol.json`:
+- `utility_term_selected`: U2 difficulty x stability and the boundary score. KNN-Shapley dropped; FlowGMM compatibility and CLLM-style confidence are not utility terms.
+- `splits.validation`: stratified 5-fold cross-fitting inside each outer TRAIN.
+- `ablations_phase2`: quota and LLM-pool ablation on local Ollama pools only.
+- `repair_variants.integer_rounding_v3`: a new, separately reported variant.
+- `scope_decision`: criterion kept; a miss is reported as found; gate diagnostics are a secondary contribution.
+
 ## Gates
 
 | Gate | Status | Approved by | Date | Protocol SHA-256 / commit |
 | --- | --- | --- | --- | --- |
 | 0 | passed: items 1-8 approved; Phase 1 approved | user | 2026-10-31 | `151eba0`, `4f03164` |
-| 1 | findings written; awaiting user | | | `ea8c865` |
+| 1 | passed: decisions 1-5 approved as proposed | user | 2026-11-01 | `ea8c865` |
 | 2 | open | | | |
 | 3 | open | | | |
 | 4 | open | | | |
