@@ -6,7 +6,7 @@
     "roles": "dev = method design and tuning only; benchmark = no merged-method TEST metric before Gate 2; candidate = metadata-only screening for the 10 new datasets",
     "u2_core": "U2's 30 OpenML datasets exactly as in ml_ugo@a6710ea notebooks/portable_catalogue.json, numbers 1-32 excluding 10 and 26",
     "new_inclusion": "binary or source-defined one-vs-rest; imbalance ratio >= 3; >= 30 minority TEST records at 80/20; <= 60 features; open licence; not a re-binarization of an included (dev or benchmark) table",
-    "keel_local": "dev KEEL files are hand-placed under their existing registries; this fetcher never downloads them"
+    "keel": "dev KEEL files are downloaded by this fetcher (user approval 2026-10-31, replacing hand placement): only via the link printed on the official KEEL imbalanced page; expected_dat_sha256 = hash recorded in data/manifests for the earlier hand-placed copy"
   },
   "u2_pin": {
     "repo": "https://github.com/d3vd5k/ml_ugo",
@@ -656,73 +656,103 @@
       "key": "keel-Abalone19",
       "role": "dev",
       "group": "empirical_v2_addendum_v1",
-      "source": "keel-local",
+      "source": "keel",
       "name": "Abalone19",
-      "notes": "registry: historical run-v2 (configs/datasets)"
+      "notes": "registry: historical run-v2 (configs/datasets)",
+      "keel_page": "https://sci2s.ugr.es/keel/imbalanced.php",
+      "keel_href": "keel-dataset/datasets/imbalanced/imb_IRhigherThan9p1/abalone19.zip",
+      "dat_name": "abalone19.dat",
+      "expected_dat_sha256": "6aa5b1ffd05eb4c8c74bb07e6bab248cdb4fc327f5f62bb77339097e92bc76fa"
     },
     {
       "key": "keel-Ecoli4",
       "role": "dev",
       "group": "empirical_v2_addendum_v1",
-      "source": "keel-local",
+      "source": "keel",
       "name": "Ecoli4",
-      "notes": "registry: historical run-v2 (configs/datasets)"
+      "notes": "registry: historical run-v2 (configs/datasets)",
+      "keel_page": "https://sci2s.ugr.es/keel/imbalanced.php",
+      "keel_href": "keel-dataset/datasets/imbalanced/imb_IRhigherThan9p1/ecoli4.zip",
+      "dat_name": "ecoli4.dat",
+      "expected_dat_sha256": "1890c32ba2550cfe106d0524ebf6a42c2b50730f6521bd4f22eb58e7bda86bcb"
     },
     {
       "key": "keel-page-blocks0",
       "role": "dev",
       "group": "empirical_v2_addendum_v1",
-      "source": "keel-local",
+      "source": "keel",
       "name": "page-blocks0",
-      "notes": "registry: historical run-v2 (configs/datasets); same source table as U2 benchmark page-blocks-bin (OpenML 1021)"
+      "notes": "registry: historical run-v2 (configs/datasets); same source table as U2 benchmark page-blocks-bin (OpenML 1021)",
+      "keel_page": "https://sci2s.ugr.es/keel/imbalanced.php",
+      "keel_href": "keel-dataset/datasets/imbalanced/imb_IRlowerThan9/page-blocks0.zip",
+      "dat_name": "page-blocks0.dat",
+      "expected_dat_sha256": "c46bf830740d44bf8d4042b1679424857bcfd770568d2c250f92a91a12d425b2"
     },
     {
       "key": "keel-yeast3",
       "role": "dev",
       "group": "empirical_v2_addendum_v1",
-      "source": "keel-local",
+      "source": "keel",
       "name": "yeast3",
-      "notes": "registry: addendum/v1"
+      "notes": "registry: addendum/v1",
+      "keel_page": "https://sci2s.ugr.es/keel/imbalanced.php",
+      "keel_href": "keel-dataset/datasets/imbalanced/imb_IRlowerThan9/yeast3.zip",
+      "dat_name": "yeast3.dat"
     },
     {
       "key": "keel-yeast4",
       "role": "dev",
       "group": "empirical_v2_addendum_v1",
-      "source": "keel-local",
+      "source": "keel",
       "name": "yeast4",
-      "notes": "registry: addendum/v1"
+      "notes": "registry: addendum/v1",
+      "keel_page": "https://sci2s.ugr.es/keel/imbalanced.php",
+      "keel_href": "keel-dataset/datasets/imbalanced/imb_IRhigherThan9p1/yeast4.zip",
+      "dat_name": "yeast4.dat"
     },
     {
       "key": "keel-vehicle0",
       "role": "dev",
       "group": "empirical_v2_addendum_v1",
-      "source": "keel-local",
+      "source": "keel",
       "name": "vehicle0",
-      "notes": "registry: addendum/v1"
+      "notes": "registry: addendum/v1",
+      "keel_page": "https://sci2s.ugr.es/keel/imbalanced.php",
+      "keel_href": "keel-dataset/datasets/imbalanced/imb_IRlowerThan9/vehicle0.zip",
+      "dat_name": "vehicle0.dat"
     },
     {
       "key": "keel-segment0",
       "role": "dev",
       "group": "empirical_v2_addendum_v1",
-      "source": "keel-local",
+      "source": "keel",
       "name": "segment0",
-      "notes": "registry: addendum/v1"
+      "notes": "registry: addendum/v1",
+      "keel_page": "https://sci2s.ugr.es/keel/imbalanced.php",
+      "keel_href": "keel-dataset/datasets/imbalanced/imb_IRlowerThan9/segment0.zip",
+      "dat_name": "segment0.dat"
     },
     {
       "key": "keel-ecoli1",
       "role": "dev",
       "group": "empirical_v2_addendum_v1",
-      "source": "keel-local",
+      "source": "keel",
       "name": "ecoli1",
-      "notes": "registry: addendum/v1"
+      "notes": "registry: addendum/v1",
+      "keel_page": "https://sci2s.ugr.es/keel/imbalanced.php",
+      "keel_href": "keel-dataset/datasets/imbalanced/imb_IRlowerThan9/ecoli1.zip",
+      "dat_name": "ecoli1.dat"
     },
     {
       "key": "keel-abalone9-18",
       "role": "dev",
       "group": "empirical_v2_addendum_v1",
-      "source": "keel-local",
+      "source": "keel",
       "name": "abalone9-18",
-      "notes": "registry: addendum/v1"
+      "notes": "registry: addendum/v1",
+      "keel_page": "https://sci2s.ugr.es/keel/imbalanced.php",
+      "keel_href": "keel-dataset/datasets/imbalanced/imb_IRhigherThan9p1/abalone9-18.zip",
+      "dat_name": "abalone9-18.dat"
     },
     {
       "key": "openml-1590",

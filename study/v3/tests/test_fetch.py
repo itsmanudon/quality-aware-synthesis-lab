@@ -95,3 +95,78 @@ def test_declared_sources_have_forty_benchmark_and_nine_dev() -> None:
     assert roles.count("benchmark") == 40 and roles.count("dev") == 9
     u2 = [e for e in sources.values() if e["group"] == "u2_core"]
     assert len(u2) == 30 and {e["u2_catalogue_number"] for e in u2}.isdisjoint({10, 26})
+
+
+PAGE = "https://sci2s.ugr.es/keel/imbalanced.php"
+HREF = "keel-dataset/datasets/imbalanced/imb_IRlowerThan9/toy0.zip"
+ZIP_URL = "https://sci2s.ugr.es/keel/keel-dataset/datasets/imbalanced/imb_IRlowerThan9/toy0.zip"
+DAT = b"@relation toy0\n@attribute a real\n@attribute Class {positive,negative}\n@data\n1,positive\n"
+KEEL = {"key": "keel-toy0", "source": "keel", "name": "toy0", "role": "dev",
+        "keel_page": PAGE, "keel_href": HREF, "dat_name": "toy0.dat"}
+
+
+def _zip(members: dict[str, bytes]) -> bytes:
+    import zipfile
+
+    buffer = io.BytesIO()
+    with zipfile.ZipFile(buffer, "w") as archive:
+        for name, data in members.items():
+            archive.writestr(name, data)
+    return buffer.getvalue()
+
+
+def keel_opener(page_html: str, body: bytes) -> Any:
+    seen: list[str] = []
+
+    def opener(request: Any, timeout: float) -> Response:
+        seen.append(request.full_url)
+        if request.full_url == PAGE:
+            return Response(page_html.encode())
+        if request.full_url == ZIP_URL:
+            return Response(body)
+        raise AssertionError(f"undeclared URL requested: {request.full_url}")
+
+    opener.seen = seen  # type: ignore[attr-defined]
+    return opener
+
+
+def test_keel_uses_link_from_official_page_and_extracts_only_declared_member(
+        tmp_path: Path) -> None:
+    body = _zip({"../evil/toy0.dat": DAT, "other.txt": b"x"})
+    opener = keel_opener(f'<a href="{HREF}">toy0</a>', body)
+    record = fetch.fetch_keel(KEEL, opener=opener, raw_root=tmp_path)
+    assert record["status"] == "ok" and record["url"] == ZIP_URL
+    assert record["dat_sha256"] == hashlib.sha256(DAT).hexdigest()
+    assert record["sha256"] == hashlib.sha256(body).hexdigest()
+    # Written by basename under the dataset folder; the archive path is never used.
+    assert (tmp_path / "keel" / "toy0" / "toy0.dat").read_bytes() == DAT
+    assert not (tmp_path / "evil").exists() and not (tmp_path / "keel" / "other.txt").exists()
+    assert opener.seen == [PAGE, ZIP_URL]
+
+
+def test_keel_link_missing_from_page_is_unavailable(tmp_path: Path) -> None:
+    opener = keel_opener("<html>no links</html>", _zip({"toy0.dat": DAT}))
+    record = fetch.fetch_keel(KEEL, opener=opener, raw_root=tmp_path)
+    assert record["status"] == "unavailable" and record["reason"] == "LINK_NOT_ON_PAGE"
+    assert opener.seen == [PAGE]
+
+
+def test_keel_recorded_hash_mismatch_is_unavailable(tmp_path: Path) -> None:
+    entry = {**KEEL, "expected_dat_sha256": "0" * 64}
+    opener = keel_opener(f'<a href="{HREF}">', _zip({"toy0.dat": DAT}))
+    record = fetch.fetch_keel(entry, opener=opener, raw_root=tmp_path)
+    assert record["status"] == "unavailable" and record["reason"].startswith("SHA256_MISMATCH")
+    assert not (tmp_path / "keel").exists()
+
+
+def test_keel_undeclared_page_is_refused(tmp_path: Path) -> None:
+    entry = {**KEEL, "keel_page": "https://example.org/mirror.php"}
+    record = fetch.fetch_keel(entry, opener=keel_opener("", b""), raw_root=tmp_path)
+    assert record["status"] == "unavailable" and record["reason"].startswith("UNDECLARED_PAGE")
+
+
+def test_declared_keel_entries_point_at_the_official_page() -> None:
+    keel = [e for e in fetch.load_sources().values() if e["source"] == "keel"]
+    assert len(keel) == 9
+    assert all(e["keel_page"] in fetch.KEEL_PAGES and e["keel_href"].endswith(".zip")
+               for e in keel)

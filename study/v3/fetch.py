@@ -15,6 +15,12 @@ Rules (CLAUDE.md, "No mirrors, no guessed URLs"):
 - Every download records URL, OpenML version, OpenML MD5 (verified) and SHA-256.
 - A failed, empty or checksum-mismatched download is recorded ``unavailable`` with the
   reason; no other source is tried.
+- KEEL dev files (approved by the user at Gate 0 in place of hand placement): the
+  declared ``keel_href`` must appear verbatim as a link on the declared official
+  ``keel_page``, and the archive URL is that link resolved against the page; nothing is
+  constructed. Only the declared ``.dat`` member is extracted (by exact basename, never
+  by archive path). When ``expected_dat_sha256`` is declared (the hash recorded for an
+  earlier hand-placed copy), a different file is recorded ``unavailable``.
 
 Raw files go to the gitignored ``study/v3/data/raw/``. Compact records are merged into
 ``study/v3/report/source-metadata.json`` (meta) and ``study/v3/report/acquisitions.json``
@@ -25,13 +31,16 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import io
 import json
 import sys
 import time
 import urllib.error
+import urllib.parse
 import urllib.request
+import zipfile
 from datetime import UTC, datetime
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 from typing import Any
 
 HERE = Path(__file__).resolve().parent
@@ -44,6 +53,8 @@ USER_AGENT = "rcqasyn-study-v3-fetcher/1"
 QUALITIES = ("NumberOfInstances", "NumberOfFeatures", "NumberOfClasses",
              "MinorityClassSize", "MajorityClassSize", "NumberOfMissingValues",
              "NumberOfNumericFeatures", "NumberOfSymbolicFeatures")
+FETCHABLE = ("openml", "keel")
+KEEL_PAGES = ("https://sci2s.ugr.es/keel/imbalanced.php",)
 
 
 class UndeclaredSource(KeyError):
@@ -68,7 +79,7 @@ def resolve(keys: list[str] | None, sources: dict[str, dict[str, Any]],
     else:
         chosen = [entry for entry in sources.values() if entry["role"] in roles]
     for entry in chosen:
-        if entry["source"] != "openml":
+        if entry["source"] not in FETCHABLE:
             raise UndeclaredSource(
                 f"{entry['key']}: source {entry['source']!r} is not fetchable here")
     return chosen
@@ -153,6 +164,71 @@ def fetch(entry: dict[str, Any], *, opener: Any = urllib.request.urlopen,
     return record
 
 
+def _download(url: str, opener: Any, timeout: float) -> bytes:
+    request = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+    with opener(request, timeout=timeout) as response:
+        return response.read()
+
+
+def fetch_keel(entry: dict[str, Any], *, opener: Any = urllib.request.urlopen,
+               raw_root: Path = RAW_ROOT) -> dict[str, Any]:
+    """Download one declared KEEL archive via the link the official page itself gives."""
+    page, href, dat_name = entry["keel_page"], entry["keel_href"], entry["dat_name"]
+    record: dict[str, Any] = {"key": entry["key"], "declared_name": entry["name"],
+                              "source": "keel", "keel_page": page, "keel_href": href,
+                              "version": None, "fetched_at": datetime.now(UTC).isoformat()}
+    if page not in KEEL_PAGES:
+        record.update(status="unavailable", reason=f"UNDECLARED_PAGE: {page}")
+        return record
+    try:
+        html = _download(page, opener, 60).decode("utf-8", errors="replace")
+    except (OSError, urllib.error.URLError) as error:
+        record.update(status="unavailable", reason=f"PAGE_FAILED: {error}")
+        return record
+    if f'href="{href}"' not in html:
+        record.update(status="unavailable", reason="LINK_NOT_ON_PAGE")
+        return record
+    url = urllib.parse.urljoin(page, href)
+    record["url"] = url
+    try:
+        body = _download(url, opener, 300)
+    except (OSError, urllib.error.URLError) as error:
+        record.update(status="unavailable", reason=f"DOWNLOAD_FAILED: {error}")
+        return record
+    if not body:
+        record.update(status="unavailable", reason="SOURCE_EMPTY: zero-byte response")
+        return record
+    try:
+        with zipfile.ZipFile(io.BytesIO(body)) as archive:
+            members = [info for info in archive.infolist()
+                       if PurePosixPath(info.filename).name == dat_name and not info.is_dir()]
+            if len(members) != 1:
+                record.update(status="unavailable",
+                              reason=f"MEMBER_MISSING: {len(members)} members named {dat_name}")
+                return record
+            dat = archive.read(members[0])
+    except zipfile.BadZipFile as error:
+        record.update(status="unavailable", reason=f"BAD_ZIP: {error}")
+        return record
+    dat_sha = hashlib.sha256(dat).hexdigest()
+    expected = entry.get("expected_dat_sha256")
+    if expected and dat_sha != expected:
+        record.update(status="unavailable", reason=f"SHA256_MISMATCH: got {dat_sha}")
+        return record
+    target_dir = raw_root / "keel" / entry["name"]
+    target_dir.mkdir(parents=True, exist_ok=True)
+    zip_name = PurePosixPath(urllib.parse.urlparse(url).path).name
+    (target_dir / zip_name).write_bytes(body)
+    (target_dir / dat_name).write_bytes(dat)
+    local = target_dir / dat_name
+    record.update(status="ok", bytes=len(body), sha256=hashlib.sha256(body).hexdigest(),
+                  dat_bytes=len(dat), dat_sha256=dat_sha,
+                  dat_sha256_matches_recorded=(dat_sha == expected) if expected else None,
+                  local_path=(local.relative_to(HERE).as_posix()
+                              if local.is_relative_to(HERE) else str(local)))
+    return record
+
+
 def _int(value: object) -> int | None:
     try:
         return int(str(value))
@@ -187,7 +263,12 @@ def main(argv: list[str] | None = None) -> int:
     entries = resolve(args.keys or None, sources, roles=tuple(args.roles.split(",")))
     records = []
     for entry in entries:
-        record = describe(entry) if args.mode == "meta" else fetch(entry)
+        if args.mode == "meta" and entry["source"] != "openml":
+            continue  # KEEL has no metadata API; its record comes from fetch mode
+        if args.mode == "meta":
+            record = describe(entry)
+        else:
+            record = fetch_keel(entry) if entry["source"] == "keel" else fetch(entry)
         records.append(record)
         print(json.dumps({k: record.get(k) for k in ("key", "status", "reason", "openml_name",
                                                       "version", "bytes")}))
