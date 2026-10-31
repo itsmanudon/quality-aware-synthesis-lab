@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "status": "draft for Gate 0; roles of 'new' datasets are proposals until the user approves",
+  "status": "Gate 0 decisions recorded 2026-10-31 (user): 10 new datasets approved; dev page-blocks0 dropped",
   "fetcher": "study/v3/fetch.py (the only declared fetcher)",
   "rules": {
     "roles": "dev = method design and tuning only; benchmark = no merged-method TEST metric before Gate 2; candidate = metadata-only screening for the 10 new datasets",
@@ -678,7 +678,7 @@
     },
     {
       "key": "keel-page-blocks0",
-      "role": "dev",
+      "role": "dropped",
       "group": "empirical_v2_addendum_v1",
       "source": "keel",
       "name": "page-blocks0",
@@ -686,7 +686,8 @@
       "keel_page": "https://sci2s.ugr.es/keel/imbalanced.php",
       "keel_href": "keel-dataset/datasets/imbalanced/imb_IRlowerThan9/page-blocks0.zip",
       "dat_name": "page-blocks0.dat",
-      "expected_dat_sha256": "c46bf830740d44bf8d4042b1679424857bcfd770568d2c250f92a91a12d425b2"
+      "expected_dat_sha256": "c46bf830740d44bf8d4042b1679424857bcfd770568d2c250f92a91a12d425b2",
+      "dropped": "Gate 0, user, 2026-10-31: same source table as U2 benchmark page-blocks (OpenML 1021); dropped so tuning never touches a benchmark table"
     },
     {
       "key": "keel-yeast3",
@@ -761,7 +762,6 @@
       "source": "openml",
       "openml_id": 1590,
       "name": "adult",
-      "proposal": "Gate 0",
       "screening": "UCI Adult (CC BY 4.0 at UCI); census income",
       "metadata": {
         "openml_version": 2,
@@ -773,7 +773,8 @@
         "minority": 11687,
         "imbalance_ratio": 3.18,
         "minority_test_at_80_20": 2337
-      }
+      },
+      "approved": "Gate 0, user, 2026-10-31"
     },
     {
       "key": "openml-42477",
@@ -782,7 +783,6 @@
       "source": "openml",
       "openml_id": 42477,
       "name": "default-of-credit-card-clients",
-      "proposal": "Gate 0",
       "screening": "UCI default of credit card clients; CC0 on OpenML",
       "metadata": {
         "openml_version": 1,
@@ -794,7 +794,8 @@
         "minority": 6636,
         "imbalance_ratio": 3.52,
         "minority_test_at_80_20": 1327
-      }
+      },
+      "approved": "Gate 0, user, 2026-10-31"
     },
     {
       "key": "openml-1597",
@@ -803,7 +804,6 @@
       "source": "openml",
       "openml_id": 1597,
       "name": "creditcard",
-      "proposal": "Gate 0",
       "screening": "ULB credit-card fraud; extreme IR (578); 284,807 rows",
       "metadata": {
         "openml_version": 1,
@@ -815,7 +815,8 @@
         "minority": 492,
         "imbalance_ratio": 577.88,
         "minority_test_at_80_20": 98
-      }
+      },
+      "approved": "Gate 0, user, 2026-10-31"
     },
     {
       "key": "openml-1053",
@@ -824,7 +825,6 @@
       "source": "openml",
       "openml_id": 1053,
       "name": "jm1",
-      "proposal": "Gate 0",
       "screening": "PROMISE/NASA MDP jm1; same defect-metric family as U2's kc1/pc1/pc3/pc4 but a different project table, not a re-binarization",
       "metadata": {
         "openml_version": 1,
@@ -836,7 +836,8 @@
         "minority": 2106,
         "imbalance_ratio": 4.17,
         "minority_test_at_80_20": 421
-      }
+      },
+      "approved": "Gate 0, user, 2026-10-31"
     },
     {
       "key": "openml-4135",
@@ -865,7 +866,6 @@
       "source": "openml",
       "openml_id": 41162,
       "name": "kick",
-      "proposal": "Gate 0",
       "screening": "Carvana 'Don't Get Kicked'; CC0 on OpenML",
       "metadata": {
         "openml_version": 1,
@@ -877,7 +877,8 @@
         "minority": 8976,
         "imbalance_ratio": 7.13,
         "minority_test_at_80_20": 1795
-      }
+      },
+      "approved": "Gate 0, user, 2026-10-31"
     },
     {
       "key": "openml-1043",
@@ -995,7 +996,6 @@
       "source": "openml",
       "openml_id": 1018,
       "name": "ipums_la_99-small",
-      "proposal": "Gate 0",
       "screening": "IPUMS LA 1999 census extract, binarized by OpenML ('binaryClass', like several U2 core sets); 56 features",
       "metadata": {
         "openml_version": 2,
@@ -1007,7 +1007,8 @@
         "minority": 568,
         "imbalance_ratio": 14.57,
         "minority_test_at_80_20": 114
-      }
+      },
+      "approved": "Gate 0, user, 2026-10-31"
     },
     {
       "key": "openml-40536",
@@ -1137,7 +1138,6 @@
       "openml_id": 46911,
       "name": "Bank_Customer_Churn",
       "notes": "found by OpenML exact-name metadata lookup",
-      "proposal": "Gate 0",
       "screening": "Kaggle dataset (not competition) bank customer churn; bank customers, distinct from U2's telecom UCI_churn and bank-marketing",
       "metadata": {
         "openml_version": 1,
@@ -1149,7 +1149,8 @@
         "minority": 2037,
         "imbalance_ratio": 3.91,
         "minority_test_at_80_20": 407
-      }
+      },
+      "approved": "Gate 0, user, 2026-10-31"
     },
     {
       "key": "openml-46929",
@@ -1159,7 +1160,6 @@
       "openml_id": 46929,
       "name": "GiveMeSomeCredit",
       "notes": "found by OpenML exact-name metadata lookup",
-      "proposal": "Gate 0",
       "screening": "Kaggle COMPETITION 'Give Me Some Credit': competition rules may restrict reuse - licence to confirm at Gate 0",
       "metadata": {
         "openml_version": 1,
@@ -1171,7 +1171,9 @@
         "minority": 10026,
         "imbalance_ratio": 13.96,
         "minority_test_at_80_20": 2005
-      }
+      },
+      "approved": "Gate 0, user, 2026-10-31",
+      "licence_note": "Kaggle-competition origin; user approved inclusion at Gate 0 with this flag shown"
     },
     {
       "key": "openml-46940",
@@ -1181,7 +1183,6 @@
       "openml_id": 46940,
       "name": "Marketing_Campaign",
       "notes": "found by OpenML exact-name metadata lookup",
-      "proposal": "Gate 0",
       "screening": "Kaggle dataset (not competition) marketing campaign response",
       "metadata": {
         "openml_version": 1,
@@ -1193,7 +1194,8 @@
         "minority": 334,
         "imbalance_ratio": 5.71,
         "minority_test_at_80_20": 67
-      }
+      },
+      "approved": "Gate 0, user, 2026-10-31"
     },
     {
       "key": "openml-46938",
@@ -1203,7 +1205,6 @@
       "openml_id": 46938,
       "name": "Is-this-a-good-customer",
       "notes": "found by OpenML exact-name metadata lookup",
-      "proposal": "Gate 0",
       "screening": "Kaggle dataset, CC0: Public Domain; credit scoring",
       "metadata": {
         "openml_version": 2,
@@ -1215,7 +1216,8 @@
         "minority": 196,
         "imbalance_ratio": 7.79,
         "minority_test_at_80_20": 39
-      }
+      },
+      "approved": "Gate 0, user, 2026-10-31"
     },
     {
       "key": "openml-41160",

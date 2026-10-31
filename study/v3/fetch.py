@@ -258,6 +258,10 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("keys", nargs="*")
     parser.add_argument("--roles", default="benchmark,candidate",
                         help="roles used when no keys are given")
+    # OpenML answered 503 after ~10-12 datasets at 0.5 s spacing (Gate 0); slower pacing
+    # for the user-approved second retry.
+    parser.add_argument("--pause", type=float, default=0.5,
+                        help="seconds to wait between datasets")
     args = parser.parse_args(argv)
     sources = load_sources()
     entries = resolve(args.keys or None, sources, roles=tuple(args.roles.split(",")))
@@ -272,7 +276,7 @@ def main(argv: list[str] | None = None) -> int:
         records.append(record)
         print(json.dumps({k: record.get(k) for k in ("key", "status", "reason", "openml_name",
                                                       "version", "bytes")}))
-        time.sleep(0.5)  # be polite to the OpenML API
+        time.sleep(args.pause)  # be polite to the OpenML API
     _merge(META_REPORT if args.mode == "meta" else ACQ_REPORT, records)
     return 0 if all(r.get("status") == "ok" for r in records) else 1
 

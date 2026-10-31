@@ -89,10 +89,11 @@ def test_checksum_mismatch_is_unavailable(tmp_path: Path) -> None:
     assert record["status"] == "unavailable" and record["reason"].startswith("MD5_MISMATCH")
 
 
-def test_declared_sources_have_forty_benchmark_and_nine_dev() -> None:
+def test_declared_sources_have_forty_benchmark_and_eight_dev() -> None:
     sources = fetch.load_sources()
     roles = [entry["role"] for entry in sources.values()]
-    assert roles.count("benchmark") == 40 and roles.count("dev") == 9
+    assert roles.count("benchmark") == 40 and roles.count("dev") == 8
+    assert roles.count("dropped") == 1  # page-blocks0, Gate 0
     u2 = [e for e in sources.values() if e["group"] == "u2_core"]
     assert len(u2) == 30 and {e["u2_catalogue_number"] for e in u2}.isdisjoint({10, 26})
 
