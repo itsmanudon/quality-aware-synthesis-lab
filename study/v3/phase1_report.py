@@ -1,3 +1,4 @@
+# pyright: reportAttributeAccessIssue=false, reportOperatorIssue=false, reportGeneralTypeIssues=false
 """Summarize a Phase 1 run directory into committed compact tables (validation only).
 
 Writes ``rows.csv`` (every scored row, including failed/unavailable ones), ``pools.csv`` and

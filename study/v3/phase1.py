@@ -66,7 +66,9 @@ def carve_validation(train: pd.DataFrame, target: str, dataset: str,
     inner: list[int] = []
     validation: list[int] = []
     for label in sorted(labels.unique().tolist()):
-        group = sorted((int(i) for i in labels.index[labels == label]),
+        group = sorted((int(i) for i, v in zip(labels.index.to_numpy(dtype=np.int64),
+                                                  labels.to_numpy(dtype=object), strict=True)
+                        if v == label),
                        key=lambda i: hashlib.sha256(f"{seed}:{label}:{i}".encode()).hexdigest())
         n_val = max(1, round(len(group) * VALIDATION_FRACTION)) if len(group) > 1 else 0
         n_val = min(n_val, len(group) - 1)
