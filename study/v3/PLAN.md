@@ -112,21 +112,25 @@ Each phase ends at a gate: write findings and proposal into `STATUS.md`, commit,
 - [ ] Declared dataset fetcher: refuses anything not in `sources.json`; records URL,
       version, SHA-256; empty or failed download = unavailable.
 - [ ] Declare U2's 30 OpenML datasets in `sources.json`; shortlist 10 new ones against the
-      inclusion rules using metadata only (no
-      modelling); propose the dev/benchmark split in `sources.json`.
+      inclusion rules using metadata only (no modelling); propose the split in `sources.json`.
+- [ ] Install the U2 code (ml_ugo at a6710ea) read-only; reproduce U2 and UGO on one dev
+      dataset to confirm the pinned code runs here.
 - [ ] Draft `protocol.json`.
 - **Gate 0**: user approves protocol draft, dataset shortlist, model list, API budget cap.
 
 ### Phase 1 - Diagnose (weeks 2-3, Nov 9-22), dev datasets only
 - [ ] Carve validation splits; reproduce current QC vs random on validation.
-- [ ] Ablate: minority quota (50% vs real ratio), budget size, classifier (add
-      HistGradientBoosting), pool generator (SMOTE vs stored LLM stream where available).
+- [ ] Ablate: minority quota (50% vs real ratio), budget size, classifier (U2's five, with
+      validation-selected thresholds), pool generator (SMOTE, U2, stored LLM stream).
+- [ ] Run the RC-QASyn quality gate on U2, UGO and SMOTE output for the dev datasets: how
+      many candidates fail structure, need repair, or are duplicates.
 - [ ] Measure an upper bound: how much an oracle selection on validation could gain.
 - **Gate 1**: user picks which utility terms go forward, given the diagnosis.
 
 ### Phase 2 - Utility-aware selection (weeks 4-6, Nov 23-Dec 13), dev datasets only
-- [ ] Implement candidate terms: boundary/borderline score; KNN-Shapley value on
-      validation; CLLM-style confidence filter; combine with the existing quality gate.
+- [ ] Implement candidate terms: U2 difficulty x stability; FlowGMM compatibility as an
+      admission evidence column; boundary/borderline score; KNN-Shapley value on validation;
+      CLLM-style confidence filter; combine with the existing quality gate.
 - [ ] Repair for interpolated output: a declared, still-bounded rule for integer fields
       broken by SMOTE-style interpolation (the vehicle0 case: all 1,400 candidates broke
       integer declarations; the <=3-field rule rescued 6). Report how many it recovers and
@@ -153,8 +157,9 @@ Each phase ends at a gate: write findings and proposal into `STATUS.md`, commit,
 - **Gate 4**: results review with the user and the professor.
 
 ### Phase 5 - Paper (weeks 14-16, Feb 1-21)
-- [ ] Update the IEEE draft on a branch, from `report/` only; claims limited to declared
-      tests; no state-of-the-art wording.
+- [ ] Write the merged U2 + RC-QASyn paper on a branch, starting from the IEEE draft and
+      the frozen U2 draft, using `report/` only; claims limited to declared tests; no
+      state-of-the-art wording.
 
 ## Never
 
