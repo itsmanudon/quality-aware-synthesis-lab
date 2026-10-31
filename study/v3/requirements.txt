@@ -1,0 +1,5 @@
+# Study v3 additions on top of `pip install -e '.[dev,research]'` (versions installed and
+# exercised in Phase 0 on 2026-10-31; Python 3.12.11, uv-managed venv).
+anthropic==2.3.0
+openai==3.42.0
+python-dotenv==1.2.4
