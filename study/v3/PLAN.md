@@ -64,17 +64,26 @@ study/v3/
   - No merged-method metric on any benchmark TEST before Gate 2.
 - **Splits**: 5 stratified 80/20 splits, seeds 13, 29, 43, 61, 79. Validation = 20% of
   TRAIN, stratified, for every tuning choice. TEST only for final evaluation.
-- **Generators**: SMOTE-family pools (non-LLM); API (Batch API, 50% off): Claude Haiku
-  5.5 (all benchmark datasets), Claude Sonnet 5.5 (3-4 datasets, as budget allows), one
-  low-cost OpenAI model such as gpt-6-luna (all benchmark datasets; verify name and price
-  on OpenAI's pricing page at Gate 0); no Opus. Local via Ollama, 4-bit, 8 GB GPU:
-  Gemma 4 E4B (the Empirical v2 generator), Llama 3.1 8B, Qwen2.5 7B, Mistral 7B v0.3,
-  Phi-3.5 mini. Exact versions pinned at Gate 0. Pool = 4 x budget per dataset/split.
+- **Generators** (8 LLMs, confirmed by the user, plus non-LLM pools from U2, UGO and
+  SMOTE). Batch API wherever the provider offers it.
+  - All benchmark datasets: Claude Haiku 5.5, GPT-6.1-luna, Meta Muse Spark 1.3
+    (standard endpoint, where Meta does not train on inputs).
+  - Subset: Claude Sonnet 5.5 (about 5 datasets), GPT-6.1-terra (about 8-10 datasets).
+  - Local via Ollama on the Legion (8 GB GPU, 4-bit): Gemma 4 E4B (the Empirical v2
+    generator), Qwen2.5 7B Instruct, Llama 3.1 8B Instruct. A larger model on the Mac may
+    be added later; only by the user's decision.
+  - Verify every model ID and price on the provider's own pages at Gate 0; Muse Spark is
+    a reasoning model, so record its hidden/reasoning token usage separately.
+  - Pool = 4 x budget per dataset/split.
   Same versioned prompt and TRAIN-only context for all; per-batch seeds; raw responses
   persisted before parsing.
-- **API budget cap**: $5 Anthropic, $4 OpenAI, tracked per provider in `budget.jsonl`.
-  Estimated full run at list prices with Batch: about $1.20 each for Haiku 5.5 and the
-  OpenAI model; Sonnet 5.5 about $0.60 per dataset. The pilot replaces these estimates.
+- **API budget caps**: Anthropic $5, OpenAI $4, Meta $140 (credits), tracked per provider in
+  `budget.jsonl`; the 80% stop rule applies to each provider separately. Estimates at list
+  prices with Batch: Haiku 5.5 about $1.20 for a full run; Sonnet 5.5 about $0.60 per
+  dataset; GPT-6.1-terra about $0.30 per dataset; Muse Spark 1.3 roughly $25-80 for a full
+  run depending on reasoning tokens. The pilot replaces these estimates.
+- **Keys**: in `.env` at the repo root (gitignored), names as in `.env.example`. Code reads
+  them from the environment; the agent never opens, prints or copies `.env`.
 - **U2 code**: use ml_ugo (https://github.com/d3vd5k/ml_ugo) pinned at commit a6710ea,
   installed or vendored read-only under `study/v3/`; never modify it. UGO and U2 runs use
   the GPU, so schedule them apart from local LLM generation.
