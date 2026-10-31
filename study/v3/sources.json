@@ -1,0 +1,1212 @@
+{
+  "schema_version": 1,
+  "status": "draft for Gate 0; roles of 'new' datasets are proposals until the user approves",
+  "fetcher": "study/v3/fetch.py (the only declared fetcher)",
+  "rules": {
+    "roles": "dev = method design and tuning only; benchmark = no merged-method TEST metric before Gate 2; candidate = metadata-only screening for the 10 new datasets",
+    "u2_core": "U2's 30 OpenML datasets exactly as in ml_ugo@a6710ea notebooks/portable_catalogue.json, numbers 1-32 excluding 10 and 26",
+    "new_inclusion": "binary or source-defined one-vs-rest; imbalance ratio >= 3; >= 30 minority TEST records at 80/20; <= 60 features; open licence; not a re-binarization of an included (dev or benchmark) table",
+    "keel_local": "dev KEEL files are hand-placed under their existing registries; this fetcher never downloads them"
+  },
+  "u2_pin": {
+    "repo": "https://github.com/d3vd5k/ml_ugo",
+    "commit": "a6710ea760497e91d48c77abda0178b67e250adc"
+  },
+  "datasets": [
+    {
+      "key": "openml-976",
+      "role": "benchmark",
+      "group": "u2_core",
+      "source": "openml",
+      "openml_id": 976,
+      "name": "JapaneseVowels",
+      "u2_catalogue_number": 1,
+      "u2_imbalance_type": "medium",
+      "metadata": {
+        "openml_version": 2,
+        "licence": "Public",
+        "target": "binaryClass",
+        "n_rows": 9961,
+        "n_features": 14,
+        "n_classes": 2,
+        "minority": 1614,
+        "imbalance_ratio": 5.17,
+        "minority_test_at_80_20": 323
+      }
+    },
+    {
+      "key": "openml-43893",
+      "role": "benchmark",
+      "group": "u2_core",
+      "source": "openml",
+      "openml_id": 43893,
+      "name": "ibm-employee-attrition",
+      "u2_catalogue_number": 2,
+      "u2_imbalance_type": "medium",
+      "metadata": {
+        "openml_version": 1,
+        "licence": "Open Database License (ODbL) + Database Content License(DbCL)",
+        "target": "Attrition",
+        "n_rows": 1470,
+        "n_features": 34,
+        "n_classes": 2,
+        "minority": 237,
+        "imbalance_ratio": 5.2,
+        "minority_test_at_80_20": 47
+      }
+    },
+    {
+      "key": "openml-45560",
+      "role": "benchmark",
+      "group": "u2_core",
+      "source": "openml",
+      "openml_id": 45560,
+      "name": "online-shoppers-intention",
+      "u2_catalogue_number": 3,
+      "u2_imbalance_type": "medium",
+      "metadata": {
+        "openml_version": 2,
+        "licence": "Public",
+        "target": "Revenue",
+        "n_rows": 12330,
+        "n_features": 17,
+        "n_classes": 2,
+        "minority": 1908,
+        "imbalance_ratio": 5.46,
+        "minority_test_at_80_20": 382
+      }
+    },
+    {
+      "key": "openml-1067",
+      "role": "benchmark",
+      "group": "u2_core",
+      "source": "openml",
+      "openml_id": 1067,
+      "name": "kc1",
+      "u2_catalogue_number": 4,
+      "u2_imbalance_type": "medium",
+      "metadata": {
+        "openml_version": 1,
+        "licence": "Public",
+        "target": "defects",
+        "n_rows": 2109,
+        "n_features": 21,
+        "n_classes": 2,
+        "minority": 326,
+        "imbalance_ratio": 5.47,
+        "minority_test_at_80_20": 65
+      }
+    },
+    {
+      "key": "openml-1506",
+      "role": "benchmark",
+      "group": "u2_core",
+      "source": "openml",
+      "openml_id": 1506,
+      "name": "thoracic-surgery",
+      "u2_catalogue_number": 5,
+      "u2_imbalance_type": "medium",
+      "metadata": {
+        "openml_version": 1,
+        "licence": "Public",
+        "target": "Class",
+        "n_rows": 470,
+        "n_features": 16,
+        "n_classes": 2,
+        "minority": 70,
+        "imbalance_ratio": 5.71,
+        "minority_test_at_80_20": 14
+      },
+      "flag": "fewer than 30 minority TEST records at 80/20 (kept for comparability with U2)"
+    },
+    {
+      "key": "openml-44232",
+      "role": "benchmark",
+      "group": "u2_core",
+      "source": "openml",
+      "openml_id": 44232,
+      "name": "UCI_churn",
+      "u2_catalogue_number": 6,
+      "u2_imbalance_type": "medium",
+      "metadata": {
+        "openml_version": 1,
+        "licence": "Unknown",
+        "target": "churn",
+        "n_rows": 3333,
+        "n_features": 20,
+        "n_classes": 2,
+        "minority": 483,
+        "imbalance_ratio": 5.9,
+        "minority_test_at_80_20": 97
+      }
+    },
+    {
+      "key": "openml-949",
+      "role": "benchmark",
+      "group": "u2_core",
+      "source": "openml",
+      "openml_id": 949,
+      "name": "arsenic-female-bladder",
+      "u2_catalogue_number": 7,
+      "u2_imbalance_type": "medium",
+      "metadata": {
+        "openml_version": 2,
+        "licence": "Public",
+        "target": "binaryClass",
+        "n_rows": 559,
+        "n_features": 4,
+        "n_classes": 2,
+        "minority": 80,
+        "imbalance_ratio": 5.99,
+        "minority_test_at_80_20": 16
+      },
+      "flag": "fewer than 30 minority TEST records at 80/20 (kept for comparability with U2)"
+    },
+    {
+      "key": "openml-1049",
+      "role": "benchmark",
+      "group": "u2_core",
+      "source": "openml",
+      "openml_id": 1049,
+      "name": "pc4",
+      "u2_catalogue_number": 8,
+      "u2_imbalance_type": "medium",
+      "metadata": {
+        "openml_version": 1,
+        "licence": "Public",
+        "target": "c",
+        "n_rows": 1458,
+        "n_features": 37,
+        "n_classes": 2,
+        "minority": 178,
+        "imbalance_ratio": 7.19,
+        "minority_test_at_80_20": 36
+      }
+    },
+    {
+      "key": "openml-1558",
+      "role": "benchmark",
+      "group": "u2_core",
+      "source": "openml",
+      "openml_id": 1558,
+      "name": "bank-marketing",
+      "u2_catalogue_number": 9,
+      "u2_imbalance_type": "medium",
+      "metadata": {
+        "openml_version": 2,
+        "licence": "Public",
+        "target": "Class",
+        "n_rows": 4521,
+        "n_features": 16,
+        "n_classes": 2,
+        "minority": 521,
+        "imbalance_ratio": 7.68,
+        "minority_test_at_80_20": 104
+      }
+    },
+    {
+      "key": "openml-1019",
+      "role": "benchmark",
+      "group": "u2_core",
+      "source": "openml",
+      "openml_id": 1019,
+      "name": "pendigits",
+      "u2_catalogue_number": 11,
+      "u2_imbalance_type": "medium",
+      "metadata": {
+        "openml_version": 2,
+        "licence": "Public",
+        "target": "binaryClass",
+        "n_rows": 10992,
+        "n_features": 16,
+        "n_classes": 2,
+        "minority": 1144,
+        "imbalance_ratio": 8.61,
+        "minority_test_at_80_20": 229
+      }
+    },
+    {
+      "key": "openml-1050",
+      "role": "benchmark",
+      "group": "u2_core",
+      "source": "openml",
+      "openml_id": 1050,
+      "name": "pc3",
+      "u2_catalogue_number": 12,
+      "u2_imbalance_type": "medium",
+      "metadata": {
+        "openml_version": 1,
+        "licence": "Public",
+        "target": "c",
+        "n_rows": 1563,
+        "n_features": 37,
+        "n_classes": 2,
+        "minority": 160,
+        "imbalance_ratio": 8.77,
+        "minority_test_at_80_20": 32
+      }
+    },
+    {
+      "key": "openml-1021",
+      "role": "benchmark",
+      "group": "u2_core",
+      "source": "openml",
+      "openml_id": 1021,
+      "name": "page-blocks",
+      "u2_catalogue_number": 13,
+      "u2_imbalance_type": "medium",
+      "u2_catalogue_name": "page-blocks-bin",
+      "notes": "U2 catalogue label 'page-blocks-bin'; OpenML name for id 1021 is 'page-blocks' (binary, 2 classes). U2 loads by id.",
+      "metadata": {
+        "openml_version": 2,
+        "licence": "Public",
+        "target": "binaryClass",
+        "n_rows": 5473,
+        "n_features": 10,
+        "n_classes": 2,
+        "minority": 560,
+        "imbalance_ratio": 8.77,
+        "minority_test_at_80_20": 112
+      }
+    },
+    {
+      "key": "openml-980",
+      "role": "benchmark",
+      "group": "u2_core",
+      "source": "openml",
+      "openml_id": 980,
+      "name": "optdigits",
+      "u2_catalogue_number": 14,
+      "u2_imbalance_type": "medium",
+      "metadata": {
+        "openml_version": 2,
+        "licence": "Public",
+        "target": "binaryClass",
+        "n_rows": 5620,
+        "n_features": 64,
+        "n_classes": 2,
+        "minority": 572,
+        "imbalance_ratio": 8.83,
+        "minority_test_at_80_20": 114
+      }
+    },
+    {
+      "key": "openml-1020",
+      "role": "benchmark",
+      "group": "u2_core",
+      "source": "openml",
+      "openml_id": 1020,
+      "name": "mfeat-karhunen",
+      "u2_catalogue_number": 15,
+      "u2_imbalance_type": "medium",
+      "metadata": {
+        "openml_version": 2,
+        "licence": "Public",
+        "target": "binaryClass",
+        "n_rows": 2000,
+        "n_features": 64,
+        "n_classes": 2,
+        "minority": 200,
+        "imbalance_ratio": 9.0,
+        "minority_test_at_80_20": 40
+      }
+    },
+    {
+      "key": "openml-971",
+      "role": "benchmark",
+      "group": "u2_core",
+      "source": "openml",
+      "openml_id": 971,
+      "name": "mfeat-fourier",
+      "u2_catalogue_number": 16,
+      "u2_imbalance_type": "medium",
+      "metadata": {
+        "openml_version": 2,
+        "licence": "Public",
+        "target": "binaryClass",
+        "n_rows": 2000,
+        "n_features": 76,
+        "n_classes": 2,
+        "minority": 200,
+        "imbalance_ratio": 9.0,
+        "minority_test_at_80_20": 40
+      }
+    },
+    {
+      "key": "openml-995",
+      "role": "benchmark",
+      "group": "u2_core",
+      "source": "openml",
+      "openml_id": 995,
+      "name": "mfeat-zernike",
+      "u2_catalogue_number": 17,
+      "u2_imbalance_type": "medium",
+      "metadata": {
+        "openml_version": 2,
+        "licence": "Public",
+        "target": "binaryClass",
+        "n_rows": 2000,
+        "n_features": 47,
+        "n_classes": 2,
+        "minority": 200,
+        "imbalance_ratio": 9.0,
+        "minority_test_at_80_20": 40
+      }
+    },
+    {
+      "key": "openml-45558",
+      "role": "benchmark",
+      "group": "u2_core",
+      "source": "openml",
+      "openml_id": 45558,
+      "name": "Pulsar-Dataset-HTRU2",
+      "u2_catalogue_number": 18,
+      "u2_imbalance_type": "medium",
+      "metadata": {
+        "openml_version": 2,
+        "licence": "Public",
+        "target": "class",
+        "n_rows": 17898,
+        "n_features": 8,
+        "n_classes": 2,
+        "minority": 1639,
+        "imbalance_ratio": 9.92,
+        "minority_test_at_80_20": 328
+      }
+    },
+    {
+      "key": "openml-1016",
+      "role": "benchmark",
+      "group": "u2_core",
+      "source": "openml",
+      "openml_id": 1016,
+      "name": "vowel",
+      "u2_catalogue_number": 19,
+      "u2_imbalance_type": "high",
+      "metadata": {
+        "openml_version": 3,
+        "licence": "Public",
+        "target": "binaryClass",
+        "n_rows": 990,
+        "n_features": 13,
+        "n_classes": 2,
+        "minority": 90,
+        "imbalance_ratio": 10.0,
+        "minority_test_at_80_20": 18
+      },
+      "flag": "fewer than 30 minority TEST records at 80/20 (kept for comparability with U2)"
+    },
+    {
+      "key": "openml-1068",
+      "role": "benchmark",
+      "group": "u2_core",
+      "source": "openml",
+      "openml_id": 1068,
+      "name": "pc1",
+      "u2_catalogue_number": 20,
+      "u2_imbalance_type": "high",
+      "metadata": {
+        "openml_version": 1,
+        "licence": "Public",
+        "target": "defects",
+        "n_rows": 1109,
+        "n_features": 21,
+        "n_classes": 2,
+        "minority": 77,
+        "imbalance_ratio": 13.4,
+        "minority_test_at_80_20": 15
+      },
+      "flag": "fewer than 30 minority TEST records at 80/20 (kept for comparability with U2)"
+    },
+    {
+      "key": "openml-45562",
+      "role": "benchmark",
+      "group": "u2_core",
+      "source": "openml",
+      "openml_id": 45562,
+      "name": "seismic-bumps",
+      "u2_catalogue_number": 21,
+      "u2_imbalance_type": "high",
+      "metadata": {
+        "openml_version": 3,
+        "licence": "Public",
+        "target": "class",
+        "n_rows": 2584,
+        "n_features": 18,
+        "n_classes": 2,
+        "minority": 170,
+        "imbalance_ratio": 14.2,
+        "minority_test_at_80_20": 34
+      }
+    },
+    {
+      "key": "openml-1487",
+      "role": "benchmark",
+      "group": "u2_core",
+      "source": "openml",
+      "openml_id": 1487,
+      "name": "ozone-level-8hr",
+      "u2_catalogue_number": 22,
+      "u2_imbalance_type": "high",
+      "metadata": {
+        "openml_version": 1,
+        "licence": "Public",
+        "target": "Class",
+        "n_rows": 2534,
+        "n_features": 72,
+        "n_classes": 2,
+        "minority": 160,
+        "imbalance_ratio": 14.84,
+        "minority_test_at_80_20": 32
+      }
+    },
+    {
+      "key": "openml-41946",
+      "role": "benchmark",
+      "group": "u2_core",
+      "source": "openml",
+      "openml_id": 41946,
+      "name": "Sick_numeric",
+      "u2_catalogue_number": 23,
+      "u2_imbalance_type": "high",
+      "metadata": {
+        "openml_version": 2,
+        "licence": "CC0",
+        "target": "Class",
+        "n_rows": 3772,
+        "n_features": 29,
+        "n_classes": 2,
+        "minority": 231,
+        "imbalance_ratio": 15.33,
+        "minority_test_at_80_20": 46
+      }
+    },
+    {
+      "key": "openml-46281",
+      "role": "benchmark",
+      "group": "u2_core",
+      "source": "openml",
+      "openml_id": 46281,
+      "name": "insurance_company",
+      "u2_catalogue_number": 24,
+      "u2_imbalance_type": "high",
+      "metadata": {
+        "openml_version": 1,
+        "licence": "CC BY 4.0",
+        "target": "target",
+        "n_rows": 9822,
+        "n_features": 85,
+        "n_classes": 2,
+        "minority": 586,
+        "imbalance_ratio": 15.76,
+        "minority_test_at_80_20": 117
+      }
+    },
+    {
+      "key": "openml-40983",
+      "role": "benchmark",
+      "group": "u2_core",
+      "source": "openml",
+      "openml_id": 40983,
+      "name": "wilt",
+      "u2_catalogue_number": 25,
+      "u2_imbalance_type": "high",
+      "metadata": {
+        "openml_version": 2,
+        "licence": "Public",
+        "target": "class",
+        "n_rows": 4839,
+        "n_features": 5,
+        "n_classes": 2,
+        "minority": 261,
+        "imbalance_ratio": 17.54,
+        "minority_test_at_80_20": 52
+      }
+    },
+    {
+      "key": "openml-977",
+      "role": "benchmark",
+      "group": "u2_core",
+      "source": "openml",
+      "openml_id": 977,
+      "name": "letter",
+      "u2_catalogue_number": 27,
+      "u2_imbalance_type": "high",
+      "metadata": {
+        "openml_version": 2,
+        "licence": "Public",
+        "target": "binaryClass",
+        "n_rows": 20000,
+        "n_features": 16,
+        "n_classes": 2,
+        "minority": 813,
+        "imbalance_ratio": 23.6,
+        "minority_test_at_80_20": 163
+      }
+    },
+    {
+      "key": "openml-310",
+      "role": "benchmark",
+      "group": "u2_core",
+      "source": "openml",
+      "openml_id": 310,
+      "name": "mammography",
+      "u2_catalogue_number": 28,
+      "u2_imbalance_type": "high",
+      "metadata": {
+        "openml_version": 1,
+        "licence": "Public",
+        "target": "class",
+        "n_rows": 11183,
+        "n_features": 6,
+        "n_classes": 2,
+        "minority": 260,
+        "imbalance_ratio": 42.01,
+        "minority_test_at_80_20": 52
+      }
+    },
+    {
+      "key": "openml-40713",
+      "role": "benchmark",
+      "group": "u2_core",
+      "source": "openml",
+      "openml_id": 40713,
+      "name": "dis",
+      "u2_catalogue_number": 29,
+      "u2_imbalance_type": "extreme",
+      "metadata": {
+        "openml_version": 1,
+        "licence": "public",
+        "target": "class",
+        "n_rows": 3772,
+        "n_features": 29,
+        "n_classes": 2,
+        "minority": 58,
+        "imbalance_ratio": 64.03,
+        "minority_test_at_80_20": 12
+      },
+      "flag": "fewer than 30 minority TEST records at 80/20 (kept for comparability with U2)"
+    },
+    {
+      "key": "openml-40900",
+      "role": "benchmark",
+      "group": "u2_core",
+      "source": "openml",
+      "openml_id": 40900,
+      "name": "Satellite",
+      "u2_catalogue_number": 30,
+      "u2_imbalance_type": "extreme",
+      "metadata": {
+        "openml_version": 1,
+        "licence": "Public",
+        "target": "Target",
+        "n_rows": 5100,
+        "n_features": 36,
+        "n_classes": 2,
+        "minority": 75,
+        "imbalance_ratio": 67.0,
+        "minority_test_at_80_20": 15
+      },
+      "flag": "fewer than 30 minority TEST records at 80/20 (kept for comparability with U2)"
+    },
+    {
+      "key": "openml-43",
+      "role": "benchmark",
+      "group": "u2_core",
+      "source": "openml",
+      "openml_id": 43,
+      "name": "haberman",
+      "u2_catalogue_number": 31,
+      "u2_imbalance_type": "low",
+      "metadata": {
+        "openml_version": 1,
+        "licence": "Public",
+        "target": "Survival_status",
+        "n_rows": 306,
+        "n_features": 3,
+        "n_classes": 2,
+        "minority": 81,
+        "imbalance_ratio": 2.78,
+        "minority_test_at_80_20": 16
+      },
+      "flag": "fewer than 30 minority TEST records at 80/20 (kept for comparability with U2)"
+    },
+    {
+      "key": "openml-1464",
+      "role": "benchmark",
+      "group": "u2_core",
+      "source": "openml",
+      "openml_id": 1464,
+      "name": "blood-transfusion-service-center",
+      "u2_catalogue_number": 32,
+      "u2_imbalance_type": "low",
+      "metadata": {
+        "openml_version": 1,
+        "licence": "Public",
+        "target": "Class",
+        "n_rows": 748,
+        "n_features": 4,
+        "n_classes": 2,
+        "minority": 178,
+        "imbalance_ratio": 3.2,
+        "minority_test_at_80_20": 36
+      }
+    },
+    {
+      "key": "keel-Abalone19",
+      "role": "dev",
+      "group": "empirical_v2_addendum_v1",
+      "source": "keel-local",
+      "name": "Abalone19",
+      "notes": "registry: historical run-v2 (configs/datasets)"
+    },
+    {
+      "key": "keel-Ecoli4",
+      "role": "dev",
+      "group": "empirical_v2_addendum_v1",
+      "source": "keel-local",
+      "name": "Ecoli4",
+      "notes": "registry: historical run-v2 (configs/datasets)"
+    },
+    {
+      "key": "keel-page-blocks0",
+      "role": "dev",
+      "group": "empirical_v2_addendum_v1",
+      "source": "keel-local",
+      "name": "page-blocks0",
+      "notes": "registry: historical run-v2 (configs/datasets); same source table as U2 benchmark page-blocks-bin (OpenML 1021)"
+    },
+    {
+      "key": "keel-yeast3",
+      "role": "dev",
+      "group": "empirical_v2_addendum_v1",
+      "source": "keel-local",
+      "name": "yeast3",
+      "notes": "registry: addendum/v1"
+    },
+    {
+      "key": "keel-yeast4",
+      "role": "dev",
+      "group": "empirical_v2_addendum_v1",
+      "source": "keel-local",
+      "name": "yeast4",
+      "notes": "registry: addendum/v1"
+    },
+    {
+      "key": "keel-vehicle0",
+      "role": "dev",
+      "group": "empirical_v2_addendum_v1",
+      "source": "keel-local",
+      "name": "vehicle0",
+      "notes": "registry: addendum/v1"
+    },
+    {
+      "key": "keel-segment0",
+      "role": "dev",
+      "group": "empirical_v2_addendum_v1",
+      "source": "keel-local",
+      "name": "segment0",
+      "notes": "registry: addendum/v1"
+    },
+    {
+      "key": "keel-ecoli1",
+      "role": "dev",
+      "group": "empirical_v2_addendum_v1",
+      "source": "keel-local",
+      "name": "ecoli1",
+      "notes": "registry: addendum/v1"
+    },
+    {
+      "key": "keel-abalone9-18",
+      "role": "dev",
+      "group": "empirical_v2_addendum_v1",
+      "source": "keel-local",
+      "name": "abalone9-18",
+      "notes": "registry: addendum/v1"
+    },
+    {
+      "key": "openml-1590",
+      "role": "benchmark",
+      "group": "new",
+      "source": "openml",
+      "openml_id": 1590,
+      "name": "adult",
+      "proposal": "Gate 0",
+      "screening": "UCI Adult (CC BY 4.0 at UCI); census income",
+      "metadata": {
+        "openml_version": 2,
+        "licence": "Public",
+        "target": "class",
+        "n_rows": 48842,
+        "n_features": 14,
+        "n_classes": 2,
+        "minority": 11687,
+        "imbalance_ratio": 3.18,
+        "minority_test_at_80_20": 2337
+      }
+    },
+    {
+      "key": "openml-42477",
+      "role": "benchmark",
+      "group": "new",
+      "source": "openml",
+      "openml_id": 42477,
+      "name": "default-of-credit-card-clients",
+      "proposal": "Gate 0",
+      "screening": "UCI default of credit card clients; CC0 on OpenML",
+      "metadata": {
+        "openml_version": 1,
+        "licence": "CC0",
+        "target": "y",
+        "n_rows": 30000,
+        "n_features": 23,
+        "n_classes": 2,
+        "minority": 6636,
+        "imbalance_ratio": 3.52,
+        "minority_test_at_80_20": 1327
+      }
+    },
+    {
+      "key": "openml-1597",
+      "role": "benchmark",
+      "group": "new",
+      "source": "openml",
+      "openml_id": 1597,
+      "name": "creditcard",
+      "proposal": "Gate 0",
+      "screening": "ULB credit-card fraud; extreme IR (578); 284,807 rows",
+      "metadata": {
+        "openml_version": 1,
+        "licence": "Public",
+        "target": "Class",
+        "n_rows": 284807,
+        "n_features": 30,
+        "n_classes": 2,
+        "minority": 492,
+        "imbalance_ratio": 577.88,
+        "minority_test_at_80_20": 98
+      }
+    },
+    {
+      "key": "openml-1053",
+      "role": "benchmark",
+      "group": "new",
+      "source": "openml",
+      "openml_id": 1053,
+      "name": "jm1",
+      "proposal": "Gate 0",
+      "screening": "PROMISE/NASA MDP jm1; same defect-metric family as U2's kc1/pc1/pc3/pc4 but a different project table, not a re-binarization",
+      "metadata": {
+        "openml_version": 1,
+        "licence": "Public",
+        "target": "defects",
+        "n_rows": 10885,
+        "n_features": 21,
+        "n_classes": 2,
+        "minority": 2106,
+        "imbalance_ratio": 4.17,
+        "minority_test_at_80_20": 421
+      }
+    },
+    {
+      "key": "openml-4135",
+      "role": "reserve",
+      "group": "new",
+      "source": "openml",
+      "openml_id": 4135,
+      "name": "Amazon_employee_access",
+      "screening": "reserve: Kaggle COMPETITION (Amazon access); 9 high-cardinality ID features; licence to confirm",
+      "metadata": {
+        "openml_version": 1,
+        "licence": "Public",
+        "target": "target",
+        "n_rows": 32769,
+        "n_features": 9,
+        "n_classes": 2,
+        "minority": 1897,
+        "imbalance_ratio": 16.27,
+        "minority_test_at_80_20": 379
+      }
+    },
+    {
+      "key": "openml-41162",
+      "role": "benchmark",
+      "group": "new",
+      "source": "openml",
+      "openml_id": 41162,
+      "name": "kick",
+      "proposal": "Gate 0",
+      "screening": "Carvana 'Don't Get Kicked'; CC0 on OpenML",
+      "metadata": {
+        "openml_version": 1,
+        "licence": "CC0",
+        "target": "IsBadBuy",
+        "n_rows": 72983,
+        "n_features": 32,
+        "n_classes": 2,
+        "minority": 8976,
+        "imbalance_ratio": 7.13,
+        "minority_test_at_80_20": 1795
+      }
+    },
+    {
+      "key": "openml-1043",
+      "role": "rejected",
+      "group": "new",
+      "source": "openml",
+      "openml_id": 1043,
+      "name": "ada_agnostic",
+      "screening": "derived from the same census data as adult (agnostic-learning challenge); duplicate source",
+      "metadata": {
+        "openml_version": 1,
+        "licence": "Public",
+        "target": "label",
+        "n_rows": 4562,
+        "n_features": 48,
+        "n_classes": 2,
+        "minority": 1132,
+        "imbalance_ratio": 3.03,
+        "minority_test_at_80_20": 226
+      }
+    },
+    {
+      "key": "openml-42733",
+      "role": "rejected",
+      "group": "new",
+      "source": "openml",
+      "openml_id": 42733,
+      "name": "Census-Income-(KDD)",
+      "notes": "declared id was wrong: OpenML 42733 is Click_prediction_small (U2 catalogue #26, excluded); not replaced"
+    },
+    {
+      "key": "openml-42742",
+      "role": "reserve",
+      "group": "new",
+      "source": "openml",
+      "openml_id": 42742,
+      "name": "porto-seguro",
+      "screening": "reserve: Kaggle COMPETITION (Porto Seguro); 595,212 rows, 57 features - heavy for LLM context and 5 splits",
+      "metadata": {
+        "openml_version": 3,
+        "licence": "Public",
+        "target": "target",
+        "n_rows": 595212,
+        "n_features": 57,
+        "n_classes": 2,
+        "minority": 21694,
+        "imbalance_ratio": 26.44,
+        "minority_test_at_80_20": 4339
+      }
+    },
+    {
+      "key": "openml-1046",
+      "role": "rejected",
+      "group": "new",
+      "source": "openml",
+      "openml_id": 1046,
+      "name": "mozilla4",
+      "screening": "imbalance ratio 2.04 < 3",
+      "metadata": {
+        "openml_version": 1,
+        "licence": "Public",
+        "target": "state",
+        "n_rows": 15545,
+        "n_features": 5,
+        "n_classes": 2,
+        "minority": 5108,
+        "imbalance_ratio": 2.04,
+        "minority_test_at_80_20": 1022
+      }
+    },
+    {
+      "key": "openml-1063",
+      "role": "rejected",
+      "group": "new",
+      "source": "openml",
+      "openml_id": 1063,
+      "name": "kc2",
+      "screening": "21 minority TEST records < 30",
+      "metadata": {
+        "openml_version": 1,
+        "licence": "Public",
+        "target": "problems",
+        "n_rows": 522,
+        "n_features": 21,
+        "n_classes": 2,
+        "minority": 107,
+        "imbalance_ratio": 3.88,
+        "minority_test_at_80_20": 21
+      }
+    },
+    {
+      "key": "openml-1527",
+      "role": "rejected",
+      "group": "new",
+      "source": "openml",
+      "openml_id": 1527,
+      "name": "volcanoes-a1",
+      "screening": "5 classes (not binary) and 12 minority TEST records",
+      "metadata": {
+        "openml_version": 1,
+        "licence": "Public",
+        "target": "Class",
+        "n_rows": 3252,
+        "n_features": 3,
+        "n_classes": 5,
+        "minority": 58,
+        "imbalance_ratio": 50.9,
+        "minority_test_at_80_20": 12
+      }
+    },
+    {
+      "key": "openml-1018",
+      "role": "benchmark",
+      "group": "new",
+      "source": "openml",
+      "openml_id": 1018,
+      "name": "ipums_la_99-small",
+      "proposal": "Gate 0",
+      "screening": "IPUMS LA 1999 census extract, binarized by OpenML ('binaryClass', like several U2 core sets); 56 features",
+      "metadata": {
+        "openml_version": 2,
+        "licence": "Public",
+        "target": "binaryClass",
+        "n_rows": 8844,
+        "n_features": 56,
+        "n_classes": 2,
+        "minority": 568,
+        "imbalance_ratio": 14.57,
+        "minority_test_at_80_20": 114
+      }
+    },
+    {
+      "key": "openml-40536",
+      "role": "rejected",
+      "group": "new",
+      "source": "openml",
+      "openml_id": 40536,
+      "name": "SpeedDating",
+      "screening": "120 features > 60",
+      "metadata": {
+        "openml_version": 1,
+        "licence": "Public",
+        "target": "match",
+        "n_rows": 8378,
+        "n_features": 120,
+        "n_classes": 2,
+        "minority": 1380,
+        "imbalance_ratio": 5.07,
+        "minority_test_at_80_20": 276
+      }
+    },
+    {
+      "key": "openml-42178",
+      "role": "rejected",
+      "group": "new",
+      "source": "openml",
+      "openml_id": 42178,
+      "name": "telco-customer-churn",
+      "screening": "imbalance ratio 2.77 < 3",
+      "metadata": {
+        "openml_version": 1,
+        "licence": "Public",
+        "target": "Churn",
+        "n_rows": 7043,
+        "n_features": 19,
+        "n_classes": 2,
+        "minority": 1869,
+        "imbalance_ratio": 2.77,
+        "minority_test_at_80_20": 374
+      }
+    },
+    {
+      "key": "openml-1494",
+      "role": "rejected",
+      "group": "new",
+      "source": "openml",
+      "openml_id": 1494,
+      "name": "qsar-biodeg",
+      "screening": "imbalance ratio 1.96 < 3",
+      "metadata": {
+        "openml_version": 1,
+        "licence": "Public",
+        "target": "Class",
+        "n_rows": 1055,
+        "n_features": 41,
+        "n_classes": 2,
+        "minority": 356,
+        "imbalance_ratio": 1.96,
+        "minority_test_at_80_20": 71
+      }
+    },
+    {
+      "key": "openml-40994",
+      "role": "rejected",
+      "group": "new",
+      "source": "openml",
+      "openml_id": 40994,
+      "name": "climate-model-simulation-crashes",
+      "screening": "9 minority TEST records < 30",
+      "metadata": {
+        "openml_version": 4,
+        "licence": "Public",
+        "target": "outcome",
+        "n_rows": 540,
+        "n_features": 20,
+        "n_classes": 2,
+        "minority": 46,
+        "imbalance_ratio": 10.74,
+        "minority_test_at_80_20": 9
+      }
+    },
+    {
+      "key": "openml-1504",
+      "role": "rejected",
+      "group": "new",
+      "source": "openml",
+      "openml_id": 1504,
+      "name": "steel-plates-fault",
+      "screening": "imbalance ratio 1.88 < 3",
+      "metadata": {
+        "openml_version": 1,
+        "licence": "Public",
+        "target": "Class",
+        "n_rows": 1941,
+        "n_features": 33,
+        "n_classes": 2,
+        "minority": 673,
+        "imbalance_ratio": 1.88,
+        "minority_test_at_80_20": 135
+      }
+    },
+    {
+      "key": "openml-1489",
+      "role": "rejected",
+      "group": "new",
+      "source": "openml",
+      "openml_id": 1489,
+      "name": "phoneme",
+      "screening": "imbalance ratio 2.41 < 3",
+      "metadata": {
+        "openml_version": 1,
+        "licence": "Public",
+        "target": "Class",
+        "n_rows": 5404,
+        "n_features": 5,
+        "n_classes": 2,
+        "minority": 1586,
+        "imbalance_ratio": 2.41,
+        "minority_test_at_80_20": 317
+      }
+    },
+    {
+      "key": "openml-46911",
+      "role": "benchmark",
+      "group": "new",
+      "source": "openml",
+      "openml_id": 46911,
+      "name": "Bank_Customer_Churn",
+      "notes": "found by OpenML exact-name metadata lookup",
+      "proposal": "Gate 0",
+      "screening": "Kaggle dataset (not competition) bank customer churn; bank customers, distinct from U2's telecom UCI_churn and bank-marketing",
+      "metadata": {
+        "openml_version": 1,
+        "licence": "Public",
+        "target": "churn",
+        "n_rows": 10000,
+        "n_features": 10,
+        "n_classes": 2,
+        "minority": 2037,
+        "imbalance_ratio": 3.91,
+        "minority_test_at_80_20": 407
+      }
+    },
+    {
+      "key": "openml-46929",
+      "role": "benchmark",
+      "group": "new",
+      "source": "openml",
+      "openml_id": 46929,
+      "name": "GiveMeSomeCredit",
+      "notes": "found by OpenML exact-name metadata lookup",
+      "proposal": "Gate 0",
+      "screening": "Kaggle COMPETITION 'Give Me Some Credit': competition rules may restrict reuse - licence to confirm at Gate 0",
+      "metadata": {
+        "openml_version": 1,
+        "licence": "Public",
+        "target": "FinancialDistressNextTwoYears",
+        "n_rows": 150000,
+        "n_features": 10,
+        "n_classes": 2,
+        "minority": 10026,
+        "imbalance_ratio": 13.96,
+        "minority_test_at_80_20": 2005
+      }
+    },
+    {
+      "key": "openml-46940",
+      "role": "benchmark",
+      "group": "new",
+      "source": "openml",
+      "openml_id": 46940,
+      "name": "Marketing_Campaign",
+      "notes": "found by OpenML exact-name metadata lookup",
+      "proposal": "Gate 0",
+      "screening": "Kaggle dataset (not competition) marketing campaign response",
+      "metadata": {
+        "openml_version": 1,
+        "licence": "Public",
+        "target": "Response",
+        "n_rows": 2240,
+        "n_features": 25,
+        "n_classes": 2,
+        "minority": 334,
+        "imbalance_ratio": 5.71,
+        "minority_test_at_80_20": 67
+      }
+    },
+    {
+      "key": "openml-46938",
+      "role": "benchmark",
+      "group": "new",
+      "source": "openml",
+      "openml_id": 46938,
+      "name": "Is-this-a-good-customer",
+      "notes": "found by OpenML exact-name metadata lookup",
+      "proposal": "Gate 0",
+      "screening": "Kaggle dataset, CC0: Public Domain; credit scoring",
+      "metadata": {
+        "openml_version": 2,
+        "licence": "CC0: Public Domain",
+        "target": "bad_client_target",
+        "n_rows": 1723,
+        "n_features": 13,
+        "n_classes": 2,
+        "minority": 196,
+        "imbalance_ratio": 7.79,
+        "minority_test_at_80_20": 39
+      }
+    },
+    {
+      "key": "openml-41160",
+      "role": "reserve",
+      "group": "new",
+      "source": "openml",
+      "openml_id": 41160,
+      "name": "rl",
+      "notes": "found by OpenML exact-name metadata lookup",
+      "screening": "reserve: passes rules but provenance undocumented on OpenML",
+      "metadata": {
+        "openml_version": 1,
+        "licence": "Public",
+        "target": "class",
+        "n_rows": 31406,
+        "n_features": 22,
+        "n_classes": 2,
+        "minority": 2995,
+        "imbalance_ratio": 9.49,
+        "minority_test_at_80_20": 599
+      }
+    }
+  ]
+}

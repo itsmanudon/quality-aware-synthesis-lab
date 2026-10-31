@@ -1,0 +1,150 @@
+{
+  "schema_version": 1,
+  "protocol_id": "study-v3",
+  "status": "DRAFT for Gate 0 - not frozen. Freezing (with SHA-256 recorded in STATUS.md) happens at Gate 2.",
+  "drafted_on": "2026-10-31",
+  "question": "Does the merged method (U2/LLM/SMOTE candidates -> RC-QASyn quality gate -> utility-aware selection) improve minority-class F1 on REAL TEST over tuned no oversampling and over U2 alone, across the 40 benchmark datasets?",
+  "claims_policy": "Only the tests declared under 'statistics' may be reported as tests. No state-of-the-art wording. Exact-match diagnostics are copying diagnostics, not privacy results. A miss is reported as found.",
+  "datasets": {
+    "declaration": "study/v3/sources.json",
+    "declaration_sha256_at_draft": "8d9873ab831bf5ccfbc7b277e24cc338a00f738a5d42bd9dc0ebca4a00b1a603",
+    "fetcher": "study/v3/fetch.py (the only declared fetcher)",
+    "dev": "9 KEEL datasets from Empirical v2 / addendum v1 (method design and tuning only)",
+    "benchmark_u2_core": "30 OpenML datasets, ml_ugo@a6710ea catalogue numbers 1-32 excluding 10 and 26; kept as-is; 7 flagged for < 30 minority TEST records",
+    "benchmark_new": "10 proposed in sources.json (role 'benchmark', proposal 'Gate 0'); 3 reserves; rejections with reasons",
+    "open_at_gate_0": [
+      "approve the 10 new datasets (GiveMeSomeCredit is a Kaggle-competition source; licence to confirm) or swap in reserves",
+      "dev page-blocks0 (KEEL) and benchmark page-blocks (OpenML 1021) share a source table: drop page-blocks0 from dev, or keep and report",
+      "six addendum-v1 KEEL dev files are not on this machine; hand placement needed"
+    ]
+  },
+  "splits": {
+    "outer": "stratified 80/20",
+    "seeds": [
+      13,
+      29,
+      43,
+      61,
+      79
+    ],
+    "validation": "stratified 20% of TRAIN, carved per outer split; every tuning choice uses validation only",
+    "test": "REAL TEST used only for final evaluation; no benchmark TEST metric for the merged method before Gate 2",
+    "u2_comparability_note": "U2's own benchmark uses seeds 42/43/44 with the same 80/20 + 20% validation fractions; Study v3 reruns U2/UGO on the Study v3 seeds rather than reusing U2's published numbers"
+  },
+  "generators": {
+    "llm": {
+      "registry": "study/v3/providers.py MODELS",
+      "price_cards": "study/v3/pricing.py (read from provider pages 2026-10-31; re-check before the Phase 3 pilot)",
+      "all_benchmark": [
+        "claude-haiku-5-5",
+        "gpt-6-luna (plan text says GPT-6.1-luna, which OpenAI does not list; Gate 0 decision)",
+        "muse-spark-1.3 (standard endpoint; content not used for training)"
+      ],
+      "subset": {
+        "claude-sonnet-5-5": "about 5 datasets",
+        "gpt-6.1-terra": "about 8-10 datasets"
+      },
+      "local_ollama": [
+        "gemma4:e4b",
+        "qwen2.5:7b-instruct",
+        "llama3.1:8b"
+      ],
+      "request_settings": {
+        "anthropic": "no temperature/top_p (non-default values are rejected by Haiku 5.5 / Sonnet 5.5), no seed parameter; thinking off at effort low (Haiku: disabled; Sonnet: between_tools)",
+        "openai": "seed per batch; reasoning_effort none (luna) / low (terra, pending verification)",
+        "meta": "seed per batch; reasoning_effort minimal (reasoning cannot be disabled); reasoning tokens logged separately",
+        "ollama": "temperature 0.7, seed per batch"
+      },
+      "seeds": "per-batch seeds via rcqasyn generation_provider_seed (where the provider accepts a seed)",
+      "batch_api": "used for Anthropic and OpenAI; Meta documents no batch API",
+      "prompt": null,
+      "prompt_note": "a new versioned generation prompt under study/v3/prompts/ (never editing prompts/); same prompt and TRAIN-only context for all generators; drafted in Phase 1-2",
+      "pool_size": "4 x record budget per dataset/split"
+    },
+    "non_llm": [
+      "U2 (FlowGMM gate) and paper-derived UGO from ml_ugo@a6710ea (UGO_30_Datasets.ipynb sha256 a888d9708a9f36db36c6febd65314a2464d175cbb59a632e68d363aa4ab9e541), SMOTE/SMOTENC"
+    ]
+  },
+  "budget_caps_usd": {
+    "anthropic": 5.0,
+    "openai": 4.0,
+    "meta": 140.0,
+    "stop_rule": "stop and ask before cumulative spend of any provider passes 80% of its cap (enforced in study/v3/budget.py)"
+  },
+  "record_budget": null,
+  "record_budget_note": "per dataset/split budget rule to be set from the Phase 1 quota ablation (50% minority vs real ratio); all comparators at the same record budget",
+  "comparators": {
+    "no_oversampling": [
+      "tuned no oversampling",
+      "class-weighted"
+    ],
+    "oversamplers": [
+      "ROS",
+      "SMOTE/SMOTENC",
+      "Borderline-SMOTE",
+      "ADASYN",
+      "SMOTE-Tomek",
+      "KMeansSMOTE",
+      "RWO"
+    ],
+    "u2_draft": [
+      "paper-derived UGO",
+      "U2 with FlowGMM gate"
+    ],
+    "curators_equal_budget": [
+      "random",
+      "schema-random",
+      "current quality-coverage",
+      "CLLM-style",
+      "discriminator-realism",
+      "B2 at equal budget"
+    ],
+    "merged": "U2/LLM/SMOTE candidates -> RC-QASyn quality gate -> utility-aware selection",
+    "baseline_rule": "B1/B2/B3 are research controls and are not modified"
+  },
+  "utility_term_candidates": [
+    "U2 anchor difficulty percentile x group stability (U2 eqs. 5-8)",
+    "FlowGMM compatibility as a separate admission evidence column (never merged into the concern index)",
+    "KNN-Shapley on validation",
+    "boundary / borderline score"
+  ],
+  "utility_term_selected": null,
+  "classifiers": {
+    "names": [
+      "logistic_regression",
+      "random_forest",
+      "xgboost",
+      "mlp",
+      "svm (RBF)"
+    ],
+    "search_spaces": "ml_ugo@a6710ea notebooks/portable_ugo/models.py _SPACES via candidate_parameters (default first, N_CANDIDATES=10)"
+  },
+  "metrics": {
+    "primary": "minority-class F1 on REAL TEST, decision threshold selected on validation (as in U2)",
+    "secondary": [
+      "MCC",
+      "average precision",
+      "minority recall",
+      "coverage",
+      "redundancy"
+    ]
+  },
+  "statistics": {
+    "unit": "dataset (mean over 5 splits, then over classifiers - aggregation order to freeze at Gate 2)",
+    "tests": [
+      "average ranks + Friedman",
+      "Wilcoxon signed-rank vs each comparator with Holm correction",
+      "median paired difference with bootstrap 95% interval"
+    ],
+    "reference": "Demsar 2006"
+  },
+  "success_criterion_proposed": "median F1 gain of the merged method over tuned no oversampling and over U2 alone is positive with Holm-adjusted p < 0.05 across the 40 benchmark datasets, with no significant MCC loss against either. Final wording and size target fixed at Gate 2.",
+  "out_of_scope_unless_user_decides": [
+    "calibrated validity probabilities",
+    "risk-aware controller",
+    "regenerate loop",
+    "RAG/factual verification",
+    "privacy/fairness validators"
+  ],
+  "human_labels": "team labels a blinded sample; the agent prepares files only and never fills label columns"
+}
