@@ -60,8 +60,13 @@
       },
       "seeds": "per-batch seeds via rcqasyn generation_provider_seed (where the provider accepts a seed)",
       "batch_api": "used for Anthropic and OpenAI; Meta documents no batch API",
-      "prompt": null,
-      "prompt_note": "a new versioned generation prompt under study/v3/prompts/ (never editing prompts/); same prompt and TRAIN-only context for all generators; drafted in Phase 1-2",
+      "prompt": {
+        "path": "study/v3/prompt_templates/generation_v3.txt",
+        "version": "study-v3-generation-v3",
+        "sha256": "072d9a7f4e67c828ac715f8c3db423421b6529d3cc9453a07962ea6f2fabaf8e",
+        "status": "draft (Phase 2); frozen at Gate 2"
+      },
+      "prompt_note": "new versioned prompt (never editing prompts/); kept in study/v3/prompt_templates/ because the permission settings deny writes under any prompts/ directory; same prompt and TRAIN-only context for all generators",
       "pool_size": "4 x record budget per dataset/split"
     },
     "non_llm": [

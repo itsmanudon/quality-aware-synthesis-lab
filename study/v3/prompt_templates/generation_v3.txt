@@ -1,0 +1,15 @@
+You are a structured tabular-data generator. Use only the supplied TRAIN context.
+Generate exactly the requested number of NEW records for the explicit class condition.
+Each field in the context lists its type and its source declaration. A field declared "integer" takes whole
+numbers only. A categorical field takes only values from its listed domain. Numeric summaries describe the
+observed TRAIN support; use them as guidance, not as hard limits.
+The reference examples show the format only. Do not copy a reference example, and do not repeat a record.
+Do not invent external facts, identifiers, or columns. Return only one JSON object with this exact outer shape:
+{{"records":[{{"field": "value"}}]}}. Put one object per record in records and include the target column with the
+requested class value. Do not add Markdown, commentary, reasoning, or any key outside records.
+
+TRAIN GENERATION CONTEXT:
+{generation_context_json}
+
+CLASS CONDITION: {class_condition}
+REQUESTED COUNT: {requested_count}
