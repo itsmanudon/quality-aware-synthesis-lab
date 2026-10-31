@@ -36,10 +36,15 @@ study/v3/
   one dataset per source table.
 - **Splits**: 5 stratified 80/20 splits, seeds 13, 29, 43, 61, 79. Validation = 20% of
   TRAIN, stratified, for every tuning choice. TEST only for final evaluation.
-- **Generators**: SMOTE-family pools (non-LLM); Claude Haiku 5.5, Sonnet 5.5 (all
-  benchmark datasets), Opus 5.5 (about 10 datasets); local via Ollama, 4-bit, 8 GB GPU:
+- **Generators**: SMOTE-family pools (non-LLM); API (Batch API, 50% off): Claude Haiku
+  5.5 (all benchmark datasets), Claude Sonnet 5.5 (3-4 datasets, as budget allows), one
+  low-cost OpenAI model such as gpt-6-luna (all benchmark datasets; verify name and price
+  on OpenAI's pricing page at Gate 0); no Opus. Local via Ollama, 4-bit, 8 GB GPU:
   Gemma 4 E4B (the Empirical v2 generator), Llama 3.1 8B, Qwen2.5 7B, Mistral 7B v0.3,
   Phi-3.5 mini. Exact versions pinned at Gate 0. Pool = 4 x budget per dataset/split.
+- **API budget cap**: $5 Anthropic, $4 OpenAI, tracked per provider in `budget.jsonl`.
+  Estimated full run at list prices with Batch: about $1.20 each for Haiku 5.5 and the
+  OpenAI model; Sonnet 5.5 about $0.60 per dataset. The pilot replaces these estimates.
   Same versioned prompt and TRAIN-only context for all; per-batch seeds; raw responses
   persisted before parsing.
 - **Comparators**: real-only, class-weighted, ROS, SMOTE/SMOTENC, Borderline-SMOTE, ADASYN,
@@ -63,8 +68,9 @@ Each phase ends at a gate: write findings and proposal into `STATUS.md`, commit,
       ruff and pyright pass on a clean checkout (record the baseline failure set).
 - [ ] Ollama reachable at its OpenAI-compatible endpoint; pull the five local models; one
       smoke generation each through the existing OpenAI-compatible adapter.
-- [ ] Native Anthropic Messages adapter behind the existing provider gate, with token
-      accounting into `budget.jsonl`; tests with recorded fixtures, no network in tests.
+- [ ] Native Anthropic Messages adapter and an OpenAI adapter path, both with Batch API
+      support, behind the existing provider gate, with token and cost accounting into
+      `budget.jsonl` per provider; tests with recorded fixtures, no network in tests.
 - [ ] Declared dataset fetcher: refuses anything not in `sources.json`; records URL,
       version, SHA-256; empty or failed download = unavailable.
 - [ ] Shortlist candidate datasets against the inclusion rules using metadata only (no

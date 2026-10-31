@@ -7,8 +7,8 @@ Updated by the agent at the end of every session. Gates are approved only by the
 | Phase | 0 · Setup (not started) |
 | Last finished step | Plan and agent rules written (branch `study-v3-setup`) |
 | Runs in progress | none |
-| API spend so far | 0 of cap (cap not set) |
-| Blockers | API budget cap to be set by the user |
+| API spend so far | Anthropic $0 of $5 · OpenAI $0 of $4 |
+| Blockers | none |
 | Next step | Phase 0, first task in `PLAN.md` |
 
 ## Gates
