@@ -34,7 +34,7 @@ DEV: dict[str, tuple[Path, str, str]] = {
 }
 
 
-def _sha(path: Path) -> str:
+def sha256_file(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
@@ -57,7 +57,7 @@ def build(target: Path = DEVROOT) -> dict[str, str]:
         recorded = json.loads((manifest / "source.json").read_text(encoding="utf-8"))
         relative = _raw_path(config)
         raw = KEEL_RAW / folder / Path(relative).name
-        actual = _sha(raw)
+        actual = sha256_file(raw)
         if actual != recorded["extracted_sha256"]:
             raise ValueError(f"{dataset}: fetched {actual} != recorded "
                              f"{recorded['extracted_sha256']}")
