@@ -13,6 +13,21 @@ selection (median QC minus random F1: +0.001 LR, +0.013 RF; exploratory p 0.19-1
 Study v3 keeps the quality gate (schema checks, support evidence, bounded repair) and adds a
 utility term to selection.
 
+## Limitations this study must close
+
+The IEEE draft proposes the pipeline but its results are incomplete. Every task below
+traces to one of these; report each as fixed, partly fixed or still open.
+
+| Limitation in the current paper | Fix | Phase |
+| --- | --- | --- |
+| Coverage gains, no F1/AP gain over random selection | Utility term in selection, tuned on validation | 1-2 |
+| Few minority TEST records (Ecoli4 4, Abalone19 6) | Datasets with >= 30 minority TEST records, 5 splits | 0, 3 |
+| Only 3 KEEL datasets in the main study | 40-50 datasets (imbalanced-learn, OpenML) | 0, 3 |
+| Repair tested only on the historical LLM stream | Fresh generation from 8 generators; repair rules for interpolated output (vehicle0) | 2-3 |
+| B1-B3 at unequal budgets | All comparators at the same record budget | 3 |
+| No human validity labels | Team labels a blinded sample; the agent never fills these | alongside 3 |
+| Unbuilt stages: calibration, risk-aware controller, regenerate loop | Scope decided by the user before Gate 1 | - |
+
 ## Layout
 
 ```
@@ -88,6 +103,12 @@ Each phase ends at a gate: write findings and proposal into `STATUS.md`, commit,
 ### Phase 2 - Utility-aware selection (weeks 4-6, Nov 23-Dec 13), dev datasets only
 - [ ] Implement candidate terms: boundary/borderline score; KNN-Shapley value on
       validation; CLLM-style confidence filter; combine with the existing quality gate.
+- [ ] Repair for interpolated output: a declared, still-bounded rule for integer fields
+      broken by SMOTE-style interpolation (the vehicle0 case: all 1,400 candidates broke
+      integer declarations; the <=3-field rule rescued 6). Report how many it recovers and
+      whether repaired records change utility; never widen the bound silently.
+- [ ] Export a blinded labelling sample (fresh LLM candidates) for the team's human
+      validity labels; the agent prepares files only and never fills label columns.
 - [ ] Tune every hyperparameter on validation splits of dev datasets.
 - [ ] Freeze: method, hyperparameters, primary metric, success criterion, benchmark list.
       Write them into `protocol.json`, record its SHA-256 and the commit in `STATUS.md`.
