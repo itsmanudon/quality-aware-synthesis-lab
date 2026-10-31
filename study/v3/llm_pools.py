@@ -55,8 +55,13 @@ MAX_ATTEMPTS = 2  # the first call plus the one allowed retry
 
 
 def prompt_template() -> tuple[str, str]:
-    data = PROMPT_PATH.read_bytes()
-    return data.decode("utf-8"), hashlib.sha256(data).hexdigest()
+    """Template text and SHA-256, with line endings normalised to LF.
+
+    A Windows checkout with core.autocrlf may hold the file with CRLF; normalising keeps the
+    rendered prompt and its recorded hash identical on every machine.
+    """
+    text = PROMPT_PATH.read_bytes().decode("utf-8").replace("\r\n", "\n")
+    return text, hashlib.sha256(text.encode("utf-8")).hexdigest()
 
 
 def _json_value(value: Any) -> Any:
