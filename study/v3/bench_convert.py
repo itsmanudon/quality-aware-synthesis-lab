@@ -57,7 +57,7 @@ def _split_list(value: Any) -> list[str]:
 
 
 def convert(record: dict[str, Any], meta: dict[str, Any], root: Path) -> dict[str, Any]:
-    import arff  # liac-arff, present in the U2 venv
+    import arff  # type: ignore[import-not-found]  (liac-arff, U2 venv only)
 
     source = HERE / record["local_path"]
     data = source.read_bytes()
