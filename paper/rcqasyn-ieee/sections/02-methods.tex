@@ -7,15 +7,19 @@ Let $T$ denote REAL TRAIN, $E$ REAL TEST and $G=\{(o_i,x_i,y_i)\}$ the candidate
 \subsection{Structure and statistical evidence}
 Specifications declare required features and class, numerical primitives, nominal values, integer fields and permitted fields. Supported violations can reject; observed ranges are not treated as physical bounds. For $p$ features, the TRAIN-scaled mixed distance is
 \begin{equation}
-d(x,t)=\frac1p\sum_j\delta_j(x_j,t_j),\quad
-\delta_j=\begin{cases}\min(|x_j-t_j|/R_j,1),&\text{numeric},R_j>0,\\
+\begin{aligned}
+d(x,t)&=\frac1p\sum_j\delta_j(x_j,t_j),\\
+\delta_j&=\begin{cases}\min(|x_j-t_j|/R_j,1),&\text{numeric, }R_j>0,\\
 \mathbf1[x_j\ne t_j],&\text{nominal or }R_j=0,
 \end{cases}
+\end{aligned}
 \end{equation}
 where $R_j$ is the TRAIN span and class is excluded. Local support $L_k(x)$ averages distances to the nearest $\min(k,|T_s|)$ supported TRAIN observations (ties broken by row identity; primary $k=5$). Global consistency scales numerical features by TRAIN median/IQR (falling back to span, then one), one-hot encodes TRAIN categories and, for encoded dimension $D$, covariance $S$ and mean $\mu$, uses
 \begin{equation}
-\Sigma=(1-\alpha)S+\alpha\operatorname{diag}(S)+\lambda I,\qquad
-Q(x)=\sqrt{\max(0,(z-\mu)^\top\Sigma^{-1}(z-\mu))/D},
+\begin{aligned}
+\Sigma&=(1-\alpha)S+\alpha\operatorname{diag}(S)+\lambda I,\\
+Q(x)&=\sqrt{\max\bigl(0,(z-\mu)^\top\Sigma^{-1}(z-\mu)\bigr)/D},
+\end{aligned}
 \end{equation}
 with primary $\alpha=.10$, $\lambda=10^{-8}$. Unsupported evidence and unseen categories stay explicit.
 
