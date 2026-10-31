@@ -1,0 +1,20 @@
+{"key": "openml-949", "status": "ok", "reason": null, "openml_name": "arsenic-female-bladder", "version": 2, "bytes": 10045}
+{"key": "openml-1021", "status": "ok", "reason": null, "openml_name": "page-blocks", "version": 2, "bytes": 236762}
+{"key": "openml-980", "status": "ok", "reason": null, "openml_name": "optdigits", "version": 2, "bytes": 830126}
+{"key": "openml-1020", "status": "ok", "reason": null, "openml_name": "mfeat-karhunen", "version": 2, "bytes": 1207638}
+{"key": "openml-971", "status": "ok", "reason": null, "openml_name": "mfeat-fourier", "version": 2, "bytes": 1357281}
+{"key": "openml-995", "status": "ok", "reason": null, "openml_name": "mfeat-zernike", "version": 2, "bytes": 934793}
+{"key": "openml-45558", "status": "ok", "reason": null, "openml_name": "Pulsar-Dataset-HTRU2", "version": 2, "bytes": 1736490}
+{"key": "openml-1016", "status": "ok", "reason": null, "openml_name": "vowel", "version": 3, "bytes": 82138}
+{"key": "openml-1068", "status": "ok", "reason": null, "openml_name": "pc1", "version": 1, "bytes": 105904}
+{"key": "openml-45562", "status": "ok", "reason": null, "openml_name": "seismic-bumps", "version": 3, "bytes": 211320}
+{"key": "openml-1487", "status": "ok", "reason": null, "openml_name": "ozone-level-8hr", "version": 1, "bytes": 901788}
+{"key": "openml-41946", "status": "unavailable", "reason": "METADATA_FAILED: HTTP Error 412: Precondition Failed", "openml_name": null, "version": null, "bytes": null}
+{"key": "openml-46281", "status": "ok", "reason": null, "openml_name": "insurance_company", "version": 1, "bytes": 1702449}
+{"key": "openml-40983", "status": "unavailable", "reason": "MD5_MISMATCH: got 87899c4863968a25a3dcd6f241ee91c3", "openml_name": "wilt", "version": 2, "bytes": null}
+{"key": "openml-977", "status": "unavailable", "reason": "METADATA_FAILED: HTTP Error 503: Service Temporarily Unavailable", "openml_name": null, "version": null, "bytes": null}
+{"key": "openml-310", "status": "unavailable", "reason": "METADATA_FAILED: HTTP Error 503: Service Temporarily Unavailable", "openml_name": null, "version": null, "bytes": null}
+{"key": "openml-40713", "status": "unavailable", "reason": "METADATA_FAILED: HTTP Error 503: Service Temporarily Unavailable", "openml_name": null, "version": null, "bytes": null}
+{"key": "openml-40900", "status": "unavailable", "reason": "METADATA_FAILED: HTTP Error 503: Service Temporarily Unavailable", "openml_name": null, "version": null, "bytes": null}
+{"key": "openml-43", "status": "unavailable", "reason": "METADATA_FAILED: HTTP Error 503: Service Temporarily Unavailable", "openml_name": null, "version": null, "bytes": null}
+{"key": "openml-1464", "status": "unavailable", "reason": "METADATA_FAILED: HTTP Error 503: Service Temporarily Unavailable", "openml_name": null, "version": null, "bytes": null}

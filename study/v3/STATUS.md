@@ -4,12 +4,12 @@ Updated by the agent at the end of every session. Gates are approved only by the
 
 | Field | Value |
 | --- | --- |
-| Phase | 0 · Setup — stopped at **Gate 0** (two tasks incomplete, see Blockers) |
-| Last finished step | Draft `protocol.json` committed (`aa07559`) |
-| Runs in progress | none (two background jobs were stopped by Claude Code for low system memory; not restarted) |
+| Phase | 0 · Setup — stopped at **Gate 0** (8 of 30 U2 core files unavailable, see Blockers) |
+| Last finished step | U2/UGO full check on dev Abalone19 (30/30 cells); KEEL dev files fetched; U2 core fetch + one retry |
+| Runs in progress | none |
 | API spend so far | Anthropic $0.000153 of $5 · OpenAI $0.000067 of $4 · Meta $0.000212 of $140 (`budget.jsonl`, 9 lines) |
-| Blockers | U2 venv install and U2 core fetch need a restart (user go-ahead); 6 KEEL dev files need hand placement |
-| Next step | User decisions below; then restart the two jobs, run the U2/UGO dev check, close Gate 0 |
+| Blockers | 8 U2 core datasets unavailable after the one allowed retry (OpenML 503/412 rate limiting); a second, slower retry needs approval |
+| Next step | User decisions below (1, 2, 3, 6, 7); then close Gate 0 |
 
 ## Phase 0 checklist
 
@@ -20,8 +20,9 @@ Updated by the agent at the end of every session. Gates are approved only by the
 | Anthropic / OpenAI / Meta adapters + budget ledger | done | `providers.py`, `pricing.py`, `budget.py`; 13 offline tests; all 5 API smoke calls returned `{"ok":true}` |
 | Declared dataset fetcher | done | `fetch.py`; 7 offline tests (refusal, name check, MD5, empty, SHA-256) |
 | U2's 30 datasets + 10 new shortlisted | done (metadata) | `sources.json`, `report/source-metadata.json` |
-| U2 core raw files fetched | **incomplete** | job stopped (low memory) after 27/30 files; no acquisition records written, so treated as not acquired |
-| ml_ugo a6710ea installed read-only, U2/UGO run on a dev dataset | **incomplete** | checkout pinned and clean in gitignored `vendor/`; isolated venv only has torch; `u2_bridge.py` written but not yet run |
+| U2 core raw files fetched | **22/30** | `report/acquisitions.json`; attempts in `report/u2-core-fetch-attempt{1,2}.jsonl`; 8 unavailable (below) |
+| KEEL dev files fetched | done (9/9) | user approved download 2026-10-31; via official-page links; 3 match recorded hashes |
+| ml_ugo a6710ea installed read-only, U2/UGO run on a dev dataset | done | `report/u2-dev-check/`: Abalone19, seed 42, 5 classifiers × 6 methods, 30/30 cells, 0 failures |
 | Draft `protocol.json` | done | Gate 0 draft; open choices are `null` with the deciding gate |
 
 ## Gate 0: findings and proposals
@@ -53,14 +54,35 @@ Updated by the agent at the end of every session. Gates are approved only by the
 - `scripts/record_test_run.py` was not run, because it writes to protected `test-results/`.
 - Study v3 tests run with `python -m pytest study/v3/tests`; type checks with `pyright --pythonpath .venv/Scripts/python.exe study/v3/*.py study/v3/tests`.
 
+## Session 2 findings (2026-10-31, after user go-ahead on items 4 and 5)
+
+**KEEL dev files (item 4: user approved downloading instead of hand placement).**
+- The declared fetcher now handles `source: "keel"` (`2a0c812`). It downloads only the archive link printed on the official page `https://sci2s.ugr.es/keel/imbalanced.php` (re-read at fetch time; refused if the declared href is absent), extracts only the declared `.dat` by basename, and records zip and `.dat` SHA-256.
+- All 9 fetched to the gitignored `study/v3/data/raw/keel/`. Abalone19, Ecoli4 and page-blocks0 match the SHA-256 recorded in `data/manifests/*/source.json` for the earlier hand-placed copies.
+- Provenance note: the official page links to `keel/keel-dataset/datasets/imbalanced/<IR group>/<name>.zip`. Addendum v1 and the run-v2 manifests record `keel/dataset/data/imbalanced/<name>.zip`, which is not on the page. Only page links were used; protected configs were not edited.
+
+**U2 isolated venv (item 5).** The earlier stopped install had left torch broken (`torchgen` missing). Reinstalled the full `ml_ugo/requirements.txt` pins, with torch from the cu130 index, into `study/v3/vendor/.venv-u2`. torch 2.13.0+cu130 sees CUDA; pandas 3.0.5, scikit-learn 1.6.0.
+
+**U2/UGO check on dev Abalone19 (item 5).** `u2_bridge.py` ran the unmodified bundle (bundle SHA-256 `fad69bce…`, notebook `a888d970…`, ml_ugo `a6710ea`). Abalone19 is a dev dataset, so the TEST metrics are within the rules.
+- Smoke config: 25/30 cells. All 5 `kmeans_smote` cells failed inside imbalanced-learn: "No clusters found with sufficient samples of class 1", since only about 20 minority rows are spread over 8 clusters. U2's own failure handling recorded these; nothing was changed.
+- Full config: 30/30 cells, 0 failures, with U2's notebook defaults. Per-cell metrics are in `report/u2-dev-check/per_cell_metrics.csv`. They are a single-seed run-check, not evidence for any method. F1 is 0 for most cells at 32 minority rows; `u2_flow_gate` accepted 35–42 of 1000 candidates; `original_ugo` accepted 0 of 1000.
+
+**U2 core fetch (item 5).** Attempt 1: 10/30 ok. Attempt 2 (the one allowed retry, failed keys only): 12/20 ok. Total **22/30**.
+- Unavailable: blood-transfusion-service-center (1464), mammography (310), dis (40713), Satellite (40900), wilt (40983), Sick_numeric (41946), haberman (43), letter (977).
+- Causes: HTTP 503 from the OpenML API after about 10–12 datasets per attempt (looks like rate limiting); one 412 (41946).
+- wilt failed MD5, receiving the **same body** (MD5 `87899c48…`) that failed arsenic-female-bladder in attempt 1. So OpenML served the same wrong body for two different datasets, most likely an error page. The MD5 check refused it and nothing was written. arsenic succeeded on retry.
+- Leftover unverified files from the stopped first job sit under `data/raw/openml/` for 5 of the unavailable IDs. They have no acquisition record and must not be used. Loaders read paths only from `acquisitions.json`.
+- 3 of the 8 unavailable datasets (dis, Satellite, haberman) are also among those flagged as having fewer than 30 minority TEST records.
+
 ## Decisions requested at Gate 0
 
 1. Use `gpt-6-luna` in place of "GPT-6.1-luna"?
 2. Approve the 10 new datasets (and the GiveMeSomeCredit licence), or swap in reserves?
 3. Drop page-blocks0 from dev?
-4. Place the six KEEL dev files by hand?
-5. Restart the two stopped jobs (U2 venv install, U2 core fetch), so the U2/UGO dev check can run?
+4. ~~Place the six KEEL dev files by hand?~~ — user approved downloading; done (9/9).
+5. ~~Restart the two stopped jobs~~ — approved and done (see Session 2 findings).
 6. Keep the API caps as declared?
+7. Allow a second retry of the 8 unavailable U2 core datasets with slower pacing (e.g. 10 s between requests), outside the one-retry rule? Without it, U2 comparability covers 22/30 datasets.
 
 ## Gates
 
@@ -82,3 +104,8 @@ Updated by the agent at the end of every session. Gates are approved only by the
   - `aa07559`: sources, fetcher, draft protocol
 
   Two background jobs (U2 core fetch, U2 venv install) were stopped by Claude Code for low system memory and not restarted; partial outputs are local only and unrecorded. Stopped at Gate 0.
+- 2026-10-31 (session 2): user approved restarting the jobs and downloading the KEEL files.
+  - `2a0c812`: KEEL support in the fetcher.
+  - U2 venv repaired; U2/UGO Abalone19 check 30/30.
+  - U2 core 22/30 after one retry.
+  - No API calls; spend unchanged. Stopped at Gate 0.

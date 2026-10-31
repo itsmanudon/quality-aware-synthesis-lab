@@ -1,0 +1,20 @@
+{
+  "bundle_sha256": "fad69bce4ae6b28eb88eed1f0cea3d120396d47e6cd02bdde9f9f59ebebbc305",
+  "config_overrides": {
+    "DATASET_RANGE": "1-1",
+    "DATA_HOME": "study\\v3\\runs\\u2-dev-check\\unused_openml_cache",
+    "EXCLUDED_DATASETS": [],
+    "OUTPUT_DIR": "study\\v3\\runs\\u2-dev-check\\results",
+    "SEEDS": [
+      42
+    ],
+    "SMOKE": false
+  },
+  "dataset": "keel-Abalone19",
+  "local_sha256": "6aa5b1ffd05eb4c8c74bb07e6bab248cdb4fc327f5f62bb77339097e92bc76fa",
+  "ml_ugo_commit": "a6710ea760497e91d48c77abda0178b67e250adc",
+  "notebook_sha256": "a888d9708a9f36db36c6febd65314a2464d175cbb59a632e68d363aa4ab9e541",
+  "replaced_functions": [
+    "portable_ugo.benchmark._load_dataset"
+  ]
+}

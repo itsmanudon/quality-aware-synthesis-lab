@@ -1,0 +1,221 @@
+{
+  "backend_policy": {
+    "control_samplers": "smote_kmeans_smote_rwo_cpu; downstream_native_learner_DEVICE_unchanged",
+    "logistic_regression": "sklearn_cpu",
+    "mlp": "pytorch_DEVICE",
+    "random_forest": "sklearn_cpu",
+    "svm": "sklearn_cpu_probability_training_calibration",
+    "xgboost": "xgboost_DEVICE_hist"
+  },
+  "config": {
+    "AUGMENTATION_CAP": 1000,
+    "CLASSIFIERS": [
+      "mlp",
+      "logistic_regression",
+      "xgboost",
+      "random_forest",
+      "svm"
+    ],
+    "DATASET_RANGE": "1-1",
+    "DATA_HOME": "D:\\Github Repos\\quality-aware-synthesis-lab\\study\\v3\\runs\\u2-dev-check\\unused_openml_cache",
+    "DEVICE": "auto",
+    "EXCLUDED_DATASETS": [],
+    "FLOW_EPOCHS": 60,
+    "GATE_TAUS": [
+      0.5,
+      0.6,
+      0.7,
+      0.8
+    ],
+    "GROUP_ALPHAS": [
+      0.0,
+      0.5,
+      1.0
+    ],
+    "MAX_ROUNDS": 20,
+    "MAX_ROWS": null,
+    "MLP_EPOCHS": 160,
+    "N_CANDIDATES": 10,
+    "N_JOBS": 4,
+    "OUTPUT_DIR": "D:\\Github Repos\\quality-aware-synthesis-lab\\study\\v3\\runs\\u2-dev-check\\results",
+    "SAMPLER_PARAMETERS": {
+      "kmeans_smote": {
+        "cluster_balance_threshold": 0.0,
+        "density_exponent": "auto",
+        "k_neighbors": 2,
+        "kmeans_estimator": 8
+      },
+      "rwo": {},
+      "smote": {
+        "k_neighbors": 5
+      }
+    },
+    "SEEDS": [
+      42
+    ],
+    "SMOKE": false,
+    "TEST_FRACTION": 0.2,
+    "VALIDATION_FRACTION": 0.2
+  },
+  "coverage": {
+    "complete": true,
+    "completed_cells": 30,
+    "expected_cells": 30,
+    "failed_or_missing_cells": 0,
+    "failure_events": 0
+  },
+  "created_utc": "2026-10-31T10:23:10.093463+00:00",
+  "cuda": {
+    "available": true,
+    "device_name": "NVIDIA GeForce RTX 4070 Laptop GPU",
+    "resolved_device": "cuda",
+    "torch_cuda_version": "13.0"
+  },
+  "datasets": [
+    {
+      "catalogue_name": "keel-Abalone19",
+      "catalogue_number": 1,
+      "class_counts": {
+        "0": 4142,
+        "1": 32
+      },
+      "data_fingerprint": "3d82c90b42f685d57385a5bd25e58bdb9ff22ef991264d38ce073e3020ce6be4",
+      "development_subset": false,
+      "explicit_development_row_cap": null,
+      "feature_dtypes": {
+        "Diameter": "float64",
+        "Height": "float64",
+        "Length": "float64",
+        "Sex": "category",
+        "Shell_weight": "float64",
+        "Shucked_weight": "float64",
+        "Viscera_weight": "float64",
+        "Whole_weight": "float64"
+      },
+      "fingerprint_algorithm": "sha256_pandas_raw_values_v1",
+      "imbalance_type": "dev",
+      "label_mapping": [
+        {
+          "encoded": 0,
+          "label": "negative"
+        },
+        {
+          "encoded": 1,
+          "label": "positive"
+        }
+      ],
+      "local_path": "study\\v3\\data\\raw\\keel\\Abalone19\\abalone19.dat",
+      "local_sha256": "6aa5b1ffd05eb4c8c74bb07e6bab248cdb4fc327f5f62bb77339097e92bc76fa",
+      "n_features": 8,
+      "n_rows": 4174,
+      "nominal_columns": [
+        "Sex"
+      ],
+      "openml_id": 0,
+      "raw_fingerprint": "3d82c90b42f685d57385a5bd25e58bdb9ff22ef991264d38ce073e3020ce6be4",
+      "row_id_attributes": [],
+      "row_id_source": "original_row_position",
+      "source": "local_keel_dat_via_study_v3_bridge",
+      "source_n_rows": 4174,
+      "target_attribute": "Class"
+    }
+  ],
+  "dependencies": {
+    "imbalanced-learn": "0.14.2",
+    "numpy": "2.5.2",
+    "openml": "0.15.1",
+    "pandas": "3.0.5",
+    "scikit-learn": "1.6.0",
+    "scipy": "1.18.1",
+    "threadpoolctl": "3.7.0",
+    "torch": "2.13.0+cu130",
+    "xgboost": "3.4.1"
+  },
+  "methods": [
+    "baseline",
+    "original_ugo",
+    "u2_flow_gate",
+    "smote",
+    "kmeans_smote",
+    "rwo"
+  ],
+  "platform": "Windows-11-10.0.26200-SP0",
+  "protocol": {
+    "comparison": "per_dataset_classifier_F1_mean_sample_std_and_completed_expected_seed_coverage_for_every_method; no_partial_coverage_winner",
+    "control_samplers": {
+      "ancestry": "imblearn_parent_indices_not_exposed_and_not_fabricated",
+      "default_cluster_balance_threshold": "prespecified_inclusive_0.0_allows_rare_positive_clusters; not_a_fallback_or_dataset_search",
+      "failure_semantics": "infeasible_neighbors_clusters_or_other_native_errors_are_logged_failed_cells; no_ROS_fallback_parameter_relaxation_or_synthetic_metrics",
+      "generation": "real_role_training_only_once_per_dataset_seed_role_method; shared_in_memory_across_candidates_and_classifiers",
+      "kmeans_smote_budget": "deterministically_trim_ceiling_overproduction_only; never_refill",
+      "mixed_data_adapter": "SMOTE_and_KMeansSMOTE_on_numeric_plus_full_onehot_coordinates_then_argmax_each_whole_nominal_block_for_synthetics_only; not_SMOTENC",
+      "parameters": {
+        "kmeans_smote": {
+          "cluster_balance_threshold": 0.0,
+          "density_exponent": "auto",
+          "k_neighbors": 2,
+          "kmeans_estimator": 8
+        },
+        "rwo": {},
+        "smote": {
+          "k_neighbors": 5
+        }
+      },
+      "runtime": "cell_wall_time_includes_pool_generation_only_for_first_consumer; audit_shared_generation_seconds_is_not_a_per_cell_fit",
+      "rwo": "independent_real_seed_plus_Normal_times_real_class_population_std_over_sqrt_n; empirical_real_class_nominal_roulette; no_clipping_rounding_or_chaining",
+      "rwo_nominal_reference": "https://raw.githubusercontent.com/cran/imbalance/master/R/rwo.R",
+      "rwo_reference_difference": "independently_written; population_std_convention_follows_Python_reference_not_bitwise_R_variance_variant",
+      "rwo_std_reference": "https://raw.githubusercontent.com/analyticalmindsltd/smote_variants/master/smote_variants/oversampling/_rwo_sampling.py",
+      "targets": "same_real_class_deficit_targets_and_augmentation_cap_as_UGO",
+      "tuning": "same_native_learner_candidates_and_F1_threshold_opportunities_as_baseline",
+      "weights": 1
+    },
+    "flow": "single_real_inner_fit_core_per_dataset_seed_reserved_calibration_unused_frozen_outer_bridge",
+    "minority_class": "least_frequent_encoded_class_in_real_outer_train",
+    "mlp": "fixed_epochs_no_validation_stopping",
+    "original_ugo": "paper_derived_reference_not_author_reproduction; mixed_features_use_explicit_partner_category_projection",
+    "paired_deltas": "all_unordered_METHODS_pairs_in_method_order; later_method_minus_earlier_reference; identical_data_and_split_required; missing_pairs_have_NaN_deltas",
+    "raw_cache_only": true,
+    "selection": "minority_F1_primary_AP_secondary",
+    "smoke": "all_smoke_observations_drawn_only_from_scientific_outer_train",
+    "synthetic_weights": 1,
+    "threshold": "frozen_before_outer_refit",
+    "validation": "real_inner_holdout_only"
+  },
+  "python": "3.12.11 (main, Jun 26 2025, 21:17:44) [MSC v.1944 64 bit (AMD64)]",
+  "run_kind": "study",
+  "runtime_seconds": 155.5568202000577,
+  "scientific_result": true,
+  "selected_catalogue": [
+    {
+      "imbalance_type": "dev",
+      "name": "keel-Abalone19",
+      "number": 1,
+      "openml_id": 0
+    }
+  ],
+  "shared_flow_fits": [
+    {
+      "core_sha256": "1f485df0618a483e7a3d88232c8e34d3ca9683d41bfab02ab1859796b3b8844b",
+      "dataset": "keel-Abalone19",
+      "dataset_number": 1,
+      "fit_seconds": 8.742906300118193,
+      "physical_fit_count": 1,
+      "seed": 42
+    }
+  ],
+  "source_sha256": {
+    "__init__.py": "615a7c7ded9d8cbc0e9212e1888fe91c78c7eaaaf9c4e997ed3c1d782c83dac1",
+    "allocation.py": "73e3789b3523fb31f68a1cb974c23b05b25be0bab790939a6f79fd30dafcf443",
+    "benchmark.py": "03b409955c63cd32c5ffc2171d7c8a2f67c1675addd028e3b00f8b74fce55185",
+    "flow_gmm.py": "ee9eadecc8e085f35520f2c44289db4358cf2a40f74c6dfed9bf0f4d7e3bc146",
+    "groups.py": "4421697c13116145b1840b91eb4c2332baf7af12239797617a7e3cc93fdcb802",
+    "models.py": "c9817eb8c43519ff6d001bff9be260f951831768b9e885a6bca2077b6cb105be",
+    "preprocessing.py": "824f25a82210d88f84f001dc9c3f3b5926612ea97f6799a5780695bed4fd17de",
+    "sampling.py": "2a527d4e9f81132f37931ecee7065a59755df18275341a6312711b7b2dffdaaa",
+    "u2.py": "7d54261185740552c00d0423b3d589ab606f152544fe10b5c339b52c2f6b1f20",
+    "ugo.py": "909486f09a69cf4927e916eb2e0d001386b45efd439768ad72cfae634af77c5a",
+    "ugo_original.py": "e82d3f39fabc30366d96c3ff9d8b21ca90685df95436fb60c38d7d11c32d2a9c"
+  },
+  "status": "completed"
+}
