@@ -4,12 +4,12 @@ Updated by the agent at the end of every session. Gates are approved only by the
 
 | Field | Value |
 | --- | --- |
-| Phase | 0 · Setup — Gate 0 decisions approved by the user; waiting for approval to start Phase 1 |
-| Last finished step | Gate 0 decisions recorded (`151eba0`); U2 core second retry; 10 new datasets fetched + one retry |
+| Phase | 1 · Diagnose — done; stopped at **Gate 1** (user picks the utility terms for Phase 2) |
+| Last finished step | Phase 1 five-learner ablation (`ea8c865`); Gate 1 findings written below |
 | Runs in progress | none |
-| API spend so far | Anthropic $0.000153 of $5 · OpenAI $0.000067 of $4 · Meta $0.000212 of $140 (`budget.jsonl`, 9 lines) |
-| Blockers | 7 of 40 benchmark datasets unavailable after the approved retries: OpenML returned 412/503 to bursts of requests, and the same metadata calls succeed minutes later |
-| Next step | User: approve a further paced fetch of the 7 (Gate 0 item 8), and approve starting Phase 1 |
+| API spend so far | Anthropic $0.000153 of $5 · OpenAI $0.000067 of $4 · Meta $0.000212 of $140 (`budget.jsonl`, 9 lines; no API calls in Phase 1) |
+| Blockers | none; benchmark data complete (40/40) |
+| Next step | User: Gate 1 decisions 1-5 below (utility terms, validation design, quota/LLM-pool ablation, vehicle0 repair, scope) |
 
 ## Phase 0 checklist
 
@@ -87,7 +87,7 @@ Updated by the agent at the end of every session. Gates are approved only by the
 5. ~~Restart the two stopped jobs~~ — approved and done (see Session 2 findings).
 6. Keep the API caps as declared?
 7. Allow a second retry of the 8 unavailable U2 core datasets with slower pacing (e.g. 10 s between requests), outside the one-retry rule? — approved; done (see below).
-8. **Open:** allow a further paced fetch of the 7 still-unavailable benchmark datasets? For example, one dataset at a time, 120 s apart, at most 2 more attempts each, with every attempt logged. Without it the benchmark is 33 of 40 datasets.
+8. ~~Allow a further paced fetch~~ — approved 2026-10-31; all 7 fetched in round 1 (`4f03164`). Original text: allow a further paced fetch of the 7 still-unavailable benchmark datasets? For example, one dataset at a time, 120 s apart, at most 2 more attempts each, with every attempt logged. Without it the benchmark is 33 of 40 datasets.
 
 ## Session 3 findings (2026-10-31, after the Gate 0 answers)
 
@@ -100,12 +100,70 @@ Updated by the agent at the end of every session. Gates are approved only by the
 - Every failure was an HTTP 412 or 503 from the OpenML JSON API on the **metadata** request. The same metadata requests for 1464, 310 and 41946 returned 200 shortly after attempt 3. These are transient server responses, not missing datasets. No other source was tried.
 - Dev: 8/8 (page-blocks0 dropped). Benchmark: 33/40.
 
+## Phase 1: findings (2026-10-31; dev datasets, VALIDATION only, TEST never used)
+
+The user approved starting Phase 1 and the paced fetch on 2026-10-31.
+
+**Setup.**
+- `devroot.py` assembles a gitignored project root for the 8 dev datasets. All 8 fetched KEEL files match the SHA-256 recorded in the run-v2 / addendum-v1 manifests, and `dataset_specification` re-verifies the recorded split and schema.
+- Validation is a stratified 20% of each outer TRAIN (split seeds 13/29/43/61/79), ordered by SHA-256 as `make_split` orders TEST.
+- Validation minority rows per split:
+
+  | Dataset | Minority rows |
+  | --- | --- |
+  | Ecoli4 | 3 |
+  | Abalone19 | 5 |
+  | abalone9-18 | 7 |
+  | yeast4 | 8 |
+  | ecoli1 | 12 |
+  | yeast3 | 26 |
+  | vehicle0 | 32 |
+  | segment0 | 53 |
+
+  **Every Phase 1 number is noisy for that reason.**
+- All results are descriptive. Reports are under `report/phase1/`.
+
+| Step | Result | Report / commit |
+| --- | --- | --- |
+| 1. QC vs random (SMOTE pool, LR/RF, default threshold) | QC minus random median F1: LR -0.002 (0 of 7 datasets positive), RF -0.006 (2 of 7). Reproduces the earlier "no F1 gain over random". | `step1-qc-vs-random/`, `257f862` |
+| 2a. Budget size 0.5x / 1x / 2x | QC minus random median F1, RF: +0.000 / -0.006 / **+0.020 (5 of 7 positive)**; LR: about 0 at every scale. | `step2-budget/`, `8f4ba2f` |
+| 2b. Learner (U2's five, U2 search spaces, threshold and parameters picked on one validation half and scored on the other) | QC minus random median F1 ranges from -0.008 (RF) to +0.001 (MLP). **SMOTE+b minus real ranges from -0.015 to +0.000 across all five learners.** With tuned thresholds, oversampling does not beat no oversampling, as U2 also found. | `clf-ablation/`, `ea8c865` |
+| 2c. Pool generator (SMOTE, KMeans-SMOTE, RWO, original UGO, native U2, U2+flow gate; pinned ml_ugo, unmodified) | QC minus random median F1 per pool: -0.006 to +0.002. Random-from-pool minus real (RF): +0.018 to +0.029. | `step3-gate/`, `186e647` |
+| 3. Quality gate on U2/UGO/SMOTE output | Structural failures occur only on vehicle0: 100% of candidates from every generator break integer declarations, and 0 are repair-eligible under the <=3-field rule. No exact copies of inner TRAIN. Within-pool duplicates 0-1.7%. q=0.90 admission keeps 64-70%. **Pool smaller than budget:** u2_flow_gate 17/40 splits, original_ugo 14/40 (0 accepted on all 5 Abalone19 splits), u2_native 10/40. | `step3-gate/`, `186e647` |
+| 4. Oracle upper bound (100 random budget-sized subsets of the admitted SMOTE pool) | In-sample best minus mean F1: LR +0.020, RF +0.093 (optimistic by construction). **Honest (pick on half A, score on half B): LR +0.000, RF -0.000.** | `step4-oracle/`, `ea0f5d1` |
+
+**Not run, with reasons.**
+- **Minority-quota ablation (50% vs real ratio).** Every Phase 1 pool contains minority candidates only, and HYBRID_MINORITY training uses only minority synthetic rows, so the quota has no effect. It matters only for two-class (LLM) pools.
+- **Stored LLM stream as a pool.** It exists only for Abalone19 and Ecoli4, on historical split 42. Its payloads need the frozen source worktree (`244a9bf`) restored byte for byte. Its generation context was the whole split-42 TRAIN, which contains any validation carve, so validation scores would be contaminated.
+
+**Corrections made during Phase 1.**
+- Commit `257f862` claimed pyright had 0 errors; it had 8. They were fixed in `4465ef6`, which records the error. The carve refactor reproduces all 40 recorded validation fingerprints.
+- The first U2 pool export recorded 11 empty pools as failures, because of an exporter bug on zero rows. Fixed and re-exported to `runs/phase1/u2-pools-v2`. The first export is kept locally as superseded.
+
+**Reading.**
+- On these dev datasets, no selection rule (quality-coverage included) shows headroom over random selection that carries to held-out validation rows.
+- With tuned thresholds, oversampling itself does not beat no oversampling.
+- At these validation sizes, a utility term tuned on dev validation is likely to fit noise.
+- The one consistent lead is QC at 2x budget with RF, and it does not hold for the other learners.
+- So far the gate's real value is diagnostic: it caught the integer breakage on vehicle0 and the pool shortfalls in U2 and UGO.
+
+## Decisions requested at Gate 1
+
+1. **Utility terms for Phase 2.** The PLAN offers U2 difficulty x stability, FlowGMM compatibility as a separate admission column, KNN-Shapley on validation, a boundary score, and CLLM-style confidence.
+   - Proposal: carry at most two, U2 difficulty x stability (cheap; computed by U2's frozen code) and the boundary score.
+   - Tune both with the repeated validation design in item 2.
+   - Drop KNN-Shapley: the honest oracle finds no stable validation signal for a validation-fitted value to learn.
+2. **Validation design for tuning.** Proposal: replace the single 20% carve with stratified 5-fold cross-fitting inside each outer TRAIN for every tuning choice. Every choice would then see all TRAIN minority rows (for example 26 instead of 5 on Abalone19). This changes `protocol.json` `splits.validation`, so it needs your approval.
+3. **Quota and LLM-pool ablation.** Proposal: run both in Phase 2 on fresh small LLM pools from dev inner TRAIN, using local Ollama only (no API spend), once the v3 generation prompt is drafted. Alternative: drop the quota ablation, since the quota has no effect when training uses minority synthetic rows only.
+4. **vehicle0 repair.** On fresh pools, 0 of 6,400 SMOTE-family and UGO candidates and 0 of 2,027 U2 candidates are repair-eligible under the frozen <=3-field rule. Any rule that rescues them must touch more than 3 integer fields. Proposal: declare "round every integer-declared field half-even" as a new, separately reported variant, and never silently widen the existing bound.
+5. **Scope and claims.** On present evidence, the success criterion proposed for Gate 2 (the merged method beats tuned no oversampling and U2 with Holm p < 0.05) looks unlikely to be met. Proposal: keep it as declared, report a miss as found, and add the gate diagnostics (structure, shortfall, copying) as a secondary contribution. This is your call.
+
 ## Gates
 
 | Gate | Status | Approved by | Date | Protocol SHA-256 / commit |
 | --- | --- | --- | --- | --- |
-| 0 | decisions approved (items 1-7); item 8 and start of Phase 1 awaiting user | user | 2026-10-31 | `151eba0` |
-| 1 | open | | | |
+| 0 | passed: items 1-8 approved; Phase 1 approved | user | 2026-10-31 | `151eba0`, `4f03164` |
+| 1 | findings written; awaiting user | | | `ea8c865` |
 | 2 | open | | | |
 | 3 | open | | | |
 | 4 | open | | | |
@@ -130,3 +188,8 @@ Updated by the agent at the end of every session. Gates are approved only by the
   - U2 core 24/30 after the approved second retry.
   - New datasets 9/10 after one retry.
   - No API calls; spend unchanged. Phase 1 not started.
+- 2026-10-31 (session 4): user approved Phase 1 and the paced fetch.
+  - `4f03164`: benchmark 40/40.
+  - Phase 1 steps 1-4 and the five-learner ablation: `257f862`, `4465ef6`, `8f4ba2f`, `186e647`, `ea0f5d1`, `ea8c865`.
+  - No API calls; spend unchanged.
+  - Stopped at Gate 1.
