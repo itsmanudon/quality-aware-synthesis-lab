@@ -1,0 +1,134 @@
+{
+ "dataset_id": "oml46938",
+ "key": "openml-46938",
+ "openml_id": 46938,
+ "openml_name": "Is-this-a-good-customer",
+ "version": 2,
+ "source_url": "https://openml.org/data/v1/download/22125249/Is-this-a-good-customer.arff",
+ "source_sha256": "07410aa7b4cd51d48f1b675e43ec8db330156c7e3857ba33afc4c72723401de0",
+ "output_path": "data/raw/oml46938/oml46938.dat",
+ "output_sha256": "348e38c15b038cc0c770b72d026e52f367ef2c21b648d145ccf3b372700e2e24",
+ "target_attribute": "bad_client_target",
+ "label_mapping": {
+  "Yes": "positive",
+  "No": "negative"
+ },
+ "class_counts": {
+  "positive": 196,
+  "negative": 1527
+ },
+ "rows": 1723,
+ "dropped_row_id_or_ignore": [],
+ "dropped_string_or_date": {},
+ "name_map": {
+  "month": "month",
+  "credit_amount": "credit_amount",
+  "credit_term": "credit_term",
+  "age": "age",
+  "sex": "sex",
+  "education": "education",
+  "product_type": "product_type",
+  "having_children_flg": "having_children_flg",
+  "region": "region",
+  "income": "income",
+  "family_status": "family_status",
+  "phone_operator": "phone_operator",
+  "is_client": "is_client"
+ },
+ "category_maps": {
+  "sex": {
+   "female": "female",
+   "male": "male"
+  },
+  "education": {
+   "Higher education": "Higher_education",
+   "Incomplete higher education": "Incomplete_higher_education",
+   "Incomplete secondary education": "Incomplete_secondary_education",
+   "PhD degree": "PhD_degree",
+   "Secondary education": "Secondary_education",
+   "Secondary special education": "Secondary_special_education"
+  },
+  "product_type": {
+   "Audio & Video": "Audio___Video",
+   "Auto": "Auto",
+   "Boats": "Boats",
+   "Cell phones": "Cell_phones",
+   "Childen's goods": "Childen_s_goods",
+   "Clothing": "Clothing",
+   "Computers": "Computers",
+   "Construction Materials": "Construction_Materials",
+   "Cosmetics and beauty services": "Cosmetics_and_beauty_services",
+   "Fishing and hunting supplies": "Fishing_and_hunting_supplies",
+   "Fitness": "Fitness",
+   "Furniture": "Furniture",
+   "Garden equipment": "Garden_equipment",
+   "Household appliances": "Household_appliances",
+   "Jewelry": "Jewelry",
+   "Medical services": "Medical_services",
+   "Music": "Music",
+   "Repair Services": "Repair_Services",
+   "Sporting goods": "Sporting_goods",
+   "Tourism": "Tourism",
+   "Training": "Training",
+   "Windows & Doors": "Windows___Doors"
+  },
+  "having_children_flg": {
+   "0": "0",
+   "1": "1"
+  },
+  "region": {
+   "0": "0",
+   "1": "1",
+   "2": "2"
+  },
+  "family_status": {
+   "Another": "Another",
+   "Married": "Married",
+   "Unmarried": "Unmarried"
+  },
+  "phone_operator": {
+   "0": "0",
+   "1": "1",
+   "2": "2",
+   "3": "3",
+   "4": "4"
+  },
+  "is_client": {
+   "0": "0",
+   "1": "1"
+  }
+ },
+ "missing_cells": 0,
+ "features": [
+  "month",
+  "credit_amount",
+  "credit_term",
+  "age",
+  "sex",
+  "education",
+  "product_type",
+  "having_children_flg",
+  "region",
+  "income",
+  "family_status",
+  "phone_operator",
+  "is_client"
+ ],
+ "categorical": [
+  "sex",
+  "education",
+  "product_type",
+  "having_children_flg",
+  "region",
+  "family_status",
+  "phone_operator",
+  "is_client"
+ ],
+ "integer": [
+  "month",
+  "credit_amount",
+  "credit_term",
+  "age",
+  "income"
+ ]
+}

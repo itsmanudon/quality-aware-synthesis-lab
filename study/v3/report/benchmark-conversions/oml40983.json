@@ -1,0 +1,41 @@
+{
+ "dataset_id": "oml40983",
+ "key": "openml-40983",
+ "openml_id": 40983,
+ "openml_name": "wilt",
+ "version": 2,
+ "source_url": "https://openml.org/data/v1/download/18151926/wilt.arff",
+ "source_sha256": "e29d2b9c08fbd21fe7104df37f16eed8fd0d3a9c782cbb8efada0cf7ebb8d6bb",
+ "output_path": "data/raw/oml40983/oml40983.dat",
+ "output_sha256": "c1a546381d0aedd558f9460951f5a1e1661b0592bcf98e380fe7c5adadf68948",
+ "target_attribute": "class",
+ "label_mapping": {
+  "2": "positive",
+  "1": "negative"
+ },
+ "class_counts": {
+  "positive": 261,
+  "negative": 4578
+ },
+ "rows": 4839,
+ "dropped_row_id_or_ignore": [],
+ "dropped_string_or_date": {},
+ "name_map": {
+  "GLCM_Pan": "GLCM_Pan",
+  "Mean_G": "Mean_G",
+  "Mean_R": "Mean_R",
+  "Mean_NIR": "Mean_NIR",
+  "SD_Plan": "SD_Plan"
+ },
+ "category_maps": {},
+ "missing_cells": 0,
+ "features": [
+  "GLCM_Pan",
+  "Mean_G",
+  "Mean_R",
+  "Mean_NIR",
+  "SD_Plan"
+ ],
+ "categorical": [],
+ "integer": []
+}

@@ -1,0 +1,136 @@
+{
+ "dataset_id": "oml1558",
+ "key": "openml-1558",
+ "openml_id": 1558,
+ "openml_name": "bank-marketing",
+ "version": 2,
+ "source_url": "https://openml.org/data/v1/download/1593754/bank-marketing.arff",
+ "source_sha256": "88710bd067b1000c12bce2d809077f442665a94e349cbeb881096770c1e7f278",
+ "output_path": "data/raw/oml1558/oml1558.dat",
+ "output_sha256": "5a8cda65efae40bcec0e24f89b8abc6977e9d1bc2548c9190518df32eef51215",
+ "target_attribute": "Class",
+ "label_mapping": {
+  "2": "positive",
+  "1": "negative"
+ },
+ "class_counts": {
+  "positive": 521,
+  "negative": 4000
+ },
+ "rows": 4521,
+ "dropped_row_id_or_ignore": [],
+ "dropped_string_or_date": {},
+ "name_map": {
+  "V1": "V1",
+  "V2": "V2",
+  "V3": "V3",
+  "V4": "V4",
+  "V5": "V5",
+  "V6": "V6",
+  "V7": "V7",
+  "V8": "V8",
+  "V9": "V9",
+  "V10": "V10",
+  "V11": "V11",
+  "V12": "V12",
+  "V13": "V13",
+  "V14": "V14",
+  "V15": "V15",
+  "V16": "V16"
+ },
+ "category_maps": {
+  "V2": {
+   "admin.": "admin.",
+   "blue-collar": "blue-collar",
+   "entrepreneur": "entrepreneur",
+   "housemaid": "housemaid",
+   "management": "management",
+   "retired": "retired",
+   "self-employed": "self-employed",
+   "services": "services",
+   "student": "student",
+   "technician": "technician",
+   "unemployed": "unemployed",
+   "unknown": "unknown"
+  },
+  "V3": {
+   "divorced": "divorced",
+   "married": "married",
+   "single": "single"
+  },
+  "V4": {
+   "primary": "primary",
+   "secondary": "secondary",
+   "tertiary": "tertiary",
+   "unknown": "unknown"
+  },
+  "V5": {
+   "no": "no",
+   "yes": "yes"
+  },
+  "V7": {
+   "no": "no",
+   "yes": "yes"
+  },
+  "V8": {
+   "no": "no",
+   "yes": "yes"
+  },
+  "V9": {
+   "cellular": "cellular",
+   "telephone": "telephone",
+   "unknown": "unknown"
+  },
+  "V11": {
+   "apr": "apr",
+   "aug": "aug",
+   "dec": "dec",
+   "feb": "feb",
+   "jan": "jan",
+   "jul": "jul",
+   "jun": "jun",
+   "mar": "mar",
+   "may": "may",
+   "nov": "nov",
+   "oct": "oct",
+   "sep": "sep"
+  },
+  "V16": {
+   "failure": "failure",
+   "other": "other",
+   "success": "success",
+   "unknown": "unknown"
+  }
+ },
+ "missing_cells": 0,
+ "features": [
+  "V1",
+  "V2",
+  "V3",
+  "V4",
+  "V5",
+  "V6",
+  "V7",
+  "V8",
+  "V9",
+  "V10",
+  "V11",
+  "V12",
+  "V13",
+  "V14",
+  "V15",
+  "V16"
+ ],
+ "categorical": [
+  "V2",
+  "V3",
+  "V4",
+  "V5",
+  "V7",
+  "V8",
+  "V9",
+  "V11",
+  "V16"
+ ],
+ "integer": []
+}

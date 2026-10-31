@@ -1,0 +1,138 @@
+{
+ "dataset_id": "oml1506",
+ "key": "openml-1506",
+ "openml_id": 1506,
+ "openml_name": "thoracic-surgery",
+ "version": 1,
+ "source_url": "https://openml.org/data/v1/download/1592298/thoracic-surgery.arff",
+ "source_sha256": "f0682a9587b7c3d573dbcc7163bad9d451e4f802372775502e8db2b2396555f4",
+ "output_path": "data/raw/oml1506/oml1506.dat",
+ "output_sha256": "3625fcee9ad17b61f3cb4e4feca3bb4901a0c75ccc0fd26f0cd968aed7678f12",
+ "target_attribute": "Class",
+ "label_mapping": {
+  "1": "positive",
+  "2": "negative"
+ },
+ "class_counts": {
+  "positive": 70,
+  "negative": 400
+ },
+ "rows": 470,
+ "dropped_row_id_or_ignore": [],
+ "dropped_string_or_date": {},
+ "name_map": {
+  "V1": "V1",
+  "V2": "V2",
+  "V3": "V3",
+  "V4": "V4",
+  "V5": "V5",
+  "V6": "V6",
+  "V7": "V7",
+  "V8": "V8",
+  "V9": "V9",
+  "V10": "V10",
+  "V11": "V11",
+  "V12": "V12",
+  "V13": "V13",
+  "V14": "V14",
+  "V15": "V15",
+  "V16": "V16"
+ },
+ "category_maps": {
+  "V1": {
+   "1": "1",
+   "2": "2",
+   "3": "3",
+   "4": "4",
+   "5": "5",
+   "6": "6",
+   "7": "7"
+  },
+  "V4": {
+   "1": "1",
+   "2": "2",
+   "3": "3"
+  },
+  "V5": {
+   "1": "1",
+   "2": "2"
+  },
+  "V6": {
+   "1": "1",
+   "2": "2"
+  },
+  "V7": {
+   "1": "1",
+   "2": "2"
+  },
+  "V8": {
+   "1": "1",
+   "2": "2"
+  },
+  "V9": {
+   "1": "1",
+   "2": "2"
+  },
+  "V10": {
+   "1": "1",
+   "2": "2",
+   "3": "3",
+   "4": "4"
+  },
+  "V11": {
+   "1": "1",
+   "2": "2"
+  },
+  "V12": {
+   "1": "1",
+   "2": "2"
+  },
+  "V13": {
+   "1": "1",
+   "2": "2"
+  },
+  "V14": {
+   "1": "1",
+   "2": "2"
+  },
+  "V15": {
+   "1": "1",
+   "2": "2"
+  }
+ },
+ "missing_cells": 0,
+ "features": [
+  "V1",
+  "V2",
+  "V3",
+  "V4",
+  "V5",
+  "V6",
+  "V7",
+  "V8",
+  "V9",
+  "V10",
+  "V11",
+  "V12",
+  "V13",
+  "V14",
+  "V15",
+  "V16"
+ ],
+ "categorical": [
+  "V1",
+  "V4",
+  "V5",
+  "V6",
+  "V7",
+  "V8",
+  "V9",
+  "V10",
+  "V11",
+  "V12",
+  "V13",
+  "V14",
+  "V15"
+ ],
+ "integer": []
+}

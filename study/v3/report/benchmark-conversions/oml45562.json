@@ -1,0 +1,91 @@
+{
+ "dataset_id": "oml45562",
+ "key": "openml-45562",
+ "openml_id": 45562,
+ "openml_name": "seismic-bumps",
+ "version": 3,
+ "source_url": "https://openml.org/data/v1/download/22116530/seismic-bumps.arff",
+ "source_sha256": "d8b38ab6693327acb9314ab8024456a0124ba2b1ccb9e354f200c55db56dd5a1",
+ "output_path": "data/raw/oml45562/oml45562.dat",
+ "output_sha256": "be977f39f8a9ef0cbb5264d850fc9520ff063562a95facc9f01870895795fe58",
+ "target_attribute": "class",
+ "label_mapping": {
+  "1": "positive",
+  "0": "negative"
+ },
+ "class_counts": {
+  "positive": 170,
+  "negative": 2414
+ },
+ "rows": 2584,
+ "dropped_row_id_or_ignore": [],
+ "dropped_string_or_date": {},
+ "name_map": {
+  "seismic": "seismic",
+  "seismoacoustic": "seismoacoustic",
+  "shift": "shift",
+  "genergy": "genergy",
+  "gpuls": "gpuls",
+  "gdenergy": "gdenergy",
+  "gdpuls": "gdpuls",
+  "ghazard": "ghazard",
+  "nbumps": "nbumps",
+  "nbumps2": "nbumps2",
+  "nbumps3": "nbumps3",
+  "nbumps4": "nbumps4",
+  "nbumps5": "nbumps5",
+  "nbumps6": "nbumps6",
+  "nbumps7": "nbumps7",
+  "nbumps89": "nbumps89",
+  "energy": "energy",
+  "maxenergy": "maxenergy"
+ },
+ "category_maps": {
+  "seismic": {
+   "a": "a",
+   "b": "b"
+  },
+  "seismoacoustic": {
+   "a": "a",
+   "b": "b",
+   "c": "c"
+  },
+  "shift": {
+   "N": "N",
+   "W": "W"
+  },
+  "ghazard": {
+   "a": "a",
+   "b": "b",
+   "c": "c"
+  }
+ },
+ "missing_cells": 0,
+ "features": [
+  "seismic",
+  "seismoacoustic",
+  "shift",
+  "genergy",
+  "gpuls",
+  "gdenergy",
+  "gdpuls",
+  "ghazard",
+  "nbumps",
+  "nbumps2",
+  "nbumps3",
+  "nbumps4",
+  "nbumps5",
+  "nbumps6",
+  "nbumps7",
+  "nbumps89",
+  "energy",
+  "maxenergy"
+ ],
+ "categorical": [
+  "seismic",
+  "seismoacoustic",
+  "shift",
+  "ghazard"
+ ],
+ "integer": []
+}

@@ -1,0 +1,82 @@
+{
+ "dataset_id": "oml1016",
+ "key": "openml-1016",
+ "openml_id": 1016,
+ "openml_name": "vowel",
+ "version": 3,
+ "source_url": "https://openml.org/data/v1/download/53550/vowel.arff",
+ "source_sha256": "c2e59a059bdb134cf099b58e4c7018b38bfeb6ce8592421ae7d96604a28bd219",
+ "output_path": "data/raw/oml1016/oml1016.dat",
+ "output_sha256": "e9da6e6c95d3b0a347e712507fca2732a0f48e0d1d7dcfba3e174b4b37186967",
+ "target_attribute": "binaryClass",
+ "label_mapping": {
+  "P": "positive",
+  "N": "negative"
+ },
+ "class_counts": {
+  "positive": 90,
+  "negative": 900
+ },
+ "rows": 990,
+ "dropped_row_id_or_ignore": [
+  "Train or Test"
+ ],
+ "dropped_string_or_date": {},
+ "name_map": {
+  "Speaker Number": "Speaker_Number",
+  "Sex": "Sex",
+  "Feature 0": "Feature_0",
+  "Feature 1": "Feature_1",
+  "Feature 2": "Feature_2",
+  "Feature 3": "Feature_3",
+  "Feature 4": "Feature_4",
+  "Feature 5": "Feature_5",
+  "Feature 6": "Feature_6",
+  "Feature 7": "Feature_7",
+  "Feature 8": "Feature_8",
+  "Feature 9": "Feature_9"
+ },
+ "category_maps": {
+  "Speaker Number": {
+   "Andrew": "Andrew",
+   "Bill": "Bill",
+   "David": "David",
+   "Mark": "Mark",
+   "Jo": "Jo",
+   "Kate": "Kate",
+   "Penny": "Penny",
+   "Rose": "Rose",
+   "Mike": "Mike",
+   "Nick": "Nick",
+   "Rich": "Rich",
+   "Tim": "Tim",
+   "Sarah": "Sarah",
+   "Sue": "Sue",
+   "Wendy": "Wendy"
+  },
+  "Sex": {
+   "Male": "Male",
+   "Female": "Female"
+  }
+ },
+ "missing_cells": 0,
+ "features": [
+  "Speaker_Number",
+  "Sex",
+  "Feature_0",
+  "Feature_1",
+  "Feature_2",
+  "Feature_3",
+  "Feature_4",
+  "Feature_5",
+  "Feature_6",
+  "Feature_7",
+  "Feature_8",
+  "Feature_9"
+ ],
+ "categorical": [
+  "Speaker_Number",
+  "Sex"
+ ],
+ "integer": []
+}

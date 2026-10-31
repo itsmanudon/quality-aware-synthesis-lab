@@ -1,0 +1,43 @@
+{
+ "dataset_id": "oml310",
+ "key": "openml-310",
+ "openml_id": 310,
+ "openml_name": "mammography",
+ "version": 1,
+ "source_url": "https://openml.org/data/v1/download/52214/mammography.arff",
+ "source_sha256": "495e3e9689e740a0de044feb2ebd3ecd2d30c13d725e3d820ea2afd7454c3f3b",
+ "output_path": "data/raw/oml310/oml310.dat",
+ "output_sha256": "96744f1007f3e1d0eda6f76645f78f09435b7ddd3c89585001130517525a5cdc",
+ "target_attribute": "class",
+ "label_mapping": {
+  "1": "positive",
+  "-1": "negative"
+ },
+ "class_counts": {
+  "positive": 260,
+  "negative": 10923
+ },
+ "rows": 11183,
+ "dropped_row_id_or_ignore": [],
+ "dropped_string_or_date": {},
+ "name_map": {
+  "attr1": "attr1",
+  "attr2": "attr2",
+  "attr3": "attr3",
+  "attr4": "attr4",
+  "attr5": "attr5",
+  "attr6": "attr6"
+ },
+ "category_maps": {},
+ "missing_cells": 0,
+ "features": [
+  "attr1",
+  "attr2",
+  "attr3",
+  "attr4",
+  "attr5",
+  "attr6"
+ ],
+ "categorical": [],
+ "integer": []
+}

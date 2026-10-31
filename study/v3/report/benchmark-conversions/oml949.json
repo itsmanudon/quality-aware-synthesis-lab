@@ -1,0 +1,87 @@
+{
+ "dataset_id": "oml949",
+ "key": "openml-949",
+ "openml_id": 949,
+ "openml_name": "arsenic-female-bladder",
+ "version": 2,
+ "source_url": "https://openml.org/data/v1/download/53483/arsenic-female-bladder.arff",
+ "source_sha256": "b3b74d0e7c761ed8fbc0d942c62f9bf15b6167f802ee66b5633e787cdd19f8e8",
+ "output_path": "data/raw/oml949/oml949.dat",
+ "output_sha256": "c4ce24e1622c6268905715bf989e10004facdc73c4c3ee11ea70b1cc7b4581de",
+ "target_attribute": "binaryClass",
+ "label_mapping": {
+  "N": "positive",
+  "P": "negative"
+ },
+ "class_counts": {
+  "positive": 80,
+  "negative": 479
+ },
+ "rows": 559,
+ "dropped_row_id_or_ignore": [],
+ "dropped_string_or_date": {},
+ "name_map": {
+  "group": "group",
+  "conc": "conc",
+  "age": "age",
+  "at.risk": "at.risk"
+ },
+ "category_maps": {
+  "group": {
+   "1": "1",
+   "2": "2",
+   "3": "3",
+   "4": "4",
+   "5": "5",
+   "6": "6",
+   "7": "7",
+   "8": "8",
+   "9": "9",
+   "10": "10",
+   "11": "11",
+   "12": "12",
+   "13": "13",
+   "14": "14",
+   "15": "15",
+   "16": "16",
+   "17": "17",
+   "18": "18",
+   "19": "19",
+   "20": "20",
+   "21": "21",
+   "22": "22",
+   "23": "23",
+   "24": "24",
+   "25": "25",
+   "26": "26",
+   "27": "27",
+   "28": "28",
+   "29": "29",
+   "30": "30",
+   "31": "31",
+   "32": "32",
+   "33": "33",
+   "34": "34",
+   "35": "35",
+   "36": "36",
+   "37": "37",
+   "38": "38",
+   "39": "39",
+   "40": "40",
+   "41": "41",
+   "42": "42",
+   "43": "43"
+  }
+ },
+ "missing_cells": 0,
+ "features": [
+  "group",
+  "conc",
+  "age",
+  "at.risk"
+ ],
+ "categorical": [
+  "group"
+ ],
+ "integer": []
+}

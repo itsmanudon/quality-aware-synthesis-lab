@@ -1,0 +1,77 @@
+{
+ "dataset_id": "oml44232",
+ "key": "openml-44232",
+ "openml_id": 44232,
+ "openml_name": "UCI_churn",
+ "version": 1,
+ "source_url": "https://openml.org/data/v1/download/22106817/UCI_churn.arff",
+ "source_sha256": "8f8e7b9449453af49bf5110f778979829d57ed45e931ceb71bbff22a42370e25",
+ "output_path": "data/raw/oml44232/oml44232.dat",
+ "output_sha256": "7a3e99967ac4f34d569ec7d58e1b443082fd27ad8a709993d1b2bc79f2aba56a",
+ "target_attribute": "churn",
+ "label_mapping": {
+  "True": "positive",
+  "False": "negative"
+ },
+ "class_counts": {
+  "positive": 483,
+  "negative": 2850
+ },
+ "rows": 3333,
+ "dropped_row_id_or_ignore": [],
+ "dropped_string_or_date": {
+  "state": "STRING",
+  "phone number": "STRING",
+  "international plan": "STRING",
+  "voice mail plan": "STRING"
+ },
+ "name_map": {
+  "account length": "account_length",
+  "area code": "area_code",
+  "number vmail messages": "number_vmail_messages",
+  "total day minutes": "total_day_minutes",
+  "total day calls": "total_day_calls",
+  "total day charge": "total_day_charge",
+  "total eve minutes": "total_eve_minutes",
+  "total eve calls": "total_eve_calls",
+  "total eve charge": "total_eve_charge",
+  "total night minutes": "total_night_minutes",
+  "total night calls": "total_night_calls",
+  "total night charge": "total_night_charge",
+  "total intl minutes": "total_intl_minutes",
+  "total intl calls": "total_intl_calls",
+  "total intl charge": "total_intl_charge",
+  "customer service calls": "customer_service_calls"
+ },
+ "category_maps": {},
+ "missing_cells": 0,
+ "features": [
+  "account_length",
+  "area_code",
+  "number_vmail_messages",
+  "total_day_minutes",
+  "total_day_calls",
+  "total_day_charge",
+  "total_eve_minutes",
+  "total_eve_calls",
+  "total_eve_charge",
+  "total_night_minutes",
+  "total_night_calls",
+  "total_night_charge",
+  "total_intl_minutes",
+  "total_intl_calls",
+  "total_intl_charge",
+  "customer_service_calls"
+ ],
+ "categorical": [],
+ "integer": [
+  "account_length",
+  "area_code",
+  "number_vmail_messages",
+  "total_day_calls",
+  "total_eve_calls",
+  "total_night_calls",
+  "total_intl_calls",
+  "customer_service_calls"
+ ]
+}

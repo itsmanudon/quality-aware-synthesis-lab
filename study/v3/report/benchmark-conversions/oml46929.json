@@ -1,0 +1,58 @@
+{
+ "dataset_id": "oml46929",
+ "key": "openml-46929",
+ "openml_id": 46929,
+ "openml_name": "GiveMeSomeCredit",
+ "version": 1,
+ "source_url": "https://openml.org/data/v1/download/22125240/GiveMeSomeCredit.arff",
+ "source_sha256": "92c897782a049feef5de124c1e5b82a61ed9373aa7e78565f03aea3aa3be21da",
+ "output_path": "data/raw/oml46929/oml46929.dat",
+ "output_sha256": "864c582cfbe8b4c8cc82268bf10f507990aa50fd03d8885ec0b654b82767bb3a",
+ "target_attribute": "FinancialDistressNextTwoYears",
+ "label_mapping": {
+  "Yes": "positive",
+  "No": "negative"
+ },
+ "class_counts": {
+  "positive": 10026,
+  "negative": 139974
+ },
+ "rows": 150000,
+ "dropped_row_id_or_ignore": [],
+ "dropped_string_or_date": {},
+ "name_map": {
+  "RevolvingUtilizationOfUnsecuredLines": "RevolvingUtilizationOfUnsecuredLines",
+  "age": "age",
+  "NumberOfTime30-59DaysPastDueNotWorse": "NumberOfTime30-59DaysPastDueNotWorse",
+  "DebtRatio": "DebtRatio",
+  "MonthlyIncome": "MonthlyIncome",
+  "NumberOfOpenCreditLinesAndLoans": "NumberOfOpenCreditLinesAndLoans",
+  "NumberOfTimes90DaysLate": "NumberOfTimes90DaysLate",
+  "NumberRealEstateLoansOrLines": "NumberRealEstateLoansOrLines",
+  "NumberOfTime60-89DaysPastDueNotWorse": "NumberOfTime60-89DaysPastDueNotWorse",
+  "NumberOfDependents": "NumberOfDependents"
+ },
+ "category_maps": {},
+ "missing_cells": 33655,
+ "features": [
+  "RevolvingUtilizationOfUnsecuredLines",
+  "age",
+  "NumberOfTime30-59DaysPastDueNotWorse",
+  "DebtRatio",
+  "MonthlyIncome",
+  "NumberOfOpenCreditLinesAndLoans",
+  "NumberOfTimes90DaysLate",
+  "NumberRealEstateLoansOrLines",
+  "NumberOfTime60-89DaysPastDueNotWorse",
+  "NumberOfDependents"
+ ],
+ "categorical": [],
+ "integer": [
+  "age",
+  "NumberOfTime30-59DaysPastDueNotWorse",
+  "NumberOfOpenCreditLinesAndLoans",
+  "NumberOfTimes90DaysLate",
+  "NumberRealEstateLoansOrLines",
+  "NumberOfTime60-89DaysPastDueNotWorse"
+ ]
+}

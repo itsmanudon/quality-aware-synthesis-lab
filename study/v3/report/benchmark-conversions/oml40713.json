@@ -1,0 +1,208 @@
+{
+ "dataset_id": "oml40713",
+ "key": "openml-40713",
+ "openml_id": 40713,
+ "openml_name": "dis",
+ "version": 1,
+ "source_url": "https://openml.org/data/v1/download/4965314/dis.arff",
+ "source_sha256": "6aafcedcf9bd4a0bce876159f3ada9b83e695a8ee7ccd200d0d850ae4f4bfc47",
+ "output_path": "data/raw/oml40713/oml40713.dat",
+ "output_sha256": "9f7e218735764b6311f7626557aa26f4ebea7e508aaeeedc4e939efea24aab24",
+ "target_attribute": "class",
+ "label_mapping": {
+  "0": "positive",
+  "1": "negative"
+ },
+ "class_counts": {
+  "positive": 58,
+  "negative": 3714
+ },
+ "rows": 3772,
+ "dropped_row_id_or_ignore": [],
+ "dropped_string_or_date": {},
+ "name_map": {
+  "age": "age",
+  "sex": "sex",
+  "on_thyroxine": "on_thyroxine",
+  "query_on_thyroxine": "query_on_thyroxine",
+  "on_antithyroid_medication": "on_antithyroid_medication",
+  "sick": "sick",
+  "pregnant": "pregnant",
+  "thyroid_surgery": "thyroid_surgery",
+  "I131_treatment": "I131_treatment",
+  "query_hypothyroid": "query_hypothyroid",
+  "query_hyperthyroid": "query_hyperthyroid",
+  "lithium": "lithium",
+  "goitre": "goitre",
+  "tumor": "tumor",
+  "hypopituitary": "hypopituitary",
+  "psych": "psych",
+  "TSH_measured": "TSH_measured",
+  "TSH": "TSH",
+  "T3_measured": "T3_measured",
+  "T3": "T3",
+  "TT4_measured": "TT4_measured",
+  "TT4": "TT4",
+  "T4U_measured": "T4U_measured",
+  "T4U": "T4U",
+  "FTI_measured": "FTI_measured",
+  "FTI": "FTI",
+  "TBG_measured": "TBG_measured",
+  "TBG": "TBG",
+  "referral_source": "referral_source"
+ },
+ "category_maps": {
+  "sex": {
+   "0": "0",
+   "1": "1",
+   "2": "2"
+  },
+  "on_thyroxine": {
+   "0": "0",
+   "1": "1"
+  },
+  "query_on_thyroxine": {
+   "0": "0",
+   "1": "1"
+  },
+  "on_antithyroid_medication": {
+   "0": "0",
+   "1": "1"
+  },
+  "sick": {
+   "0": "0",
+   "1": "1"
+  },
+  "pregnant": {
+   "0": "0",
+   "1": "1"
+  },
+  "thyroid_surgery": {
+   "0": "0",
+   "1": "1"
+  },
+  "I131_treatment": {
+   "0": "0",
+   "1": "1"
+  },
+  "query_hypothyroid": {
+   "0": "0",
+   "1": "1"
+  },
+  "query_hyperthyroid": {
+   "0": "0",
+   "1": "1"
+  },
+  "lithium": {
+   "0": "0",
+   "1": "1"
+  },
+  "goitre": {
+   "0": "0",
+   "1": "1"
+  },
+  "tumor": {
+   "0": "0",
+   "1": "1"
+  },
+  "hypopituitary": {
+   "0": "0",
+   "1": "1"
+  },
+  "psych": {
+   "0": "0",
+   "1": "1"
+  },
+  "TSH_measured": {
+   "0": "0",
+   "1": "1"
+  },
+  "T3_measured": {
+   "0": "0",
+   "1": "1"
+  },
+  "TT4_measured": {
+   "0": "0",
+   "1": "1"
+  },
+  "T4U_measured": {
+   "0": "0",
+   "1": "1"
+  },
+  "FTI_measured": {
+   "0": "0",
+   "1": "1"
+  },
+  "TBG_measured": {
+   "0": "0"
+  },
+  "TBG": {
+   "0": "0"
+  },
+  "referral_source": {
+   "0": "0",
+   "1": "1",
+   "2": "2",
+   "3": "3",
+   "4": "4"
+  }
+ },
+ "missing_cells": 0,
+ "features": [
+  "age",
+  "sex",
+  "on_thyroxine",
+  "query_on_thyroxine",
+  "on_antithyroid_medication",
+  "sick",
+  "pregnant",
+  "thyroid_surgery",
+  "I131_treatment",
+  "query_hypothyroid",
+  "query_hyperthyroid",
+  "lithium",
+  "goitre",
+  "tumor",
+  "hypopituitary",
+  "psych",
+  "TSH_measured",
+  "TSH",
+  "T3_measured",
+  "T3",
+  "TT4_measured",
+  "TT4",
+  "T4U_measured",
+  "T4U",
+  "FTI_measured",
+  "FTI",
+  "TBG_measured",
+  "TBG",
+  "referral_source"
+ ],
+ "categorical": [
+  "sex",
+  "on_thyroxine",
+  "query_on_thyroxine",
+  "on_antithyroid_medication",
+  "sick",
+  "pregnant",
+  "thyroid_surgery",
+  "I131_treatment",
+  "query_hypothyroid",
+  "query_hyperthyroid",
+  "lithium",
+  "goitre",
+  "tumor",
+  "hypopituitary",
+  "psych",
+  "TSH_measured",
+  "T3_measured",
+  "TT4_measured",
+  "T4U_measured",
+  "FTI_measured",
+  "TBG_measured",
+  "TBG",
+  "referral_source"
+ ],
+ "integer": []
+}

@@ -1,0 +1,39 @@
+{
+ "dataset_id": "oml1464",
+ "key": "openml-1464",
+ "openml_id": 1464,
+ "openml_name": "blood-transfusion-service-center",
+ "version": 1,
+ "source_url": "https://openml.org/data/v1/download/1586225/blood-transfusion-service-center.arff",
+ "source_sha256": "ee1304cac4a650ac31afe7395a100536a165f935bbe718a4643757c1a842316a",
+ "output_path": "data/raw/oml1464/oml1464.dat",
+ "output_sha256": "4d42b1e5aab5278387b005164be6685333b284e387de57660d350f28de4edf69",
+ "target_attribute": "Class",
+ "label_mapping": {
+  "2": "positive",
+  "1": "negative"
+ },
+ "class_counts": {
+  "positive": 178,
+  "negative": 570
+ },
+ "rows": 748,
+ "dropped_row_id_or_ignore": [],
+ "dropped_string_or_date": {},
+ "name_map": {
+  "V1": "V1",
+  "V2": "V2",
+  "V3": "V3",
+  "V4": "V4"
+ },
+ "category_maps": {},
+ "missing_cells": 0,
+ "features": [
+  "V1",
+  "V2",
+  "V3",
+  "V4"
+ ],
+ "categorical": [],
+ "integer": []
+}

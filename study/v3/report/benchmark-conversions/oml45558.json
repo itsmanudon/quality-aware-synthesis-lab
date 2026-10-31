@@ -1,0 +1,47 @@
+{
+ "dataset_id": "oml45558",
+ "key": "openml-45558",
+ "openml_id": 45558,
+ "openml_name": "Pulsar-Dataset-HTRU2",
+ "version": 2,
+ "source_url": "https://openml.org/data/v1/download/22116526/Pulsar-Dataset-HTRU2.arff",
+ "source_sha256": "6780e90230b8e0296a07a5dfcdb43d797a3c68f3d1e79bf50d9eadd2d5d76979",
+ "output_path": "data/raw/oml45558/oml45558.dat",
+ "output_sha256": "992f31c3c30439c0129677a230fda100cca00947f4008129dc5f5f76104936d9",
+ "target_attribute": "class",
+ "label_mapping": {
+  "1": "positive",
+  "0": "negative"
+ },
+ "class_counts": {
+  "positive": 1639,
+  "negative": 16259
+ },
+ "rows": 17898,
+ "dropped_row_id_or_ignore": [],
+ "dropped_string_or_date": {},
+ "name_map": {
+  "Profile_mean": "Profile_mean",
+  "Profile_stdev": "Profile_stdev",
+  "Profile_skewness": "Profile_skewness",
+  "Profile_kurtosis": "Profile_kurtosis",
+  "DM_mean": "DM_mean",
+  "DM_stdev": "DM_stdev",
+  "DM_skewness": "DM_skewness",
+  "DM_kurtosis": "DM_kurtosis"
+ },
+ "category_maps": {},
+ "missing_cells": 0,
+ "features": [
+  "Profile_mean",
+  "Profile_stdev",
+  "Profile_skewness",
+  "Profile_kurtosis",
+  "DM_mean",
+  "DM_stdev",
+  "DM_skewness",
+  "DM_kurtosis"
+ ],
+ "categorical": [],
+ "integer": []
+}

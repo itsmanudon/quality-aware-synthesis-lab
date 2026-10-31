@@ -1,0 +1,63 @@
+{
+ "dataset_id": "oml977",
+ "key": "openml-977",
+ "openml_id": 977,
+ "openml_name": "letter",
+ "version": 2,
+ "source_url": "https://openml.org/data/v1/download/53511/letter.arff",
+ "source_sha256": "c764f76a7a1e1ac9a7075e7135a0758b41f0f12281dee602cd02ad96f2080d08",
+ "output_path": "data/raw/oml977/oml977.dat",
+ "output_sha256": "0eadddffa9a9938c41661334478c54e7081a9349f634235d70a883347b484615",
+ "target_attribute": "binaryClass",
+ "label_mapping": {
+  "P": "positive",
+  "N": "negative"
+ },
+ "class_counts": {
+  "positive": 813,
+  "negative": 19187
+ },
+ "rows": 20000,
+ "dropped_row_id_or_ignore": [],
+ "dropped_string_or_date": {},
+ "name_map": {
+  "x-box": "x-box",
+  "y-box": "y-box",
+  "width": "width",
+  "high": "high",
+  "onpix": "onpix",
+  "x-bar": "x-bar",
+  "y-bar": "y-bar",
+  "x2bar": "x2bar",
+  "y2bar": "y2bar",
+  "xybar": "xybar",
+  "x2ybr": "x2ybr",
+  "xy2br": "xy2br",
+  "x-ege": "x-ege",
+  "xegvy": "xegvy",
+  "y-ege": "y-ege",
+  "yegvx": "yegvx"
+ },
+ "category_maps": {},
+ "missing_cells": 0,
+ "features": [
+  "x-box",
+  "y-box",
+  "width",
+  "high",
+  "onpix",
+  "x-bar",
+  "y-bar",
+  "x2bar",
+  "y2bar",
+  "xybar",
+  "x2ybr",
+  "xy2br",
+  "x-ege",
+  "xegvy",
+  "y-ege",
+  "yegvx"
+ ],
+ "categorical": [],
+ "integer": []
+}

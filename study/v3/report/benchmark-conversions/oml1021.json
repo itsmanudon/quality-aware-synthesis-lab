@@ -1,0 +1,51 @@
+{
+ "dataset_id": "oml1021",
+ "key": "openml-1021",
+ "openml_id": 1021,
+ "openml_name": "page-blocks",
+ "version": 2,
+ "source_url": "https://openml.org/data/v1/download/53555/page-blocks.arff",
+ "source_sha256": "81f523fb432762d8c5e23acc22877815d4a97d11e6a6217116bdf870c1639dcc",
+ "output_path": "data/raw/oml1021/oml1021.dat",
+ "output_sha256": "f9afee39c039cfd6dbcbefc3b42b88a74fd789c7b95ccf78a053803552c62a8f",
+ "target_attribute": "binaryClass",
+ "label_mapping": {
+  "N": "positive",
+  "P": "negative"
+ },
+ "class_counts": {
+  "positive": 560,
+  "negative": 4913
+ },
+ "rows": 5473,
+ "dropped_row_id_or_ignore": [],
+ "dropped_string_or_date": {},
+ "name_map": {
+  "height": "height",
+  "lenght": "lenght",
+  "area": "area",
+  "eccen": "eccen",
+  "p_black": "p_black",
+  "p_and": "p_and",
+  "mean_tr": "mean_tr",
+  "blackpix": "blackpix",
+  "blackand": "blackand",
+  "wb_trans": "wb_trans"
+ },
+ "category_maps": {},
+ "missing_cells": 0,
+ "features": [
+  "height",
+  "lenght",
+  "area",
+  "eccen",
+  "p_black",
+  "p_and",
+  "mean_tr",
+  "blackpix",
+  "blackand",
+  "wb_trans"
+ ],
+ "categorical": [],
+ "integer": []
+}

@@ -1,0 +1,63 @@
+{
+ "dataset_id": "oml1019",
+ "key": "openml-1019",
+ "openml_id": 1019,
+ "openml_name": "pendigits",
+ "version": 2,
+ "source_url": "https://openml.org/data/v1/download/53553/pendigits.arff",
+ "source_sha256": "a3a69ca1a7c8bd6c644d0f90757ae6e2562d0c560f7528ab238aa474817ddeaa",
+ "output_path": "data/raw/oml1019/oml1019.dat",
+ "output_sha256": "2348199096aa904c1ed10a1e7e5afec15733fdd3cbc4665c9c778b5787497d32",
+ "target_attribute": "binaryClass",
+ "label_mapping": {
+  "P": "positive",
+  "N": "negative"
+ },
+ "class_counts": {
+  "positive": 1144,
+  "negative": 9848
+ },
+ "rows": 10992,
+ "dropped_row_id_or_ignore": [],
+ "dropped_string_or_date": {},
+ "name_map": {
+  "input1": "input1",
+  "input2": "input2",
+  "input3": "input3",
+  "input4": "input4",
+  "input5": "input5",
+  "input6": "input6",
+  "input7": "input7",
+  "input8": "input8",
+  "input9": "input9",
+  "input10": "input10",
+  "input11": "input11",
+  "input12": "input12",
+  "input13": "input13",
+  "input14": "input14",
+  "input15": "input15",
+  "input16": "input16"
+ },
+ "category_maps": {},
+ "missing_cells": 0,
+ "features": [
+  "input1",
+  "input2",
+  "input3",
+  "input4",
+  "input5",
+  "input6",
+  "input7",
+  "input8",
+  "input9",
+  "input10",
+  "input11",
+  "input12",
+  "input13",
+  "input14",
+  "input15",
+  "input16"
+ ],
+ "categorical": [],
+ "integer": []
+}

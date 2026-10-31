@@ -1,0 +1,59 @@
+{
+ "dataset_id": "oml976",
+ "key": "openml-976",
+ "openml_id": 976,
+ "openml_name": "JapaneseVowels",
+ "version": 2,
+ "source_url": "https://openml.org/data/v1/download/53510/JapaneseVowels.arff",
+ "source_sha256": "fe5e3486e7723e0f70f36faca80868282c0ec81db7d96b52d992895a286d145f",
+ "output_path": "data/raw/oml976/oml976.dat",
+ "output_sha256": "da6d8f042b5948ebc1f27a3c29064a1d50880f1c095edfd83456e55f8159c415",
+ "target_attribute": "binaryClass",
+ "label_mapping": {
+  "P": "positive",
+  "N": "negative"
+ },
+ "class_counts": {
+  "positive": 1614,
+  "negative": 8347
+ },
+ "rows": 9961,
+ "dropped_row_id_or_ignore": [],
+ "dropped_string_or_date": {},
+ "name_map": {
+  "utterance": "utterance",
+  "frame": "frame",
+  "coefficient1": "coefficient1",
+  "coefficient2": "coefficient2",
+  "coefficient3": "coefficient3",
+  "coefficient4": "coefficient4",
+  "coefficient5": "coefficient5",
+  "coefficient6": "coefficient6",
+  "coefficient7": "coefficient7",
+  "coefficient8": "coefficient8",
+  "coefficient9": "coefficient9",
+  "coefficient10": "coefficient10",
+  "coefficient11": "coefficient11",
+  "coefficient12": "coefficient12"
+ },
+ "category_maps": {},
+ "missing_cells": 0,
+ "features": [
+  "utterance",
+  "frame",
+  "coefficient1",
+  "coefficient2",
+  "coefficient3",
+  "coefficient4",
+  "coefficient5",
+  "coefficient6",
+  "coefficient7",
+  "coefficient8",
+  "coefficient9",
+  "coefficient10",
+  "coefficient11",
+  "coefficient12"
+ ],
+ "categorical": [],
+ "integer": []
+}

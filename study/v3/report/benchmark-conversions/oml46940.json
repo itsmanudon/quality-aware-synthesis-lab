@@ -1,0 +1,148 @@
+{
+ "dataset_id": "oml46940",
+ "key": "openml-46940",
+ "openml_id": 46940,
+ "openml_name": "Marketing_Campaign",
+ "version": 1,
+ "source_url": "https://openml.org/data/v1/download/22125251/Marketing_Campaign.arff",
+ "source_sha256": "9efadbe4dacefaca7064052d95b0306b0614a6dfe71a951cabbd6fbe576f397d",
+ "output_path": "data/raw/oml46940/oml46940.dat",
+ "output_sha256": "a75eecfb3f276936a78a58f33bb44e80ca176c2ef27c05645c101ee7ed3130bf",
+ "target_attribute": "Response",
+ "label_mapping": {
+  "Yes": "positive",
+  "No": "negative"
+ },
+ "class_counts": {
+  "positive": 334,
+  "negative": 1906
+ },
+ "rows": 2240,
+ "dropped_row_id_or_ignore": [],
+ "dropped_string_or_date": {
+  "Dt_Customer": "STRING"
+ },
+ "name_map": {
+  "Year_Birth": "Year_Birth",
+  "Education": "Education",
+  "Marital_Status": "Marital_Status",
+  "Income": "Income",
+  "Kidhome": "Kidhome",
+  "Teenhome": "Teenhome",
+  "Recency": "Recency",
+  "MntWines": "MntWines",
+  "MntFruits": "MntFruits",
+  "MntMeatProducts": "MntMeatProducts",
+  "MntFishProducts": "MntFishProducts",
+  "MntSweetProducts": "MntSweetProducts",
+  "MntGoldProds": "MntGoldProds",
+  "NumDealsPurchases": "NumDealsPurchases",
+  "NumWebPurchases": "NumWebPurchases",
+  "NumCatalogPurchases": "NumCatalogPurchases",
+  "NumStorePurchases": "NumStorePurchases",
+  "NumWebVisitsMonth": "NumWebVisitsMonth",
+  "AcceptedCmp3": "AcceptedCmp3",
+  "AcceptedCmp4": "AcceptedCmp4",
+  "AcceptedCmp5": "AcceptedCmp5",
+  "AcceptedCmp1": "AcceptedCmp1",
+  "AcceptedCmp2": "AcceptedCmp2",
+  "Complain": "Complain"
+ },
+ "category_maps": {
+  "Education": {
+   "2n Cycle": "2n_Cycle",
+   "Basic": "Basic",
+   "Graduation": "Graduation",
+   "Master": "Master",
+   "PhD": "PhD"
+  },
+  "Marital_Status": {
+   "Absurd": "Absurd",
+   "Alone": "Alone",
+   "Divorced": "Divorced",
+   "Married": "Married",
+   "Single": "Single",
+   "Together": "Together",
+   "Widow": "Widow",
+   "YOLO": "YOLO"
+  },
+  "AcceptedCmp3": {
+   "0": "0",
+   "1": "1"
+  },
+  "AcceptedCmp4": {
+   "0": "0",
+   "1": "1"
+  },
+  "AcceptedCmp5": {
+   "0": "0",
+   "1": "1"
+  },
+  "AcceptedCmp1": {
+   "0": "0",
+   "1": "1"
+  },
+  "AcceptedCmp2": {
+   "0": "0",
+   "1": "1"
+  },
+  "Complain": {
+   "0": "0",
+   "1": "1"
+  }
+ },
+ "missing_cells": 24,
+ "features": [
+  "Year_Birth",
+  "Education",
+  "Marital_Status",
+  "Income",
+  "Kidhome",
+  "Teenhome",
+  "Recency",
+  "MntWines",
+  "MntFruits",
+  "MntMeatProducts",
+  "MntFishProducts",
+  "MntSweetProducts",
+  "MntGoldProds",
+  "NumDealsPurchases",
+  "NumWebPurchases",
+  "NumCatalogPurchases",
+  "NumStorePurchases",
+  "NumWebVisitsMonth",
+  "AcceptedCmp3",
+  "AcceptedCmp4",
+  "AcceptedCmp5",
+  "AcceptedCmp1",
+  "AcceptedCmp2",
+  "Complain"
+ ],
+ "categorical": [
+  "Education",
+  "Marital_Status",
+  "AcceptedCmp3",
+  "AcceptedCmp4",
+  "AcceptedCmp5",
+  "AcceptedCmp1",
+  "AcceptedCmp2",
+  "Complain"
+ ],
+ "integer": [
+  "Year_Birth",
+  "Kidhome",
+  "Teenhome",
+  "Recency",
+  "MntWines",
+  "MntFruits",
+  "MntMeatProducts",
+  "MntFishProducts",
+  "MntSweetProducts",
+  "MntGoldProds",
+  "NumDealsPurchases",
+  "NumWebPurchases",
+  "NumCatalogPurchases",
+  "NumStorePurchases",
+  "NumWebVisitsMonth"
+ ]
+}

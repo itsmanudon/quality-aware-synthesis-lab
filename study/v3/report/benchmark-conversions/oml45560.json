@@ -1,0 +1,157 @@
+{
+ "dataset_id": "oml45560",
+ "key": "openml-45560",
+ "openml_id": 45560,
+ "openml_name": "online-shoppers-intention",
+ "version": 2,
+ "source_url": "https://openml.org/data/v1/download/22116528/online-shoppers-intention.arff",
+ "source_sha256": "72c52a6c5ece06bd0a42bf1eb3faf8797b6f84b6da82dc9f2b0ddde8817cad6c",
+ "output_path": "data/raw/oml45560/oml45560.dat",
+ "output_sha256": "ea033925525a07c6a8b43a432c7accbd0c6e1bc874e21cee497ea8642eb42944",
+ "target_attribute": "Revenue",
+ "label_mapping": {
+  "True": "positive",
+  "False": "negative"
+ },
+ "class_counts": {
+  "positive": 1908,
+  "negative": 10422
+ },
+ "rows": 12330,
+ "dropped_row_id_or_ignore": [],
+ "dropped_string_or_date": {},
+ "name_map": {
+  "Administrative": "Administrative",
+  "Administrative_Duration": "Administrative_Duration",
+  "Informational": "Informational",
+  "Informational_Duration": "Informational_Duration",
+  "ProductRelated": "ProductRelated",
+  "ProductRelated_Duration": "ProductRelated_Duration",
+  "BounceRates": "BounceRates",
+  "ExitRates": "ExitRates",
+  "PageValues": "PageValues",
+  "SpecialDay": "SpecialDay",
+  "Month": "Month",
+  "OperatingSystems": "OperatingSystems",
+  "Browser": "Browser",
+  "Region": "Region",
+  "TrafficType": "TrafficType",
+  "VisitorType": "VisitorType",
+  "Weekend": "Weekend"
+ },
+ "category_maps": {
+  "Month": {
+   "Aug": "Aug",
+   "Dec": "Dec",
+   "Feb": "Feb",
+   "Jul": "Jul",
+   "June": "June",
+   "Mar": "Mar",
+   "May": "May",
+   "Nov": "Nov",
+   "Oct": "Oct",
+   "Sep": "Sep"
+  },
+  "OperatingSystems": {
+   "1": "1",
+   "2": "2",
+   "3": "3",
+   "4": "4",
+   "5": "5",
+   "6": "6",
+   "7": "7",
+   "8": "8"
+  },
+  "Browser": {
+   "1": "1",
+   "10": "10",
+   "11": "11",
+   "12": "12",
+   "13": "13",
+   "2": "2",
+   "3": "3",
+   "4": "4",
+   "5": "5",
+   "6": "6",
+   "7": "7",
+   "8": "8",
+   "9": "9"
+  },
+  "Region": {
+   "1": "1",
+   "2": "2",
+   "3": "3",
+   "4": "4",
+   "5": "5",
+   "6": "6",
+   "7": "7",
+   "8": "8",
+   "9": "9"
+  },
+  "TrafficType": {
+   "1": "1",
+   "10": "10",
+   "11": "11",
+   "12": "12",
+   "13": "13",
+   "14": "14",
+   "15": "15",
+   "16": "16",
+   "17": "17",
+   "18": "18",
+   "19": "19",
+   "2": "2",
+   "20": "20",
+   "3": "3",
+   "4": "4",
+   "5": "5",
+   "6": "6",
+   "7": "7",
+   "8": "8",
+   "9": "9"
+  },
+  "VisitorType": {
+   "New_Visitor": "New_Visitor",
+   "Other": "Other",
+   "Returning_Visitor": "Returning_Visitor"
+  },
+  "Weekend": {
+   "False": "False",
+   "True": "True"
+  }
+ },
+ "missing_cells": 0,
+ "features": [
+  "Administrative",
+  "Administrative_Duration",
+  "Informational",
+  "Informational_Duration",
+  "ProductRelated",
+  "ProductRelated_Duration",
+  "BounceRates",
+  "ExitRates",
+  "PageValues",
+  "SpecialDay",
+  "Month",
+  "OperatingSystems",
+  "Browser",
+  "Region",
+  "TrafficType",
+  "VisitorType",
+  "Weekend"
+ ],
+ "categorical": [
+  "Month",
+  "OperatingSystems",
+  "Browser",
+  "Region",
+  "TrafficType",
+  "VisitorType",
+  "Weekend"
+ ],
+ "integer": [
+  "Administrative",
+  "Informational",
+  "ProductRelated"
+ ]
+}
