@@ -4,12 +4,12 @@ Updated by the agent at the end of every session. Gates are approved only by the
 
 | Field | Value |
 | --- | --- |
-| Phase | 0 · Setup — stopped at **Gate 0** (8 of 30 U2 core files unavailable, see Blockers) |
-| Last finished step | U2/UGO full check on dev Abalone19 (30/30 cells); KEEL dev files fetched; U2 core fetch + one retry |
+| Phase | 0 · Setup — Gate 0 decisions approved by the user; waiting for approval to start Phase 1 |
+| Last finished step | Gate 0 decisions recorded (`151eba0`); U2 core second retry; 10 new datasets fetched + one retry |
 | Runs in progress | none |
 | API spend so far | Anthropic $0.000153 of $5 · OpenAI $0.000067 of $4 · Meta $0.000212 of $140 (`budget.jsonl`, 9 lines) |
-| Blockers | 8 U2 core datasets unavailable after the one allowed retry (OpenML 503/412 rate limiting); a second, slower retry needs approval |
-| Next step | User decisions below (1, 2, 3, 6, 7); then close Gate 0 |
+| Blockers | 7 of 40 benchmark datasets unavailable after the approved retries: OpenML returned 412/503 to bursts of requests, and the same metadata calls succeed minutes later |
+| Next step | User: approve a further paced fetch of the 7 (Gate 0 item 8), and approve starting Phase 1 |
 
 ## Phase 0 checklist
 
@@ -20,10 +20,11 @@ Updated by the agent at the end of every session. Gates are approved only by the
 | Anthropic / OpenAI / Meta adapters + budget ledger | done | `providers.py`, `pricing.py`, `budget.py`; 13 offline tests; all 5 API smoke calls returned `{"ok":true}` |
 | Declared dataset fetcher | done | `fetch.py`; 7 offline tests (refusal, name check, MD5, empty, SHA-256) |
 | U2's 30 datasets + 10 new shortlisted | done (metadata) | `sources.json`, `report/source-metadata.json` |
-| U2 core raw files fetched | **22/30** | `report/acquisitions.json`; attempts in `report/u2-core-fetch-attempt{1,2}.jsonl`; 8 unavailable (below) |
-| KEEL dev files fetched | done (9/9) | user approved download 2026-10-31; via official-page links; 3 match recorded hashes |
+| U2 core raw files fetched | **24/30** | `report/acquisitions.json`; attempts in `report/u2-core-fetch-attempt{1,2,3}.jsonl` |
+| 10 new benchmark files fetched | **9/10** | attempts in `report/new-fetch-attempt{1,2}.jsonl` |
+| KEEL dev files fetched | done (9/9; 8 in use after page-blocks0 was dropped) | user approved download 2026-10-31; via official-page links; 3 match recorded hashes |
 | ml_ugo a6710ea installed read-only, U2/UGO run on a dev dataset | done | `report/u2-dev-check/`: Abalone19, seed 42, 5 classifiers × 6 methods, 30/30 cells, 0 failures |
-| Draft `protocol.json` | done | Gate 0 draft; open choices are `null` with the deciding gate |
+| Draft `protocol.json` | done | Gate 0 decisions recorded; open choices are `null` with the deciding gate |
 
 ## Gate 0: findings and proposals
 
@@ -79,16 +80,31 @@ Updated by the agent at the end of every session. Gates are approved only by the
 1. Use `gpt-6-luna` in place of "GPT-6.1-luna"?
 2. Approve the 10 new datasets (and the GiveMeSomeCredit licence), or swap in reserves?
 3. Drop page-blocks0 from dev?
+
+**User answers (2026-10-31).** 1: use `gpt-6-luna`. 2: all 10 approved, GiveMeSomeCredit included. 3: page-blocks0 dropped. 6: caps kept. 7: second retry approved. Recorded in `sources.json` and `protocol.json` (`151eba0`).
+
 4. ~~Place the six KEEL dev files by hand?~~ — user approved downloading; done (9/9).
 5. ~~Restart the two stopped jobs~~ — approved and done (see Session 2 findings).
 6. Keep the API caps as declared?
-7. Allow a second retry of the 8 unavailable U2 core datasets with slower pacing (e.g. 10 s between requests), outside the one-retry rule? Without it, U2 comparability covers 22/30 datasets.
+7. Allow a second retry of the 8 unavailable U2 core datasets with slower pacing (e.g. 10 s between requests), outside the one-retry rule? — approved; done (see below).
+8. **Open:** allow a further paced fetch of the 7 still-unavailable benchmark datasets? For example, one dataset at a time, 120 s apart, at most 2 more attempts each, with every attempt logged. Without it the benchmark is 33 of 40 datasets.
+
+## Session 3 findings (2026-10-31, after the Gate 0 answers)
+
+- **U2 core second retry** (10 s pacing; approved): wilt and letter ok. 24/30.
+- **10 new datasets**, attempt 1 (10 s pacing): adult, default-of-credit-card-clients, creditcard and jm1 ok. The other 6 got HTTP 412.
+- **10 new datasets**, one allowed retry (60 s pacing): kick, ipums_la_99-small, GiveMeSomeCredit, Marketing_Campaign and Is-this-a-good-customer ok. 9/10.
+- **Still unavailable (7 of 40 benchmark):**
+  - U2 core: blood-transfusion-service-center (1464), mammography (310), dis (40713), Satellite (40900), Sick_numeric (41946), haberman (43);
+  - new: Bank_Customer_Churn (46911).
+- Every failure was an HTTP 412 or 503 from the OpenML JSON API on the **metadata** request. The same metadata requests for 1464, 310 and 41946 returned 200 shortly after attempt 3. These are transient server responses, not missing datasets. No other source was tried.
+- Dev: 8/8 (page-blocks0 dropped). Benchmark: 33/40.
 
 ## Gates
 
 | Gate | Status | Approved by | Date | Protocol SHA-256 / commit |
 | --- | --- | --- | --- | --- |
-| 0 | awaiting user | | | |
+| 0 | decisions approved (items 1-7); item 8 and start of Phase 1 awaiting user | user | 2026-10-31 | `151eba0` |
 | 1 | open | | | |
 | 2 | open | | | |
 | 3 | open | | | |
@@ -109,3 +125,8 @@ Updated by the agent at the end of every session. Gates are approved only by the
   - U2 venv repaired; U2/UGO Abalone19 check 30/30.
   - U2 core 22/30 after one retry.
   - No API calls; spend unchanged. Stopped at Gate 0.
+- 2026-10-31 (session 3): user answered Gate 0 items 1-7.
+  - `151eba0`: decisions recorded.
+  - U2 core 24/30 after the approved second retry.
+  - New datasets 9/10 after one retry.
+  - No API calls; spend unchanged. Phase 1 not started.

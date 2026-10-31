@@ -1,0 +1,6 @@
+{"key": "openml-41162", "status": "ok", "reason": null, "openml_name": "kick", "version": 1, "bytes": 16142099}
+{"key": "openml-1018", "status": "ok", "reason": null, "openml_name": "ipums_la_99-small", "version": 2, "bytes": 3288040}
+{"key": "openml-46911", "status": "unavailable", "reason": "METADATA_FAILED: HTTP Error 412: Precondition Failed", "openml_name": null, "version": null, "bytes": null}
+{"key": "openml-46929", "status": "ok", "reason": null, "openml_name": "GiveMeSomeCredit", "version": 1, "bytes": 7226796}
+{"key": "openml-46940", "status": "ok", "reason": null, "openml_name": "Marketing_Campaign", "version": 1, "bytes": 204688}
+{"key": "openml-46938", "status": "ok", "reason": null, "openml_name": "Is-this-a-good-customer", "version": 2, "bytes": 150528}

@@ -1,0 +1,10 @@
+{"key": "openml-1590", "status": "ok", "reason": null, "openml_name": "adult", "version": 2, "bytes": 5962724}
+{"key": "openml-42477", "status": "ok", "reason": null, "openml_name": "default-of-credit-card-clients", "version": 1, "bytes": 2867529}
+{"key": "openml-1597", "status": "ok", "reason": null, "openml_name": "creditcard", "version": 1, "bytes": 150829308}
+{"key": "openml-1053", "status": "ok", "reason": null, "openml_name": "jm1", "version": 1, "bytes": 861589}
+{"key": "openml-41162", "status": "unavailable", "reason": "METADATA_FAILED: HTTP Error 412: Precondition Failed", "openml_name": null, "version": null, "bytes": null}
+{"key": "openml-1018", "status": "unavailable", "reason": "METADATA_FAILED: HTTP Error 412: Precondition Failed", "openml_name": null, "version": null, "bytes": null}
+{"key": "openml-46911", "status": "unavailable", "reason": "METADATA_FAILED: HTTP Error 412: Precondition Failed", "openml_name": null, "version": null, "bytes": null}
+{"key": "openml-46929", "status": "unavailable", "reason": "METADATA_FAILED: HTTP Error 412: Precondition Failed", "openml_name": null, "version": null, "bytes": null}
+{"key": "openml-46940", "status": "unavailable", "reason": "METADATA_FAILED: HTTP Error 412: Precondition Failed", "openml_name": null, "version": null, "bytes": null}
+{"key": "openml-46938", "status": "unavailable", "reason": "METADATA_FAILED: HTTP Error 412: Precondition Failed", "openml_name": null, "version": null, "bytes": null}
