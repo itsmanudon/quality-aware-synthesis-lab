@@ -31,7 +31,7 @@ from rcqasyn.phase2.specifications import dataset_specification
 from rcqasyn.utils.seeds import generation_provider_seed
 from study.v3 import budget, providers
 
-from .llm_pools import BATCH_SIZE, _append, _lines, batch_plan, generation_context, prompt_template
+from .llm_pools import _append, _lines, batch_plan, generation_context, prompt_template
 from .phase1 import SPLIT_SEEDS
 from .phase3 import BENCHROOT, benchmark_ids, frozen, split_frames
 
@@ -67,8 +67,13 @@ def unit_requests(model: str, dataset: str, seed: int, out: Path) -> tuple[Path,
     context_json = json.dumps(context, sort_keys=True)
     directory = out / model.replace(":", "_") / f"{dataset}__s{seed}"
     directory.mkdir(parents=True, exist_ok=True)
+    # A unit keeps the batch size it was first planned with (the pilot used 10 before
+    # the protocol moved to 20 for cost), so finished requests are never re-planned.
+    manifest_path = directory / "manifest.json"
+    size = (json.loads(manifest_path.read_text(encoding="utf-8"))["batch_size"]
+            if manifest_path.exists() else int(protocol["batch_size"]))
     plan = batch_plan(budget_b, int(protocol["pool_factor"]),
-                      float(protocol["minority_share"]), positive, "negative")
+                      float(protocol["minority_share"]), positive, "negative", size)
     requests = []
     for label, count, index in plan:
         seed_value = (None if spec_model.provider == "anthropic" else
@@ -88,7 +93,7 @@ def unit_requests(model: str, dataset: str, seed: int, out: Path) -> tuple[Path,
     (directory / "manifest.json").write_text(json.dumps({
         "model": model, "model_id": spec_model.model_id, "dataset_id": dataset,
         "split_seed": seed, "budget": budget_b, "pool_factor": protocol["pool_factor"],
-        "minority_share": protocol["minority_share"], "batch_size": BATCH_SIZE,
+        "minority_share": protocol["minority_share"], "batch_size": size,
         "prompt_sha256": template_sha,
         "context_sha256": hashlib.sha256(context_json.encode()).hexdigest(),
         "reference_row_ids": reference_ids, "planned_requests": len(requests),
@@ -163,7 +168,8 @@ def sync(model: str, units: list[tuple[str, int]], out: Path) -> None:
         print(model, dataset, seed, f"{time.perf_counter() - started:.0f}s", flush=True)
 
 
-def submit(model: str, units: list[tuple[str, int]], out: Path) -> None:
+def submit(model: str, units: list[tuple[str, int]], out: Path, max_chunks: int | None = None
+           ) -> int:
     spec_model = providers.MODELS[model]
     pending: list[tuple[Path, dict[str, Any], int]] = []
     root = out / model.replace(":", "_")
@@ -179,7 +185,10 @@ def submit(model: str, units: list[tuple[str, int]], out: Path) -> None:
                    for r in _lines(directory / "submitted.jsonl")):
                 continue  # still in flight
             pending.append((directory, request, n + 1))
-    for start in range(0, len(pending), CHUNK):
+    # The budget guard only sees collected spend, so callers submit one chunk, collect it,
+    # then submit the next (max_chunks=1) to keep in-flight cost inside the guard's view.
+    starts = list(range(0, len(pending), CHUNK))[:max_chunks]
+    for start in starts:
         chunk = pending[start:start + CHUNK]
         handle = providers.submit_batch(spec_model, [providers.BatchRequest(
             custom_id=r["custom_id"], prompt=r["prompt"], max_tokens=r["max_tokens"],
@@ -192,6 +201,7 @@ def submit(model: str, units: list[tuple[str, int]], out: Path) -> None:
                                                     "attempt": attempt,
                                                     "batch_id": handle["batch_id"]})
         print(model, "submitted", len(chunk), handle["batch_id"], flush=True)
+    return len(pending)
 
 
 def collect(model: str, out: Path) -> int:
@@ -257,13 +267,14 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--datasets", nargs="+", default=None)
     parser.add_argument("--seeds", type=int, nargs="+", default=list(SPLIT_SEEDS))
+    parser.add_argument("--max-chunks", type=int, default=None)
     args = parser.parse_args(argv)
     providers.load_env()
     units = [(d, s) for d in (args.datasets or benchmark_ids()) for s in args.seeds]
     if args.command == "sync":
         sync(args.model, units, args.out)
     elif args.command == "submit":
-        submit(args.model, units, args.out)
+        print("pending:", submit(args.model, units, args.out, args.max_chunks))
     elif args.command == "collect":
         print("open batches:", collect(args.model, args.out))
     else:

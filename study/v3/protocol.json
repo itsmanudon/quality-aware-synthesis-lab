@@ -71,7 +71,7 @@
       "phase3": {
         "pool_factor": 4,
         "minority_share": 1.0,
-        "batch_size": 10,
+        "batch_size": 20,
         "minority_share_reason": "training is HYBRID_MINORITY (inner TRAIN + selected minority rows), so generated majority rows would never enter training; the Phase 2 quota ablation is reported separately",
         "context": "inner TRAIN (outer TRAIN minus the 20% VALIDATION carve); 3 reference rows per class",
         "pilot_datasets": [
@@ -81,7 +81,8 @@
           "oml45558",
           "oml43"
         ],
-        "pilot_rule": "first 5 benchmark ids in SHA-256 order of 'study-v3-pilot:<id>'"
+        "pilot_rule": "first 5 benchmark ids in SHA-256 order of 'study-v3-pilot:<id>'",
+        "batch_size_note": "raised from 10 to 20 after the pilot: the Haiku full-run projection at 10 was $3.99 + $0.29 spent, past 80% of the $5 Anthropic cap; prompts are ~2/3 of tokens. Pilot units keep their recorded batch size (10)."
       }
     },
     "non_llm": [

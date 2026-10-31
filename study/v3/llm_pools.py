@@ -109,14 +109,14 @@ def generation_context(inner: pd.DataFrame, spec: Any, spec_dict: dict[str, Any]
 
 
 def batch_plan(budget: int, pool_factor: int, minority_share: float, positive: str,
-               negative: str) -> list[tuple[str, int, int]]:
+               negative: str, batch_size: int = BATCH_SIZE) -> list[tuple[str, int, int]]:
     """(requested class, count, per-class batch index) for a pool of pool_factor x budget."""
     total = pool_factor * budget
     n_min = round(total * minority_share)
     plan = []
     for label, n in ((positive, n_min), (negative, total - n_min)):
-        for index in range(math.ceil(n / BATCH_SIZE)):
-            plan.append((label, min(BATCH_SIZE, n - index * BATCH_SIZE), index))
+        for index in range(math.ceil(n / batch_size)):
+            plan.append((label, min(batch_size, n - index * batch_size), index))
     return plan
 
 
