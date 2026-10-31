@@ -187,9 +187,23 @@ def submit(model: str, units: list[tuple[str, int]], out: Path, max_chunks: int 
             pending.append((directory, request, n + 1))
     # The budget guard only sees collected spend, so callers submit one chunk, collect it,
     # then submit the next (max_chunks=1) to keep in-flight cost inside the guard's view.
-    starts = list(range(0, len(pending), CHUNK))[:max_chunks]
-    for start in starts:
-        chunk = pending[start:start + CHUNK]
+    current = budget.spend(spec_model.provider)
+    headroom = (current.stop_at_usd or 0.0) - current.known_usd
+    start, chunks = 0, 0
+    while start < len(pending) and (max_chunks is None or chunks < max_chunks):
+        # Largest chunk whose summed worst case fits under the 80% line; the guard inside
+        # submit_batch re-checks it. If not even one request fits, the guard stops us.
+        size, total = 0, 0.0
+        for _, request, _ in pending[start:start + CHUNK]:
+            cost = budget.worst_case_cost(spec_model.model_id,
+                                          prompt_chars=len(request["prompt"]),
+                                          max_output_tokens=request["max_tokens"], batch=True)
+            if size and total + cost > headroom:
+                break
+            size, total = size + 1, total + cost
+        chunk = pending[start:start + size]
+        start, chunks = start + size, chunks + 1
+        headroom -= total
         handle = providers.submit_batch(spec_model, [providers.BatchRequest(
             custom_id=r["custom_id"], prompt=r["prompt"], max_tokens=r["max_tokens"],
             seed=r["provider_seed"], response_format=None if spec_model.provider == "anthropic"
