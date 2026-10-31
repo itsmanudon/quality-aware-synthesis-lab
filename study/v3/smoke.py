@@ -100,6 +100,7 @@ def main(argv: list[str] | None = None) -> int:
     summary: dict[str, Any] = (
         json.loads(SUMMARY.read_text(encoding="utf-8")) if SUMMARY.exists() else {}
     )
+    available: list[str] = []
     if args.group == "local":
         available = _ollama_models()
         summary["ollama_models_listed"] = sorted(available)
