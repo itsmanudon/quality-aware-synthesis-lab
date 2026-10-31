@@ -224,3 +224,18 @@ def test_meta_has_no_batch(ledger: Path) -> None:
         providers.submit_batch(providers.MODELS["muse-spark-1.3"],
                                [providers.BatchRequest("a", "x", 8)], purpose="t",
                                client=object(), ledger=ledger)
+
+
+def test_reconciliation_bounds_an_unknown_line_without_editing_it(tmp_path) -> None:
+    from study.v3 import budget as b
+
+    ledger = tmp_path / "budget.jsonl"
+    failed = b.append({"provider": "meta", "model": "muse-spark-1.3", "cost_usd": None},
+                      path=ledger)
+    assert b.spend("meta", ledger).unknown_cost_lines == 1
+    b.reconcile("meta", failed["logged_at"], "muse-spark-1.3", prompt_chars=1000,
+                max_output_tokens=1000, basis="test", path=ledger)
+    current = b.spend("meta", ledger)
+    assert current.unknown_cost_lines == 0
+    assert current.known_usd == pytest.approx((1000 * 1.25 + 1000 * 4.25) / 1e6)
+    assert b.read_ledger(ledger)[0]["cost_usd"] is None

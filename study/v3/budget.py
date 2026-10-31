@@ -46,17 +46,43 @@ def read_ledger(path: Path = LEDGER) -> list[dict[str, Any]]:
 
 
 def spend(provider: str, path: Path = LEDGER) -> Spend:
+    """Known spend; an unknown-cost line counts at its reconciled upper bound, if any.
+
+    A failed call keeps ``cost_usd: null`` (missing accounting is never 0). A later
+    ``reconcile`` line may bound it from above (worst case at list price); the bound is
+    added to the known spend, so the 80% rule stays conservative.
+    """
+    rows = [r for r in read_ledger(path) if r.get("provider") == provider]
+    bounds = {r["reconciles"]: float(r["cost_usd_upper_bound"]) for r in rows
+              if r.get("kind") == "reconciliation"}
     known = 0.0
     unknown = 0
-    for row in read_ledger(path):
-        if row.get("provider") != provider:
+    for row in rows:
+        if row.get("kind") == "reconciliation":
             continue
         cost = row.get("cost_usd")
         if cost is None:
-            unknown += 1
+            if row.get("logged_at") in bounds:
+                known += bounds[row["logged_at"]]
+            else:
+                unknown += 1
         else:
             known += float(cost)
     return Spend(provider, round(known, 10), unknown, CAPS_USD.get(provider))
+
+
+def reconcile(provider: str, logged_at: str, model: str, *, prompt_chars: int,
+              max_output_tokens: int, basis: str, path: Path = LEDGER) -> dict[str, Any]:
+    """Bound an unknown-cost line by its worst case; the original line is left unchanged."""
+    targets = [r for r in read_ledger(path) if r.get("provider") == provider
+               and r.get("logged_at") == logged_at and r.get("cost_usd") is None]
+    if len(targets) != 1:
+        raise ValueError("reconcile needs exactly one unknown-cost line with that timestamp")
+    bound = worst_case_cost(model, prompt_chars=prompt_chars,
+                            max_output_tokens=max_output_tokens)
+    return append({"kind": "reconciliation", "provider": provider, "model": model,
+                   "reconciles": logged_at, "cost_usd_upper_bound": round(bound, 10),
+                   "basis": basis}, path=path)
 
 
 def worst_case_cost(model: str, *, prompt_chars: int, max_output_tokens: int,

@@ -73,6 +73,10 @@ def unit_requests(model: str, dataset: str, seed: int, out: Path) -> tuple[Path,
     for label, count, index in plan:
         seed_value = (None if spec_model.provider == "anthropic" else
                       generation_provider_seed(seed, dataset, label, index))
+        if spec_model.provider == "meta" and seed_value is not None:
+            # Meta's API rejects seeds outside the signed 32-bit range (HTTP 400, observed
+            # in the pilot); the reduced value is still distinct per batch in practice.
+            seed_value %= 2 ** 31
         requests.append({"custom_id": f"{dataset}__s{seed}__{label}__{index}",
                          "requested_class": label, "batch_index": index,
                          "requested_count": count, "provider_seed": seed_value,
