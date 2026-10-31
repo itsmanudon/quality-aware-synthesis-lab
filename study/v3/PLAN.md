@@ -115,9 +115,11 @@ Each phase ends at a gate: write findings and proposal into `STATUS.md`, commit,
       ruff and pyright pass on a clean checkout (record the baseline failure set).
 - [ ] Ollama reachable at its OpenAI-compatible endpoint; pull the five local models; one
       smoke generation each through the existing OpenAI-compatible adapter.
-- [ ] Native Anthropic Messages adapter and an OpenAI adapter path, both with Batch API
-      support, behind the existing provider gate, with token and cost accounting into
-      `budget.jsonl` per provider; tests with recorded fixtures, no network in tests.
+- [ ] Provider adapters behind the existing provider gate: native Anthropic Messages, OpenAI,
+      and Meta Model API (Muse Spark 1.3), with Batch API where offered, keys from the
+      environment, token and cost accounting into `budget.jsonl` per provider (reasoning
+      tokens recorded separately); tests with recorded fixtures, no network in tests. Then
+      one bounded smoke call per API model, logged to `budget.jsonl`.
 - [ ] Declared dataset fetcher: refuses anything not in `sources.json`; records URL,
       version, SHA-256; empty or failed download = unavailable.
 - [ ] Declare U2's 30 OpenML datasets in `sources.json`; shortlist 10 new ones against the
