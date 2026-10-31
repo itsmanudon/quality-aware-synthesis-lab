@@ -21,10 +21,10 @@ RANDOM = "combined/random"
 QC = "combined/quality-coverage"
 
 
-def load(run: Path) -> tuple[pd.DataFrame, pd.DataFrame]:
+def load(runs: list[Path]) -> tuple[pd.DataFrame, pd.DataFrame]:
     rows: list[dict[str, Any]] = []
     pools: list[dict[str, Any]] = []
-    for path in sorted((run / "units").glob("*.json")):
+    for path in sorted(p for run in runs for p in (run / "units").glob("*.json")):
         unit = json.loads(path.read_text(encoding="utf-8"))
         key = {k: unit[k] for k in ("dataset_id", "split_seed", "budget_scale", "budget",
                                     "generator", "validation_minority_n")}
@@ -59,7 +59,7 @@ def table(diff: pd.DataFrame) -> str:
 
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--run", type=Path, required=True)
+    parser.add_argument("--run", type=Path, nargs="+", required=True)
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--title", default="Phase 1 step 1: QC vs random on validation")
     args = parser.parse_args(argv)
