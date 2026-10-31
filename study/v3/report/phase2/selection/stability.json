@@ -1,0 +1,50 @@
+[
+ {
+  "pool": "smote",
+  "classifier": "logistic_regression",
+  "designs": 16,
+  "spearman_halves": 0.1428844477123004
+ },
+ {
+  "pool": "smote",
+  "classifier": "random_forest",
+  "designs": 16,
+  "spearman_halves": 0.05232131118519119
+ },
+ {
+  "pool": "smote+round",
+  "classifier": "logistic_regression",
+  "designs": 11,
+  "spearman_halves": 0.10478387094298722
+ },
+ {
+  "pool": "smote+round",
+  "classifier": "random_forest",
+  "designs": 11,
+  "spearman_halves": 0.3416865356836539
+ },
+ {
+  "pool": "union",
+  "classifier": "logistic_regression",
+  "designs": 16,
+  "spearman_halves": 0.48712301635110283
+ },
+ {
+  "pool": "union",
+  "classifier": "random_forest",
+  "designs": 16,
+  "spearman_halves": 0.7058823529411764
+ },
+ {
+  "pool": "union+round",
+  "classifier": "logistic_regression",
+  "designs": 16,
+  "spearman_halves": -0.33554092969199834
+ },
+ {
+  "pool": "union+round",
+  "classifier": "random_forest",
+  "designs": 16,
+  "spearman_halves": 0.09705882352941177
+ }
+]
