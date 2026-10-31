@@ -239,10 +239,14 @@ def collect(model: str, out: Path) -> int:
                     {"custom_id": item["custom_id"], "body": item})
 
         results = providers.collect_batch(spec_model, handle, raw_sink=sink)
+        planned: dict[tuple[str, int], list[dict[str, Any]]] = {}
         for custom_id in handle["custom_ids"]:
             dataset, seed = custom_id.split("__")[:2]
             directory = root / f"{dataset}__{seed}"
-            _, requests = unit_requests(model, dataset, int(seed[1:]), out)
+            key = (dataset, int(seed[1:]))
+            if key not in planned:
+                planned[key] = unit_requests(model, dataset, key[1], out)[1]
+            requests = planned[key]
             request = next(r for r in requests if r["custom_id"] == custom_id)
             result = results.get(custom_id)
             if isinstance(result, providers.CallResult):
