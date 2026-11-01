@@ -5,11 +5,11 @@ Updated by the agent at the end of every session. Gates are approved only by the
 | Field | Value |
 | --- | --- |
 | Phase | 2 finishing / 3 started (user authorised autonomous completion of the whole plan, 2026-11-01); Gate 2 freeze not yet written, so no TEST metric computed |
-| Last finished step | Driver lock (df6e732) and duplicate-collection handling (4fb86d0) after two Haiku drivers ran at once; Haiku 1,330/2,730 requests ok |
-| Runs in progress | restarted 2026-11-01 12:34 IST and still running after a Claude Code restart: U2 generation (`runs/phase3/u2/progress.json`, 134/200), qwen Phase 2 pools (`runs/phase2/llm/progress-qwen2.5_7b-instruct.json`, 21/40), Haiku driver (`runs/phase3/llm/claude-haiku-5-5/batches.jsonl` vs `collected.jsonl`). A second Haiku driver from 12:28 is also alive (the agent may not stop it); the per-model lock keeps them from overlapping |
-| API spend so far | Anthropic $1.142 of $5 (one repeated batch line annotated, not counted twice) · OpenAI $0.177 of $4 · Meta $0.163 of $140 (incl. one reconciled upper bound) |
-| Blockers | none; the Haiku remainder (~1,400 requests) projects to about $2.7 in total, under the $4 line |
-| Next step | Let the three runs finish; then the five-learner check (GPU, after qwen), merged_method and the protocol freeze |
+| Last finished step | qwen Phase 2 pools 40/40 and their evaluation 40/40; quota ablation report `report/phase2/llm-quota/` and blinded label sample `report/phase2/label-sample/` (0cc1ba0) |
+| Runs in progress | five-learner check (`runs/phase2/clf/progress.json`, GPU, started 2026-11-01 ~14:50 IST, ~5-6 h); U2 generation (`runs/phase3/u2/progress.json`, 160+/200); Haiku driver (`runs/phase3/llm/claude-haiku-5-5/batches.jsonl` vs `collected.jsonl`, ~300 requests left) |
+| API spend so far | Anthropic $2.875 of $5 (80% line $4.00; one repeated batch line annotated, not counted twice) · OpenAI $0.177 of $4 · Meta $0.163 of $140 (incl. one reconciled upper bound) |
+| Blockers | none yet. Haiku: ~296 requests left at up to ~$0.005 each (wide datasets) may reach the $4.00 line; the guard then stops before crossing and the remainder needs the user's decision. segment0 has no qwen pool (EMPTY_POOL) |
+| Next step | After the five-learner check: merged_method (beta, rho) and the remaining protocol fields, then freeze + SHA-256 before any TEST metric |
 
 ## Phase 0 checklist
 
