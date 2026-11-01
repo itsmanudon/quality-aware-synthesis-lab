@@ -5,11 +5,11 @@ Updated by the agent at the end of every session. Gates are approved only by the
 | Field | Value |
 | --- | --- |
 | Phase | 2 finishing / 3 started (user authorised autonomous completion of the whole plan, 2026-11-01); Gate 2 freeze not yet written, so no TEST metric computed |
-| Last finished step | Haiku full-run chunk 1 collected; benchmark root built (40/40); Phase 3 pipeline committed |
-| Runs in progress | none: background jobs were stopped by Claude Code for low system memory twice on 2026-11-01 (the second time minutes after a restart, with Docker already off and ~5 GB free); all resumable, not restarted pending the user (see 'Stopped jobs') |
-| API spend so far | Anthropic $0.789 of $5 · OpenAI $0.177 of $4 (luna pilot collected) · Meta $0.163 of $140 (incl. one reconciled upper bound) |
-| Blockers | Claude Code's low-memory reaping stops background jobs even at ~5 GB free; restart needs the user's go-ahead, ideally with CLAUDE_CODE_DISABLE_BG_SHELL_PRESSURE_REAP=1 set when Claude Code starts |
-| Next step | User: say when to restart the jobs (one at a time is gentler on memory) |
+| Last finished step | Driver lock (df6e732) and duplicate-collection handling (4fb86d0) after two Haiku drivers ran at once; Haiku 1,330/2,730 requests ok |
+| Runs in progress | restarted 2026-11-01 12:34 IST and still running after a Claude Code restart: U2 generation (`runs/phase3/u2/progress.json`, 134/200), qwen Phase 2 pools (`runs/phase2/llm/progress-qwen2.5_7b-instruct.json`, 21/40), Haiku driver (`runs/phase3/llm/claude-haiku-5-5/batches.jsonl` vs `collected.jsonl`). A second Haiku driver from 12:28 is also alive (the agent may not stop it); the per-model lock keeps them from overlapping |
+| API spend so far | Anthropic $1.142 of $5 (one repeated batch line annotated, not counted twice) · OpenAI $0.177 of $4 · Meta $0.163 of $140 (incl. one reconciled upper bound) |
+| Blockers | none; the Haiku remainder (~1,400 requests) projects to about $2.7 in total, under the $4 line |
+| Next step | Let the three runs finish; then the five-learner check (GPU, after qwen), merged_method and the protocol freeze |
 
 ## Phase 0 checklist
 
