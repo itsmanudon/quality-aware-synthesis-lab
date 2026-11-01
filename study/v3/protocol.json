@@ -83,6 +83,21 @@
         ],
         "pilot_rule": "first 5 benchmark ids in SHA-256 order of 'study-v3-pilot:<id>'",
         "batch_size_note": "raised from 10 to 20 after the pilot: the Haiku full-run projection at 10 was $3.99 + $0.29 spent, past 80% of the $5 Anthropic cap; prompts are ~2/3 of tokens. Pilot units keep their recorded batch size (10)."
+      },
+      "phase3_scope": {
+        "primary_llm_source": "claude-haiku-5-5, gpt-6-luna and muse-spark-1.3 pools, each used for a unit only when that generator covers it; per-generator merged variants are reported alongside",
+        "complete_runs": {
+          "claude-haiku-5-5": "2,730/2,730 requests ok on all 40 x 5 units (2026-11-01)"
+        },
+        "in_progress_at_draft": [
+          "gpt-6-luna (Batch API)",
+          "muse-spark-1.3 (synchronous; no batch API)"
+        ],
+        "not_run": {
+          "claude-sonnet-5-5, gpt-6.1-terra subsets": "the Haiku and luna runs use most of the Anthropic/OpenAI headroom under the 80% lines",
+          "local Ollama models": "about 2-5 s per record locally (~48,000 records per model): not run in Phase 3; used only in the Phase 2 quota/LLM ablation"
+        },
+        "coverage_rule": "a generator that does not finish on every unit (budget stop, failures) is reported per unit as NO_LLM_POOL; the merged pool of that unit is built from the generators that do cover it, and the merged[no-llm] variant isolates the LLM contribution"
       }
     },
     "non_llm": [
@@ -96,8 +111,8 @@
     "stop_rule": "stop and ask before cumulative spend of any provider passes 80% of its cap (enforced in study/v3/budget.py)",
     "decision": "caps kept as declared (user, Gate 0, 2026-10-31); Phase 3 pilot replaces the cost estimates"
   },
-  "record_budget": null,
-  "record_budget_note": "per dataset/split budget rule to be set from the Phase 1 quota ablation (50% minority vs real ratio); all comparators at the same record budget",
+  "record_budget": "B = min(70, max(30, round(0.5 x inner-TRAIN minority count))) (rcqasyn.empirical.addendum.budget_rule), per dataset and split; every curator and the merged method add exactly B minority rows; generators that may stop short (paper-derived UGO, U2) are evaluated with what they produced",
+  "record_budget_note": "set from the Phase 1 quota ablation; minority-only additions (HYBRID_MINORITY), see generators.llm.phase3.minority_share_reason",
   "comparators": {
     "no_oversampling": [
       "tuned no oversampling",
@@ -166,15 +181,24 @@
     ]
   },
   "statistics": {
-    "unit": "dataset (mean over 5 splits, then over classifiers - aggregation order to freeze at Gate 2)",
-    "tests": [
-      "average ranks + Friedman",
-      "Wilcoxon signed-rank vs each comparator with Holm correction",
-      "median paired difference with bootstrap 95% interval"
+    "unit": "dataset (40 benchmark datasets)",
+    "aggregation": [
+      "per (dataset, method, learner): mean of the available split cells; a (dataset, method, learner) with fewer than 3 of 5 splits available is unavailable",
+      "per (dataset, method) for a pairwise comparison: mean over the learners available for both methods on that dataset",
+      "per (dataset, method) for Friedman / average ranks: mean over the learners available for every method in the set; only datasets where every method in the set is available enter",
+      "every unavailable cell is listed with its reason and counted; no dataset is dropped silently"
     ],
-    "reference": "Demsar 2006"
+    "tests": {
+      "success_family": "Wilcoxon signed-rank, two-sided (scipy zero_method='wilcox', exact where available), merged vs tuned no oversampling and merged vs U2, Holm over these two",
+      "comparator_family": "Wilcoxon signed-rank, two-sided, merged vs each other comparator, Holm over that family",
+      "intervals": "median paired difference with a 95% percentile bootstrap interval over datasets (10,000 resamples, seed 13)",
+      "ranks": "average ranks + Friedman test over the main methods (merged, tuned no oversampling, class-weighted, SMOTE, U2, paper-derived UGO, quality-coverage, random)",
+      "metrics": "the primary metric (F1) for every test; MCC only for the success criterion's no-loss check; AP, recall, coverage and redundancy descriptive"
+    },
+    "reference": "Demsar 2006",
+    "no_other_tests": "no other test is reported as a test; everything else is descriptive (counts, medians)"
   },
-  "success_criterion_proposed": "median F1 gain of the merged method over tuned no oversampling and over U2 alone is positive with Holm-adjusted p < 0.05 across the 40 benchmark datasets, with no significant MCC loss against either. Final wording and size target fixed at Gate 2.",
+  "success_criterion_proposed": "median F1 gain of the merged method over tuned no oversampling and over U2 alone is positive with Holm-adjusted p < 0.05 across the 40 benchmark datasets, with no significant MCC loss against either. Final wording and size target fixed at Gate 2. Superseded by success_criterion at the Gate 2 draft.",
   "out_of_scope_unless_user_decides": [
     "calibrated validity probabilities",
     "risk-aware controller",
@@ -190,5 +214,20 @@
   "ablations_phase2": {
     "quota_and_llm_pool": "fresh small LLM pools from dev inner TRAIN, local Ollama only (no API spend), after the v3 generation prompt is drafted (user, Gate 1, 2026-11-01)"
   },
-  "scope_decision": "success criterion kept as declared; a miss is reported as found; gate diagnostics (structure, pool shortfall, copying) added as a secondary contribution (user, Gate 1, 2026-11-01)"
+  "scope_decision": "success criterion kept as declared; a miss is reported as found; gate diagnostics (structure, pool shortfall, copying) added as a secondary contribution (user, Gate 1, 2026-11-01)",
+  "final_evaluation": {
+    "design": "U2's own protocol: per (method, learner), every candidate of candidate_parameters (U2 search spaces, default first, N_CANDIDATES) is fitted on inner TRAIN (minus removals) + the method's synthetic minority rows and scored on the 20% VALIDATION carve; U2's rule (choose_f1_threshold, then _better) picks the candidate and threshold; the choice is refitted on TRAIN (+ the same rows) and scored once on REAL TEST at that threshold (study/v3/u3_eval.py, pinned ml_ugo code unmodified)",
+    "deviation_from_gate_1_decision_2": "Gate 1 decision 2 replaced the single 20% carve by 5-fold cross-fitting. Cross-fitting is used for Phase 2 method design only. The final evaluation keeps U2's single 20% VALIDATION carve because cross-fitting needs about 5x the fits (200 units x ~20 methods x 5 learners x N_CANDIDATES), which this machine cannot run in the study's time. Declared here as a compute deviation; it applies equally to every method.",
+    "svm_policy": "an RBF SVM cell whose training set exceeds 20,000 rows is reported unavailable (SVM_SIZE_LIMIT) for every method alike; probability-enabled SVC does not finish on the largest datasets on this machine",
+    "mlp_class_weight": "U2's MLP has no class weight: the class-weighted comparator is unavailable for the MLP (NO_CLASS_WEIGHT_IN_U2_MLP)",
+    "tuned_no_oversampling": "the no-oversampling method with the same candidate search and threshold rule",
+    "refusal": "u3_eval.py refuses to read TEST unless --expected-protocol-sha256 equals the SHA-256 of this file (CRLF normalized) recorded in STATUS.md Gates"
+  },
+  "success_criterion": "Met when, across the benchmark datasets: (1) the median paired F1 difference of the merged method minus tuned no oversampling is > 0 and its Holm-adjusted two-sided Wilcoxon p < 0.05; (2) the same for merged minus U2; and (3) neither MCC comparison against those two shows a loss, i.e. not (median MCC difference < 0 and Holm-adjusted p < 0.05). No minimum effect size beyond > 0 (as proposed at Gate 1). A miss is reported as found.",
+  "merged_method": {
+    "status": "PENDING the Phase 2 five-learner check; beta and rho are fixed from it before the freeze",
+    "candidates": "union pool (pool:smote + pool:u2_native + pool:u2_flow_gate + available LLM pools), q = 0.90 gate, boundary-share band beta, keep-fraction rho, then quality-coverage to budget B",
+    "beta": null,
+    "rho": null
+  }
 }
