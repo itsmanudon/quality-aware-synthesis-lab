@@ -107,13 +107,31 @@ def unit_requests(model: str, dataset: str, seed: int, out: Path) -> tuple[Path,
 
 def _state(directory: Path) -> tuple[set[str], dict[str, int]]:
     done = {r["custom_id"] for r in _lines(directory / "calls.jsonl") if r["status"] == "ok"}
+    # Batch requests carry their attempt number in submitted.jsonl, which a duplicate
+    # collection does not touch; counting calls.jsonl lines is only for synchronous calls.
+    submitted: dict[str, int] = {}
+    for r in _lines(directory / "submitted.jsonl"):
+        submitted[r["custom_id"]] = max(submitted.get(r["custom_id"], 0), r["attempt"])
     attempts: dict[str, int] = {}
     for r in _lines(directory / "calls.jsonl"):
-        attempts[r["custom_id"]] = attempts.get(r["custom_id"], 0) + 1
-    for r in _lines(directory / "submitted.jsonl"):
-        if r["custom_id"] not in done:
-            attempts[r["custom_id"]] = max(attempts.get(r["custom_id"], 0), r["attempt"])
+        if r["custom_id"] not in submitted:
+            attempts[r["custom_id"]] = attempts.get(r["custom_id"], 0) + 1
+    for custom_id, attempt in submitted.items():
+        if custom_id not in done:
+            attempts[custom_id] = attempt
     return done, attempts
+
+
+def _unique_calls(directory: Path) -> list[dict[str, Any]]:
+    """calls.jsonl without lines repeated by a duplicate batch collection (first one kept)."""
+    seen: set[str] = set()
+    out = []
+    for r in _lines(directory / "calls.jsonl"):
+        key = json.dumps(r, sort_keys=True)
+        if key not in seen:
+            seen.add(key)
+            out.append(r)
+    return out
 
 
 def _record(directory: Path, request: dict[str, Any], model: str, text: str,
@@ -300,12 +318,14 @@ def summary(model: str, out: Path) -> dict[str, Any]:
     rows = {}
     for directory in sorted(p for p in root.glob("oml*__s*") if p.is_dir()):
         manifest = json.loads((directory / "manifest.json").read_text(encoding="utf-8"))
-        calls = _lines(directory / "calls.jsonl")
+        calls = _unique_calls(directory)
+        candidates = {(c["custom_id"], c["item_index"])
+                      for c in _lines(directory / "candidates.jsonl")}
         rows[directory.name] = {
             "planned": manifest["planned_requests"],
             "ok": sum(c["status"] == "ok" for c in calls),
             "failed": sum(c["status"] == "failed" for c in calls),
-            "candidates": len(_lines(directory / "candidates.jsonl")),
+            "candidates": len(candidates),
             "requested": manifest["pool_factor"] * manifest["budget"],
             "output_tokens": sum(c.get("output_tokens") or 0 for c in calls),
             "input_tokens": sum(c.get("input_tokens") or 0 for c in calls)}

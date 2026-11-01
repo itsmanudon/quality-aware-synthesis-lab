@@ -230,8 +230,17 @@ def load_pool(directory: Path, spec: Any) -> tuple[pd.DataFrame, dict[str, int]]
     cells or columns).
     """
     expected = {*spec.feature_columns, spec.target_column}
-    rows, counts = [], {"returned": 0, "keyset_mismatch": 0}
+    rows, counts = [], {"returned": 0, "keyset_mismatch": 0, "duplicate_lines": 0}
+    seen: set[tuple[Any, ...]] = set()
     for record in _lines(directory / "candidates.jsonl"):
+        # A batch collected twice appends the same response again; one call's item counts once.
+        identity = (record.get("requested_class"), record.get("batch_index"),
+                    record.get("item_index"))
+        if None not in identity:
+            if identity in seen:
+                counts["duplicate_lines"] += 1
+                continue
+            seen.add(identity)
         counts["returned"] += 1
         data = record["data"]
         if set(data) != expected:

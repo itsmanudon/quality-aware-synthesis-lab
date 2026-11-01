@@ -67,7 +67,7 @@ def test_load_pool_keeps_exact_keysets_unmodified(tmp_path: Path) -> None:
     (tmp_path / "candidates.jsonl").write_text(
         "\n".join(json.dumps(line) for line in lines) + "\n", encoding="utf-8")
     frame, counts = load_pool(tmp_path, SPEC)
-    assert counts == {"returned": 3, "keyset_mismatch": 2}
+    assert counts == {"returned": 3, "keyset_mismatch": 2, "duplicate_lines": 0}
     assert frame.to_dict(orient="records") == [{"a": 1.5, "k": "x", "Class": "positive"}]
 
 
@@ -86,3 +86,18 @@ def test_label_sample_round_robins_models_and_is_deterministic(tmp_path: Path) -
     assert rows == sample(tmp_path, ["m_a", "m_b"], ["toy"], 4)
     assert all(r["review_id"].startswith("v3r-") for r in rows)
     assert HUMAN_COLUMNS[0] == "human_valid" and len(HUMAN_COLUMNS) == 5
+
+
+def test_load_pool_counts_a_repeated_item_once(tmp_path) -> None:
+    from types import SimpleNamespace
+
+    from study.v3.llm_pools import load_pool
+    spec = SimpleNamespace(feature_columns=["x"], target_column="y")
+    row = {"requested_class": "positive", "batch_index": 0, "item_index": 0,
+           "data": {"x": 1, "y": "positive"}}
+    (tmp_path / "candidates.jsonl").write_text(
+        "\n".join(json.dumps(r) for r in (row, row, {**row, "item_index": 1})) + "\n",
+        encoding="utf-8")
+    frame, counts = load_pool(tmp_path, spec)
+    assert len(frame) == 2
+    assert counts == {"returned": 2, "keyset_mismatch": 0, "duplicate_lines": 1}

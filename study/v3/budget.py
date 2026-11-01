@@ -55,10 +55,13 @@ def spend(provider: str, path: Path = LEDGER) -> Spend:
     rows = [r for r in read_ledger(path) if r.get("provider") == provider]
     bounds = {r["reconciles"]: float(r["cost_usd_upper_bound"]) for r in rows
               if r.get("kind") == "reconciliation"}
+    repeated = {r["repeats"] for r in rows if r.get("kind") == "duplicate_line"}
     known = 0.0
     unknown = 0
     for row in rows:
-        if row.get("kind") == "reconciliation":
+        if row.get("kind") in ("reconciliation", "duplicate_line"):
+            continue
+        if row.get("logged_at") in repeated:
             continue
         cost = row.get("cost_usd")
         if cost is None:
@@ -83,6 +86,30 @@ def reconcile(provider: str, logged_at: str, model: str, *, prompt_chars: int,
     return append({"kind": "reconciliation", "provider": provider, "model": model,
                    "reconciles": logged_at, "cost_usd_upper_bound": round(bound, 10),
                    "basis": basis}, path=path)
+
+
+def mark_duplicate(provider: str, logged_at: str, basis: str,
+                   path: Path = LEDGER) -> dict[str, Any]:
+    """Annotate a ledger line that repeats an earlier one (the same batch logged twice).
+
+    Both original lines are kept. ``spend`` skips the annotated repeat. Only a line equal to
+    an earlier one in every field except ``logged_at`` qualifies, and only one with a batch id.
+    """
+    rows = [r for r in read_ledger(path) if r.get("provider") == provider]
+    targets = [i for i, r in enumerate(rows) if r.get("logged_at") == logged_at]
+    if len(targets) != 1:
+        raise ValueError("mark_duplicate needs exactly one line with that timestamp")
+    line = {k: v for k, v in rows[targets[0]].items() if k != "logged_at"}
+    if not line.get("batch_id"):
+        raise ValueError("only a batch line can repeat")
+    earlier = [r for r in rows[:targets[0]]
+               if {k: v for k, v in r.items() if k != "logged_at"} == line]
+    if not earlier:
+        raise ValueError("no earlier identical line; not a duplicate")
+    if any(r.get("kind") == "duplicate_line" and r.get("repeats") == logged_at for r in rows):
+        raise ValueError("already marked")
+    return append({"kind": "duplicate_line", "provider": provider, "repeats": logged_at,
+                   "first_logged_at": earlier[0]["logged_at"], "basis": basis}, path=path)
 
 
 def worst_case_cost(model: str, *, prompt_chars: int, max_output_tokens: int,
