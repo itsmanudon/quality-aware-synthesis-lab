@@ -19,9 +19,12 @@ appended to ``budget.jsonl``. A request that fails or errors is retried at most 
 from __future__ import annotations
 
 import argparse
+import contextlib
 import hashlib
 import json
+import os
 import time
+from collections.abc import Iterator
 from pathlib import Path
 from typing import Any
 
@@ -168,12 +171,43 @@ def sync(model: str, units: list[tuple[str, int]], out: Path) -> None:
         print(model, dataset, seed, f"{time.perf_counter() - started:.0f}s", flush=True)
 
 
+LOCK_STALE_SECONDS = 3 * 3600
+
+
+@contextlib.contextmanager
+def _exclusive(root: Path) -> Iterator[bool]:
+    """One collect/submit at a time per model directory, across processes.
+
+    Two drivers on one model could otherwise collect the same ended batch twice (duplicate
+    records and ledger lines) or both size a chunk to the same headroom and together pass the
+    80% line. A lock older than LOCK_STALE_SECONDS is treated as left by a dead process.
+    """
+    root.mkdir(parents=True, exist_ok=True)
+    lock = root / ".driver.lock"
+    if lock.exists() and time.time() - lock.stat().st_mtime > LOCK_STALE_SECONDS:
+        lock.unlink(missing_ok=True)
+    try:
+        fd = os.open(lock, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+    except FileExistsError:
+        yield False
+        return
+    try:
+        os.write(fd, f"{os.getpid()} {time.time():.0f}".encode())
+        os.close(fd)
+        yield True
+    finally:
+        lock.unlink(missing_ok=True)
+
+
 def submit(model: str, units: list[tuple[str, int]], out: Path, max_chunks: int | None = None
-           ) -> int:
+           ) -> int | None:
+    """Submit pending requests; None (nothing sent) while any submitted batch is uncollected."""
     spec_model = providers.MODELS[model]
     pending: list[tuple[Path, dict[str, Any], int]] = []
     root = out / model.replace(":", "_")
     collected = {h["batch_id"] for h in _lines(root / "collected.jsonl")}
+    if any(h["batch_id"] not in collected for h in _lines(root / "batches.jsonl")):
+        return None  # in-flight cost is invisible to the guard until collected
     for dataset, seed in units:
         directory, requests = unit_requests(model, dataset, seed, out)
         done, attempts = _state(directory)
@@ -291,10 +325,15 @@ def main(argv: list[str] | None = None) -> int:
     units = [(d, s) for d in (args.datasets or benchmark_ids()) for s in args.seeds]
     if args.command == "sync":
         sync(args.model, units, args.out)
-    elif args.command == "submit":
-        print("pending:", submit(args.model, units, args.out, args.max_chunks))
-    elif args.command == "collect":
-        print("open batches:", collect(args.model, args.out))
+    elif args.command in ("submit", "collect"):
+        with _exclusive(args.out / args.model.replace(":", "_")) as owned:
+            if not owned:  # another driver holds the model; the caller retries later
+                print("pending: busy" if args.command == "submit" else "open batches: busy")
+            elif args.command == "submit":
+                pending = submit(args.model, units, args.out, args.max_chunks)
+                print("pending:", "waiting (uncollected batch)" if pending is None else pending)
+            else:
+                print("open batches:", collect(args.model, args.out))
     else:
         rows = summary(args.model, args.out)
         print(json.dumps(rows, indent=1))
