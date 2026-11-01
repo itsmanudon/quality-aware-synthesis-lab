@@ -135,3 +135,21 @@ def test_utility_filter_keeps_at_least_the_budget() -> None:
     assert utility_filter(eligible, values, 0.0, 2, ids) == [3, 7]
     assert len(utility_filter(eligible, values, 0.5, 2, ids)) == 4
     assert len(utility_filter(eligible, values, 0.25, 3, ids)) == 3
+
+
+def test_report_lists_pools_that_never_scored(tmp_path) -> None:
+    import json as _json
+
+    from study.v3.phase2_report import cells
+    units = tmp_path / "units"
+    units.mkdir()
+    for fold in range(5):
+        unit = {"dataset_id": "d", "split_seed": 13, "fold": fold, "budget": 5,
+                "heldout_y": [0, 1], "scores": {"REAL_INNER_TRAIN|lr": [0.1, 0.9]},
+                "pools": {"llm": {"candidates_n": 0}},
+                "rows": [{"method": "smote/*", "status": "unavailable",
+                          "reason": "MATCHED_BUDGET_SHORTFALL"}]}
+        (units / f"u{fold}.json").write_text(_json.dumps(unit), encoding="utf-8")
+    frame, _ = cells(tmp_path)
+    missing = frame[frame["status"] == "unavailable"].set_index("method")["reason"].to_dict()
+    assert missing == {"llm/*": "EMPTY_POOL", "smote/*": "MATCHED_BUDGET_SHORTFALL"}

@@ -1,0 +1,129 @@
+dataset_id,split_seed,classifier,pool,design,value,minus_random,minus_qc,minus_real
+Abalone19,13,logistic_regression,llm,qc-quota-0.5,0.04928837864219235,0.013671881816659043,,0.0023119946469410124
+Abalone19,13,random_forest,llm,qc-quota-0.5,0.04989972700428905,0.02003187975550908,,0.030721313407459136
+Ecoli4,13,logistic_regression,llm,qc-quota-0.5,0.9388888888888889,-0.011936507936507912,,-0.023015873015872934
+Ecoli4,13,random_forest,llm,qc-quota-0.5,0.9416666666666667,-0.012047619047618863,,0.07309523809523799
+abalone9-18,13,logistic_regression,llm,qc-quota-0.5,0.5907649865784131,0.006519953971327874,,0.023437564545108924
+abalone9-18,13,random_forest,llm,qc-quota-0.5,0.41038065273533253,0.013309298848796447,,0.031433822471866935
+ecoli1,13,logistic_regression,llm,qc-quota-0.5,0.8952806641691418,0.0018747031523986823,,-0.0021423143849612636
+ecoli1,13,random_forest,llm,qc-quota-0.5,0.8236948519291559,-0.01197371387258006,,-0.03583512088418794
+segment0,13,logistic_regression,llm,qc-quota-0.5,,,,
+segment0,13,random_forest,llm,qc-quota-0.5,,,,
+vehicle0,13,logistic_regression,llm,qc-quota-0.5,0.9445162140893737,-0.002891131729630403,,-0.005458192311275867
+vehicle0,13,random_forest,llm,qc-quota-0.5,0.9666774697777083,-0.002973369094988576,,-0.006698334452964971
+yeast3,13,logistic_regression,llm,qc-quota-0.5,0.7819536793535705,-0.0022680745731757934,,0.0004399344178168674
+yeast3,13,random_forest,llm,qc-quota-0.5,0.7899840969127633,0.011685633187783706,,0.0034876150904329384
+yeast4,13,logistic_regression,llm,qc-quota-0.5,0.44728480096649015,-0.0018722958495849262,,0.0068176260510876
+yeast4,13,random_forest,llm,qc-quota-0.5,0.4523096186632233,0.015942860893811417,,0.010812913228662069
+Abalone19,13,logistic_regression,llm,qc-quota-1.0,0.031920116040917615,-0.003696380784615691,,-0.015056267954333721
+Abalone19,13,random_forest,llm,qc-quota-1.0,0.02876059543193219,-0.0011072518168477805,,0.009582181835102274
+Ecoli4,13,logistic_regression,llm,qc-quota-1.0,0.9388888888888889,-0.011936507936507912,,-0.023015873015872934
+Ecoli4,13,random_forest,llm,qc-quota-1.0,0.9666666666666666,0.012952380952381048,,0.0980952380952379
+abalone9-18,13,logistic_regression,llm,qc-quota-1.0,0.5707303430762246,-0.013514689530860657,,0.0034029210429203927
+abalone9-18,13,random_forest,llm,qc-quota-1.0,0.3697264892001316,-0.027344864686404458,,-0.00922034106333397
+ecoli1,13,logistic_regression,llm,qc-quota-1.0,0.8921242253780279,-0.0012817356387151424,,-0.005298753176075088
+ecoli1,13,random_forest,llm,qc-quota-1.0,0.8301844479127464,-0.005484117888989615,,-0.029345524900597497
+segment0,13,logistic_regression,llm,qc-quota-1.0,,,,
+segment0,13,random_forest,llm,qc-quota-1.0,,,,
+vehicle0,13,logistic_regression,llm,qc-quota-1.0,0.9439448589516951,-0.0034624868673089892,,-0.006029547448954453
+vehicle0,13,random_forest,llm,qc-quota-1.0,0.9744273383877522,0.004776499515055321,,0.001051534157078926
+yeast3,13,logistic_regression,llm,qc-quota-1.0,0.7827120267099164,-0.0015097272168299591,,0.0011982817741627017
+yeast3,13,random_forest,llm,qc-quota-1.0,0.7909211796929273,0.012622715967947729,,0.004424697870596961
+yeast4,13,logistic_regression,llm,qc-quota-1.0,0.4231083919344785,-0.02604870488159655,,-0.017358782980924026
+yeast4,13,random_forest,llm,qc-quota-1.0,0.44007638503082,0.003709627261408166,,-0.001420320403741182
+Abalone19,13,logistic_regression,llm,qc-quota-real,0.051489095399952334,0.015872598574419028,,0.0045127114047009975
+Abalone19,13,random_forest,llm,qc-quota-real,0.03388832367262464,0.00402047642384467,,0.014709910075794724
+Ecoli4,13,logistic_regression,llm,qc-quota-real,0.95,-0.0008253968253968402,,-0.011904761904761862
+Ecoli4,13,random_forest,llm,qc-quota-real,0.9666666666666666,0.012952380952381048,,0.0980952380952379
+abalone9-18,13,logistic_regression,llm,qc-quota-real,0.5948195733026217,0.010574540695536427,,0.027492151269317477
+abalone9-18,13,random_forest,llm,qc-quota-real,0.39949754488002276,0.0024261909934866766,,0.020550714616557164
+ecoli1,13,logistic_regression,llm,qc-quota-real,0.8990375051542434,0.005631544137500333,,0.0016145266001403868
+ecoli1,13,random_forest,llm,qc-quota-real,0.843665342269772,0.007996776468035982,,-0.0158646305435719
+segment0,13,logistic_regression,llm,qc-quota-real,,,,
+segment0,13,random_forest,llm,qc-quota-real,,,,
+vehicle0,13,logistic_regression,llm,qc-quota-real,0.9460081693178694,-0.0013991765011347468,,-0.003966237082780211
+vehicle0,13,random_forest,llm,qc-quota-real,0.9705246637166199,0.0008738248439230656,,-0.0028511405140533297
+yeast3,13,logistic_regression,llm,qc-quota-real,0.782984471582338,-0.0012372823444083414,,0.0014707266465843194
+yeast3,13,random_forest,llm,qc-quota-real,0.7961810223314352,0.0178825586064556,,0.009684540509104833
+yeast4,13,logistic_regression,llm,qc-quota-real,0.4460878843051431,-0.0030692125109319512,,0.005620709389740575
+yeast4,13,random_forest,llm,qc-quota-real,0.45981294176247517,0.023446183993063308,,0.01831623632791396
+Abalone19,13,logistic_regression,llm,random(mean of 5),0.035616496825533306,0.0,,-0.01135988716971803
+Abalone19,13,random_forest,llm,random(mean of 5),0.029867847248779972,0.0,,0.010689433651950055
+Ecoli4,13,logistic_regression,llm,random(mean of 5),0.9508253968253968,0.0,,-0.011079365079365022
+Ecoli4,13,random_forest,llm,random(mean of 5),0.9537142857142855,0.0,,0.08514285714285685
+abalone9-18,13,logistic_regression,llm,random(mean of 5),0.5842450326070853,0.0,,0.01691761057378105
+abalone9-18,13,random_forest,llm,random(mean of 5),0.3970713538865361,0.0,,0.018124523623070488
+ecoli1,13,logistic_regression,llm,random(mean of 5),0.8934059610167431,0.0,,-0.004017017537359946
+ecoli1,13,random_forest,llm,random(mean of 5),0.835668565801736,0.0,,-0.023861407011607882
+segment0,13,logistic_regression,llm,random(mean of 5),,0.0,,
+segment0,13,random_forest,llm,random(mean of 5),,0.0,,
+vehicle0,13,logistic_regression,llm,random(mean of 5),0.9474073458190041,0.0,,-0.002567060581645464
+vehicle0,13,random_forest,llm,random(mean of 5),0.9696508388726969,0.0,,-0.0037249653579763953
+yeast3,13,logistic_regression,llm,random(mean of 5),0.7842217539267463,0.0,,0.002708008990992661
+yeast3,13,random_forest,llm,random(mean of 5),0.7782984637249796,0.0,,-0.008198018097350768
+yeast4,13,logistic_regression,llm,random(mean of 5),0.4491570968160751,0.0,,0.008689921900672526
+yeast4,13,random_forest,llm,random(mean of 5),0.43636675776941186,0.0,,-0.005129947665149348
+Abalone19,13,logistic_regression,llm+round,qc-quota-0.5,,,,
+Abalone19,13,random_forest,llm+round,qc-quota-0.5,,,,
+Ecoli4,13,logistic_regression,llm+round,qc-quota-0.5,,,,
+Ecoli4,13,random_forest,llm+round,qc-quota-0.5,,,,
+abalone9-18,13,logistic_regression,llm+round,qc-quota-0.5,,,,
+abalone9-18,13,random_forest,llm+round,qc-quota-0.5,,,,
+ecoli1,13,logistic_regression,llm+round,qc-quota-0.5,,,,
+ecoli1,13,random_forest,llm+round,qc-quota-0.5,,,,
+segment0,13,logistic_regression,llm+round,qc-quota-0.5,,,,
+segment0,13,random_forest,llm+round,qc-quota-0.5,,,,
+vehicle0,13,logistic_regression,llm+round,qc-quota-0.5,0.9445162140893737,-0.002891131729630403,,-0.005458192311275867
+vehicle0,13,random_forest,llm+round,qc-quota-0.5,0.9666774697777083,-0.002973369094988576,,-0.006698334452964971
+yeast3,13,logistic_regression,llm+round,qc-quota-0.5,,,,
+yeast3,13,random_forest,llm+round,qc-quota-0.5,,,,
+yeast4,13,logistic_regression,llm+round,qc-quota-0.5,,,,
+yeast4,13,random_forest,llm+round,qc-quota-0.5,,,,
+Abalone19,13,logistic_regression,llm+round,qc-quota-1.0,,,,
+Abalone19,13,random_forest,llm+round,qc-quota-1.0,,,,
+Ecoli4,13,logistic_regression,llm+round,qc-quota-1.0,,,,
+Ecoli4,13,random_forest,llm+round,qc-quota-1.0,,,,
+abalone9-18,13,logistic_regression,llm+round,qc-quota-1.0,,,,
+abalone9-18,13,random_forest,llm+round,qc-quota-1.0,,,,
+ecoli1,13,logistic_regression,llm+round,qc-quota-1.0,,,,
+ecoli1,13,random_forest,llm+round,qc-quota-1.0,,,,
+segment0,13,logistic_regression,llm+round,qc-quota-1.0,,,,
+segment0,13,random_forest,llm+round,qc-quota-1.0,,,,
+vehicle0,13,logistic_regression,llm+round,qc-quota-1.0,0.9439448589516951,-0.0034624868673089892,,-0.006029547448954453
+vehicle0,13,random_forest,llm+round,qc-quota-1.0,0.9744273383877522,0.004776499515055321,,0.001051534157078926
+yeast3,13,logistic_regression,llm+round,qc-quota-1.0,,,,
+yeast3,13,random_forest,llm+round,qc-quota-1.0,,,,
+yeast4,13,logistic_regression,llm+round,qc-quota-1.0,,,,
+yeast4,13,random_forest,llm+round,qc-quota-1.0,,,,
+Abalone19,13,logistic_regression,llm+round,qc-quota-real,,,,
+Abalone19,13,random_forest,llm+round,qc-quota-real,,,,
+Ecoli4,13,logistic_regression,llm+round,qc-quota-real,,,,
+Ecoli4,13,random_forest,llm+round,qc-quota-real,,,,
+abalone9-18,13,logistic_regression,llm+round,qc-quota-real,,,,
+abalone9-18,13,random_forest,llm+round,qc-quota-real,,,,
+ecoli1,13,logistic_regression,llm+round,qc-quota-real,,,,
+ecoli1,13,random_forest,llm+round,qc-quota-real,,,,
+segment0,13,logistic_regression,llm+round,qc-quota-real,,,,
+segment0,13,random_forest,llm+round,qc-quota-real,,,,
+vehicle0,13,logistic_regression,llm+round,qc-quota-real,0.9460081693178694,-0.0013991765011347468,,-0.003966237082780211
+vehicle0,13,random_forest,llm+round,qc-quota-real,0.9705246637166199,0.0008738248439230656,,-0.0028511405140533297
+yeast3,13,logistic_regression,llm+round,qc-quota-real,,,,
+yeast3,13,random_forest,llm+round,qc-quota-real,,,,
+yeast4,13,logistic_regression,llm+round,qc-quota-real,,,,
+yeast4,13,random_forest,llm+round,qc-quota-real,,,,
+Abalone19,13,logistic_regression,llm+round,random(mean of 5),,0.0,,
+Abalone19,13,random_forest,llm+round,random(mean of 5),,0.0,,
+Ecoli4,13,logistic_regression,llm+round,random(mean of 5),,0.0,,
+Ecoli4,13,random_forest,llm+round,random(mean of 5),,0.0,,
+abalone9-18,13,logistic_regression,llm+round,random(mean of 5),,0.0,,
+abalone9-18,13,random_forest,llm+round,random(mean of 5),,0.0,,
+ecoli1,13,logistic_regression,llm+round,random(mean of 5),,0.0,,
+ecoli1,13,random_forest,llm+round,random(mean of 5),,0.0,,
+segment0,13,logistic_regression,llm+round,random(mean of 5),,0.0,,
+segment0,13,random_forest,llm+round,random(mean of 5),,0.0,,
+vehicle0,13,logistic_regression,llm+round,random(mean of 5),0.9474073458190041,0.0,,-0.002567060581645464
+vehicle0,13,random_forest,llm+round,random(mean of 5),0.9696508388726969,0.0,,-0.0037249653579763953
+yeast3,13,logistic_regression,llm+round,random(mean of 5),,0.0,,
+yeast3,13,random_forest,llm+round,random(mean of 5),,0.0,,
+yeast4,13,logistic_regression,llm+round,random(mean of 5),,0.0,,
+yeast4,13,random_forest,llm+round,random(mean of 5),,0.0,,

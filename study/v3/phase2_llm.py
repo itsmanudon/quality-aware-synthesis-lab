@@ -63,8 +63,10 @@ def run_unit(model: str, dataset: str, split_seed: int, fold: int, pools_dir: Pa
         "pools": {}, "scores": {}, "rows": []}
     features = list(spec.feature_columns)
     inner_rows = {digest({k: r[k] for k in features}) for r in inner.to_dict(orient="records")}
-    references = {digest({k: loaded.frame.loc[i, k] for k in features})
-                  for i in manifest["reference_row_ids"]}
+    # to_dict(orient="records") yields Python scalars, as for inner_rows above; .loc[i, k]
+    # yields numpy int64 on integer columns, which JSON cannot encode and would digest apart
+    references = {digest(r) for r in loaded.frame.loc[
+        list(manifest["reference_row_ids"]), features].to_dict(orient="records")}
 
     def add(name: str, train: pd.DataFrame, **extra: Any) -> None:
         for classifier in CLASSIFIERS:

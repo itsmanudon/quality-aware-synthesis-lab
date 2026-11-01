@@ -174,7 +174,7 @@ Spearman correlation of the design rankings (median F1 minus random) between the
 | union+round | logistic_regression | 16 | -0.34 |
 | union+round | random_forest | 16 | +0.10 |
 
-## Unavailable cells: 102
+## Unavailable cells: 115
 
 - Ecoli4 union/boundary0.25/rho0.25+qc: 8
 - Ecoli4 union/boundary0.5/rho0.25+qc: 8
@@ -191,10 +191,14 @@ Spearman correlation of the design rankings (median F1 minus random) between the
 - vehicle0 smote+round/boundary0.5/rho0.25+qc: 10
 - vehicle0 smote+round/boundary0.75/rho0.25+qc: 10
 - vehicle0 smote+round/boundary0/rho0.25+qc: 8
+- vehicle0 smote+round/boundary0/rho0.25+qc: 1 (MATCHED_BUDGET_SHORTFALL)
 - vehicle0 smote+round/u2/rho0.25+qc: 6
+- vehicle0 smote+round/u2/rho0.25+qc: 2 (MATCHED_BUDGET_SHORTFALL)
+- vehicle0 smote/*: 5 (MATCHED_BUDGET_SHORTFALL)
+- vehicle0 union/*: 5 (MATCHED_BUDGET_SHORTFALL)
 - yeast3 smote/boundary0/rho0.25+qc: 2
 
-## Pools (summed over 5 splits x 5 folds)
+## Pools (summed over 5 split(s) x 5 folds)
 
 | dataset | pool | candidates | schema | combined admitted | budget sum |
 | --- | --- | --- | --- | --- | --- |

@@ -54,6 +54,25 @@ def cells(run: Path) -> tuple[pd.DataFrame, list[dict[str, Any]]]:
                          **{k: pooled[k] for k in ("f1", "f1_default", "mcc", "mcc_default",
                                                    "average_precision", "minority_recall",
                                                    "minority_n")}})
+        # A design that never produced scores (e.g. an empty pool, MATCHED_BUDGET_SHORTFALL)
+        # has no score key at all; list it so a missing dataset is never silently dropped.
+        reasons: dict[str, set[str]] = defaultdict(set)
+        for unit in by_fold.values():
+            for row in unit.get("rows", []):
+                if row.get("status") != "ok" and row.get("method"):
+                    reasons[row["method"]].add(str(row.get("reason")))
+        for unit in by_fold.values():
+            for name, info in unit.get("pools", {}).items():
+                if info.get("candidates_n") == 0:
+                    reasons[f"{name}/*"].add("EMPTY_POOL")
+        scored = {k.split("|")[0] for k in keys}
+        for method, why in sorted(reasons.items()):
+            if method.endswith("/*") and any(s.startswith(method[:-1]) for s in scored):
+                continue
+            if method not in scored:
+                rows.append({"dataset_id": dataset, "split_seed": seed, "method": method,
+                             "classifier": "*", "status": "unavailable",
+                             "reason": ";".join(sorted(why))})
         for fold, unit in by_fold.items():
             for name, info in unit["pools"].items():
                 pool_rows.append({"dataset_id": dataset, "split_seed": seed, "fold": fold,
@@ -186,16 +205,28 @@ def report(run: Path, out: Path) -> str:
     unavailable = frame[frame["status"] != "ok"]
     lines += ["", f"## Unavailable cells: {len(unavailable)}", ""]
     if len(unavailable):
-        counts = unavailable.groupby(["dataset_id", "method"]).size()
-        lines += [f"- {d} {m}: {n}" for (d, m), n in counts.items()]
+        if "reason" not in unavailable.columns:
+            unavailable = unavailable.assign(reason="")
+        counts = unavailable.fillna({"reason": ""}).groupby(
+            ["dataset_id", "method", "reason"]).size()
+        lines += [f"- {d} {m}: {n}" + (f" ({r})" if r else "")
+                  for (d, m, r), n in counts.items()]
     if not pools.empty:
         agg = pools.groupby(["dataset_id", "pool"]).sum(numeric_only=True)
-        lines += ["", "## Pools (summed over 5 splits x 5 folds)", "",
-                  "| dataset | pool | candidates | schema | combined admitted | budget sum |",
-                  "| --- | --- | --- | --- | --- | --- |"]
+        # phase2.py names the counts schema_n / combined_n; phase2_llm.py *_admitted_n
+        schema = "schema_n" if "schema_n" in agg.columns else "schema_admitted_n"
+        combined = "combined_n" if "combined_n" in agg.columns else "combined_admitted_n"
+        copies = [c for c in ("exact_copy_of_inner_train_n", "exact_copy_of_reference_n",
+                              "exact_duplicate_within_pool_n") if c in agg.columns]
+        splits = pools.groupby("dataset_id")["split_seed"].nunique().max()
+        lines += ["", f"## Pools (summed over {splits} split(s) x 5 folds)", "",
+                  ("| dataset | pool | candidates | schema | combined admitted | budget sum |"
+                   + "".join(f" {c.removesuffix('_n').replace('_', ' ')} |" for c in copies)),
+                  "| --- | --- | --- | --- | --- | --- |" + " --- |" * len(copies)]
         for (d, p), r in agg.iterrows():
-            lines.append(f"| {d} | {p} | {int(r['candidates_n'])} | {int(r['schema_n'])} | "
-                         f"{int(r['combined_n'])} | {int(r['budget'])} |")
+            lines.append(f"| {d} | {p} | {int(r['candidates_n'])} | {int(r[schema])} | "
+                         f"{int(r[combined])} | {int(r['budget'])} |"
+                         + "".join(f" {int(r[c])} |" for c in copies))
         repair_cols = [c for c in pools.columns if c.startswith("repair_")]
         if repair_cols:
             rep = pools[pools["pool"].str.endswith("+round")].groupby(

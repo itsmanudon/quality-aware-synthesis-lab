@@ -1,0 +1,122 @@
+{
+ "dataset_id": "vehicle0",
+ "target": {
+  "target_column": "class",
+  "minority_label": "positive",
+  "literal_labels": [
+   "negative",
+   "positive"
+  ],
+  "semantic_class_membership": "UNVERIFIED"
+ },
+ "fields": [
+  {
+   "name": "compactness",
+   "type": "numerical",
+   "source_declaration": "integer [73, 119]",
+   "documented_categories": []
+  },
+  {
+   "name": "circularity",
+   "type": "numerical",
+   "source_declaration": "integer [33, 59]",
+   "documented_categories": []
+  },
+  {
+   "name": "distance_circularity",
+   "type": "numerical",
+   "source_declaration": "integer [40, 112]",
+   "documented_categories": []
+  },
+  {
+   "name": "radius_ratio",
+   "type": "numerical",
+   "source_declaration": "integer [104, 333]",
+   "documented_categories": []
+  },
+  {
+   "name": "praxis_aspect_ratio",
+   "type": "numerical",
+   "source_declaration": "integer [47, 138]",
+   "documented_categories": []
+  },
+  {
+   "name": "max_length_aspect_ratio",
+   "type": "numerical",
+   "source_declaration": "integer [2, 55]",
+   "documented_categories": []
+  },
+  {
+   "name": "scatter_ratio",
+   "type": "numerical",
+   "source_declaration": "integer [112, 265]",
+   "documented_categories": []
+  },
+  {
+   "name": "elongatedness",
+   "type": "numerical",
+   "source_declaration": "integer [26, 61]",
+   "documented_categories": []
+  },
+  {
+   "name": "praxis_rectangular",
+   "type": "numerical",
+   "source_declaration": "integer [17, 29]",
+   "documented_categories": []
+  },
+  {
+   "name": "length_rectangular",
+   "type": "numerical",
+   "source_declaration": "integer [118, 188]",
+   "documented_categories": []
+  },
+  {
+   "name": "major_variance",
+   "type": "numerical",
+   "source_declaration": "integer [130, 320]",
+   "documented_categories": []
+  },
+  {
+   "name": "minor_variance",
+   "type": "numerical",
+   "source_declaration": "integer [184, 1018]",
+   "documented_categories": []
+  },
+  {
+   "name": "gyration_radius",
+   "type": "numerical",
+   "source_declaration": "integer [109, 268]",
+   "documented_categories": []
+  },
+  {
+   "name": "major_skewness",
+   "type": "numerical",
+   "source_declaration": "integer [59, 135]",
+   "documented_categories": []
+  },
+  {
+   "name": "minor_skewness",
+   "type": "numerical",
+   "source_declaration": "integer [0, 22]",
+   "documented_categories": []
+  },
+  {
+   "name": "minor_kurtosis",
+   "type": "numerical",
+   "source_declaration": "integer [0, 41]",
+   "documented_categories": []
+  },
+  {
+   "name": "major_kurtosis",
+   "type": "numerical",
+   "source_declaration": "integer [176, 206]",
+   "documented_categories": []
+  },
+  {
+   "name": "hollows_ratio",
+   "type": "numerical",
+   "source_declaration": "integer [181, 211]",
+   "documented_categories": []
+  }
+ ]
+}

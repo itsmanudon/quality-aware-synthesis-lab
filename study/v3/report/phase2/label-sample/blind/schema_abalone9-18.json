@@ -1,0 +1,66 @@
+{
+ "dataset_id": "abalone9-18",
+ "target": {
+  "target_column": "class",
+  "minority_label": "positive",
+  "literal_labels": [
+   "negative",
+   "positive"
+  ],
+  "semantic_class_membership": "UNVERIFIED"
+ },
+ "fields": [
+  {
+   "name": "sex",
+   "type": "categorical",
+   "source_declaration": "{M, F, I}",
+   "documented_categories": [
+    "M",
+    "F",
+    "I"
+   ]
+  },
+  {
+   "name": "length",
+   "type": "numerical",
+   "source_declaration": "real [0.075, 0.815]",
+   "documented_categories": []
+  },
+  {
+   "name": "diameter",
+   "type": "numerical",
+   "source_declaration": "real [0.055, 0.65]",
+   "documented_categories": []
+  },
+  {
+   "name": "height",
+   "type": "numerical",
+   "source_declaration": "real [0.0, 1.13]",
+   "documented_categories": []
+  },
+  {
+   "name": "whole_weight",
+   "type": "numerical",
+   "source_declaration": "real [0.0020, 2.8255]",
+   "documented_categories": []
+  },
+  {
+   "name": "shucked_weight",
+   "type": "numerical",
+   "source_declaration": "real [0.0010, 1.488]",
+   "documented_categories": []
+  },
+  {
+   "name": "viscera_weight",
+   "type": "numerical",
+   "source_declaration": "real [5.0E-4, 0.76]",
+   "documented_categories": []
+  },
+  {
+   "name": "shell_weight",
+   "type": "numerical",
+   "source_declaration": "real [0.0015, 1.005]",
+   "documented_categories": []
+  }
+ ]
+}

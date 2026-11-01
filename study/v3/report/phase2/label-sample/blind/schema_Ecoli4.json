@@ -1,0 +1,56 @@
+{
+ "dataset_id": "Ecoli4",
+ "target": {
+  "target_column": "class",
+  "minority_label": "positive",
+  "literal_labels": [
+   "negative",
+   "positive"
+  ],
+  "semantic_class_membership": "UNVERIFIED"
+ },
+ "fields": [
+  {
+   "name": "mcg",
+   "type": "numerical",
+   "source_declaration": "real [0.0, 0.89]",
+   "documented_categories": []
+  },
+  {
+   "name": "gvh",
+   "type": "numerical",
+   "source_declaration": "real [0.16, 1.0]",
+   "documented_categories": []
+  },
+  {
+   "name": "lip",
+   "type": "numerical",
+   "source_declaration": "real [0.48, 1.0]",
+   "documented_categories": []
+  },
+  {
+   "name": "chg",
+   "type": "numerical",
+   "source_declaration": "real [0.5, 1.0]",
+   "documented_categories": []
+  },
+  {
+   "name": "aac",
+   "type": "numerical",
+   "source_declaration": "real [0.0, 0.88]",
+   "documented_categories": []
+  },
+  {
+   "name": "alm1",
+   "type": "numerical",
+   "source_declaration": "real [0.03, 1.0]",
+   "documented_categories": []
+  },
+  {
+   "name": "alm2",
+   "type": "numerical",
+   "source_declaration": "real [0.0, 0.99]",
+   "documented_categories": []
+  }
+ ]
+}

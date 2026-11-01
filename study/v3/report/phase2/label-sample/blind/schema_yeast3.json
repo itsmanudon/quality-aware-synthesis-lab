@@ -1,0 +1,62 @@
+{
+ "dataset_id": "yeast3",
+ "target": {
+  "target_column": "class",
+  "minority_label": "positive",
+  "literal_labels": [
+   "negative",
+   "positive"
+  ],
+  "semantic_class_membership": "UNVERIFIED"
+ },
+ "fields": [
+  {
+   "name": "mcg",
+   "type": "numerical",
+   "source_declaration": "real [0.11, 1.0]",
+   "documented_categories": []
+  },
+  {
+   "name": "gvh",
+   "type": "numerical",
+   "source_declaration": "real [0.13, 1.0]",
+   "documented_categories": []
+  },
+  {
+   "name": "alm",
+   "type": "numerical",
+   "source_declaration": "real [0.21, 1.0]",
+   "documented_categories": []
+  },
+  {
+   "name": "mit",
+   "type": "numerical",
+   "source_declaration": "real [0.0, 1.0]",
+   "documented_categories": []
+  },
+  {
+   "name": "erl",
+   "type": "numerical",
+   "source_declaration": "real [0.5, 1.0]",
+   "documented_categories": []
+  },
+  {
+   "name": "pox",
+   "type": "numerical",
+   "source_declaration": "real [0.0, 0.83]",
+   "documented_categories": []
+  },
+  {
+   "name": "vac",
+   "type": "numerical",
+   "source_declaration": "real [0.0, 0.73]",
+   "documented_categories": []
+  },
+  {
+   "name": "nuc",
+   "type": "numerical",
+   "source_declaration": "real [0.0, 1.0]",
+   "documented_categories": []
+  }
+ ]
+}

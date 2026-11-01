@@ -1,0 +1,30 @@
+{
+ "rows": 105,
+ "per_dataset_and_model": {
+  "vehicle0": {
+   "qwen2.5:7b-instruct": 15
+  },
+  "abalone9-18": {
+   "qwen2.5:7b-instruct": 15
+  },
+  "Abalone19": {
+   "qwen2.5:7b-instruct": 15
+  },
+  "yeast4": {
+   "qwen2.5:7b-instruct": 15
+  },
+  "ecoli1": {
+   "qwen2.5:7b-instruct": 15
+  },
+  "Ecoli4": {
+   "qwen2.5:7b-instruct": 15
+  },
+  "yeast3": {
+   "qwen2.5:7b-instruct": 15
+  }
+ },
+ "models": [
+  "qwen2.5:7b-instruct"
+ ],
+ "human_columns_filled_by_agent": 0
+}
