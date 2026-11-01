@@ -5,11 +5,11 @@ Updated by the agent at the end of every session. Gates are approved only by the
 | Field | Value |
 | --- | --- |
 | Phase | 2 finishing / 3 started (user authorised autonomous completion of the whole plan, 2026-11-01); Gate 2 freeze not yet written, so no TEST metric computed |
-| Last finished step | qwen Phase 2 pools 40/40 and their evaluation 40/40; quota ablation report `report/phase2/llm-quota/` and blinded label sample `report/phase2/label-sample/` (0cc1ba0) |
-| Runs in progress | five-learner check (`runs/phase2/clf/progress.json`, GPU, started 2026-11-01 ~14:50 IST, ~5-6 h); U2 generation (`runs/phase3/u2/progress.json`, 160+/200); Haiku driver (`runs/phase3/llm/claude-haiku-5-5/batches.jsonl` vs `collected.jsonl`, ~300 requests left) |
-| API spend so far | Anthropic $2.875 of $5 (80% line $4.00; one repeated batch line annotated, not counted twice) · OpenAI $0.177 of $4 · Meta $0.163 of $140 (incl. one reconciled upper bound) |
-| Blockers | none yet. Haiku: ~296 requests left at up to ~$0.005 each (wide datasets) may reach the $4.00 line; the guard then stops before crossing and the remainder needs the user's decision. segment0 has no qwen pool (EMPTY_POOL) |
-| Next step | After the five-learner check: merged_method (beta, rho) and the remaining protocol fields, then freeze + SHA-256 before any TEST metric |
+| Last finished step | Haiku Phase 3 full run complete: 2,730/2,730 requests ok, 0 failed, 16/16 batches collected, 37,928 records of 48,300 requested |
+| Runs in progress | U2 generation (`runs/phase3/u2/progress.json`, 160+/200). Five-learner check stopped by Claude Code for low memory before its first unit (WSL VM using ~8.8 GB); not restarted pending the user |
+| API spend so far | Anthropic $3.173 of $5 (under the $4.00 line; one repeated batch line annotated, not counted twice) · OpenAI $0.177 of $4 · Meta $0.163 of $140 (incl. one reconciled upper bound) |
+| Blockers | five-learner check needs the user's go-ahead to restart (and ideally WSL shut down: `wsl --shutdown`). segment0 has no qwen pool (EMPTY_POOL) |
+| Next step | User: say when to restart the five-learner check; then merged_method (beta, rho), remaining protocol fields, freeze + SHA-256 before any TEST metric |
 
 ## Phase 0 checklist
 
