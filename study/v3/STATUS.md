@@ -6,9 +6,9 @@ Updated by the agent at the end of every session. Gates are approved only by the
 | --- | --- |
 | Phase | 2 finishing / 3 started (user authorised autonomous completion of the whole plan, 2026-11-01); Gate 2 freeze not yet written, so no TEST metric computed |
 | Last finished step | Haiku Phase 3 full run complete: 2,730/2,730 requests ok, 0 failed, 16/16 batches collected, 37,928 records of 48,300 requested |
-| Runs in progress | U2 generation (`runs/phase3/u2/progress.json`, 160+/200). Five-learner check stopped by Claude Code for low memory before its first unit (WSL VM using ~8.8 GB); not restarted pending the user |
-| API spend so far | Anthropic $3.173 of $5 (under the $4.00 line; one repeated batch line annotated, not counted twice) · OpenAI $0.177 of $4 · Meta $0.163 of $140 (incl. one reconciled upper bound) |
-| Blockers | five-learner check needs the user's go-ahead to restart (and ideally WSL shut down: `wsl --shutdown`). segment0 has no qwen pool (EMPTY_POOL) |
+| Runs in progress | U2 generation (`runs/phase3/u2/progress.json`, 160/200; on creditcard oml1597, 182k inner rows, ~5 h on its first split; user chose to let it run, no size rule, 2026-11-01); gpt-6-luna Batch driver (`runs/phase3/llm/gpt-6-luna/`, 1,635 requests pending). Stopped by Claude Code for low memory, not restarted pending the user: Muse Spark sync run (39/200 units, resumable) and the five-learner check (0 units) |
+| API spend so far | Anthropic $3.173 of $5 · OpenAI $0.583 of $4 · Meta $8.727 of $140 (incl. one reconciled upper bound) |
+| Blockers | low memory (WSL VM ~6.5 GB): Muse and the five-learner check wait for the user's go-ahead to restart |
 | Next step | User: say when to restart the five-learner check; then merged_method (beta, rho), remaining protocol fields, freeze + SHA-256 before any TEST metric |
 
 ## Phase 0 checklist
@@ -221,6 +221,10 @@ Claude Code stopped every background job because the machine ran critically low 
 | 2 | open | | | |
 | 3 | open | | | |
 | 4 | open | | | |
+
+## Decisions during Phase 3 (user)
+
+- 2026-11-01: creditcard (oml1597, ~182k inner TRAIN rows) is slow in the U2-side generation. Option (a) chosen: let it run unchanged; no dataset-size unavailability rule for generators.
 
 ## Session log
 
