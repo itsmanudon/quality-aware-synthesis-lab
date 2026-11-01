@@ -5,11 +5,11 @@ Updated by the agent at the end of every session. Gates are approved only by the
 | Field | Value |
 | --- | --- |
 | Phase | 2 finishing / 3 started (user authorised autonomous completion of the whole plan, 2026-11-01); Gate 2 freeze not yet written, so no TEST metric computed |
-| Last finished step | Haiku Phase 3 full run complete: 2,730/2,730 requests ok, 0 failed, 16/16 batches collected, 37,928 records of 48,300 requested |
-| Runs in progress | U2 generation (`runs/phase3/u2/progress.json`, 160/200; on creditcard oml1597, 182k inner rows, ~5 h on its first split; user chose to let it run, no size rule, 2026-11-01); gpt-6-luna Batch driver (`runs/phase3/llm/gpt-6-luna/`, 1,635 requests pending). Stopped by Claude Code for low memory, not restarted pending the user: Muse Spark sync run (39/200 units, resumable) and the five-learner check (0 units) |
-| API spend so far | Anthropic $3.173 of $5 · OpenAI $0.583 of $4 · Meta $8.727 of $140 (incl. one reconciled upper bound) |
-| Blockers | low memory (WSL VM ~6.5 GB): Muse and the five-learner check wait for the user's go-ahead to restart |
-| Next step | User: say when to restart the five-learner check; then merged_method (beta, rho), remaining protocol fields, freeze + SHA-256 before any TEST metric |
+| Last finished step | gpt-6-luna Phase 3 full run complete: 2,730/2,730 requests ok, 0 failed, 7/7 batches collected, 48,542 records (48,300 requested). Haiku complete earlier (2,730/2,730) |
+| Runs in progress | U2 generation (`runs/phase3/u2/progress.json`, 161/200; creditcard ~5.5 h per split; user chose to let it run); Muse Spark sync (`runs/phase3/llm/sync-muse-spark-1.3.log`, restarted by the user 2026-11-01 21:20); five-learner check (`runs/phase2/clf/progress.json`, GPU, restarted 21:20) |
+| API spend so far | Anthropic $3.173 of $5 · OpenAI $2.600 of $4 (under the $3.20 line) · Meta $22.19 of $140 (Muse in progress; projected ~$43) |
+| Blockers | none |
+| Next step | Five-learner check -> merged_method (beta, rho) -> freeze protocol + SHA-256 -> phase3 curate once U2 and Muse finish -> u3_eval on TEST |
 
 ## Phase 0 checklist
 
