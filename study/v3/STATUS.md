@@ -6,9 +6,9 @@ Updated by the agent at the end of every session. Gates are approved only by the
 | --- | --- |
 | Phase | 2 finishing / 3 started (user authorised autonomous completion of the whole plan, 2026-11-01); Gate 2 freeze not yet written, so no TEST metric computed |
 | Last finished step | Haiku full-run chunk 1 collected; benchmark root built (40/40); Phase 3 pipeline committed |
-| Runs in progress | none: all background jobs were stopped by Claude Code for low system memory (2026-11-01); all resumable, not restarted pending the user (see 'Stopped jobs') |
-| API spend so far | Anthropic $0.789 of $5 · OpenAI $0.000067 of $4 (+2 luna pilot batches uncollected) · Meta $0.163 of $140 (incl. one reconciled upper bound) |
-| Blockers | low system memory stopped all background jobs; restart needs the user's go-ahead |
+| Runs in progress | none: background jobs were stopped by Claude Code for low system memory twice on 2026-11-01 (the second time minutes after a restart, with Docker already off and ~5 GB free); all resumable, not restarted pending the user (see 'Stopped jobs') |
+| API spend so far | Anthropic $0.789 of $5 · OpenAI $0.177 of $4 (luna pilot collected) · Meta $0.163 of $140 (incl. one reconciled upper bound) |
+| Blockers | Claude Code's low-memory reaping stops background jobs even at ~5 GB free; restart needs the user's go-ahead, ideally with CLAUDE_CODE_DISABLE_BG_SHELL_PRESSURE_REAP=1 set when Claude Code starts |
 | Next step | User: say when to restart the jobs (one at a time is gentler on memory) |
 
 ## Phase 0 checklist
@@ -203,9 +203,9 @@ Claude Code stopped every background job because the machine ran critically low 
 | Job | Progress when stopped | Resume command (repo root) |
 | --- | --- | --- |
 | Phase 2 qwen2.5:7b-instruct pools, split 13 | 20/40 folds (`runs/phase2/llm/progress-qwen2.5_7b-instruct.json`) | `./.venv/Scripts/python.exe -m study.v3.llm_pools --model qwen2.5:7b-instruct --out study/v3/runs/phase2/llm --seeds 13` |
-| Phase 3 U2-side generation (CPU) | 120/200 splits, 0 failures (`runs/phase3/u2/progress.json`) | `study/v3/vendor/.venv-u2/Scripts/python.exe -I study/v3/u3_pools.py --jobs study/v3/runs/phase3/u2/jobs.json --out study/v3/runs/phase3/u2 --device cpu` |
-| Haiku full run (Batch API) | chunk 1 (419 requests) collected; 2,135 requests pending | `study/v3/run_batches.sh claude-haiku-5-5 study/v3/runs/phase3/llm` |
-| gpt-6-luna pilot (Batch API) | 2 batches submitted, not yet collected (results stay at OpenAI) | `./.venv/Scripts/python.exe -m study.v3.phase3_llm collect --model gpt-6-luna --out study/v3/runs/phase3/llm` |
+| Phase 3 U2-side generation (CPU) | 122/200 splits, 0 failures (`runs/phase3/u2/progress.json`) | `study/v3/vendor/.venv-u2/Scripts/python.exe -I study/v3/u3_pools.py --jobs study/v3/runs/phase3/u2/jobs.json --out study/v3/runs/phase3/u2 --device cpu` |
+| Haiku full run (Batch API) | chunk 1 (419 requests) collected; chunk 2 submitted 2026-11-01 (`msgbatch_01VN9asBADLJaN4UwWgF28vw`), not yet collected; the driver's first step collects it | `study/v3/run_batches.sh claude-haiku-5-5 study/v3/runs/phase3/llm` |
+| gpt-6-luna pilot (Batch API) | collected 2026-11-01 (2 batches, $0.177) | done |
 
 **Phase 3 pilot so far** (generation only; no TEST row, no metric):
 - **Haiku:** 595/595 calls ok, 5,892 of 5,940 records, $0.29. The full-run projection at 10 records per call was $3.99, so the batch size was raised to 20 and chunks are sized to the 80% headroom.
