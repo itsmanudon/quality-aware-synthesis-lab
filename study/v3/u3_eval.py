@@ -45,7 +45,8 @@ def frozen_sha() -> str:
 
 
 def run_unit(unit: dict[str, Any], bench: Any, config: dict[str, Any],
-             learners: tuple[str, ...], methods: list[str] | None) -> dict[str, Any]:
+             learners: tuple[str, ...], methods: list[str] | None,
+             exclude: list[str] | None = None) -> dict[str, Any]:
     import numpy as np
     import pandas as pd
     from portable_ugo.models import (  # type: ignore[import-not-found]
@@ -86,7 +87,10 @@ def run_unit(unit: dict[str, Any], bench: Any, config: dict[str, Any],
         y = np.concatenate([y_all[real_ids], np.full(len(synthetic), positive, dtype=np.int64)])
         return frame, y
 
-    chosen_methods = [m for m in sorted(unit["methods"]) if not methods or m in methods]
+    # Methods and learners are fitted independently with fixed seeds, so evaluating them in
+    # separate passes (--methods / --exclude-methods, separate --out) gives identical rows.
+    chosen_methods = [m for m in sorted(unit["methods"])
+                      if (not methods or m in methods) and m not in (exclude or [])]
     for method in chosen_methods:
         spec = unit["methods"][method]
         removed = {int(i) for i in spec.get("remove_ids", [])}
@@ -163,6 +167,7 @@ def main() -> int:
     parser.add_argument("--expected-protocol-sha256", required=True)
     parser.add_argument("--learners", nargs="+", default=list(LEARNERS))
     parser.add_argument("--methods", nargs="*", default=None)
+    parser.add_argument("--exclude-methods", nargs="*", default=None)
     parser.add_argument("--only", nargs="*", default=None, help="dataset ids")
     args = parser.parse_args()
     if frozen_sha() != args.expected_protocol_sha256:
@@ -185,7 +190,8 @@ def main() -> int:
         if not target.exists():
             unit = json.loads(path.read_text(encoding="utf-8"))
             start = time.perf_counter()
-            result = run_unit(unit, bench, config, tuple(args.learners), args.methods)
+            result = run_unit(unit, bench, config, tuple(args.learners), args.methods,
+                              args.exclude_methods)
             result["runtime_seconds"] = time.perf_counter() - start
             result["curated_unit_sha256"] = hashlib.sha256(path.read_bytes()).hexdigest()
             tmp = target.with_suffix(".tmp")
