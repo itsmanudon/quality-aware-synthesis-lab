@@ -85,14 +85,12 @@
         "batch_size_note": "raised from 10 to 20 after the pilot: the Haiku full-run projection at 10 was $3.99 + $0.29 spent, past 80% of the $5 Anthropic cap; prompts are ~2/3 of tokens. Pilot units keep their recorded batch size (10)."
       },
       "phase3_scope": {
-        "primary_llm_source": "claude-haiku-5-5, gpt-6-luna and muse-spark-1.3 pools, each used for a unit only when that generator covers it; per-generator merged variants are reported alongside",
+        "primary_llm_source": "claude-haiku-5-5, gpt-6-luna and muse-spark-1.3 pools (all three cover every unit); per-generator merged variants and merged[no-llm] reported alongside",
         "complete_runs": {
-          "claude-haiku-5-5": "2,730/2,730 requests ok on all 40 x 5 units (2026-11-01)"
+          "claude-haiku-5-5": "2,730/2,730 requests ok (37,928 records)",
+          "gpt-6-luna": "2,730/2,730 requests ok (48,542 records)",
+          "muse-spark-1.3": "2,465/2,465 requests ok (48,048 records)"
         },
-        "in_progress_at_draft": [
-          "gpt-6-luna (Batch API)",
-          "muse-spark-1.3 (synchronous; no batch API)"
-        ],
         "not_run": {
           "claude-sonnet-5-5, gpt-6.1-terra subsets": "the Haiku and luna runs use most of the Anthropic/OpenAI headroom under the 80% lines",
           "local Ollama models": "about 2-5 s per record locally (~48,000 records per model): not run in Phase 3; used only in the Phase 2 quota/LLM ablation"
@@ -225,9 +223,13 @@
   },
   "success_criterion": "Met when, across the benchmark datasets: (1) the median paired F1 difference of the merged method minus tuned no oversampling is > 0 and its Holm-adjusted two-sided Wilcoxon p < 0.05; (2) the same for merged minus U2; and (3) neither MCC comparison against those two shows a loss, i.e. not (median MCC difference < 0 and Holm-adjusted p < 0.05). No minimum effect size beyond > 0 (as proposed at Gate 1). A miss is reported as found.",
   "merged_method": {
-    "status": "PENDING the Phase 2 five-learner check; beta and rho are fixed from it before the freeze",
-    "candidates": "union pool (pool:smote + pool:u2_native + pool:u2_flow_gate + available LLM pools), q = 0.90 gate, boundary-share band beta, keep-fraction rho, then quality-coverage to budget B",
-    "beta": null,
-    "rho": null
+    "pool": "union: pool:smote + pool:u2_native + pool:u2_flow_gate (4 x B each, U2-side, pinned ml_ugo code) + every LLM pool covering the unit; integer_rounding_v3 where integer fields are declared",
+    "gate": "RC-QASyn q = 0.90 admission (fresh_geometry combined)",
+    "utility_term": "boundary-share band (study/v3/utility.py band(boundary_share, beta))",
+    "beta": 0.5,
+    "rho": 0.5,
+    "selection": "utility_filter keeps rho of the admitted pool by the term (ties by SHA-256 of occurrence id), then quality-coverage to budget B (seed 42)",
+    "source": "Phase 2 LR/RF screen pick (report/phase2/selection); kept after the five-learner check (report/phase2/five-learner/NOTES.md: +0.0003 F1 vs random, 3/5 learners; all designs within about +/-0.003)",
+    "decision": "agent, 2026-11-02, under the user's authorisation to complete the plan"
   }
 }
