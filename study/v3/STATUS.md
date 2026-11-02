@@ -4,12 +4,12 @@ Updated by the agent at the end of every session. Gates are approved only by the
 
 | Field | Value |
 | --- | --- |
-| Phase | 2 finishing / 3 started (user authorised autonomous completion of the whole plan, 2026-11-01); Gate 2 freeze not yet written, so no TEST metric computed |
-| Last finished step | All three Phase 3 LLM generators complete: Haiku 2,730/2,730, gpt-6-luna 2,730/2,730, Muse Spark 2,465/2,465 requests ok (48,048 records; the 1 failed line is the pilot seed error, retried ok) |
-| Runs in progress | five-learner check (`runs/phase2/clf/progress.json`, 33/40); U2 generation (`runs/phase3/u2/progress.json`, 163/200; creditcard ~5.5 h per split) |
+| Phase | 3 (Gate 2 passed 2026-11-02: protocol frozen, SHA-256 in Gates). No TEST metric computed yet |
+| Last finished step | Five-learner check 40/40 (report/phase2/five-learner: every design within about +/-0.003 F1 of random); merged_method fixed; protocol frozen (f74ef03) |
+| Runs in progress | U2 generation (`runs/phase3/u2/progress.json`, 163/200; creditcard ~5.5 h per split, then two more large datasets) |
 | API spend so far | Anthropic $3.173 of $5 · OpenAI $2.600 of $4 · Meta $56.65 of $140 (above the ~$43 projection: Muse output incl. reasoning was 12.4M tokens; under the $112 line). All under 80% |
 | Blockers | none |
-| Next step | Five-learner check -> merged_method (beta, rho) -> freeze protocol + SHA-256 -> phase3 curate once U2 and Muse finish -> u3_eval on TEST |
+| Next step | When U2 reaches 200/200: phase3.py curate (Haiku, luna, Muse pools) -> u3_eval.py with --expected-protocol-sha256 a65e20f9... -> Phase 4 analysis |
 
 ## Phase 0 checklist
 
@@ -218,7 +218,7 @@ Claude Code stopped every background job because the machine ran critically low 
 | --- | --- | --- | --- | --- |
 | 0 | passed: items 1-8 approved; Phase 1 approved | user | 2026-10-31 | `151eba0`, `4f03164` |
 | 1 | passed: decisions 1-5 approved as proposed | user | 2026-11-01 | `ea8c865` |
-| 2 | open | | | |
+| 2 | passed: protocol frozen (merged_method from the Phase 2 screen, kept after the five-learner check). Professor approval named in PLAN.md not recorded | user (authorisation 2026-11-01 to complete the plan autonomously) | 2026-11-02 | `a65e20f96d093c9f8f18190027429a0f78c02fbf58f08d88d3d5d7dd58f8cb30` / `f74ef03` |
 | 3 | open | | | |
 | 4 | open | | | |
 
