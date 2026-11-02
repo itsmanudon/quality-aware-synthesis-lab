@@ -6,7 +6,7 @@ Updated by the agent at the end of every session. Gates are approved only by the
 | --- | --- |
 | Phase | 3 (Gate 2 passed 2026-11-02: protocol frozen, SHA-256 in Gates). No TEST metric computed yet |
 | Last finished step | Five-learner check 40/40 (report/phase2/five-learner: every design within about +/-0.003 F1 of random); merged_method fixed; protocol frozen (f74ef03) |
-| Runs in progress | U2 generation (`runs/phase3/u2/progress.json`, 163/200; creditcard ~5.5 h per split, then two more large datasets) |
+| Runs in progress | U2 generation resumed after the "?" fix (`runs/phase3/u2/progress.json`, 170/200; log `runs/phase3/u2-resume.log`); then adult regenerated (`--only oml1590`). Phase 3 curation: 61/160 units of the completed datasets (`runs/phase3/curated/units`), stopped by Claude Code for low memory; restart on the user's word |
 | API spend so far | Anthropic $3.173 of $5 · OpenAI $2.600 of $4 · Meta $56.65 of $140 (above the ~$43 projection: Muse output incl. reasoning was 12.4M tokens; under the $112 line). All under 80% |
 | Blockers | none |
 | Next step | When U2 reaches 200/200: phase3.py curate (Haiku, luna, Muse pools) -> u3_eval.py with --expected-protocol-sha256 a65e20f9... -> Phase 4 analysis |
@@ -225,6 +225,7 @@ Claude Code stopped every background job because the machine ran critically low 
 ## Decisions during Phase 3 (user)
 
 - 2026-11-01: creditcard (oml1597, ~182k inner TRAIN rows) is slow in the U2-side generation. Option (a) chosen: let it run unchanged; no dataset-size unavailability rule for generators.
+- 2026-11-02: KEEL missing marker "?" was read literally by u2_bridge (fixed in e0ed118). adult (oml1590) had 5 U2-side units generated with "?" as a nominal category. User chose to regenerate: the old units are kept in `runs/phase3/u2/superseded/2026-11-02-keel-question-mark/` and adult is regenerated with the fixed reader after the main U2 pass.
 
 ## Session log
 
