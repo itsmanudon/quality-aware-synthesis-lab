@@ -68,3 +68,21 @@ def test_state_uses_submitted_attempts_for_batch_requests(tmp_path: Path) -> Non
     done, attempts = phase3_llm._state(tmp_path)
     assert not done and attempts == {"a": 1}
     assert len(phase3_llm._unique_calls(tmp_path)) == 1
+
+
+def test_u3_eval_claims_a_unit_once_and_takes_over_dead_locks(tmp_path: Path) -> None:
+    import importlib
+    import sys
+
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+    u3_eval = importlib.import_module("u3_eval")
+    target = tmp_path / "unit.json"
+    assert u3_eval._claim(target)
+    lock = target.with_suffix(".lock")
+    lock.write_text(f"{os.getppid()} 0", encoding="utf-8")  # a live process owns it
+    assert not u3_eval._claim(target)
+    lock.write_text("999999 0", encoding="utf-8")  # no such process: stale
+    assert u3_eval._claim(target)
+    target.write_text("{}", encoding="utf-8")
+    lock.unlink()
+    assert not u3_eval._claim(target)  # already evaluated

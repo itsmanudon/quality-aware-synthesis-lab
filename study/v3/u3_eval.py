@@ -26,6 +26,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import sys
 import time
 from pathlib import Path
@@ -37,6 +38,53 @@ import u2_bridge
 LEARNERS = ("logistic_regression", "random_forest", "xgboost", "mlp", "svm")
 SVM_MAX_ROWS = 20000
 HERE = Path(__file__).resolve().parent
+
+
+def _alive(pid: int) -> bool:
+    """Whether a process exists (Windows: os.kill(pid, 0) would terminate it, not probe it)."""
+    if os.name != "nt":
+        try:
+            os.kill(pid, 0)
+        except OSError:
+            return False
+        return True
+    import ctypes
+
+    kernel32 = ctypes.windll.kernel32  # type: ignore[attr-defined]
+    handle = kernel32.OpenProcess(0x1000, False, pid)  # PROCESS_QUERY_LIMITED_INFORMATION
+    if not handle:
+        return False
+    code = ctypes.c_ulong()
+    try:
+        ok = kernel32.GetExitCodeProcess(handle, ctypes.byref(code))
+    finally:
+        kernel32.CloseHandle(handle)
+    return bool(ok) and code.value == 259  # STILL_ACTIVE
+
+
+def _claim(target: Path) -> bool:
+    """Claim one unit for this process, so parallel workers never evaluate it twice.
+
+    A lock whose process is gone (killed, crashed) is taken over; the unit's result is
+    written atomically, so a half-done unit leaves no partial file.
+    """
+    lock = target.with_suffix(".lock")
+    for _ in range(2):
+        try:
+            fd = os.open(lock, os.O_CREAT | os.O_EXCL | os.O_WRONLY)
+        except FileExistsError:
+            try:
+                owner = int(lock.read_text(encoding="utf-8").split()[0])
+            except (OSError, ValueError, IndexError):
+                return False  # being written right now by its owner
+            if owner != os.getpid() and _alive(owner):
+                return False
+            lock.unlink(missing_ok=True)
+            continue
+        os.write(fd, f"{os.getpid()} {time.time():.0f}".encode())
+        os.close(fd)
+        return not target.exists()
+    return False
 
 
 def frozen_sha() -> str:
@@ -187,7 +235,7 @@ def main() -> int:
     files = [f for f in files if not args.only or f.name.split("__")[0] in args.only]
     for done, path in enumerate(files, start=1):
         target = args.out / "units" / path.name
-        if not target.exists():
+        if not target.exists() and _claim(target):
             unit = json.loads(path.read_text(encoding="utf-8"))
             start = time.perf_counter()
             result = run_unit(unit, bench, config, tuple(args.learners), args.methods,
@@ -197,6 +245,7 @@ def main() -> int:
             tmp = target.with_suffix(".tmp")
             tmp.write_text(json.dumps(result, sort_keys=True, default=str), encoding="utf-8")
             tmp.replace(target)
+            target.with_suffix(".lock").unlink(missing_ok=True)
             print(path.stem, len(result["rows"]), f"{result['runtime_seconds']:.0f}s",
                   flush=True)
         (args.out / "progress.json").write_text(json.dumps(
