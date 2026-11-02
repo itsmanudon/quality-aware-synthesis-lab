@@ -49,3 +49,19 @@ def test_empty_pool_is_an_empty_list() -> None:
     frame = pd.DataFrame({"a": [1.0, 2.0], "b": [3.0, 4.0], "c": ["F", "M"]})
     pre = _preprocessor(frame)
     assert u2_pools.inverse_records(pre, np.empty((0, 4))) == []
+
+
+def test_read_keel_reads_question_mark_as_missing(tmp_path) -> None:
+    import math
+
+    from study.v3 import u2_bridge
+    path = tmp_path / "toy.dat"
+    path.write_text("@relation toy\n@attribute a real\n@attribute b {x,y}\n"
+                    "@attribute class {positive,negative}\n@data\n"
+                    "1.5,x,positive\n?,?,negative\n2,y,negative\n", encoding="utf-8")
+    features, target, nominal = u2_bridge.read_keel(path)
+    assert nominal == ["b"]
+    assert math.isnan(features["a"].iloc[1]) and features["a"].iloc[2] == 2.0
+    assert features["b"].isna().tolist() == [False, True, False]
+    assert "?" not in list(features["b"].cat.categories)
+    assert list(target) == ["positive", "negative", "negative"]

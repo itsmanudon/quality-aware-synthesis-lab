@@ -107,10 +107,14 @@ def read_keel(path: Path) -> tuple[Any, Any, list[str]]:
     frame = pd.DataFrame(rows, columns=pd.Index(names))
     target_name = names[-1]
     for name, kind in attributes[:-1]:
+        # KEEL/ARFF write a missing cell as "?". U2 loads missing values as NaN and imputes
+        # them (median / mode in make_preprocessor); a literal "?" would instead crash a
+        # numeric column or become a category level of a nominal one.
+        column = frame[name].mask(frame[name] == "?")
         if kind.startswith("{"):
-            frame[name] = frame[name].astype("category")
+            frame[name] = column.astype("category")
         else:
-            frame[name] = pd.to_numeric(frame[name])
+            frame[name] = pd.to_numeric(column)
     nominal = [name for name, kind in attributes[:-1] if kind.startswith("{")]
     return frame.drop(columns=[target_name]), frame[target_name].to_numpy(), nominal
 
