@@ -5,9 +5,9 @@ Updated by the agent at the end of every session. Gates are approved only by the
 | Field | Value |
 | --- | --- |
 | Phase | 2 finishing / 3 started (user authorised autonomous completion of the whole plan, 2026-11-01); Gate 2 freeze not yet written, so no TEST metric computed |
-| Last finished step | gpt-6-luna Phase 3 full run complete: 2,730/2,730 requests ok, 0 failed, 7/7 batches collected, 48,542 records (48,300 requested). Haiku complete earlier (2,730/2,730) |
-| Runs in progress | U2 generation (`runs/phase3/u2/progress.json`, 161/200; creditcard ~5.5 h per split; user chose to let it run); Muse Spark sync (`runs/phase3/llm/sync-muse-spark-1.3.log`, restarted by the user 2026-11-01 21:20); five-learner check (`runs/phase2/clf/progress.json`, GPU, restarted 21:20) |
-| API spend so far | Anthropic $3.173 of $5 · OpenAI $2.600 of $4 (under the $3.20 line) · Meta $22.19 of $140 (Muse in progress; projected ~$43) |
+| Last finished step | All three Phase 3 LLM generators complete: Haiku 2,730/2,730, gpt-6-luna 2,730/2,730, Muse Spark 2,465/2,465 requests ok (48,048 records; the 1 failed line is the pilot seed error, retried ok) |
+| Runs in progress | five-learner check (`runs/phase2/clf/progress.json`, 33/40); U2 generation (`runs/phase3/u2/progress.json`, 163/200; creditcard ~5.5 h per split) |
+| API spend so far | Anthropic $3.173 of $5 · OpenAI $2.600 of $4 · Meta $56.65 of $140 (above the ~$43 projection: Muse output incl. reasoning was 12.4M tokens; under the $112 line). All under 80% |
 | Blockers | none |
 | Next step | Five-learner check -> merged_method (beta, rho) -> freeze protocol + SHA-256 -> phase3 curate once U2 and Muse finish -> u3_eval on TEST |
 
