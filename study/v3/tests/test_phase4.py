@@ -78,3 +78,13 @@ def test_report_refuses_units_from_another_protocol(tmp_path: Path) -> None:
     (tmp_path / "e" / "units" / "d__s13.json").write_text(json.dumps(unit), encoding="utf-8")
     with pytest.raises(SystemExit):
         phase4.report([tmp_path / "e"], tmp_path / "out", 1)
+
+
+def test_phase3_nulls_converts_nan_and_leaves_clean_frames_unchanged() -> None:
+    from study.v3 import phase3
+    clean = pd.DataFrame({"a": [1.0, 2.0], "b": ["x", "y"]})
+    assert phase3._nulls(clean) is clean
+    holes = pd.DataFrame({"a": [1.0, np.nan], "b": [None, "y"]})
+    out = phase3._nulls(holes)
+    assert out.to_dict(orient="records") == [{"a": 1.0, "b": None}, {"a": None, "b": "y"}]
+    json.dumps(out.to_dict(orient="records"), allow_nan=False)

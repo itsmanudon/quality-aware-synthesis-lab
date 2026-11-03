@@ -101,6 +101,13 @@ def jobs(out: Path, datasets: list[str], seeds: list[int]) -> None:
     (out / "jobs.json").write_text(json.dumps(rows, sort_keys=True), encoding="utf-8")
 
 
+def _nulls(frame: pd.DataFrame) -> pd.DataFrame:
+    """NaN cells as None (JSON null); a frame without missing cells is returned unchanged."""
+    if not frame.isna().any().any():
+        return frame
+    return frame.astype(object).where(frame.notna(), None)
+
+
 def _records(frame: pd.DataFrame, spec: Any, *, minority_only: bool = True) -> list[dict]:
     rows = frame.loc[frame[spec.target_column] == spec.minority_label] if minority_only else frame
     records: list[dict[str, Any]] = pd.DataFrame(rows[list(spec.feature_columns)]).to_dict(
@@ -227,8 +234,10 @@ def curate_unit(dataset: str, seed: int, u2_dir: Path, llm_dir: Path | None,
         if rounded and integer:
             pool, outcome = repair_pool(pool, spec_dict)
             info["repair"] = outcome["outcomes"]
+        # Missing cells reach the gate as null (preserve_as_null), not NaN: the gate's JSON
+        # fingerprints refuse NaN. Datasets without missing cells are passed unchanged.
         g, admitted, concerns, _ = fresh_geometry(
-            inner, pool, specification, fingerprint,
+            _nulls(inner), _nulls(pool), specification, fingerprint,
             {"generator": "study-v3-phase3:" + "+".join(names), "rounded": rounded,
              "fit_row_ids": [int(i) for i in inner.index],
              "payload_fingerprint": digest(pool.to_dict(orient="records"))})
@@ -295,7 +304,8 @@ def curate_unit(dataset: str, seed: int, u2_dir: Path, llm_dir: Path | None,
     from rcqasyn.empirical.addendum_v2 import resample
 
     try:
-        ros, _ = generate(inner, spec, "RandomOverSampler", budget, seed)
+        # ROS copies TRAIN rows (missing cells included); its TRAIN fingerprint needs null.
+        ros, _ = generate(_nulls(inner), spec, "RandomOverSampler", budget, seed)
         add("ros", _records(ros, spec), {})
     except (ValueError, TypeError, RuntimeError) as error:
         unit["unavailable"]["ros"] = f"{type(error).__name__}: {error}"[:300]
