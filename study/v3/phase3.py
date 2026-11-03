@@ -103,7 +103,7 @@ def jobs(out: Path, datasets: list[str], seeds: list[int]) -> None:
 
 def _nulls(frame: pd.DataFrame) -> pd.DataFrame:
     """NaN cells as None (JSON null); a frame without missing cells is returned unchanged."""
-    if not frame.isna().any().any():
+    if not bool(frame.isna().to_numpy().any()):
         return frame
     return frame.astype(object).where(frame.notna(), None)
 
