@@ -6,7 +6,7 @@ Updated by the agent at the end of every session. Gates are approved only by the
 | --- | --- |
 | Phase | 3 (Gate 2 passed 2026-11-02: protocol frozen, SHA-256 in Gates). No TEST metric computed yet |
 | Last finished step | Five-learner check 40/40 (report/phase2/five-learner: every design within about +/-0.003 F1 of random); merged_method fixed; protocol frozen (f74ef03) |
-| Runs in progress | 6 processes (2026-11-03): U2 generation (`runs/phase3/u2/progress.json`; adult regen + 6 datasets), curation x1 (`curate.log`, 82/160), eval workers `eval_worker.sh` 2x primary + 1x rest (+1 lock-aware survivor). Legacy exclusion list emptied after the lock-free evaluators were stopped (they had covered 14 datasets). Progress: primary 48/200, rest 11/200 |
+| Runs in progress | Launched OUTSIDE Claude Code (not reaped) with `study/v3/run_phase3.ps1` on 2026-11-03: U2 generation (`u2-gen.log`), curation workers forward/reverse (`curate_worker.sh`, `curate-*.log`), eval workers 2x primary + 1x rest (`eval_worker.sh`, `eval-*.log`), all claiming units with lock files (`claims.py`). Re-run the launcher to resume after a reboot. Ollama and WSL/Docker stopped at the user's request |
 | API spend so far | Anthropic $3.173 of $5 · OpenAI $2.600 of $4 · Meta $56.65 of $140 (above the ~$43 projection: Muse output incl. reasoning was 12.4M tokens; under the $112 line). All under 80% |
 | Blockers | none |
 | Next step | Stage 1 on all 200 units (~10-12 h after curation completes), then stage 2 = all other comparators in `runs/phase3/eval-rest` (~2.5 days at 6 processes), then Phase 4 analysis |
