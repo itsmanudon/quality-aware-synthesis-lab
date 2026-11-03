@@ -51,6 +51,7 @@ from rcqasyn.phase2.specifications import dataset_specification
 from rcqasyn.phase5.geometry import metrics
 from rcqasyn.phase6.utility import outer_frames
 
+from .claims import claim, release
 from .devroot import sha256_file
 from .llm_pools import load_pool
 from .phase1 import SPLIT_SEEDS, carve_validation, construct
@@ -347,8 +348,8 @@ def curate(u2_dir: Path, llm_dir: Path | None, generators: list[str], out: Path,
     for dataset in datasets:
         for seed in seeds:
             path = out / "units" / f"{dataset}__s{seed}.json"
-            if path.exists():
-                continue
+            if path.exists() or not claim(path):
+                continue  # done, or another curation worker holds it
             start = time.perf_counter()
             unit = curate_unit(dataset, seed, u2_dir, llm_dir, generators)
             f = split_frames(dataset, seed)
@@ -362,6 +363,7 @@ def curate(u2_dir: Path, llm_dir: Path | None, generators: list[str], out: Path,
             tmp = path.with_suffix(".tmp")
             tmp.write_text(json.dumps(unit, sort_keys=True, default=str), encoding="utf-8")
             tmp.replace(path)
+            release(path)
             print(dataset, seed, len(unit["methods"]), "methods,",
                   len(unit["unavailable"]), "unavailable,",
                   f"{unit['runtime_seconds']:.0f}s", Counter(
