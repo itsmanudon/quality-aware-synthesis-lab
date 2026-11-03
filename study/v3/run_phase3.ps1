@@ -10,7 +10,10 @@ $bash = "C:\Program Files\Git\bin\bash.exe"
 $runs = "study\v3\runs\phase3"
 function Start-Job2($name, $cmd) {
     $log = Join-Path $runs "$name.log"
-    Start-Process -FilePath $bash -ArgumentList @("-c", "cd '$($repo -replace '\','/')' && $cmd >> '$($log -replace '\','/')' 2>&1") -WindowStyle Hidden
+    $repoUnix = $repo.Replace('\', '/')
+    $logUnix = $log.Replace('\', '/')
+    # One argument string, so bash receives the whole -c command intact.
+    Start-Process -FilePath $bash -ArgumentList "-c `"cd '$repoUnix' && $cmd >> '$logUnix' 2>&1`"" -WindowStyle Hidden
     Write-Host "started $name -> $log"
 }
 Start-Job2 "u2-gen" "study/v3/vendor/.venv-u2/Scripts/python.exe -I study/v3/u3_pools.py --jobs study/v3/runs/phase3/u2/jobs.json --out study/v3/runs/phase3/u2 --device cpu"

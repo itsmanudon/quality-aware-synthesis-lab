@@ -2,12 +2,13 @@
 # Phase 3 curation worker: repeatedly curates every unit whose U2-side generation is complete
 # for all 5 split seeds of its dataset, claiming units (claims.py) so workers never overlap.
 # Usage: study/v3/curate_worker.sh forward|reverse  (order only; results are identical)
+# Python on Windows ends lines with CRLF; the  is stripped from the dataset names.
 set -u
 order="$1"
 runs=study/v3/runs/phase3
 py=./.venv/Scripts/python.exe
 while true; do
-  mapfile -t ds < <("$py" - "$order" <<'PY'
+  mapfile -t ds < <("$py" - "$order" <<'PY' | tr -d '\r'
 import json, os, sys
 jobs = json.load(open("study/v3/runs/phase3/u2/jobs.json", encoding="utf-8"))
 names = list(dict.fromkeys(j["dataset_id"] for j in jobs))
