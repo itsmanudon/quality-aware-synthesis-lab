@@ -160,16 +160,50 @@ def friedman(pl: pd.DataFrame, methods: tuple[str, ...]) -> dict[str, Any]:
             "p": float(res.pvalue), "ranks": {k: float(v) for k, v in ranks.items()}}
 
 
-def report(dirs: list[Path], out: Path, planned_units: int) -> str:
+def amendments(paths: list[Path]) -> tuple[dict[str, dict[str, Any]], list[dict[str, str]]]:
+    """Recorded protocol amendments: datasets excluded (with reason) and amendment hashes.
+
+    An amendment must name the frozen protocol's SHA-256 as its base; the frozen file itself
+    is never edited.
+    """
+    excluded: dict[str, dict[str, Any]] = {}
+    used: list[dict[str, str]] = []
+    for path in paths:
+        raw = path.read_bytes().replace(b"\r\n", b"\n")
+        a = json.loads(raw)
+        if a["base_protocol_sha256"] != frozen_sha():
+            raise SystemExit(f"{path}: amendment is not based on the frozen protocol")
+        excluded.update(a["change"].get("excluded_datasets", {}))
+        used.append({"amendment_id": a["amendment_id"], "path": str(path),
+                     "sha256": hashlib.sha256(raw).hexdigest()})
+    return excluded, used
+
+
+def report(dirs: list[Path], out: Path, planned_units: int,
+           amendment_paths: list[Path] | None = None) -> str:
     cells, unav, units = load(dirs)
+    excluded, used = amendments(amendment_paths or [])
+    if excluded:
+        # Excluded datasets enter no test; they are listed as unavailable with their reason.
+        unav = pd.concat([unav[~unav["dataset_id"].isin(excluded)], pd.DataFrame(
+            [{"dataset_id": d, "split_seed": "*", "method": "*", "classifier": "*",
+              "reason": info["reason"]} for d, info in excluded.items()])], ignore_index=True)
+        cells = cells[~cells["dataset_id"].isin(excluded)] if len(cells) else cells
+        units = {u for u in units if u[0] not in excluded}
+        planned_units -= 5 * len(excluded)
     out.mkdir(parents=True, exist_ok=True)
     cells.to_csv(out / "cells.csv", index=False)
     unav.to_csv(out / "unavailable.csv", index=False)
     # Stage 1 and stage 2 write separate files per unit: complete only when each has them all.
-    per_dir = {str(d): len(list((d / "units").glob("*.json"))) for d in dirs}
+    per_dir = {str(d): len([p for p in (d / "units").glob("*.json")
+                            if p.name.split("__")[0] not in excluded]) for d in dirs}
     partial = min(per_dir.values()) < planned_units
     methods = sorted(cells["method"].unique()) if len(cells) else []
     lines = [f"# Phase 4: TEST results under the frozen protocol ({frozen_sha()[:12]})", ""]
+    for a in used:
+        reasons = "; ".join(sorted({i["reason"] for i in excluded.values()}))
+        lines += [(f"Amendment applied: {a['amendment_id']} ({a['sha256'][:12]}), "
+                   f"excluding {', '.join(sorted(excluded))} ({reasons})."), ""]
     if partial:
         lines += [(f"**PARTIAL: units evaluated per stage {per_dir} of {planned_units}. Not "
                    "the result; do not interpret.**"), ""]
@@ -219,6 +253,7 @@ def report(dirs: list[Path], out: Path, planned_units: int) -> str:
     (out / "friedman_f1.json").write_text(json.dumps(fr, indent=1), encoding="utf-8")
     (out / "summary.json").write_text(json.dumps(
         {"partial": partial, "units": len(units), "planned_units": planned_units,
+         "amendments": used, "excluded_datasets": sorted(excluded),
          "success_criterion_met": met, "protocol_sha256": frozen_sha()}, indent=1),
         encoding="utf-8")
     text = "\n".join(lines) + "\n"
@@ -231,8 +266,10 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--evals", type=Path, nargs="+", required=True)
     parser.add_argument("--out", type=Path, required=True)
     parser.add_argument("--planned-units", type=int, default=200)
+    parser.add_argument("--amendments", type=Path, nargs="*", default=[],
+                        help="recorded protocol amendments (e.g. protocol_amendment_1.json)")
     args = parser.parse_args(argv)
-    print(report(args.evals, args.out, args.planned_units))
+    print(report(args.evals, args.out, args.planned_units, args.amendments))
     return 0
 
 

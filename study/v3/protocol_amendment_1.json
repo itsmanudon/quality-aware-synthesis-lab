@@ -1,0 +1,20 @@
+{
+  "amendment_id": "study-v3-amendment-1",
+  "base_protocol": "study/v3/protocol.json (frozen at Gate 2, unchanged)",
+  "base_protocol_sha256": "a65e20f96d093c9f8f18190027429a0f78c02fbf58f08d88d3d5d7dd58f8cb30",
+  "date": "2026-11-06",
+  "approved_by": "user (2026-11-06): \"I think we should not consider kick and move ahead ... Let's finish rest of the things and then re-concile everything such that we can move ahead.\"",
+  "change": {
+    "excluded_datasets": {
+      "oml41162": {
+        "name": "kick (OpenML 41162)",
+        "status": "unavailable for every method",
+        "reason": "U2_SIDE_COMPUTE_LIMIT",
+        "evidence": "U2-side generation (pinned ml_ugo code, unmodified) finished 1 of 5 splits after about 70 hours and 529 CPU-hours on this machine (18 categorical features of high cardinality); the remaining 4 splits projected at 9-10 more days"
+      }
+    }
+  },
+  "blinding": "Decided before any kick unit was curated or evaluated: no TEST metric of kick existed (verified 2026-11-06: no kick file in runs/phase3/curated, eval-primary or eval-rest). The single finished kick U2-side unit is generation-only and is kept unchanged.",
+  "effect_on_analysis": "Phase 4 runs on the remaining 39 benchmark datasets (195 units). kick is listed as unavailable with this reason in every report; it is never dropped silently. Every other frozen field (methods, metric, statistics, success criterion) is unchanged.",
+  "effect_on_evaluation": "TEST evaluations already computed carry the base protocol SHA-256 and remain valid; u3_eval keeps checking the base SHA-256."
+}

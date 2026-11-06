@@ -88,3 +88,36 @@ def test_phase3_nulls_converts_nan_and_leaves_clean_frames_unchanged() -> None:
     out = phase3._nulls(holes)
     assert out.to_dict(orient="records") == [{"a": 1.0, "b": None}, {"a": None, "b": "y"}]
     json.dumps(out.to_dict(orient="records"), allow_nan=False)
+
+
+def test_amendment_excludes_a_dataset_and_lists_it(tmp_path: Path) -> None:
+    for stage in ("primary", "rest"):
+        (tmp_path / stage / "units").mkdir(parents=True)
+    for i in range(10):
+        for seed in (13, 29, 43, 61, 79):
+            base = .4 + i / 100
+            rows = {"primary": [_row("merged", "lr", base + .03),
+                                _row("no-oversampling", "lr", base), _row("u2", "lr", base)],
+                    "rest": [_row("random", "lr", base)]}
+            for stage in ("primary", "rest"):
+                if i == 9 and seed != 13:
+                    continue  # the excluded dataset has a single unit
+                (tmp_path / stage / "units" / f"d{i}__s{seed}.json").write_text(
+                    json.dumps(_unit(f"d{i}", seed, rows[stage])), encoding="utf-8")
+    amendment = tmp_path / "amendment.json"
+    amendment.write_text(json.dumps({
+        "amendment_id": "a1", "base_protocol_sha256": phase4.frozen_sha(),
+        "change": {"excluded_datasets": {"d9": {"reason": "U2_SIDE_COMPUTE_LIMIT"}}}}),
+        encoding="utf-8")
+    text = phase4.report([tmp_path / "primary", tmp_path / "rest"], tmp_path / "out", 50,
+                         [amendment])
+    summary = json.loads((tmp_path / "out" / "summary.json").read_text(encoding="utf-8"))
+    assert not summary["partial"] and summary["excluded_datasets"] == ["d9"]
+    assert "Amendment applied: a1" in text and "U2_SIDE_COMPUTE_LIMIT" in text
+    cells = pd.read_csv(tmp_path / "out" / "cells.csv")
+    assert "d9" not in set(cells["dataset_id"])
+    bad = tmp_path / "bad.json"
+    bad.write_text(json.dumps({"amendment_id": "x", "base_protocol_sha256": "0" * 64,
+                               "change": {}}), encoding="utf-8")
+    with pytest.raises(SystemExit):
+        phase4.report([tmp_path / "primary"], tmp_path / "out2", 50, [bad])

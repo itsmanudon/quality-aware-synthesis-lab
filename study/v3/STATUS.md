@@ -6,10 +6,10 @@ Updated by the agent at the end of every session. Gates are approved only by the
 | --- | --- |
 | Phase | 3 (Gate 2 passed 2026-11-02: protocol frozen, SHA-256 in Gates). No TEST metric computed yet |
 | Last finished step | Five-learner check 40/40 (report/phase2/five-learner: every design within about +/-0.003 F1 of random); merged_method fixed; protocol frozen (f74ef03) |
-| Runs in progress | Launched OUTSIDE Claude Code (not reaped) with `study/v3/run_phase3.ps1` on 2026-11-03: U2 generation (`u2-gen.log`), curation workers forward/reverse (`curate_worker.sh`, `curate-*.log`), eval workers 2x primary + 1x rest (`eval_worker.sh`, `eval-*.log`), all claiming units with lock files (`claims.py`). Re-run the launcher to resume after a reboot. Ollama and WSL/Docker stopped at the user's request |
+| Runs in progress | Outside Claude Code (`run_phase3.ps1`): U2 generation process B (`u2-gen-b.log`: GiveMeSomeCredit s79, then Marketing_Campaign, oml46938), curation workers, eval workers. kick U2 process stopped 2026-11-06 per amendment 1 |
 | API spend so far | Anthropic $3.173 of $5 · OpenAI $2.600 of $4 · Meta $56.65 of $140 (above the ~$43 projection: Muse output incl. reasoning was 12.4M tokens; under the $112 line). All under 80% |
 | Blockers | none |
-| Next step | Stage 1 on all 200 units (~10-12 h after curation completes), then stage 2 = all other comparators in `runs/phase3/eval-rest` (~2.5 days at 6 processes), then Phase 4 analysis |
+| Next step | When the 195 non-kick units are evaluated in both stages: `python -m study.v3.phase4 --evals runs/phase3/eval-primary runs/phase3/eval-rest --amendments study/v3/protocol_amendment_1.json` -> Phase 4 report and reconciliation -> Phase 5 |
 
 ## Phase 0 checklist
 
@@ -219,6 +219,7 @@ Claude Code stopped every background job because the machine ran critically low 
 | 0 | passed: items 1-8 approved; Phase 1 approved | user | 2026-10-31 | `151eba0`, `4f03164` |
 | 1 | passed: decisions 1-5 approved as proposed | user | 2026-11-01 | `ea8c865` |
 | 2 | passed: protocol frozen (merged_method from the Phase 2 screen, kept after the five-learner check). Professor approval named in PLAN.md not recorded | user (authorisation 2026-11-01 to complete the plan autonomously) | 2026-11-02 | `a65e20f96d093c9f8f18190027429a0f78c02fbf58f08d88d3d5d7dd58f8cb30` / `f74ef03` |
+| 2a | amendment 1 recorded: kick (oml41162) unavailable for every method, U2_SIDE_COMPUTE_LIMIT (1 of 5 U2-side splits after ~70 h / 529 CPU-hours); decided before any kick unit was curated or evaluated. Base protocol unchanged | user | 2026-11-06 | `951c656983a17b3e944222cbdbbb290554679e49a74f9ab2072c52a399ae4947` (`study/v3/protocol_amendment_1.json`) |
 | 3 | open | | | |
 | 4 | open | | | |
 
