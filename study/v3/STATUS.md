@@ -6,10 +6,10 @@ Updated by the agent at the end of every session. Gates are approved only by the
 | --- | --- |
 | Phase | 3 (Gate 2 passed 2026-11-02: protocol frozen, SHA-256 in Gates). No TEST metric computed yet |
 | Last finished step | Five-learner check 40/40 (report/phase2/five-learner: every design within about +/-0.003 F1 of random); merged_method fixed; protocol frozen (f74ef03) |
-| Runs in progress | Outside Claude Code (`run_phase3.ps1`): U2 generation process B (`u2-gen-b.log`: GiveMeSomeCredit s79, then Marketing_Campaign, oml46938), curation workers, eval workers. kick U2 process stopped 2026-11-06 per amendment 1 |
+| Runs in progress | Outside Claude Code: 4 curation workers (`curate-*.log`; creditcard s61/s79 at ~25-35 h per unit, plus ipums, oml46911, GiveMeSomeCredit, Marketing_Campaign, oml46938), eval workers 2x primary + 1x rest. U2-side generation complete (195/195 non-kick). Progress 2026-11-07 02:30: curated 168, primary 167, rest 165 of 195 |
 | API spend so far | Anthropic $3.173 of $5 · OpenAI $2.600 of $4 · Meta $56.65 of $140 (above the ~$43 projection: Muse output incl. reasoning was 12.4M tokens; under the $112 line). All under 80% |
 | Blockers | none |
-| Next step | When the 195 non-kick units are evaluated in both stages: `python -m study.v3.phase4 --evals runs/phase3/eval-primary runs/phase3/eval-rest --amendments study/v3/protocol_amendment_1.json` -> Phase 4 report and reconciliation -> Phase 5 |
+| Next step | STOP before Phase 4 (user, 2026-11-07): when the 195 non-kick units are evaluated in both stages, report completion and wait for the user. Do not run phase4.py until the user says so |
 
 ## Phase 0 checklist
 
