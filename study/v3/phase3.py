@@ -62,6 +62,9 @@ HERE = Path(__file__).resolve().parent
 BENCHROOT = (HERE / "runs" / "benchroot").resolve()
 SELECTION_SEED = 13
 U2_POOLS = ("pool:smote", "pool:u2_native", "pool:u2_flow_gate")
+GATE_UNAVAILABLE = "GATE_NO_COMPLETE_TRAIN_ROW"
+GATED_CURATORS = ("random", "schema-random", "quality-coverage", "cllm-style",
+                  "discriminator-realism")
 
 
 def frozen() -> dict[str, Any]:
@@ -241,7 +244,7 @@ def curate_unit(dataset: str, seed: int, u2_dir: Path, llm_dir: Path | None,
             _nulls(inner), _nulls(pool), specification, fingerprint,
             {"generator": "study-v3-phase3:" + "+".join(names), "rounded": rounded,
              "fit_row_ids": [int(i) for i in inner.index],
-             "payload_fingerprint": digest(pool.to_dict(orient="records"))})
+             "payload_fingerprint": digest(_nulls(pool).to_dict(orient="records"))})
         info.update({f"{k}_admitted_n": len(v) for k, v in admitted.items()})
         return g, admitted, concerns, pool, info
 
@@ -260,7 +263,26 @@ def curate_unit(dataset: str, seed: int, u2_dir: Path, llm_dir: Path | None,
     for variant, names in variants.items():
         for rounded in ((True, False) if integer else (True,)):
             label = variant + ("" if rounded or not integer else "[unrounded]")
-            built = build(names, rounded)
+            try:
+                built = build(names, rounded)
+            except ValueError as error:
+                if "no supported TRAIN feature reference" not in str(error):
+                    raise
+                # The gate's geometry is fitted on complete TRAIN rows only; with none (ipums:
+                # every row has a missing cell) no gated method exists for this unit.
+                unit["unavailable"][label] = GATE_UNAVAILABLE
+                if label == "merged":
+                    for name in GATED_CURATORS:
+                        unit["unavailable"][name] = GATE_UNAVAILABLE
+                    pool = pd.concat([sources[n] for n in names if not sources[n].empty],
+                                     ignore_index=True)
+                    try:  # B2 needs no geometry
+                        chosen, extra = _b2_equal(inner, spec, pool, budget)
+                        add("b2-equal-budget", _records(pool.iloc[chosen], spec), extra)
+                    except (ValueError, TypeError, RuntimeError) as b2_error:
+                        unit["unavailable"]["b2-equal-budget"] = (
+                            f"{type(b2_error).__name__}: {b2_error}"[:300])
+                continue
             if built is None:
                 unit["unavailable"][label] = "EMPTY_POOL"
                 continue
