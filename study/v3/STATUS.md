@@ -4,12 +4,12 @@ Updated by the agent at the end of every session. Gates are approved only by the
 
 | Field | Value |
 | --- | --- |
-| Phase | 3 (Gate 2 passed 2026-11-02: protocol frozen, SHA-256 in Gates). No TEST metric computed yet |
-| Last finished step | Five-learner check 40/40 (report/phase2/five-learner: every design within about +/-0.003 F1 of random); merged_method fixed; protocol frozen (f74ef03) |
+| Phase | 4 complete; at **Gate 4** (results review with the user and the professor) |
+| Last finished step | Phase 4 analysis under the frozen protocol + amendments 1 and 2 (`report/phase4/summary.md`) and reconciliation (`report/phase4/RECONCILIATION.md`). Success criterion NOT met |
 | Runs in progress | none: all Phase 3 workers stopped 2026-11-08 at the user's request. Final: curated 195, stage 1 195, stage 2 191 (creditcard 1 of 5) |
-| API spend so far | Anthropic $3.173 of $5 · OpenAI $2.600 of $4 · Meta $56.65 of $140 (above the ~$43 projection: Muse output incl. reasoning was 12.4M tokens; under the $112 line). All under 80% |
+| API spend so far | Anthropic $3.173 of $5 · OpenAI $2.600 of $4 · Meta $56.653 of $140 (final; all under 80%) |
 | Blockers | none |
-| Next step | Phase 4 with amendments 1 and 2, then the reconciliation report (user, 2026-11-08) |
+| Next step | Gate 4: user (and professor) review the results. Then Phase 5 (paper). Deferred: cloud supplementary run for kick and creditcard stage 2 |
 
 ## Phase 0 checklist
 
