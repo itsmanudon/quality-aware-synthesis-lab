@@ -6,10 +6,10 @@ Updated by the agent at the end of every session. Gates are approved only by the
 | --- | --- |
 | Phase | 3 (Gate 2 passed 2026-11-02: protocol frozen, SHA-256 in Gates). No TEST metric computed yet |
 | Last finished step | Five-learner check 40/40 (report/phase2/five-learner: every design within about +/-0.003 F1 of random); merged_method fixed; protocol frozen (f74ef03) |
-| Runs in progress | Outside Claude Code: 4 curation workers (`curate-*.log`; creditcard s61/s79 at ~25-35 h per unit, plus ipums, oml46911, GiveMeSomeCredit, Marketing_Campaign, oml46938), eval workers 2x primary + 1x rest. U2-side generation complete (195/195 non-kick). Progress 2026-11-07 02:30: curated 168, primary 167, rest 165 of 195 |
+| Runs in progress | none: all Phase 3 workers stopped 2026-11-08 at the user's request. Final: curated 195, stage 1 195, stage 2 191 (creditcard 1 of 5) |
 | API spend so far | Anthropic $3.173 of $5 · OpenAI $2.600 of $4 · Meta $56.65 of $140 (above the ~$43 projection: Muse output incl. reasoning was 12.4M tokens; under the $112 line). All under 80% |
 | Blockers | none |
-| Next step | STOP before Phase 4 (user, 2026-11-07): when the 195 non-kick units are evaluated in both stages, report completion and wait for the user. Do not run phase4.py until the user says so |
+| Next step | Phase 4 with amendments 1 and 2, then the reconciliation report (user, 2026-11-08) |
 
 ## Phase 0 checklist
 
@@ -220,6 +220,7 @@ Claude Code stopped every background job because the machine ran critically low 
 | 1 | passed: decisions 1-5 approved as proposed | user | 2026-11-01 | `ea8c865` |
 | 2 | passed: protocol frozen (merged_method from the Phase 2 screen, kept after the five-learner check). Professor approval named in PLAN.md not recorded | user (authorisation 2026-11-01 to complete the plan autonomously) | 2026-11-02 | `a65e20f96d093c9f8f18190027429a0f78c02fbf58f08d88d3d5d7dd58f8cb30` / `f74ef03` |
 | 2a | amendment 1 recorded: kick (oml41162) unavailable for every method, U2_SIDE_COMPUTE_LIMIT (1 of 5 U2-side splits after ~70 h / 529 CPU-hours); decided before any kick unit was curated or evaluated. Base protocol unchanged | user | 2026-11-06 | `951c656983a17b3e944222cbdbbb290554679e49a74f9ab2072c52a399ae4947` (`study/v3/protocol_amendment_1.json`) |
+| 2b | amendment 2 recorded: creditcard (oml1597) stage-2 comparators unavailable (1 of 5 splits; EVALUATION_COMPUTE_LIMIT); its stage 1 and all progress kept; creditcard stage 2 and kick deferred to a later cloud run reported as supplementary. Decided before Phase 4 was run | user | 2026-11-08 | `f41ee997478eb7c3b66ba81a955c2ba1029755258a4a5d26cfee4a53113cccd5` (`study/v3/protocol_amendment_2.json`) |
 | 3 | open | | | |
 | 4 | open | | | |
 

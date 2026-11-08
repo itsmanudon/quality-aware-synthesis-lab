@@ -121,3 +121,35 @@ def test_amendment_excludes_a_dataset_and_lists_it(tmp_path: Path) -> None:
                                "change": {}}), encoding="utf-8")
     with pytest.raises(SystemExit):
         phase4.report([tmp_path / "primary"], tmp_path / "out2", 50, [bad])
+
+
+def test_incomplete_stage_is_counted_without_the_dataset_and_listed(tmp_path: Path) -> None:
+    primary, rest = tmp_path / "eval-primary", tmp_path / "eval-rest"
+    for stage in (primary, rest):
+        (stage / "units").mkdir(parents=True)
+    for i in range(8):
+        for seed in (13, 29, 43, 61, 79):
+            base = .4 + i / 100
+            (primary / "units" / f"d{i}__s{seed}.json").write_text(json.dumps(_unit(
+                f"d{i}", seed, [_row("merged", "lr", base + .02),
+                                _row("no-oversampling", "lr", base),
+                                _row("u2", "lr", base)])), encoding="utf-8")
+            if i == 7 and seed != 29:
+                continue  # stage 2 of d7 finished one split only
+            (rest / "units" / f"d{i}__s{seed}.json").write_text(json.dumps(_unit(
+                f"d{i}", seed, [_row("random", "lr", base)])), encoding="utf-8")
+    amendment = tmp_path / "a2.json"
+    amendment.write_text(json.dumps({
+        "amendment_id": "a2", "base_protocol_sha256": phase4.frozen_sha(),
+        "change": {"incomplete_stages": {"d7": {"stage": "eval-rest",
+                                                "reason": "EVALUATION_COMPUTE_LIMIT"}}}}),
+        encoding="utf-8")
+    text = phase4.report([primary, rest], tmp_path / "out", 40, [amendment])
+    summary = json.loads((tmp_path / "out" / "summary.json").read_text(encoding="utf-8"))
+    assert not summary["partial"]
+    unav = pd.read_csv(tmp_path / "out" / "unavailable.csv")
+    row = unav[(unav["dataset_id"] == "d7") & (unav["method"] == "random")]
+    assert list(row["reason"]) == ["EVALUATION_COMPUTE_LIMIT"]
+    success = pd.read_csv(tmp_path / "out" / "success_f1.csv")
+    assert set(success["datasets"]) == {8}  # d7 stays in the success family
+    assert "d7: stage eval-rest incomplete" in text

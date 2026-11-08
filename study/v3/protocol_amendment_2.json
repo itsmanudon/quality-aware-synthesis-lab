@@ -1,0 +1,22 @@
+{
+  "amendment_id": "study-v3-amendment-2",
+  "base_protocol": "study/v3/protocol.json (frozen at Gate 2, unchanged); applies together with study-v3-amendment-1",
+  "base_protocol_sha256": "a65e20f96d093c9f8f18190027429a0f78c02fbf58f08d88d3d5d7dd58f8cb30",
+  "date": "2026-11-08",
+  "approved_by": "user (2026-11-08): \"Let's leave this too, I can't wait any more ... So just stop them, and go ahead we reconcilation as we discussed before.\"",
+  "change": {
+    "incomplete_stages": {
+      "oml1597": {
+        "name": "creditcard (OpenML 1597)",
+        "stage": "eval-rest",
+        "status": "stage-2 comparators evaluated on 1 of 5 splits (s29); by the frozen rule (fewer than 3 of 5 splits) every stage-2 method of this dataset is unavailable",
+        "reason": "EVALUATION_COMPUTE_LIMIT",
+        "evidence": "one stage-2 unit took 48 h on this machine; the other 4 had run 19-76 h when stopped on 2026-11-08",
+        "kept": "stage 1 (merged, no-oversampling, u2) is complete on all 5 splits and stays in every test; all creditcard progress (5 curated units, 5 stage-1 units, the s29 stage-2 unit) is kept unchanged"
+      }
+    }
+  },
+  "deferred": "The 4 missing creditcard stage-2 units (s13, s43, s61, s79) and kick (amendment 1) are deferred to a later run on cloud compute (user, 2026-11-08), with the same code, frozen protocol and SHA-256 check. Those results will be reported as a declared supplementary analysis; they do not replace the primary Phase 4 result computed under amendments 1 and 2.",
+  "blinding": "Decided before Phase 4 was run: no TEST result of any dataset had been aggregated or read (phase4.py was only dry-run on partial data on 2026-11-03, reading its header, not results).",
+  "effect_on_analysis": "Completeness of the eval-rest stage is counted without creditcard; its stage-2 methods are listed unavailable with this reason. The success family keeps creditcard. Every other frozen field is unchanged."
+}
