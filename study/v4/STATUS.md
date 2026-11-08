@@ -4,12 +4,12 @@ Updated by the agent at the end of every session. Gates are approved only by the
 
 | Field | Value |
 | --- | --- |
-| Phase | 0 -> 1 (Gate 0 scope approved by the user 2026-11-09: "Let's start with 1 and 2"; size limit and Part B details to confirm at Gate 1) |
-| Last finished step | Plan written; input manifest |
-| Runs in progress | none |
+| Phase | 1 (audit, inner TRAIN only) |
+| Last finished step | audit.py written and trial-checked (oml43, oml1053); full run launched 2026-11-09 with 5 workers outside Claude Code |
+| Runs in progress | Part A audit: `study/v4/runs/phase1/units` (200 units planned), logs `study/v4/runs/phase1/worker-*.log`; resume with `study/v4/run_phase1.ps1` |
 | API spend so far | $0 (no new calls; all LLM pools reused from Study v3) |
 | Blockers | none |
-| Next step | Phase 1 audit (inner TRAIN only) |
+| Next step | When 200 units are done: Phase 1 report (per generator, per dataset, by dataset properties); then Gate 1 with the Part B details |
 
 ## Gates
 
