@@ -82,8 +82,9 @@ def load(dirs: list[Path]) -> tuple[pd.DataFrame, pd.DataFrame, set[tuple[str, i
                             "classifier": r["classifier"], "f1": r["f1"], "mcc": r["mcc"],
                             "average_precision": r["average_precision"],
                             "minority_recall": r["minority_recall"]}
+    # Unit-level unavailability is copied into every stage's result file: count it once.
     unav = pd.DataFrame(unavailable, columns=["dataset_id", "split_seed", "method",
-                                              "classifier", "reason"])
+                                              "classifier", "reason"]).drop_duplicates()
     return pd.DataFrame(list(cells.values())), unav, units
 
 
@@ -281,6 +282,15 @@ def report(dirs: list[Path], out: Path, planned_units: int,
     counts = Counter(zip(unav["method"], unav["reason"].str.split(" ").str[0]))
     lines += ["", "## Unavailable cells (method, reason: count)", ""]
     lines += [f"- {m}: {r}: {n}" for (m, r), n in sorted(counts.items())]
+    # Per-dataset breakdown of the success family (descriptive; the tests are above).
+    per_ds = pd.DataFrame({f"merged_minus_{c}": paired(pl_f1, MERGED, c) for c in SUCCESS})
+    per_ds.index.name = "dataset_id"
+    per_ds.to_csv(out / "per_dataset_success_f1.csv")
+    lines += ["", "## Per-dataset F1 differences, success family (descriptive)", "",
+              "| dataset | merged - no-oversampling | merged - u2 |", "| --- | --- | --- |"]
+    for d, r in per_ds.sort_index().iterrows():
+        cells_txt = [("" if pd.isna(v) else f"{v:+.4f}") for v in r]
+        lines.append(f"| {d} | {cells_txt[0]} | {cells_txt[1]} |")
     success.assign(metric="f1").to_csv(out / "success_f1.csv", index=False)
     success_mcc.assign(metric="mcc").to_csv(out / "success_mcc.csv", index=False)
     comp.to_csv(out / "comparators_f1.csv", index=False)

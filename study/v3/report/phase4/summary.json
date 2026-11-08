@@ -1,0 +1,25 @@
+{
+ "partial": false,
+ "units": 195,
+ "planned_units": 195,
+ "amendments": [
+  {
+   "amendment_id": "study-v3-amendment-1",
+   "path": "study\\v3\\protocol_amendment_1.json",
+   "sha256": "951c656983a17b3e944222cbdbbb290554679e49a74f9ab2072c52a399ae4947"
+  },
+  {
+   "amendment_id": "study-v3-amendment-2",
+   "path": "study\\v3\\protocol_amendment_2.json",
+   "sha256": "f41ee997478eb7c3b66ba81a955c2ba1029755258a4a5d26cfee4a53113cccd5"
+  }
+ ],
+ "excluded_datasets": [
+  "oml41162"
+ ],
+ "incomplete_stages": {
+  "oml1597": "eval-rest"
+ },
+ "success_criterion_met": false,
+ "protocol_sha256": "a65e20f96d093c9f8f18190027429a0f78c02fbf58f08d88d3d5d7dd58f8cb30"
+}
