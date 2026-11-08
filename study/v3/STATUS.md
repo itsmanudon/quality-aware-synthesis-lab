@@ -4,12 +4,12 @@ Updated by the agent at the end of every session. Gates are approved only by the
 
 | Field | Value |
 | --- | --- |
-| Phase | 4 complete; at **Gate 4** (results review with the user and the professor) |
+| Phase | Closed 2026-11-09: Phases 0-4 complete; Gate 4 professor review no longer required (user: the draft was submitted and graded). Phase 5 paper optional |
 | Last finished step | Phase 4 analysis under the frozen protocol + amendments 1 and 2 (`report/phase4/summary.md`) and reconciliation (`report/phase4/RECONCILIATION.md`). Success criterion NOT met |
 | Runs in progress | none: all Phase 3 workers stopped 2026-11-08 at the user's request. Final: curated 195, stage 1 195, stage 2 191 (creditcard 1 of 5) |
 | API spend so far | Anthropic $3.173 of $5 · OpenAI $2.600 of $4 · Meta $56.653 of $140 (final; all under 80%) |
 | Blockers | none |
-| Next step | Gate 4: user (and professor) review the results. Then Phase 5 (paper). Deferred: cloud supplementary run for kick and creditcard stage 2 |
+| Next step | Widen the research (user, 2026-11-09): new work goes in a new declared study, not a rerun of v3. Optional: cloud supplementary run (kick, creditcard stage 2) |
 
 ## Phase 0 checklist
 
@@ -222,7 +222,7 @@ Claude Code stopped every background job because the machine ran critically low 
 | 2a | amendment 1 recorded: kick (oml41162) unavailable for every method, U2_SIDE_COMPUTE_LIMIT (1 of 5 U2-side splits after ~70 h / 529 CPU-hours); decided before any kick unit was curated or evaluated. Base protocol unchanged | user | 2026-11-06 | `951c656983a17b3e944222cbdbbb290554679e49a74f9ab2072c52a399ae4947` (`study/v3/protocol_amendment_1.json`) |
 | 2b | amendment 2 recorded: creditcard (oml1597) stage-2 comparators unavailable (1 of 5 splits; EVALUATION_COMPUTE_LIMIT); its stage 1 and all progress kept; creditcard stage 2 and kick deferred to a later cloud run reported as supplementary. Decided before Phase 4 was run | user | 2026-11-08 | `f41ee997478eb7c3b66ba81a955c2ba1029755258a4a5d26cfee4a53113cccd5` (`study/v3/protocol_amendment_2.json`) |
 | 3 | open | | | |
-| 4 | open | | | |
+| 4 | closed: professor review waived; study closed with the result as found (success criterion not met) | user | 2026-11-09 | `0146d8f` |
 
 ## Decisions during Phase 3 (user)
 
