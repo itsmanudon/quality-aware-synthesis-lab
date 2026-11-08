@@ -1,0 +1,45 @@
+{
+ "agent_valid_counts": {
+  "Abalone19": {
+   "false": 5,
+   "true": 10
+  },
+  "Ecoli4": {
+   "true": 15
+  },
+  "abalone9-18": {
+   "false": 2,
+   "true": 13
+  },
+  "ecoli1": {
+   "true": 15
+  },
+  "vehicle0": {
+   "false": 2,
+   "true": 13
+  },
+  "yeast3": {
+   "true": 15
+  },
+  "yeast4": {
+   "true": 15
+  }
+ },
+ "human_columns_filled_by_agent": 0,
+ "inputs": [
+  "blind/review_blind.csv",
+  "blind/schema_<dataset>.json"
+ ],
+ "label_source": "coding agent (rule-based); NOT human labels",
+ "not_used": [
+  "key/review_key.csv",
+  "B2/B3/gate outputs",
+  "TRAIN/TEST data"
+ ],
+ "rows": 105,
+ "rules_failed_counts": {
+  "A4": 5,
+  "A5": 3,
+  "S7": 2
+ }
+}

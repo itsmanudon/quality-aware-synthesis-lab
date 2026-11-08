@@ -234,6 +234,7 @@ Claude Code stopped every background job because the machine ran critically low 
 - 2026-11-07: ipums (oml1018) has no complete inner TRAIN row (0 of 5,660; 14 of 56 columns have missing cells), so the RC-QASyn gate cannot be fitted there. The merged method, its variants and the gated curators are recorded unavailable (GATE_NO_COMPLETE_TRAIN_ROW); non-gated comparators and B2 are evaluated. Under the frozen aggregation rules ipums leaves the merged comparisons and is listed with the reason (67ce669). This is a finding about the gate (it needs complete TRAIN rows), to be reported.
 
 ## Session log
+- 2026-11-09: interim AGENT labels for the v3 blinded sample (`study/v3/report/phase2/label-sample/agent/`, rules in `study/v3/agent_labels.py`): 9 of 105 flagged invalid (Abalone19 5, abalone9-18 2, vehicle0 2). An automated judge, never human validation; no human_* column filled; rules not to be tuned. Human labelling deferred until results are good (user).
 
 - 2026-10-31: plan, CLAUDE.md autonomy rules and `.claude/settings.json` added.
 - 2026-10-31 (Phase 0 session): branch `study-v3` created from `study-v3-setup`. Commits:

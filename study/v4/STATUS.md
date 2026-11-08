@@ -22,6 +22,7 @@ Updated by the agent at the end of every session. Gates are approved only by the
 | 4 | open | | | |
 
 ## Session log
+- 2026-11-09: interim AGENT labels for the v3 blinded sample (`study/v3/report/phase2/label-sample/agent/`, rules in `study/v3/agent_labels.py`): 9 of 105 flagged invalid (Abalone19 5, abalone9-18 2, vehicle0 2). An automated judge, never human validation; no human_* column filled; rules not to be tuned. Human labelling deferred until results are good (user).
 
 - 2026-11-09: Study v4 opened after Study v3 closed (negative result). Human labelling of
   the v3 blinded sample handed to the user (`study/v3/report/phase2/label-sample/blind/`).
