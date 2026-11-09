@@ -275,7 +275,14 @@ def run_unit(dataset: str, seed: int) -> dict[str, Any]:
         unit["pools"][name] = pool_metrics(pool, inner, spec, spec_dict, space, train_keys,
                                            ref_keys, ref_nn, seed)
     if outer_n <= SIZE_LIMIT:
-        unit["gate"] = gate_metrics(pools, inner, specification, split["split_fingerprint"])
+        try:
+            unit["gate"] = gate_metrics(pools, inner, specification, split["split_fingerprint"])
+        except ValueError as error:
+            if "no supported TRAIN feature reference" not in str(error):
+                raise
+            # The gate is fitted on complete TRAIN rows only (ipums has none; see v3).
+            unit["gate"] = {}
+            unit["unavailable"]["gate"] = "GATE_NO_COMPLETE_TRAIN_ROW"
     else:
         unit["gate"] = {}
         unit["unavailable"]["gate"] = "SIZE_LIMIT"
