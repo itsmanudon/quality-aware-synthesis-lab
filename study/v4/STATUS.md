@@ -9,7 +9,7 @@ Updated by the agent at the end of every session. Gates are approved only by the
 | Runs in progress | none |
 | API spend so far | $0 (no new calls; all LLM pools reused from Study v3) |
 | Blockers | none |
-| Next step | User decides at Gate 1: size limit and the Part B method list; then Phase 2 (Part B on VALIDATION) |
+| Next step | PAUSED 2026-11-09 at Gate 1 (user). Resume per `study/v4/RESUME.md`: answer the 3 Part B decisions, then Phase 2 on VALIDATION |
 
 ## Gates
 
@@ -22,6 +22,7 @@ Updated by the agent at the end of every session. Gates are approved only by the
 | 4 | open | | | |
 
 ## Session log
+- 2026-11-09: paused at Gate 1 at the user's request; nothing running. Checkpoint and resume steps (this laptop or the MacBook Pro) in `RESUME.md`.
 
 - 2026-11-09: compute decision (user): everything runs on the local laptop (solar powered), no cloud spend. Deferred v3 kick/creditcard units, if ever run, also run locally, after parallelising U2's alpha/tau grid within a split (results-identical, fixed seeds).
 - 2026-11-09: interim AGENT labels for the v3 blinded sample (`study/v3/report/phase2/label-sample/agent/`, rules in `study/v3/agent_labels.py`): 9 of 105 flagged invalid (Abalone19 5, abalone9-18 2, vehicle0 2). An automated judge, never human validation; no human_* column filled; rules not to be tuned. Human labelling deferred until results are good (user).
