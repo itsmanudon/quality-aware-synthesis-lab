@@ -175,6 +175,28 @@ def report(units: Path, out: Path) -> str:
                 rho = stats.spearmanr(ok[col], ok[prop]).statistic if len(ok) >= 10 else np.nan
                 cells.append("" if pd.isna(rho) else f"{rho:+.2f}")
             lines.append(f"| {g} | {col} | " + " | ".join(cells) + " |")
+    prec_dir = units.parent.parent / "phase1-precision" / "units"
+    prec = [json.loads(q.read_text(encoding="utf-8")) for q in sorted(prec_dir.glob("*.json"))]
+    if prec:
+        pr = pd.DataFrame([{"generator": g, "dataset_id": u["dataset_id"],
+                            "auc_stored": m["auc_stored"], "auc_rounded": m["auc_rounded"]}
+                           for u in prec for g, m in u["pools"].items()]).dropna()
+        pr["change"] = pr["auc_rounded"] - pr["auc_stored"]
+        pr.to_csv(out / "precision_check.csv", index=False)
+        lines += ["", ("## Precision check: discriminator AUC after rounding both real and "
+                       f"synthetic numerics to the coarser precision ({len(prec)} units)"), "",
+                  ("| generator | median AUC as stored | median AUC rounded | median change | "
+                   "units with rounded AUC < 0.75 |"), "|---|---|---|---|---|"]
+        for g in gens:
+            s = pr[pr["generator"] == g]
+            if s.empty:
+                continue
+            lines.append(f"| {g} | {s['auc_stored'].median():.3f} | "
+                         f"{s['auc_rounded'].median():.3f} | {s['change'].median():+.3f} | "
+                         f"{int((s['auc_rounded'] < 0.75).sum())} / {len(s)} |")
+        lines += ["", ("Rounding removes formatting differences (LLMs write rounded numbers). An "
+                       "AUC that stays high after rounding reflects a distributional difference, "
+                       "not number formatting.")]
     unavailable = Counter((k, v) for u in raw for k, v in u.get("unavailable", {}).items())
     lines += ["", "## Unavailable", ""]
     lines += [f"- {k}: {v}: {n} units" for (k, v), n in sorted(unavailable.items())] or ["- none"]

@@ -104,6 +104,19 @@ Spend is the provider's total Study v3 ledger spend (all Phase 3 calls of that m
 | u2_flow_gate | train_copy_rate | +0.04 | +0.20 | +0.27 |
 | u2_flow_gate | complete_rate | -0.06 | +0.14 | -0.32 |
 
+## Precision check: discriminator AUC after rounding both real and synthetic numerics to the coarser precision (200 units)
+
+| generator | median AUC as stored | median AUC rounded | median change | units with rounded AUC < 0.75 |
+|---|---|---|---|---|
+| claude-haiku-5-5 | 0.982 | 0.982 | +0.000 | 3 / 191 |
+| gpt-6-luna | 0.985 | 0.985 | +0.000 | 4 / 200 |
+| muse-spark-1.3 | 0.982 | 0.981 | +0.000 | 0 / 200 |
+| smote | 0.460 | 0.377 | -0.052 | 196 / 196 |
+| u2_native | 0.565 | 0.487 | -0.026 | 162 / 196 |
+| u2_flow_gate | 0.670 | 0.573 | -0.028 | 159 / 196 |
+
+Rounding removes formatting differences (LLMs write rounded numbers). An AUC that stays high after rounding reflects a distributional difference, not number formatting.
+
 ## Unavailable
 
 - claude-haiku-5-5: NO_PARSED_RECORDS: 7 units

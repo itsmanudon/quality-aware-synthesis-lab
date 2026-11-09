@@ -4,12 +4,12 @@ Updated by the agent at the end of every session. Gates are approved only by the
 
 | Field | Value |
 | --- | --- |
-| Phase | 1 (audit, inner TRAIN only) |
-| Last finished step | audit.py written and trial-checked (oml43, oml1053); full run launched 2026-11-09 with 5 workers outside Claude Code |
-| Runs in progress | Part A audit: `study/v4/runs/phase1/units` (200 units planned), logs `study/v4/runs/phase1/worker-*.log`; resume with `study/v4/run_phase1.ps1` |
+| Phase | 1 complete; at **Gate 1** (findings + Part B decisions for the user) |
+| Last finished step | Audit 200/200 and precision check 200/200 (`report/phase1/summary.md`): LLM pools valid but separable from real minority (discriminator AUC 0.98, unchanged after equal rounding), 12-16% coverage; gate admits 80-84% |
+| Runs in progress | none |
 | API spend so far | $0 (no new calls; all LLM pools reused from Study v3) |
 | Blockers | none |
-| Next step | When 200 units are done: Phase 1 report (per generator, per dataset, by dataset properties); then Gate 1 with the Part B details |
+| Next step | User decides at Gate 1: size limit and the Part B method list; then Phase 2 (Part B on VALIDATION) |
 
 ## Gates
 
